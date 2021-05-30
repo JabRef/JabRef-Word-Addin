@@ -7,7 +7,6 @@
   },
   "license": "MIT",
   "config": {
-    "document": "https://1drv.ms/w/s!AghRMcTytqdNhnXPTUXvm7BD3lQv?e=psfEOt",
     "app_to_debug": "word",
     "app_type_to_debug": "desktop",
     "dev_server_port": 3000
