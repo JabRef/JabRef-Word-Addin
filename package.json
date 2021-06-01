@@ -26,7 +26,8 @@
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "postinstall": "yarn generate"
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
