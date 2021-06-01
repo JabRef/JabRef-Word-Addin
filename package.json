@@ -25,11 +25,14 @@
     "start:web": "office-addin-debugging start manifest.xml web",
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.19",
     "core-js": "^3.9.1",
     "es6-promise": "^4.2.8",
+    "graphql": "^15.5.0",
     "office-ui-fabric-react": "^7.10.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
@@ -38,6 +41,7 @@
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/preset-typescript": "^7.13.0",
+    "@graphql-codegen/cli": "1.21.5",
     "@types/find-process": "1.2.0",
     "@types/office-js": "^1.0.160",
     "@types/office-runtime": "^1.0.17",
@@ -74,7 +78,10 @@
     "typescript": "^4.1.3",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "@graphql-codegen/typescript-operations": "1.18.0",
+    "@graphql-codegen/typescript-react-apollo": "2.2.5",
+    "@graphql-codegen/typescript": "1.22.1"
   },
   "prettier": "office-addin-prettier-config"
 }
