@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
-    "core-js": "^3.9.1",
+    "core-js": "^3.13.1",
     "es6-promise": "^4.2.8",
     "graphql": "^15.5.0",
     "office-ui-fabric-react": "^7.10.0",
