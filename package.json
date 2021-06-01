@@ -56,7 +56,7 @@
     "css-loader": "^5.2.4",
     "eslint": "^7.20.0",
     "eslint-plugin-office-addins": "^0.2.0",
-    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react": "^7.24.0",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "file-loader": "^4.2.0",
     "find-process": "^1.4.4",
