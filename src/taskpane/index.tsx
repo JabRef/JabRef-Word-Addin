@@ -1,11 +1,10 @@
-import "office-ui-fabric-react/dist/css/fabric.min.css";
 import App from "./components/App";
 import { AppContainer } from "react-hot-loader";
-import { initializeIcons } from "office-ui-fabric-react/lib/Icons";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import client from "../Utils/apolloClient";
+import { initializeIcons, ThemeProvider } from "@fluentui/react";
 /* global document, Office, module, require */
 
 initializeIcons();
@@ -17,9 +16,11 @@ const title = "Contoso Task Pane Add-in";
 const render = (Component) => {
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <AppContainer>
-        <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-      </AppContainer>
+      <ThemeProvider>
+        <AppContainer>
+          <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+        </AppContainer>
+      </ThemeProvider>
     </ApolloProvider>,
     document.getElementById("container")
   );
