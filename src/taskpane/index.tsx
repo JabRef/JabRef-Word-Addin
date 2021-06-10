@@ -5,6 +5,7 @@ import * as ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import client from "../Utils/apolloClient";
 import { initializeIcons, ThemeProvider } from "@fluentui/react";
+import { HashRouter as Router } from "react-router-dom";
 /* global document, Office, module, require */
 
 initializeIcons();
@@ -16,11 +17,13 @@ const title = "Contoso Task Pane Add-in";
 const render = (Component) => {
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <ThemeProvider>
-        <AppContainer>
-          <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-        </AppContainer>
-      </ThemeProvider>
+      <AppContainer>
+        <ThemeProvider>
+          <Router>
+            <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+          </Router>
+        </ThemeProvider>
+      </AppContainer>
     </ApolloProvider>,
     document.getElementById("container")
   );

@@ -17,7 +17,7 @@ const stackStyles: IStackStyles = {
     background: DefaultPalette.white,
   },
 };
-const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { margin: 20, marginTop:0 } };
+const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { margin: 20, marginTop: 0 } };
 
 const Dashboard: React.FC<dashboardProps> = () => {
   const click = async () => {
@@ -30,24 +30,18 @@ const Dashboard: React.FC<dashboardProps> = () => {
     });
   };
   return (
-    <div>
-      <Stack styles={stackStyles}>
-        <SearchBox
-          styles={searchBoxStyles}
-          placeholder="Search"
-          onSearch={(newValue) => console.log("value is " + newValue)}
-        />
-        <Header logo="assets/jabref.svg" message="JabRef" title="JabRef" />
-        <PrimaryButton
-          className="ms-welcome__action"
-          buttonType={ButtonType.hero}
-          iconProps={{ iconName: "ChevronRight" }}
-          onClick={click}
-        >
-          Cite
-        </PrimaryButton>
-      </Stack>
-    </div>
+    <Stack styles={stackStyles}>
+      <SearchBox styles={searchBoxStyles} placeholder="Search" />
+      <Header logo="assets/jabref.svg" message="JabRef" title="JabRef" />
+      <PrimaryButton
+        className="ms-welcome__action"
+        buttonType={ButtonType.hero}
+        iconProps={{ iconName: "ChevronRight" }}
+        onClick={click}
+      >
+        Cite
+      </PrimaryButton>
+    </Stack>
   );
 };
 export default Dashboard;

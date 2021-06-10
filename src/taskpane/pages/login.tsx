@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   IStackStyles,
   DefaultPalette,
@@ -12,20 +11,21 @@ import {
 } from "@fluentui/react";
 import { Form, Formik } from "formik";
 import * as React from "react";
-import { useLoginMutation } from "../../generated/graphql";
+// import { useLoginMutation } from "../../generated/graphql";
 import { InputField } from "../components/InputField";
+import Wrapper from "../components/Wrapper";
 
 // Styles definition
-const stackStyles: IStackStyles = {
+const stackStylesHeader: IStackStyles = {
   root: {
     background: DefaultPalette.white,
   },
 };
-const stackStylesHeader: IStackStyles = {
+
+const stackStyles: IStackStyles = {
   root: {
-    padding: 20,
-    paddingBottom: 30,
-    paddingTop: 60,
+    margin: 20,
+    marginTop: 30,
   },
 };
 
@@ -37,7 +37,7 @@ const imageProps: IImageProps = {
 
 // Tokens definition
 const verticalGapStackTokens: IStackTokens = {
-  childrenGap: 10,
+  childrenGap: 8,
   padding: 30,
 };
 
@@ -45,55 +45,57 @@ interface loginProps {}
 
 const Login: React.FC<loginProps> = () => {
   const [values, setValues] = React.useState({ email: "", password: "" });
-  const [loginMutation] = useLoginMutation({ variables: values });
+  // const [loginMutation] = useLoginMutation({ variables: values });
   return (
-    <Formik
-      initialValues={values}
-      onSubmit={async (value, { setErrors }) => {
-        setValues(value);
-        await loginMutation();
-        const boolean = true;
-        if (!boolean) {
+    <Wrapper>
+      <Formik
+        initialValues={values}
+        onSubmit={async (value, { setErrors }) => {
+          setValues(value);
           setErrors({
             email: "Wrong Email",
             password: "Incorrect Password",
           });
-        }
-      }}
-    >
-      {() => (
-        <Stack styles={stackStylesHeader}>
-          <Form>
-            <Stack styles={stackStyles} tokens={verticalGapStackTokens}>
-              <Stack.Item align="center">
-                <img {...imageProps} alt="jabref logo" width={80} />
-              </Stack.Item>
-              <Stack.Item align="center">
-                <div style={{ fontSize: FontSizes.size32, fontWeight: "bolder" }}>Log In</div>
-              </Stack.Item>
-              <Stack.Item>
-                <InputField name="email" type="email" label="Email" placeholder="Email" autoFocus />
-                <InputField type="password" name="password" label="Password" placeholder="*********" />
-              </Stack.Item>
-              <Stack.Item align="end">
-                <Link to="#" target="blank">
-                  Need Help?
-                </Link>
-              </Stack.Item>
-              <PrimaryButton type="submit">Login</PrimaryButton>
-              <Stack.Item align="center">
-                <div>Don&apos;t have an account?</div>
-              </Stack.Item>
-              <Stack.Item align="center">
-                <Link to="https://www.JabRef.com" target="blank">
-                  Sign Up
-                </Link>
-              </Stack.Item>
-            </Stack>
-          </Form>
-        </Stack>
-      )}
-    </Formik>
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Stack verticalFill={true} styles={stackStylesHeader}>
+            <Form>
+              <Stack styles={stackStyles} tokens={verticalGapStackTokens}>
+                <Stack.Item align="center">
+                  <img {...imageProps} alt="jabref logo" width={80} />
+                </Stack.Item>
+                <Stack.Item align="center">
+                  <div style={{ fontSize: FontSizes.size32, fontWeight: "bolder" }}>Log In</div>
+                </Stack.Item>
+                <Stack.Item>
+                  <InputField name="email" type="email" label="Email" placeholder="Email" autoFocus />
+                  <InputField type="password" name="password" label="Password" placeholder="*********" />
+                </Stack.Item>
+                <Stack.Item align="end">
+                  <Link to="#" target="blank">
+                    Need Help?
+                  </Link>
+                </Stack.Item>
+                <Stack.Item align="center">
+                  <PrimaryButton type="submit" disabled={isSubmitting}>
+                    Login
+                  </PrimaryButton>
+                </Stack.Item>
+                <Stack.Item align="center">
+                  <div>Don&apos;t have an account?</div>
+                </Stack.Item>
+                <Stack.Item align="center">
+                  <Link to="#" target="blank">
+                    Sign Up
+                  </Link>
+                </Stack.Item>
+              </Stack>
+            </Form>
+          </Stack>
+        )}
+      </Formik>
+    </Wrapper>
   );
 };
 

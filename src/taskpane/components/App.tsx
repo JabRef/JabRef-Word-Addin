@@ -1,10 +1,9 @@
 import * as React from "react";
-
 import Progress from "./Progress";
 // images references in the manifest
 import "../../../assets/icon-16.png";
 import "../../../assets/icon-32.png";
-import PivotHeader from "./PivotHeader";
+import Login from "../pages/login";
 
 export interface AppProps {
   title: string;
@@ -15,9 +14,9 @@ const App: React.FC<AppProps> = (props) => {
   const { isOfficeInitialized } = props;
 
   if (!isOfficeInitialized) {
-    return <Progress title="JabRef" message="Loading..." logo="../../../assets/jabref.svg" />;
+    return <Progress title="JabRef" message="Loading JabRef..." logo="../../../assets/jabref.svg" />;
+  } else {
+    return <Login />;
   }
-  return <PivotHeader />;
 };
-
 export default App;
