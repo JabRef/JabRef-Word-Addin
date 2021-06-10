@@ -62,6 +62,7 @@ export default class App extends React.Component<AppProps, AppState> {
     return (
       <div className="ms-welcome">
         <Header logo="assets/jabref.svg" title={this.props.title} message="JabRef" />
+        <div>{process.env.API_HOST_URL}</div>
         <HeroList message="Welcome" items={this.state.listItems}>
           <PrimaryButton
             className="ms-welcome__action"

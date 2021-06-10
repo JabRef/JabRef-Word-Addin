@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-const Dotenv = require("dotenv-webpack");
+var dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
@@ -45,7 +45,9 @@ module.exports = async (env, options) => {
     },
     plugins: [
       new CleanWebpackPlugin(),
-      new Dotenv(),
+      new webpack.DefinePlugin({
+        "process.env": JSON.stringify(dotenv.parsed),
+      }),
       new CopyWebpackPlugin({
         patterns: [
           {
@@ -86,7 +88,7 @@ module.exports = async (env, options) => {
         "Access-Control-Allow-Origin": "*",
       },
       https: options.https !== undefined ? options.https : await devCerts.getHttpsServerOptions(),
-      port: process.env.npm_package_config_dev_server_port || 3000,
+      port: process.env.PORT || 3000,
     },
   };
 

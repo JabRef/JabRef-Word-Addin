@@ -9,7 +9,7 @@
   "config": {
     "app_to_debug": "word",
     "app_type_to_debug": "desktop",
-    "dev_server_port": 3000
+    "dev_server_port": 4000
   },
   "scripts": {
     "build": "webpack -p --mode production --https false",
@@ -31,6 +31,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.19",
     "core-js": "^3.14.0",
+    "dotenv": "^10.0.0",
     "es6-promise": "^4.2.8",
     "graphql": "^15.5.0",
     "office-ui-fabric-react": "^7.170.2",
