@@ -10,7 +10,7 @@
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/jabref.svg"/>
   <SupportUrl DefaultValue="https://www.jabref.org/#support"/>
   <AppDomains>
-    <AppDomain>https://www.jabref.com</AppDomain>
+    <AppDomain>https://www.jabref.org</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Document"/>
