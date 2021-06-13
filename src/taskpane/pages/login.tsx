@@ -11,7 +11,8 @@ import {
 } from "@fluentui/react";
 import { Form, Formik } from "formik";
 import * as React from "react";
-// import { useLoginMutation } from "../../generated/graphql";
+import { useHistory, withRouter } from "react-router-dom";
+import { useLoginMutation } from "../../generated/graphql";
 import { InputField } from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 
@@ -26,6 +27,7 @@ const stackStyles: IStackStyles = {
   root: {
     margin: 20,
     marginTop: 30,
+    overflow: "hidden",
   },
 };
 
@@ -45,17 +47,25 @@ interface loginProps {}
 
 const Login: React.FC<loginProps> = () => {
   const [values, setValues] = React.useState({ email: "", password: "" });
-  // const [loginMutation] = useLoginMutation({ variables: values });
+  const history = useHistory();
+  const [loginMutation, { error, data }] = useLoginMutation({
+    variables: values,
+  });
   return (
     <Wrapper>
       <Formik
         initialValues={values}
         onSubmit={async (value, { setErrors }) => {
           setValues(value);
-          setErrors({
-            email: "Wrong Email",
-            password: "Incorrect Password",
-          });
+          await loginMutation();
+          if (error || !data) {
+            setErrors({
+              email: "Wrong Email",
+              password: "Incorrect Password",
+            });
+          } else if (data) {
+            history.push({ pathname: "dashboard" });
+          }
         }}
       >
         {({ isSubmitting }) => (
@@ -66,7 +76,7 @@ const Login: React.FC<loginProps> = () => {
                   <img {...imageProps} alt="jabref logo" width={80} />
                 </Stack.Item>
                 <Stack.Item align="center">
-                  <div style={{ fontSize: FontSizes.size32, fontWeight: "bolder" }}>Log In</div>
+                  <div style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}>Log In</div>
                 </Stack.Item>
                 <Stack.Item>
                   <InputField name="email" type="email" label="Email" placeholder="Email" autoFocus />
@@ -99,4 +109,4 @@ const Login: React.FC<loginProps> = () => {
   );
 };
 
-export default Login;
+export default withRouter(Login);

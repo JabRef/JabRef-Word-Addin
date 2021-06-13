@@ -1,41 +1,45 @@
 import { IStyleSet, ILabelStyles, IPivotStyles, DefaultPalette, Pivot, PivotItem, Label } from "@fluentui/react";
 import * as React from "react";
+import Dashboard from "../pages/dashboard";
 import Wrapper from "./Wrapper";
 
 const labelStyles: Partial<IStyleSet<ILabelStyles>> = {
-  root: { marginTop: 10, marginBottom: 0 },
+  root: {},
 };
 const pivotStyle: Partial<IPivotStyles> = {
   root: {
     backgroundColor: DefaultPalette.white,
     marginBottom: 0,
+    borderBottom: "1px solid rgba(29, 4, 4, 0.11)",
   },
 };
 
-interface LayoutProps {
-  dashboard: React.ReactNode;
-  citationStyle: React.ReactNode;
-  profile: React.ReactNode;
-}
+interface LayoutProps {}
 
-const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
+const Layout: React.FC<LayoutProps> = () => {
   return (
     <Wrapper>
       <Pivot aria-label="NAV" styles={pivotStyle} linkSize="normal">
         <PivotItem
-          headerText="My Files"
+          headerText="Library"
           headerButtonProps={{
             "data-order": 1,
-            "data-title": "My Files Title",
+            "data-title": "Library title",
           }}
         >
-          <Label styles={labelStyles}>{props.dashboard}</Label>
+          <Label styles={labelStyles}>
+            <Dashboard />
+          </Label>
         </PivotItem>
         <PivotItem headerText="Citation Style">
-          <Label styles={labelStyles}>{props.citationStyle}</Label>
+          <Label styles={labelStyles}>
+            <div>Under construction</div>
+          </Label>
         </PivotItem>
-        <PivotItem headerText="Profile">
-          <Label styles={labelStyles}>{props.profile}</Label>
+        <PivotItem headerText="Log out">
+          <Label styles={labelStyles}>
+            <div>Under Construction</div>
+          </Label>
         </PivotItem>
       </Pivot>
     </Wrapper>

@@ -12,7 +12,7 @@ initializeIcons();
 
 let isOfficeInitialized = false;
 
-const title = "Contoso Task Pane Add-in";
+const title = "JabRef Task Pane Add-in";
 
 const render = (Component) => {
   ReactDOM.render(

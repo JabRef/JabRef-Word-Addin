@@ -17,7 +17,7 @@ const stackStyles: IStackStyles = {
     background: DefaultPalette.white,
   },
 };
-const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { margin: 20, marginTop: 0 } };
+const searchBoxStyles: Partial<ISearchBoxStyles> = { root: {} };
 
 const Dashboard: React.FC<dashboardProps> = () => {
   const click = async () => {
