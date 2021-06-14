@@ -33,7 +33,7 @@
     "core-js": "^3.14.0",
     "es6-promise": "^4.2.8",
     "graphql": "^15.5.0",
-    "office-ui-fabric-react": "^7.170.2",
+    "office-ui-fabric-react": "^7.170.3",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "regenerator-runtime": "^0.13.7"
