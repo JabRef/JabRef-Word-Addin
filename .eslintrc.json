@@ -1,4 +1,12 @@
 {
+  "globals": {
+    "JSX": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
   "plugins": [
     "office-addins"
   ],
