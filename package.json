@@ -44,7 +44,7 @@
     "@graphql-codegen/cli": "1.21.5",
     "@types/find-process": "1.2.0",
     "@types/office-js": "^1.0.160",
-    "@types/office-runtime": "^1.0.17",
+    "@types/office-runtime": "^1.0.18",
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
     "@types/react-hot-loader": "^4.1.0",
