@@ -46,25 +46,21 @@ const verticalGapStackTokens: IStackTokens = {
 interface loginProps {}
 
 const Login: React.FC<loginProps> = () => {
-  const [values, setValues] = React.useState({ email: "", password: "" });
   const history = useHistory();
-  const [loginMutation, { error, data }] = useLoginMutation({
-    variables: values,
-  });
+  const [loginMutation] = useLoginMutation();
   return (
     <Wrapper>
       <Formik
-        initialValues={values}
+        initialValues={{ email: "", password: "" }}
         onSubmit={async (value, { setErrors }) => {
-          setValues(value);
-          await loginMutation();
-          if (error || !data) {
+          const response = await loginMutation({ variables: value });
+          if (response.data?.login.__typename === "User") {
+            history.push({ pathname: "/" });
+          } else {
             setErrors({
               email: "Wrong Email",
               password: "Incorrect Password",
             });
-          } else if (data) {
-            history.push({ pathname: "dashboard" });
           }
         }}
       >

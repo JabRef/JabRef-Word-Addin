@@ -2,7 +2,7 @@ overwrite: true
 schema: "https://jabref-online.herokuapp.com/api"
 documents: "src/graphql/**/*.graphql"
 generates:
-  src/generated/graphql.d.ts:
+  src/generated/graphql.ts:
     plugins:
       - "typescript"
       - "typescript-operations"

@@ -7,7 +7,7 @@ interface ProtectedRoutesProps {
 }
 
 export const ProtectedRoutes: React.FC<ProtectedRoutesProps> = (props: ProtectedRoutesProps) => {
-  const isAuth = true;
+  const bool = true;
   const { component: Component } = props;
-  return isAuth ? <Component /> : <Redirect to={{ pathname: "/login" }} />;
+  return bool ? <Component /> : <Redirect to={{ pathname: "/login" }} />;
 };
