@@ -6,7 +6,7 @@ import { ApolloProvider } from "@apollo/client";
 import client from "../Utils/apolloClient";
 import { initializeIcons, ThemeProvider } from "@fluentui/react";
 import { HashRouter as Router } from "react-router-dom";
-/* global document, Office, module, require */
+/* global Office */
 
 initializeIcons();
 

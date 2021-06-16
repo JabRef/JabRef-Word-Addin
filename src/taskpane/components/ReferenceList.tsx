@@ -3,17 +3,14 @@ import { FocusZone, FocusZoneDirection } from "@fluentui/react/lib/FocusZone";
 
 import { List } from "@fluentui/react/lib/List";
 import { ITheme, mergeStyleSets, getTheme, getFocusStyle } from "@fluentui/react/lib/Styling";
-import { createListItems, IExampleItem } from "@fluentui/example-data";
-import { useConst } from "@fluentui/react-hooks";
-import { ISearchBoxStyles, SearchBox } from "@fluentui/react";
+import { Checkbox, ISearchBoxStyles, SearchBox } from "@fluentui/react";
+import data from "../../Utils/data";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
 const searchBoxStyle: ISearchBoxStyles = {
   root: {
-    marginLeft: 8,
-    marginRight: 8,
-    marginBottom: 8,
+    margin: 8,
   },
 };
 
@@ -21,40 +18,51 @@ interface ReferenceListProps {}
 const classNames = mergeStyleSets({
   container: {
     overflow: "auto",
-    maxHeight: 500,
+    maxHeight: 450,
     marginLeft: 8,
     marginRight: 8,
   },
   itemCell: [
     getFocusStyle(theme, { inset: -1 }),
     {
+      backgroundColor: theme.palette.neutralLighterAlt,
       minHeight: 54,
-      padding: 10,
+      padding: 8,
+      margin: 2,
       boxSizing: "border-box",
       borderBottom: `1px solid ${semanticColors.bodyDivider}`,
       display: "flex",
       selectors: {
-        "&:hover": { background: palette.neutralLight },
+        "&:hover": { background: palette.themeLighterAlt },
       },
     },
   ],
   itemContent: {
     marginLeft: 10,
-    overflow: "hidden",
+    boxSizing: "border-box",
+    overflow: "auto",
     flexGrow: 1,
   },
-  itemName: [
-    fonts.xLarge,
+  itemTitle: [
+    fonts.mediumPlus,
     {
       whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
   ],
-  itemIndex: {
+  itemAuthor: {
     fontSize: fonts.small.fontSize,
     color: palette.neutralTertiary,
     marginBottom: 10,
+  },
+  itemYear: {
+    fontSize: fonts.smallPlus,
+    color: palette.neutralTertiary,
+  },
+  itemType: {
+    fontSize: fonts.smallPlus,
+    color: palette.neutralTertiary,
   },
   chevron: {
     alignSelf: "center",
@@ -65,22 +73,27 @@ const classNames = mergeStyleSets({
   },
 });
 
-const onRenderCell = (item: IExampleItem, index: number): JSX.Element => {
+const onRenderCell = (item: typeof data): JSX.Element => {
   return (
     <div className={classNames.itemCell} data-is-focusable={true}>
+      <Checkbox defaultChecked={false} onChange={() => console.log("hello")} />
       <div className={classNames.itemContent}>
-        <div className={classNames.itemName}>{item.name}</div>
-        <div className={classNames.itemIndex}>{`Item ${index}`}</div>
+        <div className={classNames.itemType}>{item.type}</div>
+        <div className={classNames.itemTitle}>{item.title}</div>
+        <div className={classNames.itemAuthor}>{item.author}</div>
+        <div className={classNames.itemYear}>
+          {item.journal} {item.year}
+        </div>
       </div>
     </div>
   );
 };
 
 export const ReferenceList: React.FC<ReferenceListProps> = () => {
-  const originalItems = useConst(() => createListItems(5000));
+  const originalItems = data;
   const [items, setItems] = React.useState(originalItems);
   const onFilterChanged = (_: any, text: string): void => {
-    setItems(originalItems.filter((item) => item.name.toLowerCase().indexOf(text.toLowerCase()) >= 0));
+    setItems(originalItems.filter((item) => item.title.toLowerCase().indexOf(text.toLowerCase()) >= 0));
   };
 
   return (

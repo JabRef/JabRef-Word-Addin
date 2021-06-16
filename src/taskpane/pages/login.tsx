@@ -64,7 +64,7 @@ const Login: React.FC<loginProps> = () => {
               password: "Incorrect Password",
             });
           } else if (data) {
-            history.push({ pathname: "dashboard" });
+            history.push({ pathname: "/" });
           }
         }}
       >
