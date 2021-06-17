@@ -1,6 +1,6 @@
 import { TextField } from "@fluentui/react";
 import { useField } from "formik";
-import * as React from "react";
+import React from "react";
 
 type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;

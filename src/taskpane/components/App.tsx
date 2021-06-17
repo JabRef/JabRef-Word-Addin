@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Progress from "./Progress";
 // images references in the manifest
 import "../../../assets/icon-16.png";

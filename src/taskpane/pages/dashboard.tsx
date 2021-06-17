@@ -7,7 +7,7 @@ import {
   PrimaryButton,
   ButtonType,
 } from "@fluentui/react";
-import * as React from "react";
+import React from "react";
 import Header from "../components/Header";
 /* global Word */
 

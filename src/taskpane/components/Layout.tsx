@@ -1,5 +1,5 @@
 import { IStyleSet, ILabelStyles, IPivotStyles, DefaultPalette, Pivot, PivotItem, Label } from "@fluentui/react";
-import * as React from "react";
+import React from "react";
 import Dashboard from "../pages/dashboard";
 import Wrapper from "./Wrapper";
 

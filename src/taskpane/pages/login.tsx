@@ -10,7 +10,7 @@ import {
   Link,
 } from "@fluentui/react";
 import { Form, Formik } from "formik";
-import * as React from "react";
+import React from "react";
 import { useHistory, withRouter } from "react-router-dom";
 import { useLoginMutation } from "../../generated/graphql";
 import { InputField } from "../components/InputField";
