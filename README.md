@@ -1,7 +1,12 @@
 # JabRef-Word-Addin
 ## Getting started
 - Install [Node.js](https://nodejs.org/)
-- Run `yarn install`.
+- Create .env file in the root directory containing the `HOST_API_URL` key
+
+  e.g `API_HOST = "https://jabref-online.herokuapp.com"`
+- Run `yarn install`
+
+
 
 ## Follow the following steps to start the local web server and install add-in.
 ### To test add-in in Word.
