@@ -5,7 +5,7 @@
   <ProviderName>JabRef</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="JabRef"/>
-  <Description DefaultValue="JabRef word Add-in"/>
+  <Description DefaultValue="JabRef Word Add-in"/>
   <IconUrl DefaultValue="https://localhost:3000/assets/jabref.svg"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/jabref.svg"/>
   <SupportUrl DefaultValue="https://www.jabref.org/#support"/>
