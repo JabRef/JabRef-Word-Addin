@@ -11,7 +11,6 @@ import React from "react";
 import Header from "../components/Header";
 /* global Word */
 
-interface dashboardProps {}
 const stackStyles: IStackStyles = {
   root: {
     background: DefaultPalette.white,
@@ -19,7 +18,7 @@ const stackStyles: IStackStyles = {
 };
 const searchBoxStyles: Partial<ISearchBoxStyles> = { root: {} };
 
-const Dashboard: React.FC<dashboardProps> = () => {
+function Dashboard() {
   const click = async () => {
     return Word.run(async (context) => {
       // insert a paragraph at the end of the document.
@@ -43,5 +42,5 @@ const Dashboard: React.FC<dashboardProps> = () => {
       </PrimaryButton>
     </Stack>
   );
-};
+}
 export default Dashboard;

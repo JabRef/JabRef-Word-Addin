@@ -43,9 +43,7 @@ const verticalGapStackTokens: IStackTokens = {
   padding: 30,
 };
 
-interface loginProps {}
-
-const Login: React.FC<loginProps> = () => {
+function Login() {
   const history = useHistory();
   const [loginMutation, { error }] = useLoginMutation();
   return (
@@ -112,6 +110,6 @@ const Login: React.FC<loginProps> = () => {
       </Formik>
     </Wrapper>
   );
-};
+}
 
 export default withRouter(Login);

@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
-    "@fluentui/example-data": "^8.2.3",
     "@fluentui/react": "^8.17.2",
     "core-js": "^3.14.0",
     "es6-promise": "^4.2.8",
