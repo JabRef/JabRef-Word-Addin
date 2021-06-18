@@ -19,8 +19,12 @@ function App(props: AppProps) {
     return (
       <div>
         <Switch>
-          <Route path="/login" component={Login} />
-          <ProtectedRoutes path="/" component={Layout} />
+          <Route path="/login">
+            <Login />
+          </Route>
+          <ProtectedRoutes path="/">
+            <Layout />
+          </ProtectedRoutes>
         </Switch>
       </div>
     );
