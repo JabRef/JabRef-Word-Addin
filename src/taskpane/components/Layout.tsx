@@ -14,9 +14,7 @@ const pivotStyle: Partial<IPivotStyles> = {
   },
 };
 
-interface LayoutProps {}
-
-const Layout: React.FC<LayoutProps> = () => {
+function Layout() {
   return (
     <Wrapper>
       <Pivot aria-label="NAV" styles={pivotStyle} linkSize="normal">
@@ -33,7 +31,7 @@ const Layout: React.FC<LayoutProps> = () => {
         </PivotItem>
         <PivotItem headerText="Citation Style">
           <Label styles={labelStyles}>
-            <div>Under construction</div>
+            <div>Under Construction</div>
           </Label>
         </PivotItem>
         <PivotItem headerText="Log out">
@@ -44,6 +42,6 @@ const Layout: React.FC<LayoutProps> = () => {
       </Pivot>
     </Wrapper>
   );
-};
+}
 
 export default Layout;

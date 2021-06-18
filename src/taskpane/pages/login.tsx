@@ -13,7 +13,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useHistory, withRouter } from "react-router-dom";
 import { useLoginMutation } from "../../generated/graphql";
-import { InputField } from "../components/InputField";
+import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 
 // Styles definition
@@ -47,20 +47,15 @@ interface loginProps {}
 
 const Login: React.FC<loginProps> = () => {
   const history = useHistory();
-  const [loginMutation] = useLoginMutation();
+  const [loginMutation, { error }] = useLoginMutation();
   return (
     <Wrapper>
       <Formik
         initialValues={{ email: "", password: "" }}
-        onSubmit={async (value, { setErrors }) => {
+        onSubmit={async (value) => {
           const response = await loginMutation({ variables: value });
           if (response.data?.login.__typename === "User") {
             history.push({ pathname: "/" });
-          } else {
-            setErrors({
-              email: "Wrong Email",
-              password: "Incorrect Password",
-            });
           }
         }}
       >
@@ -73,6 +68,20 @@ const Login: React.FC<loginProps> = () => {
                 </Stack.Item>
                 <Stack.Item align="center">
                   <div style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}>Log In</div>
+                </Stack.Item>
+                <Stack.Item align="center">
+                  {error ? (
+                    <div
+                      style={{
+                        fontSize: FontSizes.size14,
+                        padding: 6,
+                        fontWeight: "bold",
+                        color: DefaultPalette.red,
+                      }}
+                    >
+                      Incorrect username or password
+                    </div>
+                  ) : null}
                 </Stack.Item>
                 <Stack.Item>
                   <InputField name="email" type="email" label="Email" placeholder="Email" autoFocus />

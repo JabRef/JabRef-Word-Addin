@@ -13,6 +13,7 @@
     "noImplicitReturns": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "lib": [
       "es7",

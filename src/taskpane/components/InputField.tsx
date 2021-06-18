@@ -7,11 +7,13 @@ type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string;
 };
 
-export const InputField: React.FC<InputFieldProps> = ({ defaultValue, ...props }: InputFieldProps) => {
+function InputField({ defaultValue, ...props }: InputFieldProps) {
   const [field, { error }] = useField(props);
   return (
     <>
       <TextField {...props} {...field} defaultValue={defaultValue as string} errorMessage={error} canRevealPassword />
     </>
   );
-};
+}
+
+export default InputField;
