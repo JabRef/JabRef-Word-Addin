@@ -1,13 +1,29 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
 interface ProtectedRoutesProps {
   children: JSX.Element;
   path: string;
 }
 
-function ProtectedRoutes(props: ProtectedRoutesProps) {
-  const bool = true;
-  return bool ? props.children : <Redirect to={{ pathname: "/login" }} />;
+function ProtectedRoutes({ children, ...rest }: ProtectedRoutesProps) {
+  const isAuth = true;
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        isAuth ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  );
 }
 export default ProtectedRoutes;

@@ -1,4 +1,7 @@
 {
+  "globals": {
+    "JSX": true
+  },
   "plugins": [
     "office-addins"
   ],
