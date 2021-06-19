@@ -1,24 +1,28 @@
-import "office-ui-fabric-react/dist/css/fabric.min.css";
+import React from "react";
+import ReactDOM from "react-dom";
 import App from "./components/App";
-import { AppContainer } from "react-hot-loader";
-import { initializeIcons } from "office-ui-fabric-react/lib/Icons";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
-import client from "../Utils/apolloClient";
+import { AppContainer } from "react-hot-loader";
+import { initializeIcons, ThemeProvider } from "@fluentui/react";
+import { HashRouter as Router } from "react-router-dom";
+import client from "../utils/apolloClient";
 /* global document, Office, module, require */
 
 initializeIcons();
 
 let isOfficeInitialized = false;
 
-const title = "Contoso Task Pane Add-in";
+const title = "JabRef Task Pane Add-in";
 
 const render = (Component) => {
   ReactDOM.render(
     <ApolloProvider client={client}>
       <AppContainer>
-        <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+        <ThemeProvider>
+          <Router>
+            <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+          </Router>
+        </ThemeProvider>
       </AppContainer>
     </ApolloProvider>,
     document.getElementById("container")

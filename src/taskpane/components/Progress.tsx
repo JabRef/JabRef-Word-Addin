@@ -1,22 +1,38 @@
-import * as React from "react";
-import { Spinner, SpinnerType } from "office-ui-fabric-react";
+import { DefaultPalette, IStackStyles, IStackTokens, Spinner, SpinnerSize, Stack } from "@fluentui/react";
+import React from "react";
+import Wrapper from "./Wrapper";
 
 export interface ProgressProps {
   logo: string;
   message: string;
   title: string;
 }
+const stackStyles: IStackStyles = {
+  root: {
+    paddingTop: 140,
+    background: DefaultPalette.white,
+  },
+};
+
+const stackToken: IStackTokens = {
+  childrenGap: 60,
+};
 
 export default class Progress extends React.Component<ProgressProps> {
   render() {
     const { logo, message, title } = this.props;
 
     return (
-      <section className="ms-welcome__progress ms-u-fadeIn500">
-        <img width="90" height="90" src={logo} alt={title} title={title} />
-        <h1 className="ms-fontSize-su ms-fontWeight-light ms-fontColor-neutralPrimary">{title}</h1>
-        <Spinner type={SpinnerType.large} label={message} />
-      </section>
+      <Wrapper>
+        <Stack verticalFill={true} styles={stackStyles} tokens={stackToken}>
+          <Stack.Item align="center">
+            <img width="90" height="90" src={logo} alt={title} title={title} />
+          </Stack.Item>
+          <Stack.Item align="center">
+            <Spinner size={SpinnerSize.large} label={message} />
+          </Stack.Item>
+        </Stack>
+      </Wrapper>
     );
   }
 }
