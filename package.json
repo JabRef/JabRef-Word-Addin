@@ -7,7 +7,6 @@
   },
   "license": "MIT",
   "config": {
-    "document": "Paste here",
     "app_to_debug": "word",
     "app_type_to_debug": "desktop",
     "dev_server_port": 3000
@@ -22,7 +21,7 @@
     "prettier": "office-addin-lint prettier",
     "start": "office-addin-debugging start manifest.xml",
     "start:desktop": "office-addin-debugging start manifest.xml desktop",
-    "start:web": "office-addin-debugging start manifest.xml web",
+    "start:web": "office-addin-debugging start manifest.xml web --document=$(grep DOCUMENT_URL .env)",
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
