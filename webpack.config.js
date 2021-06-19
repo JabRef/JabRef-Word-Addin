@@ -16,7 +16,7 @@ module.exports = async (env, options) => {
     devtool: "source-map",
     entry: {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
-      vendor: ["react", "react-dom", "core-js", "office-ui-fabric-react"],
+      vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
       taskpane: ["react-hot-loader/patch", "./src/taskpane/index.tsx"],
       commands: "./src/commands/commands.ts",
     },
@@ -88,7 +88,7 @@ module.exports = async (env, options) => {
         "Access-Control-Allow-Origin": "*",
       },
       https: options.https !== undefined ? options.https : await devCerts.getHttpsServerOptions(),
-      port: process.env.PORT || 3000,
+      port: process.env.npm_package_config_dev_server_port || 3000,
     },
   };
 
