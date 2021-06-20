@@ -21,7 +21,7 @@
     "prettier": "office-addin-lint prettier",
     "start": "office-addin-debugging start manifest.xml",
     "start:desktop": "office-addin-debugging start manifest.xml desktop",
-    "start:web": "office-addin-debugging start manifest.xml web",
+    "start:web": "dotenv -- cross-var office-addin-debugging start manifest.xml web --document=%DOCUMENT_URL%",
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
@@ -32,6 +32,9 @@
     "@apollo/client": "^3.3.19",
     "@fluentui/react": "^8.17.2",
     "core-js": "^3.14.0",
+    "cross-var": "^1.1.0",
+    "dotenv": "^10.0.0",
+    "dotenv-cli": "^4.0.0",
     "es6-promise": "^4.2.8",
     "formik": "^2.2.9",
     "graphql": "^15.5.0",
@@ -41,8 +44,7 @@
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/parser": "^7.14.6",
+    "@babel/core": "^7.14.5",
     "@babel/preset-typescript": "^7.14.5",
     "@graphql-codegen/cli": "1.21.5",
     "@graphql-codegen/typescript": "1.22.1",
