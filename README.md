@@ -15,12 +15,8 @@
 
 ### To test add-in in Word on a browser.
 - Open Office on the web. Using the Create option, make a document in Word. In this new document, select Share in the ribbon, select Copy Link, and copy the URL.
-- In the root directory of office project files, open the package.json file. Within the config section of this file, create a "document" property. Paste the URL you copied as the value for the "document" property. For example, yours will look something like this:
-`"config": { 
-    "document": "paste here",
-    ...
-    }
-    `
+- In the root directory of office project files, open the .env file. Add a "DOCUMENT_URL" key. Paste the URL you copied as the value for the "DOCUMENT_URL" key. For example,
+`DOCUMENT_URL=<URL>`
 - In the command line starting at the root directory, run `yarn start:web`.
 - You will see a second dialog box, asking if you wish to register an Office Add-in manifest from your computer. You should select Yes.
 - Choose the Reference tab, and then click on the JabRef icon to open the add-in task pane.
