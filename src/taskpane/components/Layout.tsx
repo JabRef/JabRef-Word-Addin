@@ -1,6 +1,6 @@
 import { IStyleSet, ILabelStyles, IPivotStyles, DefaultPalette, Pivot, PivotItem, Label } from "@fluentui/react";
-import * as React from "react";
-import { ProtectedRoutes } from "../../Utils/ProtectedRoutes";
+import React from "react";
+import ProtectedRoutes from "../../utils/ProtectedRoutes";
 import Dashboard from "../pages/dashboard";
 import Wrapper from "./Wrapper";
 
@@ -15,9 +15,7 @@ const pivotStyle: Partial<IPivotStyles> = {
   },
 };
 
-interface LayoutProps {}
-
-const Layout: React.FC<LayoutProps> = () => {
+function Layout() {
   return (
     <Wrapper>
       <Pivot aria-label="NAV" styles={pivotStyle} linkSize="normal">
@@ -29,7 +27,9 @@ const Layout: React.FC<LayoutProps> = () => {
           }}
         >
           <Label styles={labelStyles}>
-            <ProtectedRoutes path="/" component={Dashboard} />
+            <ProtectedRoutes path="/">
+              <Dashboard />
+            </ProtectedRoutes>
           </Label>
         </PivotItem>
         <PivotItem headerText="Citation Style">
@@ -37,7 +37,7 @@ const Layout: React.FC<LayoutProps> = () => {
             <div>Under Construction</div>
           </Label>
         </PivotItem>
-        <PivotItem headerText="Profile">
+        <PivotItem headerText="Log out">
           <Label styles={labelStyles}>
             <div>Under Construction</div>
           </Label>
@@ -45,6 +45,6 @@ const Layout: React.FC<LayoutProps> = () => {
       </Pivot>
     </Wrapper>
   );
-};
+}
 
 export default Layout;

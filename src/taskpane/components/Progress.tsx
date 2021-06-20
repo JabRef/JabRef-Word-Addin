@@ -1,5 +1,5 @@
 import { DefaultPalette, IStackStyles, IStackTokens, Spinner, SpinnerSize, Stack } from "@fluentui/react";
-import * as React from "react";
+import React from "react";
 import Wrapper from "./Wrapper";
 
 export interface ProgressProps {

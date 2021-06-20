@@ -2,4 +2,8 @@ query ME{
   me{
   email
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ce2bb92a61aa940273f1c9049ab3c31cd5eb1010

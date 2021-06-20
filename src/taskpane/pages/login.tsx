@@ -10,10 +10,17 @@ import {
   Link,
 } from "@fluentui/react";
 import { Form, Formik } from "formik";
+<<<<<<< HEAD
 import * as React from "react";
 import { useHistory, withRouter } from "react-router-dom";
 import { useLoginMutation } from "../../generated/graphql";
 import { InputField } from "../components/InputField";
+=======
+import React from "react";
+import { useHistory, withRouter } from "react-router-dom";
+import { useLoginMutation } from "../../generated/graphql";
+import InputField from "../components/InputField";
+>>>>>>> ce2bb92a61aa940273f1c9049ab3c31cd5eb1010
 import Wrapper from "../components/Wrapper";
 
 // Styles definition
@@ -43,6 +50,7 @@ const verticalGapStackTokens: IStackTokens = {
   padding: 30,
 };
 
+<<<<<<< HEAD
 interface loginProps {}
 
 const Login: React.FC<loginProps> = () => {
@@ -64,6 +72,18 @@ const Login: React.FC<loginProps> = () => {
               password: "Incorrect Password",
             });
           } else if (data) {
+=======
+function Login() {
+  const history = useHistory();
+  const [loginMutation, { error }] = useLoginMutation();
+  return (
+    <Wrapper>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        onSubmit={async (value) => {
+          const response = await loginMutation({ variables: value });
+          if (response.data?.login.__typename === "User") {
+>>>>>>> ce2bb92a61aa940273f1c9049ab3c31cd5eb1010
             history.push({ pathname: "/" });
           }
         }}
@@ -78,6 +98,23 @@ const Login: React.FC<loginProps> = () => {
                 <Stack.Item align="center">
                   <div style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}>Log In</div>
                 </Stack.Item>
+<<<<<<< HEAD
+=======
+                <Stack.Item align="center">
+                  {error ? (
+                    <div
+                      style={{
+                        fontSize: FontSizes.size14,
+                        padding: 6,
+                        fontWeight: "bold",
+                        color: DefaultPalette.red,
+                      }}
+                    >
+                      Incorrect username or password
+                    </div>
+                  ) : null}
+                </Stack.Item>
+>>>>>>> ce2bb92a61aa940273f1c9049ab3c31cd5eb1010
                 <Stack.Item>
                   <InputField name="email" type="email" label="Email" placeholder="Email" autoFocus />
                   <InputField type="password" name="password" label="Password" placeholder="*********" />
@@ -107,6 +144,10 @@ const Login: React.FC<loginProps> = () => {
       </Formik>
     </Wrapper>
   );
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> ce2bb92a61aa940273f1c9049ab3c31cd5eb1010
 
 export default withRouter(Login);

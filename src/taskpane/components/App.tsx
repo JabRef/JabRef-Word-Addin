@@ -1,20 +1,17 @@
-import * as React from "react";
+import React from "react";
 import Progress from "./Progress";
-// images references in the manifest
-import "../../../assets/icon-16.png";
-import "../../../assets/icon-32.png";
-import { Route, Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Login from "../pages/login";
 import Layout from "./Layout";
+import ProtectedRoutes from "../../utils/ProtectedRoutes";
 import Dashboard from "../pages/dashboard";
-import { ProtectedRoutes } from "../../Utils/ProtectedRoutes";
 
 export interface AppProps {
   title: string;
   isOfficeInitialized: boolean;
 }
 
-const App: React.FC<AppProps> = (props) => {
+function App(props: AppProps) {
   const { isOfficeInitialized } = props;
 
   if (!isOfficeInitialized) {
@@ -23,12 +20,18 @@ const App: React.FC<AppProps> = (props) => {
     return (
       <div>
         <Switch>
-          <Route path="/login" component={Login} />
-          <ProtectedRoutes path="/" component={Layout} />
-          <ProtectedRoutes path="/home" component={Dashboard} />
+          <Route path="/login">
+            <Login />
+          </Route>
+          <ProtectedRoutes path="/">
+            <Layout />
+          </ProtectedRoutes>
+          <ProtectedRoutes path="/home">
+            <Dashboard />
+          </ProtectedRoutes>
         </Switch>
       </div>
     );
   }
-};
+}
 export default App;

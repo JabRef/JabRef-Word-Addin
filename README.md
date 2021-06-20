@@ -1,7 +1,12 @@
 # JabRef-Word-Addin
 ## Getting started
 - Install [Node.js](https://nodejs.org/)
-- Run `yarn install`.
+- Create .env file in the root directory containing the `HOST_API_URL` key
+
+  e.g `API_HOST = "https://jabref-online.herokuapp.com"`
+- Run `yarn install`
+
+
 
 ## Follow the following steps to start the local web server and install add-in.
 ### To test add-in in Word.
@@ -10,23 +15,20 @@
 
 ### To test add-in in Word on a browser.
 - Open Office on the web. Using the Create option, make a document in Word. In this new document, select Share in the ribbon, select Copy Link, and copy the URL.
-- In the root directory of office project files, open the package.json file. Within the config section of this file, create a "document" property. Paste the URL you copied as the value for the "document" property. For example, yours will look something like this:
-`"config": { 
-    "document": "paste here",
-    ...
-    }
-    `
+- In the root directory of office project files, open the .env file. Add a "DOCUMENT_URL" key. Paste the URL you copied as the value for the "DOCUMENT_URL" key. For example,
+`DOCUMENT_URL=<URL>`
 - In the command line starting at the root directory, run `yarn start:web`.
 - You will see a second dialog box, asking if you wish to register an Office Add-in manifest from your computer. You should select Yes.
-- Choose the Home tab, and then choose the Show Taskpane button in the ribbon to open the add-in task pane.
-<img width="1440" alt="JabRef-addin" src="https://user-images.githubusercontent.com/62339705/120091253-09f70100-c127-11eb-8643-1ac04facb396.png">
+- Choose the Reference tab, and then click on the JabRef icon to open the add-in task pane.
+<img width="1332" alt="Screenshot 2021-06-19 at 4 08 31 PM" src="https://user-images.githubusercontent.com/62339705/122639736-334cf080-d119-11eb-9232-4b6e61d0147a.png">
+
 
 
 ### To sideload Add-in in Office on the web manually
 - Open Office on the web. Open a document in Word. On the Insert tab on the ribbon in the Add-ins section, choose Office Add-ins.
 - On the Office Add-ins dialog, select the MY ADD-INS tab, choose Manage My Add-ins, and then Upload My Add-in.
 - Browse to the add-in manifest file, and then select Upload.
-- Choose the Home tab, and then choose the Show Taskpane button in the ribbon to open the add-in task pane.
+- Choose the Reference tab, and then click on the JabRef icon to open the add-in task pane.
 
 
 ## Commands

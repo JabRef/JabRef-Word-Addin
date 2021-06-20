@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
 
 interface WrapperProps {
   children: React.ReactNode;
 }
 
-const Wrapper: React.FC<WrapperProps> = ({ children }: WrapperProps) => {
+function Wrapper({ children }: WrapperProps) {
   return (
     <div
       style={{
@@ -16,6 +16,6 @@ const Wrapper: React.FC<WrapperProps> = ({ children }: WrapperProps) => {
       {children}
     </div>
   );
-};
+}
 
 export default Wrapper;

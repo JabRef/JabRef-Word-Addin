@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+var dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
@@ -44,6 +45,9 @@ module.exports = async (env, options) => {
     },
     plugins: [
       new CleanWebpackPlugin(),
+      new webpack.DefinePlugin({
+        "process.env": JSON.stringify(dotenv.parsed),
+      }),
       new CopyWebpackPlugin({
         patterns: [
           {
