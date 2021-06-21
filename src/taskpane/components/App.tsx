@@ -4,7 +4,6 @@ import { Switch, Route } from "react-router-dom";
 import Login from "../pages/login";
 import Layout from "./Layout";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
-import Dashboard from "../pages/dashboard";
 
 export interface AppProps {
   title: string;
@@ -25,9 +24,6 @@ function App(props: AppProps) {
           </Route>
           <ProtectedRoutes path="/">
             <Layout />
-          </ProtectedRoutes>
-          <ProtectedRoutes path="/home">
-            <Dashboard />
           </ProtectedRoutes>
         </Switch>
       </div>

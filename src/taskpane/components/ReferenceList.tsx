@@ -1,24 +1,20 @@
-import * as React from "react";
+import React from "react";
 import { FocusZone, FocusZoneDirection } from "@fluentui/react/lib/FocusZone";
-
 import { List } from "@fluentui/react/lib/List";
 import { ITheme, mergeStyleSets, getTheme, getFocusStyle } from "@fluentui/react/lib/Styling";
-import { Checkbox, ISearchBoxStyles, SearchBox } from "@fluentui/react";
-import data from "../../Utils/data";
+import { Checkbox } from "@fluentui/react";
+import data from "../../utils/data";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-const searchBoxStyle: ISearchBoxStyles = {
-  root: {
-    margin: 8,
-  },
-};
 
-interface ReferenceListProps {}
+interface ReferenceListProps {
+  list: List;
+}
 const classNames = mergeStyleSets({
   container: {
     overflow: "auto",
-    maxHeight: 450,
+    height: "80vh",
     marginLeft: 8,
     marginRight: 8,
   },
@@ -89,18 +85,11 @@ const onRenderCell = (item: typeof data): JSX.Element => {
   );
 };
 
-export const ReferenceList: React.FC<ReferenceListProps> = () => {
-  const originalItems = data;
-  const [items, setItems] = React.useState(originalItems);
-  const onFilterChanged = (_: any, text: string): void => {
-    setItems(originalItems.filter((item) => item.title.toLowerCase().indexOf(text.toLowerCase()) >= 0));
-  };
-
+export const ReferenceList: React.FC<ReferenceListProps> = (props: ReferenceListProps) => {
   return (
     <FocusZone direction={FocusZoneDirection.vertical}>
-      <SearchBox styles={searchBoxStyle} placeholder="Search" underlined={true} onChange={onFilterChanged} />
       <div className={classNames.container} data-is-scrollable>
-        <List items={items} onRenderCell={onRenderCell} />
+        <List items={props.list} onRenderCell={onRenderCell} />
       </div>
     </FocusZone>
   );
