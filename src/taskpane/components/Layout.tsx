@@ -13,6 +13,7 @@ import {
   IStackStyles,
   ActionButton,
   IIconProps,
+  IButtonStyles,
 } from "@fluentui/react";
 import React from "react";
 import { useLogoutMutation } from "../../generated/graphql";
@@ -27,6 +28,12 @@ const labelStyles: Partial<IStyleSet<ILabelStyles>> = {
 const stackStyles: IStackStyles = {
   root: {
     overflow: "hidden",
+  },
+};
+
+const SignOutButtonStyle: IButtonStyles = {
+  root: {
+    color: DefaultPalette.white,
   },
 };
 
@@ -95,7 +102,7 @@ function Layout() {
               </Stack>
               <Stack style={{ padding: 3 }}>
                 <ActionButton
-                  style={{ color: DefaultPalette.white }}
+                  styles={SignOutButtonStyle}
                   iconProps={Signout}
                   allowDisabledFocus
                   onClick={() => {
