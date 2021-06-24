@@ -11,8 +11,12 @@ import {
   IImageProps,
   ImageFit,
   IStackStyles,
+  ActionButton,
+  IIconProps,
 } from "@fluentui/react";
 import React from "react";
+import { useLogoutMutation } from "../../generated/graphql";
+import client from "../../utils/apolloClient";
 import Dashboard from "../pages/dashboard";
 import Wrapper from "./Wrapper";
 
@@ -25,6 +29,14 @@ const stackStyles: IStackStyles = {
     overflow: "hidden",
   },
 };
+
+const footerStackStyle: IStackStyles = {
+  root: {
+    background: DefaultPalette.neutralDark,
+  },
+};
+
+const Signout: IIconProps = { iconName: "SignOut" };
 
 const imageProps: IImageProps = {
   imageFit: ImageFit.contain,
@@ -40,6 +52,7 @@ const pivotStyle: Partial<IPivotStyles> = {
 };
 
 function Layout() {
+  const [logoutMutation] = useLogoutMutation();
   return (
     <Wrapper>
       <Stack verticalFill={true}>
@@ -61,28 +74,38 @@ function Layout() {
                 <div>Under Construction</div>
               </Label>
             </PivotItem>
-            <PivotItem headerText="Log out">
-              <Label styles={labelStyles}>
-                <div>Under Construction</div>
-              </Label>
-            </PivotItem>
           </Pivot>
         </Stack>
         <Stack grow disableShrink={true} verticalAlign="end">
           <footer>
-            <div style={{ background: DefaultPalette.neutralDark, padding: 10, display: "flex", paddingLeft: 15 }}>
-              <img {...imageProps} alt="jabref logo" width={24} />
-              <div
-                style={{
-                  color: DefaultPalette.neutralLight,
-                  fontSize: FontSizes.size18,
-                  fontWeight: "bolder",
-                  paddingLeft: 12,
-                }}
-              >
-                JabRef
-              </div>
-            </div>
+            <Stack styles={footerStackStyle} horizontal horizontalAlign="space-between">
+              <Stack horizontal style={{ padding: 6, paddingLeft: 15 }}>
+                <img {...imageProps} alt="jabref logo" width={20} />
+                <div
+                  style={{
+                    color: DefaultPalette.neutralLight,
+                    fontSize: FontSizes.size20,
+                    fontWeight: "normal",
+                    marginLeft: 10,
+                    marginTop: 2,
+                  }}
+                >
+                  JabRef
+                </div>
+              </Stack>
+              <Stack style={{ padding: 3 }}>
+                <ActionButton
+                  style={{ color: DefaultPalette.white }}
+                  iconProps={Signout}
+                  allowDisabledFocus
+                  onClick={() => {
+                    logoutMutation().then(() => client.resetStore());
+                  }}
+                >
+                  Signout
+                </ActionButton>
+              </Stack>
+            </Stack>
           </footer>
         </Stack>
       </Stack>
