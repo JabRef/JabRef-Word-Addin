@@ -6,10 +6,15 @@ import SearchField from "../components/SearchField";
 
 function containsSearchTerm(keyword: string) {
   return function (item) {
-    return (
-      item.title.toLowerCase().indexOf(keyword.toLowerCase()) >= 0 ||
-      item.author.toLowerCase().indexOf(keyword.toLowerCase()) >= 0
-    );
+    try {
+      return (
+        item.title.toLowerCase().indexOf(keyword.toLowerCase()) >= 0 ||
+        item.author.toLowerCase().indexOf(keyword.toLowerCase()) >= 0 ||
+        item.year.indexOf(keyword) >= 0
+      );
+    } catch (e) {
+      return false;
+    }
   };
 }
 
