@@ -1,28 +1,48 @@
-import { IStackStyles, DefaultPalette, Stack } from "@fluentui/react";
-import React from "react";
+import React, { useState } from "react";
 import data from "../../utils/data";
-import { ReferenceList } from "../components/ReferenceList";
+import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 // /* global Word */
 
-const stackStyles: IStackStyles = {
-  root: {
-    background: DefaultPalette.white,
-    overflow: "auto",
-  },
-};
+function containsSearchTerm(keyword: string) {
+  return function (item) {
+    return (
+      item.title.toLowerCase().indexOf(keyword.toLowerCase()) >= 0 ||
+      item.author.toLowerCase().indexOf(keyword.toLowerCase()) >= 0
+    );
+  };
+}
 
 function Dashboard() {
   const originalItems = data;
-  const [items, setItems] = React.useState(originalItems);
-  const onFilterChange = (_: any, text: string): void => {
-    setItems(originalItems.filter((item) => item.title.toLowerCase().indexOf(text.toLowerCase()) >= 0));
+  const [items, setItems] = useState(originalItems);
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const onFilterChange = (_: any, keyword: string): void => {
+    setItems(originalItems.filter(containsSearchTerm(keyword)));
   };
+
+  const onCheckBoxChange = async (ev: React.FormEvent<HTMLElement | HTMLInputElement>, isChecked: boolean) => {
+    const array = items.filter((item) => item.title === ev.currentTarget.title);
+    if (isChecked) {
+      setCheckedItems((prev) => [...prev, ...array]);
+    } else {
+      setCheckedItems((prev) => {
+        const index = prev.indexOf(array[0]);
+        if (index > -1) {
+          prev.splice(index, 1);
+        }
+        return [...prev];
+      });
+    }
+  };
+
   return (
-    <Stack verticalFill={true} grow disableShrink={false} styles={stackStyles}>
+    <>
       <SearchField onFlterChange={onFilterChange} />
-      <ReferenceList list={items} />
-    </Stack>
+      <ReferenceList list={items} onCheckBoxChange={onCheckBoxChange} />
+    </>
   );
 }
+
 export default Dashboard;

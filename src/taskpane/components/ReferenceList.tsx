@@ -1,29 +1,35 @@
+import {
+  ITheme,
+  getTheme,
+  List,
+  mergeStyleSets,
+  getFocusStyle,
+  FocusZone,
+  FocusZoneDirection,
+  Checkbox,
+} from "@fluentui/react";
 import React from "react";
-import { FocusZone, FocusZoneDirection } from "@fluentui/react/lib/FocusZone";
-import { List } from "@fluentui/react/lib/List";
-import { ITheme, mergeStyleSets, getTheme, getFocusStyle } from "@fluentui/react/lib/Styling";
-import { Checkbox } from "@fluentui/react";
-import data from "../../utils/data";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
 
 interface ReferenceListProps {
-  list: List;
+  list: Array<{}>;
+  onCheckBoxChange: any;
 }
 const classNames = mergeStyleSets({
   container: {
     overflow: "auto",
     height: "80vh",
-    marginLeft: 8,
-    marginRight: 8,
+    padding: "0.25rem 0.25rem 0px",
+    boxSizing: "border-box",
   },
   itemCell: [
     getFocusStyle(theme, { inset: -1 }),
     {
       backgroundColor: theme.palette.neutralLighterAlt,
       minHeight: 54,
-      padding: 8,
+      padding: "0.25rem",
       margin: 2,
       boxSizing: "border-box",
       borderBottom: `1px solid ${semanticColors.bodyDivider}`,
@@ -43,6 +49,9 @@ const classNames = mergeStyleSets({
     fonts.mediumPlus,
     {
       whiteSpace: "nowrap",
+      position: "relative",
+      maxHeight: "5.4em",
+      lineHeight: "1.8em",
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
@@ -60,32 +69,34 @@ const classNames = mergeStyleSets({
     fontSize: fonts.smallPlus,
     color: palette.neutralTertiary,
   },
-  chevron: {
-    alignSelf: "center",
-    marginLeft: 10,
-    color: palette.neutralTertiary,
-    fontSize: fonts.large.fontSize,
-    flexShrink: 0,
+  checkbox: {
+    marginTop: 6,
+    marginLeft: 4,
   },
 });
 
-const onRenderCell = (item: typeof data): JSX.Element => {
-  return (
-    <div className={classNames.itemCell} data-is-focusable={true}>
-      <Checkbox defaultChecked={false} onChange={() => console.log("hello")} />
-      <div className={classNames.itemContent}>
-        <div className={classNames.itemType}>{item.type}</div>
-        <div className={classNames.itemTitle}>{item.title}</div>
-        <div className={classNames.itemAuthor}>{item.author}</div>
-        <div className={classNames.itemYear}>
-          {item.journal} {item.year}
+function ReferenceList(props: ReferenceListProps) {
+  const onRenderCell = (item): JSX.Element => {
+    return (
+      <div className={classNames.itemCell} data-is-focusable={true}>
+        <Checkbox
+          className={classNames.checkbox}
+          title={item.title}
+          defaultChecked={false}
+          onChange={props.onCheckBoxChange}
+        />
+        <div className={classNames.itemContent}>
+          <div className={classNames.itemType}>{item.type}</div>
+          <div className={classNames.itemTitle}>{item.title}</div>
+          <div className={classNames.itemAuthor}>{item.author}</div>
+          <div className={classNames.itemYear}>
+            {item.journal} {item.year}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export const ReferenceList: React.FC<ReferenceListProps> = (props: ReferenceListProps) => {
   return (
     <FocusZone direction={FocusZoneDirection.vertical}>
       <div className={classNames.container} data-is-scrollable>
@@ -93,4 +104,6 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props: ReferenceList
       </div>
     </FocusZone>
   );
-};
+}
+
+export default ReferenceList;
