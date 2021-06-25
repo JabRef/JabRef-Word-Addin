@@ -2,7 +2,7 @@ import { ISearchBoxStyles, SearchBox } from "@fluentui/react";
 import React from "react";
 
 interface SearchFieldProps {
-  onFlterChange: any;
+  onFilterChange: any;
 }
 
 const searchBoxStyle: ISearchBoxStyles = {
@@ -12,6 +12,6 @@ const searchBoxStyle: ISearchBoxStyles = {
 };
 
 function SearchField(props: SearchFieldProps) {
-  return <SearchBox styles={searchBoxStyle} placeholder="Search" underlined={true} onChange={props.onFlterChange} />;
+  return <SearchBox styles={searchBoxStyle} placeholder="Search" underlined={true} onChange={props.onFilterChange} />;
 }
 export default SearchField;

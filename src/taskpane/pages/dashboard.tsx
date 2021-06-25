@@ -44,7 +44,7 @@ function Dashboard() {
 
   return (
     <>
-      <SearchField onFlterChange={onFilterChange} />
+      <SearchField onFilterChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={onCheckBoxChange} />
     </>
   );
