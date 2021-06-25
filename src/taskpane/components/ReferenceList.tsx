@@ -82,7 +82,7 @@ function ReferenceList(props: ReferenceListProps) {
         <Checkbox
           className={classNames.checkbox}
           title={item.title}
-          defaultChecked={false}
+          checked={!!item.isChecked}
           onChange={props.onCheckBoxChange}
         />
         <div className={classNames.itemContent}>
