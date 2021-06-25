@@ -4,27 +4,19 @@ import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 // /* global Word */
 
-function containsSearchTerm(keyword: string) {
-  return function (item) {
-    try {
-      return (
-        item.title.toLowerCase().indexOf(keyword.toLowerCase()) >= 0 ||
-        item.author.toLowerCase().indexOf(keyword.toLowerCase()) >= 0 ||
-        item.year.indexOf(keyword) >= 0
-      );
-    } catch (e) {
-      return false;
-    }
-  };
-}
-
 function Dashboard() {
   const originalItems = data;
   const [items, setItems] = useState(originalItems);
   const [checkedItems, setCheckedItems] = useState([]);
 
   const onFilterChange = (_: any, keyword: string): void => {
-    setItems(originalItems.filter(containsSearchTerm(keyword)));
+    setItems(
+      originalItems.filter((item) =>
+        [item.title, item.author, item.year].some((str) =>
+          str ? str.toLowerCase().includes(keyword.toLowerCase().trim()) : false
+        )
+      )
+    );
   };
 
   const onCheckBoxChange = async (ev: React.FormEvent<HTMLElement | HTMLInputElement>, isChecked: boolean) => {
