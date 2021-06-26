@@ -12,9 +12,26 @@ import React from "react";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
+interface bib {
+  isSelected: boolean;
+  id: string;
+  author: string;
+  title: string;
+  journal?: string;
+  volume?: string;
+  number?: string;
+  pages?: string;
+  year?: string;
+  DOI?: string;
+  type?: string;
+  abstract?: string;
+  keywords?: string;
+  citationKey?: string;
+  other?: unknown;
+}
 
 interface ReferenceListProps {
-  list: {}[];
+  list: Array<bib>;
   // eslint-disable-next-line no-unused-vars
   onCheckBoxChange: (ev?: React.FormEvent<HTMLInputElement | HTMLElement>, checked?: boolean) => void;
 }
@@ -77,7 +94,7 @@ const classNames = mergeStyleSets({
 });
 
 function ReferenceList(props: ReferenceListProps) {
-  const onRenderCell = (item): JSX.Element => {
+  const onRenderCell = (item: bib): JSX.Element => {
     return (
       <div className={classNames.itemCell} data-is-focusable={true}>
         <Checkbox
