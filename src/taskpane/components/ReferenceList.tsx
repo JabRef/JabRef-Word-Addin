@@ -16,7 +16,7 @@ const { palette, semanticColors, fonts } = theme;
 interface ReferenceListProps {
   list: {}[];
   // eslint-disable-next-line no-unused-vars
-  onCheckBoxChange: any;
+  onCheckBoxChange: (ev?: React.FormEvent<HTMLInputElement | HTMLElement>, checked?: boolean) => void;
 }
 const classNames = mergeStyleSets({
   container: {
