@@ -2,7 +2,8 @@ import { ISearchBoxStyles, SearchBox } from "@fluentui/react";
 import React from "react";
 
 interface SearchFieldProps {
-  onFilterChange: any;
+  // eslint-disable-next-line no-unused-vars
+  onFilterChange: (event?: React.ChangeEvent<HTMLInputElement>, newValue?: string) => void;
 }
 
 const searchBoxStyle: ISearchBoxStyles = {

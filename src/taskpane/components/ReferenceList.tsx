@@ -14,8 +14,9 @@ const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
 
 interface ReferenceListProps {
-  list: Array<{}>;
-  onCheckBoxChange: any;
+  list: {}[];
+  // eslint-disable-next-line no-unused-vars
+  onCheckBoxChange: (ev?: React.FormEvent<HTMLInputElement | HTMLElement>, checked?: boolean) => void;
 }
 const classNames = mergeStyleSets({
   container: {
@@ -82,7 +83,7 @@ function ReferenceList(props: ReferenceListProps) {
         <Checkbox
           className={classNames.checkbox}
           title={item.title}
-          checked={!!item.isChecked}
+          checked={item.isSelected}
           onChange={props.onCheckBoxChange}
         />
         <div className={classNames.itemContent}>

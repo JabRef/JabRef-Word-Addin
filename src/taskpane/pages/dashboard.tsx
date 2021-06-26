@@ -21,9 +21,9 @@ function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
 }
 
 function Dashboard() {
-  const originalItems = data.map((item) => ({ ...item, isChecked: false }));
+  const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
-  const checked = items.filter((item) => item.isChecked);
+  const checked = items.filter((item) => item.isSelected);
 
   const onFilterChange = (_: any, keyword: string): void => {
     setItems(originalItems.filter(containsSearchTerm(keyword)));
