@@ -1,46 +1,60 @@
-import {
-  IStackStyles,
-  DefaultPalette,
-  ISearchBoxStyles,
-  Stack,
-  SearchBox,
-  PrimaryButton,
-  ButtonType,
-} from "@fluentui/react";
-import React from "react";
-import Header from "../components/Header";
-/* global Word */
+import { Button } from "@fluentui/react";
+import React, { useState } from "react";
+import data from "../../utils/data";
+import ReferenceList from "../components/ReferenceList";
+import SearchField from "../components/SearchField";
+// /* global Word */
 
-const stackStyles: IStackStyles = {
-  root: {
-    background: DefaultPalette.white,
-  },
-};
-const searchBoxStyles: Partial<ISearchBoxStyles> = { root: {} };
-
+function containsSearchTerm(keyword: string) {
+  return function (item) {
+    return [item.title, item.author, item.year].some((str) =>
+      str ? str.toLowerCase().includes(keyword.toLowerCase().trim()) : false
+    );
+  };
+}
+function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
+  return function (item) {
+    if (item.title === ev.currentTarget.title) {
+      return { ...item, isChecked: !item.isChecked };
+    }
+    return item;
+  };
+}
+function unCheckAllCheckbox(item) {
+  if (item.isChecked) {
+    return { ...item, isChecked: !item.isChecked };
+  }
+  return item;
+}
 function Dashboard() {
-  const click = async () => {
-    return Word.run(async (context) => {
-      // insert a paragraph at the end of the document.
-      const paragraph = context.document.body.insertParagraph("Hello World!", Word.InsertLocation.end);
-      paragraph.font.color = "black";
-      paragraph.font.size = 30;
-      await context.sync();
+  const originalItems = data.map((item) => ({ ...item, isChecked: false }));
+  const [items, setItems] = useState(originalItems);
+  const checked = items.filter(({ isChecked }) => isChecked).map(({ id }) => id);
+  console.log(checked);
+
+  const onFilterChange = (_: any, keyword: string): void => {
+    setItems(originalItems.filter(containsSearchTerm(keyword)));
+  };
+
+  const handleToggleChange = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
+    setItems((currentItems) => {
+      return currentItems.map(onCheckboxChange(ev));
     });
   };
+
+  const unCheckAllEntries = () => {
+    setItems((currentItems) => {
+      return currentItems.map(unCheckAllCheckbox);
+    });
+  };
+
   return (
-    <Stack styles={stackStyles}>
-      <SearchBox styles={searchBoxStyles} placeholder="Search" />
-      <Header logo="assets/jabref.svg" message="JabRef" title="JabRef" />
-      <PrimaryButton
-        className="ms-welcome__action"
-        buttonType={ButtonType.hero}
-        iconProps={{ iconName: "ChevronRight" }}
-        onClick={click}
-      >
-        Cite
-      </PrimaryButton>
-    </Stack>
+    <>
+      <Button onClick={unCheckAllEntries}></Button>
+      <SearchField onFilterChange={onFilterChange} />
+      <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
+    </>
   );
 }
+
 export default Dashboard;
