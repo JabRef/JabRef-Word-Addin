@@ -17,7 +17,7 @@ function App(props: AppProps) {
     return <Progress title="JabRef" message="Loading JabRef..." logo="../../../assets/jabref.svg" />;
   } else {
     return (
-      <div>
+      <>
         <Switch>
           <Route path="/login">
             <Login />
@@ -26,7 +26,7 @@ function App(props: AppProps) {
             <Layout />
           </ProtectedRoutes>
         </Switch>
-      </div>
+      </>
     );
   }
 }

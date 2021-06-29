@@ -7,22 +7,41 @@ import {
   FocusZone,
   FocusZoneDirection,
   Checkbox,
+
 } from "@fluentui/react";
 import React from "react";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
+interface bib {
+  isSelected: boolean;
+  id: string;
+  author: string;
+  title: string;
+  journal?: string;
+  volume?: string;
+  number?: string;
+  pages?: string;
+  year?: string;
+  DOI?: string;
+  type?: string;
+  abstract?: string;
+  keywords?: string;
+  citationKey?: string;
+  other?: unknown;
+}
 
 interface ReferenceListProps {
-  list: Array<{}>;
-  onCheckBoxChange: any;
+  list: Array<bib>;
+  // eslint-disable-next-line no-unused-vars
+  onCheckBoxChange: (ev?: React.FormEvent<HTMLInputElement | HTMLElement>, checked?: boolean) => void;
 }
+
 const classNames = mergeStyleSets({
   container: {
     overflow: "auto",
-    height: "80vh",
     padding: "0.25rem 0.25rem 0px",
-    boxSizing: "border-box",
+    webkitBoxFlex: "1 1 auto",
   },
   itemCell: [
     getFocusStyle(theme, { inset: -1 }),
@@ -76,13 +95,13 @@ const classNames = mergeStyleSets({
 });
 
 function ReferenceList(props: ReferenceListProps) {
-  const onRenderCell = (item): JSX.Element => {
+  const onRenderCell = (item: bib): JSX.Element => {
     return (
       <div className={classNames.itemCell} data-is-focusable={true}>
         <Checkbox
           className={classNames.checkbox}
           title={item.title}
-          checked={!!item.isChecked}
+          checked={item.isSelected}
           onChange={props.onCheckBoxChange}
         />
         <div className={classNames.itemContent}>
@@ -98,10 +117,8 @@ function ReferenceList(props: ReferenceListProps) {
   };
 
   return (
-    <FocusZone direction={FocusZoneDirection.vertical}>
-      <div className={classNames.container} data-is-scrollable>
-        <List items={props.list} onRenderCell={onRenderCell} />
-      </div>
+    <FocusZone direction={FocusZoneDirection.vertical} className={classNames.container}>
+      <List items={props.list} onRenderCell={onRenderCell} />
     </FocusZone>
   );
 }
