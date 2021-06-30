@@ -1,15 +1,42 @@
 {
-  "globals": {
-    "JSX": true
-  },
   "env": {
     "browser": true,
     "node": true
   },
   "plugins": [
-    "office-addins"
+    "office-addins",
+    "@typescript-eslint"
   ],
   "extends": [
-    "plugin:office-addins/react"
-  ]
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:office-addins/react",
+    "airbnb",
+    "airbnb/hooks",
+    "prettier",
+    "plugin:prettier/recommended"
+    ],
+  "parser": "@typescript-eslint/parser",
+  "settings" : {
+        "import/extensions": "off",
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts",".tsx"]
+         },
+         "import/resolver": {
+             "node": {
+                 "extensions": [".js",".jsx",".ts",".tsx"]
+             }
+         }
+    },
+    "rules": {
+      "react/jsx-filename-extension": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "error",
+      "no-useless-constructor": "off",
+      "@typescript-eslint/no-useless-constructor": "error",
+      "react/jsx-props-no-spreading": "off",
+      "no-use-before-define": "off",
+      "import/extensions": "off"
+  }
 }
