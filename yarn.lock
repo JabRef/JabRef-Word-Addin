@@ -915,22 +915,6 @@
     auto-bind "~4.0.0"
     tslib "~2.3.0"
 
-"@graphql-codegen/visitor-plugin-common@1.21.0":
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-1.21.0.tgz#1cb59a8ce9a9d6486f859a254645e162c6736cfb"
-  integrity sha512-gw6mUCOpKwJ4aR+wnUXureQi4dV6jezEiXvX0CEZdpqBIGAJ4G8h7CKyGW66lBzvaoLCB7siOF86UJO3dw5ctg==
-  dependencies:
-    "@graphql-codegen/plugin-helpers" "^1.18.7"
-    "@graphql-tools/optimize" "^1.0.1"
-    "@graphql-tools/relay-operation-optimizer" "^6.3.0"
-    array.prototype.flatmap "^1.2.4"
-    auto-bind "~4.0.0"
-    change-case-all "1.0.14"
-    dependency-graph "^0.11.0"
-    graphql-tag "^2.11.0"
-    parse-filepath "^1.0.2"
-    tslib "~2.2.0"
-
 "@graphql-codegen/visitor-plugin-common@1.21.1":
   version "1.21.1"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-1.21.1.tgz#d080265e42c2a8867520b29baf283b1e1012bbb8"
@@ -7635,10 +7619,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^1.0.17, office-addin-cli@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/office-addin-cli/-/office-addin-cli-1.1.3.tgz"
-  integrity sha512-Nq80UQh+7KakBhp71bZLrmhsw/KfZjxfooLohNMKGm7AqR5h31WaFAYesOebelVv6U0hN+ouY4crzNvcAFcnjQ==
+office-addin-cli@^1.1.3, office-addin-cli@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.2.0.tgz#253fe2655e01b87ed8c52019f252ab0da3e06fb2"
+  integrity sha512-xXrrA7VFPhCmIY9N4ra3ln4Kj++Vum7Xt6m19/yXtxJIR1PADY23TLrNOIoe8rc1Vqg9mo0xsbh/Y4aSXlttSQ==
   dependencies:
     commander "^6.2.1"
     node-fetch "^2.6.1"
