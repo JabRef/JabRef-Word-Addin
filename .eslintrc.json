@@ -5,7 +5,8 @@
   },
   "plugins": [
     "office-addins",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "unused-imports"
   ],
   "extends": [
     "eslint:recommended",
@@ -37,6 +38,11 @@
       "@typescript-eslint/no-useless-constructor": "error",
       "react/jsx-props-no-spreading": "off",
       "no-use-before-define": "off",
-      "import/extensions": "off"
+      "import/extensions": "off",
+		  "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+      ]
   }
 }
