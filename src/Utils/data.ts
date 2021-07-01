@@ -102,5 +102,21 @@ const data = [
     },
   },
 ];
+export type BibliographyEntry = {
+  id: string;
+  author: string;
+  title: string;
+  journal?: string;
+  volume?: string;
+  number?: string;
+  pages?: string;
+  year?: string;
+  DOI?: string;
+  type?: string;
+  abstract?: string;
+  keywords?: string;
+  citationKey?: string;
+  other?: unknown;
+};
 
 export default data;

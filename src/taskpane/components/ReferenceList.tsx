@@ -9,25 +9,12 @@ import {
   Checkbox,
 } from "@fluentui/react";
 import React from "react";
+import { BibliographyEntry } from "../../utils/data";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-interface bib {
+interface bib extends BibliographyEntry {
   isSelected: boolean;
-  id: string;
-  author: string;
-  title: string;
-  journal?: string;
-  volume?: string;
-  number?: string;
-  pages?: string;
-  year?: string;
-  DOI?: string;
-  type?: string;
-  abstract?: string;
-  keywords?: string;
-  citationKey?: string;
-  other?: unknown;
 }
 
 interface ReferenceListProps {
