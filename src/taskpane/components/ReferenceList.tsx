@@ -87,7 +87,7 @@ const classNames = mergeStyleSets({
 
 const displayAuthor = (authorList) => {
   let authors = null;
-  if (authorList != null) {
+  if (authorList) {
     authors = authorList
       .map((author: { family: string; given: string }) => `${author.given} ${author.family}`)
       .join(", ");
