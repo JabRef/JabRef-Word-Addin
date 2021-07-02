@@ -4,6 +4,14 @@ import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 // /* global Word */
 
+const dashboadStyle = {
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  overflow: "hidden",
+  flexDirection: "column" as "column",
+};
+
 function containsSearchTerm(keyword: string) {
   return function (item) {
     return [item.title, item.author, item.year].some((str) =>
@@ -23,7 +31,7 @@ function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
 function Dashboard() {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
-  const checked = items.filter((item) => item.isSelected);
+  // const checked = items.filter((item) => item.isSelected);
 
   const onFilterChange = (_: any, keyword: string): void => {
     setItems(originalItems.filter(containsSearchTerm(keyword)));
@@ -36,10 +44,10 @@ function Dashboard() {
   };
 
   return (
-    <>
+    <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
-    </>
+    </div>
   );
 }
 

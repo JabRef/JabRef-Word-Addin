@@ -9,10 +9,22 @@ interface SearchFieldProps {
 const searchBoxStyle: ISearchBoxStyles = {
   root: {
     margin: 8,
+    marginTop: 10,
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: "auto",
   },
 };
 
 function SearchField(props: SearchFieldProps) {
-  return <SearchBox styles={searchBoxStyle} placeholder="Search" underlined={true} onChange={props.onFilterChange} />;
+  return (
+    <SearchBox
+      styles={searchBoxStyle}
+      underlined={true}
+      placeholder="Search"
+      autoComplete="off"
+      onChange={props.onFilterChange}
+    />
+  );
 }
 export default SearchField;

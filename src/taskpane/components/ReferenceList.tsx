@@ -25,9 +25,8 @@ interface ReferenceListProps {
 const classNames = mergeStyleSets({
   container: {
     overflow: "auto",
-    height: "80vh",
     padding: "0.25rem 0.25rem 0px",
-    boxSizing: "border-box",
+    webkitBoxFlex: "1 1 auto",
   },
   itemCell: [
     getFocusStyle(theme, { inset: -1 }),
@@ -103,10 +102,8 @@ function ReferenceList(props: ReferenceListProps) {
   };
 
   return (
-    <FocusZone direction={FocusZoneDirection.vertical}>
-      <div className={classNames.container} data-is-scrollable>
-        <List items={props.list} onRenderCell={onRenderCell} />
-      </div>
+    <FocusZone direction={FocusZoneDirection.vertical} className={classNames.container}>
+      <List items={props.list} onRenderCell={onRenderCell} />
     </FocusZone>
   );
 }
