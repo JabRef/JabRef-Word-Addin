@@ -62,12 +62,18 @@ const classNames = mergeStyleSets({
   ],
   itemAuthor: {
     fontSize: fonts.small.fontSize,
-    color: palette.neutralTertiary,
+    color: palette.neutralDark,
     marginBottom: 10,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
   itemYear: {
     fontSize: fonts.smallPlus,
     color: palette.neutralTertiary,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
   itemType: {
     fontSize: fonts.smallPlus,
@@ -78,6 +84,16 @@ const classNames = mergeStyleSets({
     marginLeft: 4,
   },
 });
+
+const displayAuthor = (authorList) => {
+  let authors = null;
+  if (authorList != null) {
+    authors = authorList
+      .map((author: { family: string; given: string }) => `${author.given} ${author.family}`)
+      .join(", ");
+  }
+  return <div className={classNames.itemAuthor}>{authors}</div>;
+};
 
 function ReferenceList(props: ReferenceListProps) {
   const onRenderCell = (item: bib): JSX.Element => {
@@ -92,9 +108,9 @@ function ReferenceList(props: ReferenceListProps) {
         <div className={classNames.itemContent}>
           <div className={classNames.itemType}>{item.type}</div>
           <div className={classNames.itemTitle}>{item.title}</div>
-          <div className={classNames.itemAuthor}>{item.author}</div>
+          {displayAuthor(item.author)}
           <div className={classNames.itemYear}>
-            {item.journal} {item.year}
+            {item["container-title"]} {item.issued["date-parts"][0][0]}
           </div>
         </div>
       </div>

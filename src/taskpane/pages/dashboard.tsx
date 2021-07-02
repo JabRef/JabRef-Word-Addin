@@ -14,12 +14,19 @@ const dashboadStyle = {
 
 function containsSearchTerm(keyword: string) {
   return function (item) {
-    return [item.title, item.author, item.year].some((str) =>
+    let authors = null;
+    if (item.author) {
+      authors = item.author
+        .map((author: { family: string; given: string }) => `${author.given} ${author.family}`).toString();
+      
+    }
+    return [item.title, authors, ...item["issued"]].some((str) =>
       str ? str.toLowerCase().includes(keyword.toLowerCase().trim()) : false
     );
   };
 }
 function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
+  console.log(typeof data);
   return function (item) {
     if (item.title === ev.currentTarget.title) {
       return { ...item, isSelected: !item.isSelected };
