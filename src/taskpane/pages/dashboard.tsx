@@ -26,7 +26,6 @@ function containsSearchTerm(keyword: string) {
   };
 }
 function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
-  console.log(typeof data);
   return function (item) {
     if (item.title === ev.currentTarget.title) {
       return { ...item, isSelected: !item.isSelected };
