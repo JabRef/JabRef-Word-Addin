@@ -31,9 +31,11 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
+        
+      - name: Validate manifest
+        run: yarn validate
 
       - name: Run linter
         run: yarn lint
 
-      - name: Validate manifest
-        run: yarn validate
+
