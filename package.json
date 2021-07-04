@@ -65,7 +65,7 @@
     "crlf": "^1.1.1",
     "css-loader": "^5.2.4",
     "eslint": "^7.29.0",
-    "eslint-plugin-office-addins": "^0.2.0",
+    "eslint-plugin-office-addins": "^0.3.0",
     "eslint-plugin-react": "^7.24.0",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "file-loader": "^6.2.0",
