@@ -21,8 +21,9 @@
     ],
     "pretty": true,
     "typeRoots": [
-      "node_modules/@types"
-    ]
+      "node_modules/@types",
+      "node_modules/citeproc-types",
+    ],
   },
   "exclude": [
     "node_modules"
