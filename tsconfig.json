@@ -24,6 +24,9 @@
       "node_modules/@types",
       "node_modules/citeproc-types",
     ],
+    "types": [
+      "citeproc-types"
+    ]
   },
   "exclude": [
     "node_modules"

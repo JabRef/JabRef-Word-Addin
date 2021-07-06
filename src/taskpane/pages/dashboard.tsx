@@ -4,7 +4,8 @@ import CSL from "citeproc";
 import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import { DefaultButton, PrimaryButton } from "@fluentui/react";
-/* global Word */
+import createContentControl from "../../utils/insertCitation";
+// /* global Word */
 
 const dashboadStyle = {
   width: "100%",
@@ -21,6 +22,7 @@ function containsSearchTerm(keyword: string) {
     );
   };
 }
+
 function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
   return function (item) {
     if (item.title === ev.currentTarget.title) {
@@ -60,6 +62,7 @@ function Dashboard() {
       return data.find((x) => x.id === id);
     },
   };
+
   function getProcessor(styleID) {
     var xhr = new XMLHttpRequest();
     xhr.open(
@@ -72,35 +75,27 @@ function Dashboard() {
     var citeproc = new CSL.Engine(citeprocSys, styleAsText);
     return citeproc;
   }
-  var citeproc = getProcessor("chicago-fullnote-bibliography");
+
+  var citeproc = getProcessor("apa");
+
   function processorOutput() {
-    citeproc.updateItems(checked);
     var result = citeproc.makeBibliography();
     return result[1].join("\n");
   }
+
+  function insertBib() {
+    const result = processorOutput();
+    createContentControl(result);
+  }
+
   const result = processorOutput();
   console.log("result", result);
 
   function insertCitation() {
-    var citationStrings = citeproc.processCitationCluster(checked[0], [], [])[1];
+    const citation = checked.map((itemID) => ({ id: itemID }));
+    var citationStrings = citeproc.makeCitationCluster(citation);
+    console.log("citation", citationStrings);
     createContentControl(citationStrings);
-  }
-
-  function createContentControl(text: string) {
-    Word.run(function (context) {
-      var serviceNameRange = context.document.getSelection();
-      var serviceNameContentControl = serviceNameRange.insertContentControl();
-      serviceNameContentControl.tag = "jabref";
-      serviceNameContentControl.appearance = "BoundingBox";
-      serviceNameContentControl.color = "blue";
-      serviceNameContentControl.insertHtml(text, "Replace");
-      return context.sync();
-    }).catch(function (error) {
-      console.log("Error: " + error);
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
   }
 
   return (
@@ -120,7 +115,7 @@ function Dashboard() {
           }}
         >
           <PrimaryButton onClick={insertCitation}>Insert {checked.length} citation</PrimaryButton>
-          <DefaultButton style={{ marginLeft: 8 }}>cancel</DefaultButton>
+          <DefaultButton onClick={insertBib} style={{ marginLeft: 8 }}>cancel</DefaultButton>
         </div>
       ) : null}
     </div>
