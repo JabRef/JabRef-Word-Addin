@@ -2,6 +2,7 @@ const data = [
   {
     id: "ckondtcadsds000101mh7x9g4gia",
     author: "Albert Einstein",
+    type: "Article",
     title: "Open Bibliography for Science, Technology and Medicine",
     journal: "Annalen der Physik",
     volume: "322",
@@ -112,7 +113,7 @@ export type BibliographyEntry = {
   pages?: string;
   year?: string;
   DOI?: string;
-  type?: string;
+  type: string;
   abstract?: string;
   keywords?: string;
   citationKey?: string;

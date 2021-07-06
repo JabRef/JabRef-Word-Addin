@@ -1,8 +1,7 @@
 import { ISearchBoxStyles, SearchBox } from "@fluentui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface SearchFieldProps {
-  // eslint-disable-next-line no-unused-vars
   onFilterChange: (event?: React.ChangeEvent<HTMLInputElement>, newValue?: string) => void;
 }
 
@@ -16,15 +15,10 @@ const searchBoxStyle: ISearchBoxStyles = {
   },
 };
 
-function SearchField(props: SearchFieldProps) {
+function SearchField(props: SearchFieldProps): ReactElement {
+  const { onFilterChange } = props;
   return (
-    <SearchBox
-      styles={searchBoxStyle}
-      underlined={true}
-      placeholder="Search"
-      autoComplete="off"
-      onChange={props.onFilterChange}
-    />
+    <SearchBox styles={searchBoxStyle} underlined placeholder="Search" autoComplete="off" onChange={onFilterChange} />
   );
 }
 export default SearchField;

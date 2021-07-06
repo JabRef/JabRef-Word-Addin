@@ -44,6 +44,10 @@
       "no-use-before-define": "off",
       "import/extensions": "off",
 		  "unused-imports/no-unused-imports": "error",
+      "import/no-unresolved": [
+        2, 
+        { "caseSensitive": false }
+     ],
       "unused-imports/no-unused-vars": [
         "warn",
         { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }

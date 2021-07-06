@@ -18,13 +18,13 @@ const stackToken: IStackTokens = {
   childrenGap: 60,
 };
 
-export default class Progress extends React.Component<ProgressProps> {
-  render() {
+export default class Progress extends React.PureComponent<ProgressProps> {
+  render(): JSX.Element {
     const { logo, message, title } = this.props;
 
     return (
       <Wrapper>
-        <Stack verticalFill={true} styles={stackStyles} tokens={stackToken}>
+        <Stack verticalFill styles={stackStyles} tokens={stackToken}>
           <Stack.Item align="center">
             <img width="90" height="90" src={logo} alt={title} title={title} />
           </Stack.Item>
