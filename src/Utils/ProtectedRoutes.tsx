@@ -17,7 +17,11 @@ function ProtectedRoutes({ children, ...rest }: ProtectedRoutesProps) {
     <Route
       {...rest}
       render={({ location }) =>
+<<<<<<< HEAD
         !data ? (
+=======
+        data ? (
+>>>>>>> 5816975b7138de8247965866728548f3ab42d6eb
           children
         ) : (
           <Redirect

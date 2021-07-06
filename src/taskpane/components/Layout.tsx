@@ -94,16 +94,18 @@ function Layout() {
               JabRef
             </div>
           </Stack>
-          <ActionButton
-            styles={SignOutButtonStyle}
-            iconProps={Signout}
-            allowDisabledFocus
-            onClick={() => {
-              logoutMutation().then(() => client.resetStore());
-            }}
-          >
-            Signout
-          </ActionButton>
+          <Stack>
+            <ActionButton
+              styles={SignOutButtonStyle}
+              iconProps={Signout}
+              allowDisabledFocus
+              onClick={() => {
+                logoutMutation().then(() => client.resetStore());
+              }}
+            >
+              Signout
+            </ActionButton>
+          </Stack>
         </Stack>
       </Stack>
     </Wrapper>

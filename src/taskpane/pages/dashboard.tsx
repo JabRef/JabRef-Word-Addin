@@ -22,7 +22,6 @@ function containsSearchTerm(keyword: string) {
     );
   };
 }
-
 function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
   return function (item) {
     if (item.title === ev.currentTarget.title) {
@@ -62,7 +61,6 @@ function Dashboard() {
       return data.find((x) => x.id === id);
     },
   };
-
   function getProcessor(styleID) {
     var xhr = new XMLHttpRequest();
     xhr.open(
