@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import data from "../../utils/data";
 import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
-// /* global Word */
+/* global Word */
 
 const dashboadStyle = {
   width: "100%",
