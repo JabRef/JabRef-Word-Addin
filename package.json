@@ -26,7 +26,7 @@
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
     "generate": "graphql-codegen --config codegen.yml",
-    "postinstall": "yarn generate && crlf --set=LF node_modules/office-addin-*/**/*.js"
+    "postinstall": "yarn generate && crlf --set=LF node_modules/.bin/office-addin-*"
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
