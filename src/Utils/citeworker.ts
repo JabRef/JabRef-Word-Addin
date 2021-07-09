@@ -125,32 +125,25 @@ function buildProcessor() {
       }
     }
   }
-  getItems(
-    null,
-    itemIDs,
-    function (callback) {
-      getJurisdictions(null, itemIDs, callback);
-    },
-    function () {
-      var rebuildData = null;
-      if (citationByIndex) {
-        rebuildData = citeproc.rebuildProcessorState(citationByIndex);
-      }
-      citationByIndex = null;
-      var bibRes = null;
-      if (citeproc.bibliography.tokens.length) {
-        bibRes = citeproc.makeBibliography();
-      }
-      postMessage({
-        command: "initProcessor",
-        xclass: citeproc.opt.xclass,
-        citationByIndex: citeproc.registry.citationreg.citationByIndex,
-        rebuildData: rebuildData,
-        bibliographyData: bibRes,
-        result: "OK",
-      });
+  getItems(null, itemIDs, null, function () {
+    var rebuildData = null;
+    if (citationByIndex) {
+      rebuildData = citeproc.rebuildProcessorState(citationByIndex);
     }
-  );
+    citationByIndex = null;
+    var bibRes = null;
+    if (citeproc.bibliography.tokens.length) {
+      bibRes = citeproc.makeBibliography();
+    }
+    postMessage({
+      command: "initProcessor",
+      xclass: citeproc.opt.xclass,
+      citationByIndex: citeproc.registry.citationreg.citationByIndex,
+      rebuildData: rebuildData,
+      bibliographyData: bibRes,
+      result: "OK",
+    });
+  });
 }
 
 function getItems(d, itemIDs, itemsCallback, jurisdictionsCallback) {
