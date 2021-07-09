@@ -1,7 +1,6 @@
 import CSL from "citeproc";
 
 var itemsObj = {};
-var jurisdictionsObj = {};
 var style = null;
 var localesObj = null;
 var preferredLocale = null;
@@ -189,31 +188,24 @@ onmessage = function (e) {
       }
       // First callback is executed after items are fetched
       // Second callback is executed after jurisdictions are fetched
-      getItems(
-        d,
-        itemFetchLst,
-        function (callback) {
-          getJurisdictions(d, itemFetchLst, callback);
-        },
-        function () {
-          var citeRes = citeproc.processCitationCluster(d.citation, d.preCitations, d.postCitations);
-          var bibRes = null;
-          if (citeproc.bibliography.tokens.length) {
-            bibRes = citeproc.makeBibliography();
-          }
-          postMessage({
-            command: "registerCitation",
-            result: "OK",
-            citationData: citeRes[1],
-            bibliographyData: bibRes,
-            citationByIndex: citeproc.registry.citationreg.citationByIndex,
-          });
+      getItems(d, itemFetchLst, null, function () {
+        var citeRes = citeproc.processCitationCluster(d.citation, d.preCitations, d.postCitations);
+        var bibRes = null;
+        if (citeproc.bibliography.tokens.length) {
+          bibRes = citeproc.makeBibliography();
         }
-      );
+        postMessage({
+          command: "registerCitation",
+          result: "OK",
+          citationData: citeRes[1],
+          bibliographyData: bibRes,
+          citationByIndex: citeproc.registry.citationreg.citationByIndex,
+        });
+      });
       break;
     case "getBibliography":
-      getItems(function () {
-        const bibRes = null;
+      getItems(null, null, null, function () {
+        let bibRes = null;
         if (citeproc.bibliography.tokens.length) {
           bibRes = citeproc.makeBibliography();
         }
