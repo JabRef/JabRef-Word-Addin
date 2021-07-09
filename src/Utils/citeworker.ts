@@ -125,7 +125,8 @@ function buildProcessor() {
       }
     }
   }
-  getItems(null, itemIDs, null, function () {
+
+  getItems(null, itemIDs, function () {
     var rebuildData = null;
     if (citationByIndex) {
       rebuildData = citeproc.rebuildProcessorState(citationByIndex);
@@ -146,20 +147,20 @@ function buildProcessor() {
   });
 }
 
-function getItems(d, itemIDs, itemsCallback, jurisdictionsCallback) {
+function getItems(d, itemIDs, itemsCallback) {
   // Fetch locales, call buildProcessor()
-  fetchItem(0, itemIDs, itemsCallback, jurisdictionsCallback);
+  fetchItem(0, itemIDs, itemsCallback);
 }
 
-function fetchItem(pos, itemIDs, itemsCallback, jurisdictionsCallback) {
+function fetchItem(pos, itemIDs, itemsCallback) {
   if (pos === itemIDs.length) {
-    itemsCallback(jurisdictionsCallback);
+    itemsCallback();
     return;
   }
   getFileContent("items", itemIDs[pos], function (txt) {
     var itemID = itemIDs[pos];
     itemsObj[itemID] = JSON.parse(txt);
-    fetchItem(pos + 1, itemIDs, itemsCallback, jurisdictionsCallback);
+    fetchItem(pos + 1, itemIDs, itemsCallback);
   });
 }
 
@@ -181,7 +182,7 @@ onmessage = function (e) {
       }
       // First callback is executed after items are fetched
       // Second callback is executed after jurisdictions are fetched
-      getItems(d, itemFetchLst, null, function () {
+      getItems(d, itemFetchLst, function () {
         var citeRes = citeproc.processCitationCluster(d.citation, d.preCitations, d.postCitations);
         var bibRes = null;
         if (citeproc.bibliography.tokens.length) {
@@ -197,7 +198,7 @@ onmessage = function (e) {
       });
       break;
     case "getBibliography":
-      getItems(null, null, null, function () {
+      getItems(null, null, function () {
         let bibRes = null;
         if (citeproc.bibliography.tokens.length) {
           bibRes = citeproc.makeBibliography();
@@ -206,8 +207,8 @@ onmessage = function (e) {
           command: "registerCitation",
           result: "OK",
           bibliographyData: bibRes,
-          citationByIndex: citeproc.registry.citationreg.citationByIndex,
         });
       });
+      break;
   }
 };

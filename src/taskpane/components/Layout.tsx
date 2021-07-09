@@ -45,6 +45,7 @@ const footerStackStyle: IStackStyles = {
 };
 
 const Signout: IIconProps = { iconName: "SignOut" };
+const SyncBib: IIconProps = { iconName: "InsertSignatureLine" };
 
 const imageProps: IImageProps = {
   imageFit: ImageFit.contain,
@@ -99,6 +100,16 @@ function Layout({ citeSupport }: LayoutProps) {
               JabRef
             </div>
           </Stack>
+          <ActionButton
+            styles={SignOutButtonStyle}
+            iconProps={SyncBib}
+            allowDisabledFocus
+            onClick={() => {
+              citeSupport.getBibliography();
+            }}
+          >
+            Sync Bib
+          </ActionButton>
           <ActionButton
             styles={SignOutButtonStyle}
             iconProps={Signout}

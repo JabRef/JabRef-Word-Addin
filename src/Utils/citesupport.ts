@@ -87,9 +87,9 @@ class CiteSupport {
           break;
         case "getBibliography":
           me.debug("getBibliography()");
-          me.config.citationByIndex = e.data.citationByIndex;
           me.setBibliography(e.data.bibliographyData);
           me.config.processorReady = true;
+          break;
       }
     };
   }
@@ -212,7 +212,7 @@ class CiteSupport {
    *
    * @param {Object[]} data An array consisting of [0] an object with style information and [1] an array of serialized xHMTL bibliography entries.
    */
-  setBibliography(data: object[]) {
+  setBibliography(data: any[][]) {
     this.debug("setBibliography()");
     const bib = data[1].join("\n");
     this.createContentControl("bibliography", bib);
