@@ -23,8 +23,12 @@
     "plugin:prettier/recommended"
     ],
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "settings" : {
-        "import/extensions": "off",
         "import/parsers": {
           "@typescript-eslint/parser": [".ts",".tsx"]
          },
