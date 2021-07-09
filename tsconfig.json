@@ -17,7 +17,8 @@
     "allowSyntheticDefaultImports": true,
     "lib": [
       "es7",
-      "dom"
+      "dom",
+      "webworker"
     ],
     "pretty": true,
     "typeRoots": [

@@ -7,58 +7,13 @@ var localesObj = null;
 var preferredLocale = null;
 var citeproc = null;
 var citationByIndex = null;
-var abbreviationObj = {
-  default: {
-    "container-title": {
-      "English Reports": "!authority>>>E.R.",
-      "Archives of Dermatological Research": "Arch. Dermatol.",
-      "British Medical Journal": "Brit. Med. J.",
-    },
-    "collection-title": {},
-    "institution-entire": {},
-    "institution-part": {
-      "court.appeals": "!here>>>",
-      "House of Lords": "HL",
-    },
-    nickname: {},
-    number: {},
-    title: {},
-    place: {
-      us: "!here>>>",
-      "us:c9": "9th Cir.",
-    },
-    hereinafter: {},
-    classic: {},
-  },
-};
-var emptyAbbreviationObj = {
-  "container-title": {},
-  "collection-title": {},
-  "institution-entire": {},
-  "institution-part": {},
-  nickname: {},
-  number: {},
-  title: {},
-  place: {},
-  hereinafter: {},
-  classic: {},
-};
-var sys = {
-  retrieveItem: function (itemID) {
+
+const sys = {
+  retrieveItem: function (itemID: string | number) {
     return itemsObj[itemID];
   },
-  retrieveLocale: function (locale) {
+  retrieveLocale: function (locale: string | number) {
     return localesObj[locale];
-  },
-  retrieveStyleModule: function (jurisdiction, preference) {
-    return jurisdictionsObj[jurisdiction];
-  },
-  getAbbreviation: function (listname, obj, jurisdiction, category, key) {
-    if (!obj[jurisdiction]) {
-      obj[jurisdiction] = JSON.parse(JSON.stringify(emptyAbbreviationObj));
-    }
-    obj[jurisdiction][category][key] = abbreviationObj["default"][category][key];
-    return jurisdiction;
   },
 };
 
@@ -70,8 +25,6 @@ function getFileContent(type, filename, callback) {
     filename = "locales-" + filename + ".xml";
   } else if (type === "items") {
     filename = filename + ".json";
-  } else if (type === "juris") {
-    filename = "juris-" + filename + ".csl";
   }
   var url = "../data/" + type + "/" + filename;
 
@@ -92,7 +45,7 @@ function getStyle(styleName, localeName) {
   // Fetch style, call getLocales()
   getFileContent("styles", styleName, function (txt) {
     style = txt;
-    var locales = extractRawLocales(style, localeName);
+    let locales = extractRawLocales(style, localeName);
     locales = normalizeLocales(locales);
     getLocales(locales);
   });
@@ -215,40 +168,6 @@ function fetchItem(pos, itemIDs, itemsCallback, jurisdictionsCallback) {
     var itemID = itemIDs[pos];
     itemsObj[itemID] = JSON.parse(txt);
     fetchItem(pos + 1, itemIDs, itemsCallback, jurisdictionsCallback);
-  });
-}
-
-function getJurisdictions(d, itemIDs, jurisdictionsCallback) {
-  // Installs jurisdiction style modules required by an
-  // item in the processor context.
-  var jurisdictionIDs = [];
-  for (var i = 0, ilen = itemIDs.length; i < ilen; i++) {
-    var itemID = itemIDs[i];
-    var item = itemsObj[itemID];
-    if (item.jurisdiction) {
-      var lst = item.jurisdiction.split(":");
-      for (var j = 0, jlen = lst.length; j < jlen; j++) {
-        var jurisdiction = lst.slice(0, j + 1).join(":");
-        if (!jurisdictionsObj[jurisdiction] && jurisdictionIDs.indexOf(jurisdiction) === -1) {
-          jurisdictionIDs.push(jurisdiction);
-        }
-      }
-    }
-  }
-  fetchJurisdiction(0, jurisdictionIDs, jurisdictionsCallback);
-}
-
-function fetchJurisdiction(pos, jurisdictionIDs, jurisdictionsCallback) {
-  if (pos === jurisdictionIDs.length) {
-    jurisdictionsCallback();
-    return;
-  }
-  getFileContent("juris", jurisdictionIDs[pos], function (txt) {
-    var jurisdictionID = jurisdictionIDs[pos];
-    if (txt) {
-      jurisdictionsObj[jurisdictionID] = txt;
-    }
-    fetchJurisdiction(pos + 1, jurisdictionIDs, jurisdictionsCallback);
   });
 }
 
