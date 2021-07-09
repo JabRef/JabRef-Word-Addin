@@ -17,6 +17,11 @@ import { useLogoutMutation } from "../../generated/graphql";
 import client from "../../utils/apolloClient";
 import Dashboard from "../pages/dashboard";
 import Wrapper from "./Wrapper";
+import CiteSupport from "../../utils/citesupport";
+
+interface LayoutProps {
+  citeSupport: CiteSupport;
+}
 
 const wrapperStack: IStackStyles = {
   root: {
@@ -54,7 +59,7 @@ const pivotStyle: Partial<IPivotStyles> = {
   },
 };
 
-function Layout() {
+function Layout({ citeSupport }: LayoutProps) {
   const [logoutMutation] = useLogoutMutation();
   return (
     <Wrapper>
@@ -68,7 +73,7 @@ function Layout() {
             }}
           >
             <Stack styles={wrapperStack}>
-              <Dashboard />
+              <Dashboard citeSupport={citeSupport} />
             </Stack>
           </PivotItem>
           <PivotItem headerText="Citation Style">

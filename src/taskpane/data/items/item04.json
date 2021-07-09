@@ -1,0 +1,20 @@
+{
+	"type": "legal_case",
+	"multi": {
+		"main": {},
+		"_keys": {}
+	},
+	"id": "item04",
+	"title": "Walt Disney Productions v. Air Pirates",
+	"container-title": "F.2d",
+	"authority": "court.appeals",
+	"page": "751",
+	"volume": "581",
+	"jurisdiction": "us:c9",
+	"issued": {
+		"raw": "1978"
+	},
+	"accessed": {
+		"raw": "2014-06-22T06:16:57Z"
+	}
+}

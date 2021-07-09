@@ -292,5 +292,18 @@ onmessage = function (e) {
         }
       );
       break;
+    case "getBibliography":
+      getItems(function () {
+        const bibRes = null;
+        if (citeproc.bibliography.tokens.length) {
+          bibRes = citeproc.makeBibliography();
+        }
+        postMessage({
+          command: "registerCitation",
+          result: "OK",
+          bibliographyData: bibRes,
+          citationByIndex: citeproc.registry.citationreg.citationByIndex,
+        });
+      });
   }
 };

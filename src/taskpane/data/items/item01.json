@@ -1,0 +1,73 @@
+{
+	"type": "article-journal",
+	"multi": {
+		"main": {},
+		"_keys": {}
+	},
+	"id": "item01",
+	"title": "Should the skin cancer examination be taught in medical school?",
+	"container-title": "Archives of Dermatological Research",
+	"page": "1201-1203",
+	"volume": "138",
+	"issue": "9",
+	"source": "PubMed",
+	"abstract": "BACKGROUND: The fact that thin melanomas are associated with a greater than 95% survival rate, while later, more deeply invasive melanomas have a 5-year survival rate of less than 10%, demonstrates the potential personal and public health impact of early detection. The majority of patients with skin lesions are seen by nondermatologists who infrequently counsel patients about skin cancer prevention or perform a complete skin examination as part of routine care. We documented the antecedents of physician practice by evaluating medical students' observation, training, performance, and self-reported skill level for the skin cancer examination and sun protection counseling.\nMETHODS: Surveys were administered and completed in classrooms and student workshops in each of the 4 medical school years during the spring of 1996 and 1997. We concentrate our analysis on the graduating fourth-year students.\nRESULTS: Of the 302 fourth-year students enrolled at Boston University School of Medicine, Boston, Mass, in 1996 and 1997, 223 (74%) completed surveys. Among fourth-year students, 52% rated themselves as unskilled in skin cancer examinations. Twenty-eight percent of fourth-year students had never observed a skin cancer examination, 40% had received no training, and 35% had never practiced the examination. However, fourth-year students reporting at least 1 opportunity to observe, train, or practice an examination were 3 times as likely to report themselves as moderately to very skilled as students without such opportunities.\nCONCLUSION: If medical student training rates for the skin cancer examination are equally low elsewhere, as is likely, the present data suggest that even brief additions to the current curriculum, integrated into systems teaching, would augment student exposure and likely boost student skill levels.",
+	"ISSN": "0003-987X",
+	"note": "PMID: 12224981",
+	"language": "eng",
+	"author": [
+		{
+			"family": "Geller",
+			"given": "Alan C.",
+			"multi": {
+				"_key": {}
+			}
+		},
+		{
+			"family": "Venna",
+			"given": "Suraj",
+			"multi": {
+				"_key": {}
+			}
+		},
+		{
+			"family": "Prout",
+			"given": "Marianne",
+			"multi": {
+				"_key": {}
+			}
+		},
+		{
+			"family": "Miller",
+			"given": "Donald R.",
+			"multi": {
+				"_key": {}
+			}
+		},
+		{
+			"family": "Demierre",
+			"given": "Marie-France",
+			"multi": {
+				"_key": {}
+			}
+		},
+		{
+			"family": "Koh",
+			"given": "Howard K.",
+			"multi": {
+				"_key": {}
+			}
+		},
+		{
+			"family": "Gilchrest",
+			"given": "Barbara A.",
+			"multi": {
+				"_key": {}
+			}
+		}
+	],
+	"issued": {
+		"raw": "Sep 2002"
+	},
+	"PMID": "12224981"
+}

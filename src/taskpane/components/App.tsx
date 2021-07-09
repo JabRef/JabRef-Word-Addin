@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Login from "../pages/login";
 import Layout from "./Layout";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
+import CiteSupport from "../../utils/citesupport";
 
 export interface AppProps {
   title: string;
@@ -12,6 +13,7 @@ export interface AppProps {
 
 function App(props: AppProps) {
   const { isOfficeInitialized } = props;
+  const citeSupport = new CiteSupport();
 
   if (!isOfficeInitialized) {
     return <Progress title="JabRef" message="Loading JabRef..." logo="../../../assets/jabref.svg" />;
@@ -23,7 +25,7 @@ function App(props: AppProps) {
             <Login />
           </Route>
           <ProtectedRoutes path="/">
-            <Layout />
+            <Layout citeSupport={citeSupport} />
           </ProtectedRoutes>
         </Switch>
       </div>
