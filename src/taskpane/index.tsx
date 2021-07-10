@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/App";
 import { ApolloProvider } from "@apollo/client";
 import { AppContainer } from "react-hot-loader";
 import { initializeIcons, ThemeProvider } from "@fluentui/react";
 import { HashRouter as Router } from "react-router-dom";
+import App from "./components/App";
 import client from "../utils/apolloClient";
 /* global Office */
 
