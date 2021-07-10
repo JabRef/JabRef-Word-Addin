@@ -43,7 +43,7 @@ const classNames = mergeStyleSets({
   selectedStyle: [
     fonts.medium,
     {
-      color: palette.green,
+      color: palette.themeDarkAlt,
       padding: 20,
       paddingBottom: 5,
       paddingTop: 5,
@@ -53,8 +53,14 @@ const classNames = mergeStyleSets({
 });
 
 function CitationStyle() {
-  const items = ["A", "B", "C", "D", "E", "F", "G", "H"];
-  const [currentStyle, setCurrentStyle] = React.useState("A");
+  const items = [
+    { text: "American Political Science Association", value: "american-political-science-association" },
+    { text: "IEEE", value: "ieee" },
+    { text: "American Sociological Association 6th edition", value: "american-sociological-association" },
+    { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems.csl" },
+    { text: "Chicago Manual of Style 16th edition (author-date)", value: "chicago-author-date-16th-edition" },
+  ];
+  const [currentStyle, setCurrentStyle] = React.useState("American Psychological Association 7th edition");
 
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
     setCurrentStyle(ev.currentTarget.id);
@@ -63,8 +69,8 @@ function CitationStyle() {
   const onRenderCell = (item): JSX.Element => {
     return (
       <div className={classNames.itemCell} data-is-focusable={true}>
-        <div id={item} className={classNames.itemName} onClick={onClick}>
-          {item}
+        <div id={item.text} className={classNames.itemName} onClick={onClick}>
+          {item.text}
         </div>
       </div>
     );
@@ -74,7 +80,7 @@ function CitationStyle() {
     <div className={classNames.container}>
       <div className={classNames.StyleHeading}>Current Style</div>
       <div className={classNames.selectedStyle}>{currentStyle}</div>
-      <div className={classNames.StyleHeading}>Select Style</div>
+      <div className={classNames.StyleHeading}>Change Style</div>
       <FocusZone direction={FocusZoneDirection.vertical} data-is-scrollable>
         <List items={items} onRenderCell={onRenderCell} />
       </FocusZone>
