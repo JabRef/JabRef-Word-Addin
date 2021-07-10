@@ -65,14 +65,14 @@ function CitationStyle() {
   const selectedStyle = getPreference
     ? items.find((item) => item.value === getPreference).text
     : "american-political-science-association";
-  console.log(selectedStyle);
-
   const [currentStyle, setCurrentStyle] = React.useState(selectedStyle);
-
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
     Office.context.document.settings.set("Style", items.find((i) => i.text === ev.currentTarget.id).value);
     setCurrentStyle(ev.currentTarget.id);
   };
+  React.useEffect(() => {
+    return Office.context.document.settings.saveAsync();
+  });
 
   const onRenderCell = (item): JSX.Element => {
     return (
