@@ -17,7 +17,7 @@ function ProtectedRoutes({ children, ...rest }: ProtectedRoutesProps) {
     <Route
       {...rest}
       render={({ location }) =>
-        data ? (
+        !data ? (
           children
         ) : (
           <Redirect

@@ -14,42 +14,71 @@ const classNames = mergeStyleSets({
     getFocusStyle(theme, { inset: -1 }),
     {
       minHeight: 34,
-      padding: 10,
       boxSizing: "border-box",
-      borderBottom: `1px solid ${semanticColors.bodyDivider}`,
+      padding: "0 25px",
       display: "flex",
       selectors: {
-        "&:hover": { background: palette.neutralLight },
+        "&:hover": { background: palette.themeLighterAlt },
       },
     },
   ],
   itemName: [
-    fonts.xLarge,
+    fonts.medium,
     {
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
+      padding: "8px 0",
+      borderBottom: `1px solid ${semanticColors.bodyDivider}`,
+      minWidth: "100%",
+    },
+  ],
+  StyleHeading: [
+    fonts.medium,
+    {
+      color: palette.neutralSecondary,
+      fontWeight: "bold",
+      padding: 20,
+      paddingBottom: 5,
+      paddingTop: 10,
+    },
+  ],
+  selectedStyle: [
+    fonts.medium,
+    {
+      color: palette.green,
+      padding: 20,
+      paddingBottom: 5,
+      paddingTop: 5,
+      fontWeight: "bold",
     },
   ],
 });
 
-const onRenderCell = (item): JSX.Element => {
-  return (
-    <div className={classNames.itemCell} data-is-focusable={true}>
-      <div className={classNames.itemName}>{item}</div>
-    </div>
-  );
-};
-
 function CitationStyle() {
-  const items = ["A", "B", "C"];
+  const items = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  const [currentStyle, setCurrentStyle] = React.useState("A");
+
+  const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
+    setCurrentStyle(ev.currentTarget.id);
+  };
+
+  const onRenderCell = (item): JSX.Element => {
+    return (
+      <div className={classNames.itemCell} data-is-focusable={true}>
+        <div id={item} className={classNames.itemName} onClick={onClick}>
+          {item}
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <FocusZone direction={FocusZoneDirection.vertical}>
-      <div className={classNames.container} data-is-scrollable>
+    <div className={classNames.container}>
+      <div className={classNames.StyleHeading}>Current Style</div>
+      <div className={classNames.selectedStyle}>{currentStyle}</div>
+      <div className={classNames.StyleHeading}>Select Style</div>
+      <FocusZone direction={FocusZoneDirection.vertical} data-is-scrollable>
         <List items={items} onRenderCell={onRenderCell} />
-      </div>
-    </FocusZone>
+      </FocusZone>
+    </div>
   );
 }
 
