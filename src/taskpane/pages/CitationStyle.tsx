@@ -9,7 +9,8 @@ const { palette, semanticColors, fonts } = theme;
 const classNames = mergeStyleSets({
   container: {
     overflow: "auto",
-    maxHeight: 500,
+    padding: "0.25rem 0.25rem 0px",
+    webkitBoxFlex: "1 1 auto",
   },
   itemCell: [
     getFocusStyle(theme, { inset: -1 }),
@@ -38,7 +39,7 @@ const classNames = mergeStyleSets({
       fontWeight: "bold",
       padding: 20,
       paddingBottom: 5,
-      paddingTop: 10,
+      paddingTop: 15,
     },
   ],
   selectedStyle: [
@@ -86,14 +87,16 @@ function CitationStyle() {
   };
 
   return (
-    <div className={classNames.container}>
+    <>
       <div className={classNames.StyleHeading}>Current Style</div>
       <div className={classNames.selectedStyle}>{currentStyle}</div>
       <div className={classNames.StyleHeading}>Change Style</div>
-      <FocusZone direction={FocusZoneDirection.vertical} data-is-scrollable>
-        <List items={items} onRenderCell={onRenderCell} />
-      </FocusZone>
-    </div>
+      <div className={classNames.container}>
+        <FocusZone direction={FocusZoneDirection.vertical} data-is-scrollable>
+          <List items={items} onRenderCell={onRenderCell} />
+        </FocusZone>
+      </div>
+    </>
   );
 }
 
