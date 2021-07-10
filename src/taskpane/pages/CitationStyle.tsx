@@ -2,6 +2,7 @@ import * as React from "react";
 import { FocusZone, FocusZoneDirection } from "@fluentui/react/lib/FocusZone";
 import { List } from "@fluentui/react/lib/List";
 import { ITheme, mergeStyleSets, getTheme, getFocusStyle } from "@fluentui/react/lib/Styling";
+/* global Office */
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -60,9 +61,16 @@ function CitationStyle() {
     { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems.csl" },
     { text: "Chicago Manual of Style 16th edition (author-date)", value: "chicago-author-date-16th-edition" },
   ];
-  const [currentStyle, setCurrentStyle] = React.useState("American Psychological Association 7th edition");
+  const getPreference = Office.context.document.settings.get("Style");
+  const selectedStyle = getPreference
+    ? items.find((item) => item.value === getPreference).text
+    : "american-political-science-association";
+  console.log(selectedStyle);
+
+  const [currentStyle, setCurrentStyle] = React.useState(selectedStyle);
 
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
+    Office.context.document.settings.set("Style", items.find((i) => i.text === ev.currentTarget.id).value);
     setCurrentStyle(ev.currentTarget.id);
   };
 
