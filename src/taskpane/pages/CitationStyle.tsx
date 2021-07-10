@@ -70,6 +70,7 @@ function CitationStyle() {
     Office.context.document.settings.set("Style", items.find((i) => i.text === ev.currentTarget.id).value);
     setCurrentStyle(ev.currentTarget.id);
   };
+  // Sync with doc settings
   React.useEffect(() => {
     return Office.context.document.settings.saveAsync();
   });
