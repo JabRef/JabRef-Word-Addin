@@ -15,7 +15,7 @@ import {
 import React from "react";
 import { useLogoutMutation } from "../../generated/graphql";
 import client from "../../utils/apolloClient";
-import CitationStyle from "../pages/CitationStyle";
+import CitationStyle from "../pages/citationStyle";
 import Dashboard from "../pages/dashboard";
 import Wrapper from "./Wrapper";
 

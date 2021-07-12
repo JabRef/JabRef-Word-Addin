@@ -71,6 +71,7 @@ function CitationStyle() {
     setCurrentStyle(items.find((i) => i.value === ev.currentTarget.id).text);
     Office.context.document.settings.set("Style", ev.currentTarget.id);
   };
+
   // Sync with doc settings
   React.useEffect(() => {
     return Office.context.document.settings.saveAsync();
