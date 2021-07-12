@@ -194,7 +194,7 @@ class CiteSupport {
     for (var i = 0; i < data.length; i++) {
       const position = data[i][0];
       const tag = this.config.citationByIndex[position];
-      const encodedTag = atob(JSON.stringify(tag));
+      const encodedTag = this.encodeString(tag);
       const getCitationTag = await this.getCitationTagByIndex(position);
       if (getCitationTag == "NewCitationTag" || getCitationTag != encodedTag) {
         this.setCitationTagAtPosition(position, encodedTag);
@@ -276,6 +276,34 @@ class CiteSupport {
       }
     }
   }
+  async buildCitationByIndexAndCitationIdToPos(): Promise<void> {
+    Word.run(async function (context) {
+      var contentControls = context.document.contentControls;
+      context.load(contentControls, "tag");
+      await context.sync();
+      for (var i = 0; i < contentControls.items.length; i++) {
+        var contentControl = contentControls.items[i];
+        contentControl.load("tag");
+        await context.sync();
+        this.citationByIndex.push(this.decodeString(contentControl.tag));
+        this.citationIdToPos[contentControl.tag] = i;
+      }
+      return context.sync();
+    }).catch(function (error) {
+      console.log("Error: " + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
+  '
+  // encoding decode String
+  encodeString(text: string): string {
+    return atob(JSON.stringify(text));
+  }
+  decodeString(text: string): string {
+    return JSON.parse(btoa(text));
+  }
 
   /**
    * Replace bibliography with xHTML returned by the processor.
@@ -304,16 +332,6 @@ class CiteSupport {
       }
     });
   }
-
-  getCitationByIndex() {
-    const citationByIndexXmlId = Office.context.document.settings.get("CitationByIndexID");
-    Office.context.document.customXmlParts.getByIdAsync(citationByIndexXmlId, (asyncResult) => {
-      asyncResult.value.getXmlAsync((asyncResult) => {
-        this.config.citationByIndex = JSON.parse(atob(asyncResult.value));
-      });
-    });
-  }
-
   /**
    * Replace citation span nodes and get ready to roll. Puts
    *   document into the state it would have been in at first
@@ -321,7 +339,7 @@ class CiteSupport {
    *
    * @return {void}
    */
-  spoofDocument = function () {
+  spoofDocument = function (): void {
     this.debug("spoofDocument()");
     this.getCitationByIndex();
 
