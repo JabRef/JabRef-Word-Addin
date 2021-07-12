@@ -59,17 +59,17 @@ function CitationStyle() {
     { text: "American Political Science Association", value: "american-political-science-association" },
     { text: "IEEE", value: "ieee" },
     { text: "American Sociological Association 6th edition", value: "american-sociological-association" },
-    { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems.csl" },
+    { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems" },
     { text: "Chicago Manual of Style 16th edition (author-date)", value: "chicago-author-date-16th-edition" },
   ];
-  const getPreference = Office.context.document.settings.get("Style");
-  const selectedStyle = getPreference
-    ? items.find((item) => item.value === getPreference).text
-    : "american-political-science-association";
+  const preferenceStyle = Office.context.document.settings.get("Style");
+  const selectedStyle = preferenceStyle
+    ? items.find((item) => item.value === preferenceStyle).text
+    : "American Psychological Association 7th edition";
   const [currentStyle, setCurrentStyle] = React.useState(selectedStyle);
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
-    Office.context.document.settings.set("Style", items.find((i) => i.text === ev.currentTarget.id).value);
-    setCurrentStyle(ev.currentTarget.id);
+    setCurrentStyle(items.find((i) => i.value === ev.currentTarget.id).text);
+    Office.context.document.settings.set("Style", ev.currentTarget.id);
   };
   // Sync with doc settings
   React.useEffect(() => {
@@ -79,7 +79,7 @@ function CitationStyle() {
   const onRenderCell = (item): JSX.Element => {
     return (
       <div className={classNames.itemCell} data-is-focusable={true}>
-        <div id={item.text} className={classNames.itemName} onClick={onClick}>
+        <div id={item.value} className={classNames.itemName} onClick={onClick}>
           {item.text}
         </div>
       </div>
