@@ -26,7 +26,7 @@ class CiteSupport {
   constructor() {
     this.config = {
       debug: true,
-      mode: "note",
+      mode: "in-text",
       defaultLocale: "en-US",
       defaultStyle: "american-medical-association",
       citationIdToPos: {},
