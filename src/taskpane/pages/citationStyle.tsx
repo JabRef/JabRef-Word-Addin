@@ -59,7 +59,7 @@ function CitationStyle() {
     { text: "American Political Science Association", value: "american-political-science-association" },
     { text: "IEEE", value: "ieee" },
     { text: "American Sociological Association 6th edition", value: "american-sociological-association" },
-    { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems.csl" },
+    { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems" },
     { text: "Chicago Manual of Style 16th edition (author-date)", value: "chicago-author-date-16th-edition" },
   ];
   const preferenceStyle = Office.context.document.settings.get("Style");
