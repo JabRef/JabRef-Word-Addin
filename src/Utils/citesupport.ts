@@ -1,5 +1,5 @@
 "use strict";
-/* global Word Office*/
+/* global Word Office OfficeExtension*/
 /**
  *   citesupport - Citation support for xHTML documents
  *
@@ -51,7 +51,7 @@ class CiteSupport {
           me.config.mode = e.data.xclass;
           me.config.citationByIndex = e.data.citationByIndex;
           var citationData = me.convertRebuildDataToCitationData(e.data.rebuildData);
-          me.setCitations(me.config.mode, citationData);
+          me.setCitations(citationData);
           me.setBibliography(e.data.bibliographyData);
           me.config.processorReady = true;
           break;
@@ -71,7 +71,7 @@ class CiteSupport {
             me.debug(e.data.errors);
           }
           me.config.citationByIndex = e.data.citationByIndex;
-          me.setCitations(me.config.mode, e.data.citationData);
+          me.setCitations(e.data.citationData);
           me.config.processorReady = true;
           break;
 
@@ -188,14 +188,87 @@ class CiteSupport {
    * mode: The mode of the current style, either `in-text` or `note`
    * data: An array of elements with the form `[citationIndex, citationText, citationID]`
    */
-  setCitations(mode: string, data: object[]): void {
+  setCitations(data: object[]): void {
     this.debug("setCitations()");
-    if (data) {
-      data.forEach((citation) => {
-        this.createContentControl(citation[2], citation[1]);
-      });
+
+    for (var i = 0; i < data.length; i++) {
+      const position = data[i][0];
+      const tag = this.config.citationByIndex[position];
+      const encodedTag = atob(JSON.stringify(tag));
+      const getCitationTag = this.getCitationTagByIndex(position);
+      if (getCitationTag == "NewCitationTag" || getCitationTag != encodedTag) {
+        this.setCitationTagAtPosition(position, encodedTag);
+      }
+      this.insertTextAtCitation(encodedTag, data[i][1]);
     }
-    // TODO if (mode === "note")
+
+    // Update citationIdToPos for all nodes
+    const getTotalNumberOfCitation = this.getTotalNumberOfCitation();
+    for (let i = 0; i < getTotalNumberOfCitation; i++) {
+      var citationID = this.getCitationTagByPosition(i);
+      this.config.citationIdToPos[citationID] = i;
+    }
+  }
+  insertTextAtCitation(encodedTag: string, text: string) {
+    Word.run(function (context) {
+      var contentControls = context.document.contentControls.getByTag(encodedTag).getFirst();
+      context.load(contentControls, "text");
+      return context.sync().then(function () {
+        contentControls.insertText(text, "Replace");
+        return context.sync();
+      });
+    }).catch(function (error) {
+      console.log("Error: " + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
+  getTotalNumberOfCitation() {
+    return Word.run(function (context) {
+      var contentControls = context.document.contentControls;
+      context.load(contentControls, "tag");
+      return context.sync().then(function () {
+        return contentControls.items.length;
+      });
+    }).catch(function (error) {
+      console.log("Error: " + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
+  setCitationTagAtPosition(position: any, encodedTag: string) {
+    Word.run(function (context) {
+      var contentControls = context.document.contentControls.getItem(position);
+      context.load(contentControls, "text");
+      return context.sync().then(function () {
+        contentControls.tag = encodedTag;
+        return context.sync();
+      });
+    }).catch(function (error) {
+      console.log("Error: " + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
+  getCitationTagByIndex(position: number) {
+    return Word.run(function (context) {
+      var contentControls = context.document.contentControls.getItem(position);
+      context.load(contentControls, "id");
+      return context.sync().then(function () {
+        contentControls.load("tag,");
+        return context.sync().then(function () {
+          return contentControls.tag;
+        });
+      });
+    }).catch(function (error) {
+      console.log("Error: " + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
   }
 
   /**
@@ -253,39 +326,21 @@ class CiteSupport {
     }
 
     // Initialize array and object
+    this.config.citationByIndex = [];
     this.config.citationIdToPos = {};
 
-    // Get citation nodes
-    var citationNodes = this.pruneNodeList(doc.getElementsByClassName("citation"));
-
     // Build citationByIndex
-    var offset = 0;
-    var dataContainer = doc.getElementById("citesupport-data-container");
-    if (dataContainer) {
-      for (var i = citationNodes.length - 1; i > -1; i--) {
-        var citationNode = citationNodes[i];
-        var citationID = citationNode.id;
-        var citationDataNode = doc.getElementById("csdata-" + citationID);
-        if (citationDataNode) {
-          var citation = JSON.parse(atob(citationDataNode.innerHTML));
-          if (this.config.mode === "note") {
-            citation.properties.noteIndex = i + offset + 1;
-          } else {
-            citation.properties.noteIndex = 0;
-          }
-          this.config.citationByIndex.push(citation);
-        } else {
-          citationNode.parentNode.removeChild(citationNode);
-          offset--;
-        }
-      }
-      this.config.citationByIndex.reverse();
-    }
+    this.buildCitationByIndexAndCitationIdToPos();
 
     // This gives us assurance of one-to-one correspondence between
     // citation nodes and citationByIndex data. The processor
     // and the code for handling its return must cope with possible
     // duplicate citationIDs in data and node citationIDs.
   };
+
+  spoofCitations = function () {
+    return citationByIndex;
+  };
 }
+
 export default CiteSupport;
