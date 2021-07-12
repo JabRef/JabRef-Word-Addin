@@ -1,5 +1,5 @@
 "use strict";
-/* global Word */
+/* global Word Office*/
 /**
  *   citesupport - Citation support for xHTML documents
  *
@@ -7,18 +7,7 @@
  *   handlers expect the class object to be available in global
  *   context under that name.
  *
- * - If `config.demo` is `true`, the stored object `citationIdToPos`
- *   maps citationIDs to the index position of fixed "pegs" in the
- *   document that have class `citeme`. In the demo, this map is
- *   stored in localStorage, and is used to reconstruct the document
- *   state (by reinserting `class:citation` span tags) on page reload.
- *
  * - The `spoofDocument()` function brings citation data into memory.
- *   In the demo, this data is held in localStorage, and
- *   `spoofDocument()` performs some sanity checks on data and
- *   document. For a production deployment, this is the place for code
- *   that initially extracts citation data the document (if, for example,
- *   it is stashed in data-attributes on citation nodes).
  *
  * - The `setCitations()` function is where citation data for individual
  *   citations would be saved, at the location marked by NOTE.
@@ -49,9 +38,9 @@ class CiteSupport {
     this.worker.onmessage = function (e) {
       switch (e.data.command) {
         /**
-         * In response to `callInitProcessor` request, refresh
+         *    In response to `callInitProcessor` request, refresh
          *   `config.mode`, and document citations (if any)
-         *   and document bibliography (if any).
+         *    and document bibliography (if any).
          *
          * @param {string} xclass Either `note` or `in-text` as a string
          * @param {Object[]} rebuildData Array of elements with the form `[citationID, noteNumber, citeString]`
@@ -85,6 +74,7 @@ class CiteSupport {
           me.setCitations(me.config.mode, e.data.citationData);
           me.config.processorReady = true;
           break;
+
         case "getBibliography":
           me.debug("getBibliography()");
           me.setBibliography(e.data.bibliographyData);
@@ -105,7 +95,7 @@ class CiteSupport {
   }
 
   /**
-   * Initializes the processor, optionally populating it with a
+   *   Initializes the processor, optionally populating it with a
    *   preexisting list of citations.
    */
   callInitProcessor(styleName: string, localeName: string, citationByIndex: object[]): void {
@@ -126,9 +116,11 @@ class CiteSupport {
    *    Registers a single citation in the processor to follow
    *    citations described by `preCitations` and precede those
    *    described in `postCitations`.
-   *    citation A citation object
-   *    preCitations An array of `[citationID, noteNumber]` pairs in document order
-   *    postCitations An array of `[citationID, noteNumber]` pairs in document order
+   *
+   *    @param {Object{}} citation A citation object
+   *    @param {Object[]} preCitations An array of `[citationID, noteNumber]` pairs in document order
+   *    @param {Object[]} postCitations An array of `[citationID, noteNumber]` pairs in document order
+   *    @return {void}
    */
   callRegisterCitation(citation: any, preCitations: object[], postCitations: object[]): void {
     if (!this.config.processorReady) return;
@@ -150,25 +142,24 @@ class CiteSupport {
       command: "getBibliography",
     });
   }
+
   /**
-   * Converts the array returned by the processor `rebuildProcessor()` method
-   * to the form digested by our own `setCitations()` method.
+   *    Converts the array returned by the processor `rebuildProcessor()` method
+   *    to the form digested by our own `setCitations()` method.
    *
-   * rebuildData has this structure:
+   *    rebuildData has this structure:
    *    [<citation_id>, <note_number>, <citation_string>]
    *
-   * setCitations() wants this structure:
+   *    setCitations() wants this structure:
    *    [<citation_index>, <citation_string>, <citation_id>]
    *
-   * rebuildData An array of values for insertion of citations into a document
+   *    @param {Object[]} rebuildData An array of values for insertion of citations into a document
+   *    @return {Object[]}
    */
-
   convertRebuildDataToCitationData(rebuildData: object[]): object[] {
     if (!rebuildData) return null;
     this.debug("convertRebuildDataToCitationData()");
-    var citationData = rebuildData.map(function (obj) {
-      return [0, obj[2], obj[0]];
-    });
+    var citationData = rebuildData.map((obj) => [0, obj[2], obj[0]]);
     for (var i = 0; i < citationData.length; i++) {
       citationData[i][0] = i;
     }
@@ -178,9 +169,9 @@ class CiteSupport {
   /**
    *   Function to be run immediately after document has been loaded, and
    *   before any editing operations.
+   *   @return {void}
    */
-  //TODO
-  initDocument = function () {
+  initDocument = function (): void {
     this.debug("initDocument()");
     this.spoofDocument();
     this.callInitProcessor(this.config.defaultStyle, this.config.defaultLocale, this.config.citationByIndex);
@@ -194,8 +185,8 @@ class CiteSupport {
    * block is regenerated from scratch, using hidden text stored
    * in the citation elements.
    *
-   * mode The mode of the current style, either `in-text` or `note`
-   * data An array of elements with the form `[citationIndex, citationText, citationID]`
+   * mode: The mode of the current style, either `in-text` or `note`
+   * data: An array of elements with the form `[citationIndex, citationText, citationID]`
    */
   setCitations(mode: string, data: object[]): void {
     this.debug("setCitations()");
@@ -235,6 +226,15 @@ class CiteSupport {
     });
   }
 
+  getCitationByIndex() {
+    const citationByIndexXmlId = Office.context.document.settings.get("CitationByIndexID");
+    Office.context.document.customXmlParts.getByIdAsync(citationByIndexXmlId, (asyncResult) => {
+      asyncResult.value.getXmlAsync((asyncResult) => {
+        this.config.citationByIndex = JSON.parse(atob(asyncResult.value));
+      });
+    });
+  }
+
   /**
    * Replace citation span nodes and get ready to roll. Puts
    *   document into the state it would have been in at first
@@ -242,6 +242,50 @@ class CiteSupport {
    *
    * @return {void}
    */
-  //TODO   spoofDocument(): void
+  spoofDocument = function () {
+    this.debug("spoofDocument()");
+    this.getCitationByIndex();
+
+    // Use stored style if available
+    const citationStyle = Office.context.document.settings.get("Style");
+    if (citationStyle) {
+      this.config.defaultStyle = citationStyle;
+    }
+
+    // Initialize array and object
+    this.config.citationIdToPos = {};
+
+    // Get citation nodes
+    var citationNodes = this.pruneNodeList(doc.getElementsByClassName("citation"));
+
+    // Build citationByIndex
+    var offset = 0;
+    var dataContainer = doc.getElementById("citesupport-data-container");
+    if (dataContainer) {
+      for (var i = citationNodes.length - 1; i > -1; i--) {
+        var citationNode = citationNodes[i];
+        var citationID = citationNode.id;
+        var citationDataNode = doc.getElementById("csdata-" + citationID);
+        if (citationDataNode) {
+          var citation = JSON.parse(atob(citationDataNode.innerHTML));
+          if (this.config.mode === "note") {
+            citation.properties.noteIndex = i + offset + 1;
+          } else {
+            citation.properties.noteIndex = 0;
+          }
+          this.config.citationByIndex.push(citation);
+        } else {
+          citationNode.parentNode.removeChild(citationNode);
+          offset--;
+        }
+      }
+      this.config.citationByIndex.reverse();
+    }
+
+    // This gives us assurance of one-to-one correspondence between
+    // citation nodes and citationByIndex data. The processor
+    // and the code for handling its return must cope with possible
+    // duplicate citationIDs in data and node citationIDs.
+  };
 }
 export default CiteSupport;
