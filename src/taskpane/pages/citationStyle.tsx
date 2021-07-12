@@ -62,17 +62,20 @@ function CitationStyle() {
     { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems" },
     { text: "Chicago Manual of Style 16th edition (author-date)", value: "chicago-author-date-16th-edition" },
   ];
+
   const preferenceStyle = Office.context.document.settings.get("Style");
   const selectedStyle = preferenceStyle
     ? items.find((item) => item.value === preferenceStyle).text
-    : "american-political-science-association";
+    : "American Sociological Association 6th edition";
   const [currentStyle, setCurrentStyle] = React.useState(selectedStyle);
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
-    Office.context.document.settings.set("Style", ev.currentTarget.id);
-    setCurrentStyle(() => {
-      return items.find((i) => i.text === ev.currentTarget.id).text;
-    });
+    const id = ev.currentTarget.id;
+    if (id) {
+      Office.context.document.settings.set("Style", id);
+      setCurrentStyle(() => items.find((i) => i.value === id).text);
+    }
   };
+
   // Sync with doc settings
   React.useEffect(() => {
     return Office.context.document.settings.saveAsync();
