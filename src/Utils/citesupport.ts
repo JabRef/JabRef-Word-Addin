@@ -188,14 +188,14 @@ class CiteSupport {
    * mode: The mode of the current style, either `in-text` or `note`
    * data: An array of elements with the form `[citationIndex, citationText, citationID]`
    */
-  setCitations(data: object[]): void {
+  async setCitations(data: object[]): Promise<void> {
     this.debug("setCitations()");
 
     for (var i = 0; i < data.length; i++) {
       const position = data[i][0];
       const tag = this.config.citationByIndex[position];
       const encodedTag = atob(JSON.stringify(tag));
-      const getCitationTag = this.getCitationTagByIndex(position);
+      const getCitationTag = await this.getCitationTagByIndex(position);
       if (getCitationTag == "NewCitationTag" || getCitationTag != encodedTag) {
         this.setCitationTagAtPosition(position, encodedTag);
       }
@@ -203,20 +203,21 @@ class CiteSupport {
     }
 
     // Update citationIdToPos for all nodes
-    const getTotalNumberOfCitation = this.getTotalNumberOfCitation();
+    const getTotalNumberOfCitation = await this.getTotalNumberOfCitation();
     for (let i = 0; i < getTotalNumberOfCitation; i++) {
-      var citationID = this.getCitationTagByPosition(i);
+      var citationID = await this.getCitationTagByIndex(i);
       this.config.citationIdToPos[citationID] = i;
     }
   }
-  insertTextAtCitation(encodedTag: string, text: string) {
-    Word.run(function (context) {
-      var contentControls = context.document.contentControls.getByTag(encodedTag).getFirst();
+
+  // Word API
+  async insertTextAtCitation(tag: string, text: string): Promise<void> {
+    Word.run(async function (context) {
+      var contentControls = context.document.contentControls.getByTag(tag).getFirst();
       context.load(contentControls, "text");
-      return context.sync().then(function () {
-        contentControls.insertText(text, "Replace");
-        return context.sync();
-      });
+      await context.sync();
+      contentControls.insertText(text, "Replace");
+      return context.sync();
     }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
@@ -224,51 +225,56 @@ class CiteSupport {
       }
     });
   }
-  getTotalNumberOfCitation() {
-    return Word.run(function (context) {
-      var contentControls = context.document.contentControls;
-      context.load(contentControls, "tag");
-      return context.sync().then(function () {
+  async getTotalNumberOfCitation(): Promise<number> {
+    try {
+      return Word.run(async function (context) {
+        var contentControls = context.document.contentControls;
+        context.load(contentControls, "tag");
+        await context.sync();
         return contentControls.items.length;
       });
-    }).catch(function (error) {
+    } catch (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
         console.log("Debug info: " + JSON.stringify(error.debugInfo));
       }
-    });
+    }
   }
-  setCitationTagAtPosition(position: any, encodedTag: string) {
-    Word.run(function (context) {
-      var contentControls = context.document.contentControls.getItem(position);
-      context.load(contentControls, "text");
-      return context.sync().then(function () {
-        contentControls.tag = encodedTag;
+  async setCitationTagAtPosition(position: number, encodedTag: string): Promise<void> {
+    try {
+      return Word.run(async function (context) {
+        const contentControls = context.document.contentControls;
+        context.load(contentControls, "tag");
+        await context.sync();
+        const contentControl = contentControls.items[position];
+        contentControl.load("tag");
+        contentControl.tag = encodedTag;
         return context.sync();
       });
-    }).catch(function (error) {
+    } catch (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
         console.log("Debug info: " + JSON.stringify(error.debugInfo));
       }
-    });
+    }
   }
-  getCitationTagByIndex(position: number) {
-    return Word.run(function (context) {
-      var contentControls = context.document.contentControls.getItem(position);
-      context.load(contentControls, "id");
-      return context.sync().then(function () {
-        contentControls.load("tag,");
-        return context.sync().then(function () {
-          return contentControls.tag;
-        });
+  async getCitationTagByIndex(position: number): Promise<string> {
+    try {
+      return Word.run(async function (context) {
+        const contentControls = context.document.contentControls;
+        context.load(contentControls, "tag");
+        await context.sync();
+        const contentControl = contentControls.items[position];
+        contentControl.load("tag");
+        await context.sync();
+        return contentControl.tag;
       });
-    }).catch(function (error) {
+    } catch (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
         console.log("Debug info: " + JSON.stringify(error.debugInfo));
       }
-    });
+    }
   }
 
   /**
