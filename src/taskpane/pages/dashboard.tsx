@@ -4,7 +4,7 @@ import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
-// /* global Word */
+/* global Word OfficeExtension */
 
 interface dashboardProps {
   citeSupport: CiteSupport;
@@ -65,6 +65,21 @@ function Dashboard({ citeSupport }: dashboardProps) {
     }
     return itemIDs;
   }
+  function insertEmptyContentControl(tag: string) {
+    Word.run(function (context) {
+      const serviceNameRange = context.document.getSelection();
+      const serviceNameContentControl = serviceNameRange.insertContentControl();
+      serviceNameContentControl.tag = tag;
+      serviceNameContentControl.appearance = "BoundingBox";
+      serviceNameContentControl.color = "white";
+      return context.sync();
+    }).catch(function (error) {
+      console.log("Error: " + error);
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
 
   function insertCitation() {
     // Reconcile citationByIndex and editor nodes
@@ -75,7 +90,7 @@ function Dashboard({ citeSupport }: dashboardProps) {
         noteIndex: 0,
       },
     };
-    console.log(citation);
+    insertEmptyContentControl("NewCitationTag");
     citeSupport.callRegisterCitation(citation, [], []);
     return;
   }

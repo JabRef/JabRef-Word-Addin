@@ -92,10 +92,10 @@ function ReferenceList(props: ReferenceListProps) {
         <div className={classNames.itemContent}>
           <div className={classNames.itemType}>{item.type}</div>
           <div className={classNames.itemTitle}>{item.title}</div>
-          <div className={classNames.itemAuthor}>{item.author}</div>
+          {/* <div className={classNames.itemAuthor}>{item.author}</div>
           <div className={classNames.itemYear}>
             {item.journal} {item.year}
-          </div>
+          </div> */}
         </div>
       </div>
     );

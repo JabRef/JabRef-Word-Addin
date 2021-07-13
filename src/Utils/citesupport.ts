@@ -21,9 +21,10 @@ class CiteSupport {
     citationIdToPos: {};
     citationByIndex: any[];
     processorReady: boolean;
+    citationData: any[];
   };
   worker: Worker;
-  constructor() {
+  constructor(citationData) {
     this.config = {
       debug: true,
       mode: "in-text",
@@ -32,9 +33,10 @@ class CiteSupport {
       citationIdToPos: {},
       citationByIndex: [],
       processorReady: false,
+      citationData: citationData,
     };
     var me = this;
-    this.worker = new Worker("./citeworker.js");
+    this.worker = new Worker("citeworker.ts");
     this.worker.onmessage = function (e) {
       switch (e.data.command) {
         /**
@@ -48,6 +50,7 @@ class CiteSupport {
          */
         case "initProcessor":
           me.debug("initProcessor()");
+          console.log("msg from the processor");
           me.config.mode = e.data.xclass;
           me.config.citationByIndex = e.data.citationByIndex;
           var citationData = me.convertRebuildDataToCitationData(e.data.rebuildData);
@@ -98,9 +101,11 @@ class CiteSupport {
    *   Initializes the processor, optionally populating it with a
    *   preexisting list of citations.
    */
-  callInitProcessor(styleName: string, localeName: string, citationByIndex: object[]): void {
+  callInitProcessor(styleName: string, localeName: string, citationByIndex: object[], citationData: object[]): void {
     this.debug("callInitProcessor()");
+    console.log(this.config.processorReady);
     this.config.processorReady = false;
+    console.log(this.config.processorReady);
     if (!citationByIndex) {
       citationByIndex = [];
     }
@@ -109,6 +114,7 @@ class CiteSupport {
       styleName: styleName,
       localeName: localeName,
       citationByIndex: citationByIndex,
+      citationData: citationData,
     });
   }
 
@@ -123,8 +129,11 @@ class CiteSupport {
    *    @return {void}
    */
   callRegisterCitation(citation: any, preCitations: object[], postCitations: object[]): void {
-    if (!this.config.processorReady) return;
     this.debug("callRegisterCitation()");
+    this.debug("heinjkdn");
+    console.log(this.config.processorReady);
+    if (!this.config.processorReady) return;
+    this.debug("Ok, now i'm inside callregisterCitation");
     this.config.processorReady = false;
     this.worker.postMessage({
       command: "registerCitation",
@@ -174,7 +183,12 @@ class CiteSupport {
   initDocument = function (): void {
     this.debug("initDocument()");
     this.spoofDocument();
-    this.callInitProcessor(this.config.defaultStyle, this.config.defaultLocale, this.config.citationByIndex);
+    this.callInitProcessor(
+      this.config.defaultStyle,
+      this.config.defaultLocale,
+      this.config.citationByIndex,
+      this.config.citationData
+    );
   };
 
   /**
@@ -196,6 +210,7 @@ class CiteSupport {
       const tag = this.config.citationByIndex[position];
       const encodedTag = this.encodeString(tag);
       const getCitationTag = await this.getCitationTagByIndex(position);
+      console.log("inside", data[i][0]);
       if (getCitationTag == "NewCitationTag" || getCitationTag != encodedTag) {
         this.setCitationTagAtPosition(position, encodedTag);
       }
@@ -296,7 +311,29 @@ class CiteSupport {
       }
     });
   }
-  '
+  async getCitationByIndex() {
+    return Word.run(async function (context) {
+      var citationByIndex = [];
+      var contentControls = context.document.contentControls;
+      context.load(contentControls, "tag");
+      await context.sync();
+      for (var i = 0; i < contentControls.items.length; i++) {
+        var contentControl = contentControls.items[i];
+        contentControl.load("tag");
+        await context.sync();
+        citationByIndex.push(this.decodeString(contentControl.tag));
+      }
+      return context.sync().then(function () {
+        return citationByIndex;
+      });
+    }).catch(function (error) {
+      console.log("Error: " + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
+
   // encoding decode String
   encodeString(text: string): string {
     return atob(JSON.stringify(text));
@@ -333,13 +370,12 @@ class CiteSupport {
     });
   }
   /**
-   * Replace citation span nodes and get ready to roll. Puts
-   *   document into the state it would have been in at first
-   *   opening had it been properly saved.
+   *   Puts document into the state it would have been
+   *   in at first opening had it been properly saved.
    *
    * @return {void}
    */
-  spoofDocument = function (): void {
+  async spoofDocument(): Promise<void> {
     this.debug("spoofDocument()");
     this.getCitationByIndex();
 
@@ -354,17 +390,19 @@ class CiteSupport {
     this.config.citationIdToPos = {};
 
     // Build citationByIndex
-    this.buildCitationByIndexAndCitationIdToPos();
+    await this.buildCitationByIndexAndCitationIdToPos();
 
     // This gives us assurance of one-to-one correspondence between
     // citation nodes and citationByIndex data. The processor
     // and the code for handling its return must cope with possible
     // duplicate citationIDs in data and node citationIDs.
-  };
+  }
 
-  spoofCitations = function () {
+  async spoofCitations() {
+    this.debug("spoofCitations()");
+    const citationByIndex = await this.getCitationByIndex();
     return citationByIndex;
-  };
+  }
 }
 
 export default CiteSupport;

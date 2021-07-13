@@ -6,12 +6,13 @@ var localesObj = null;
 var preferredLocale = null;
 var citeproc = null;
 var citationByIndex = null;
+var citationData = [];
 
 const sys = {
-  retrieveItem: function (itemID: string | number) {
+  retrieveItem: function (itemID) {
     return itemsObj[itemID];
   },
-  retrieveLocale: function (locale: string | number) {
+  retrieveLocale: function (locale) {
     return localesObj[locale];
   },
 };
@@ -157,19 +158,24 @@ function fetchItem(pos, itemIDs, itemsCallback) {
     itemsCallback();
     return;
   }
-  getFileContent("items", itemIDs[pos], function (txt) {
-    var itemID = itemIDs[pos];
-    itemsObj[itemID] = JSON.parse(txt);
-    fetchItem(pos + 1, itemIDs, itemsCallback);
-  });
+  const citation = getCitationData(itemIDs[pos]);
+  const itemID = itemIDs[pos];
+  itemsObj[itemID] = citation;
+  fetchItem(pos + 1, itemIDs, itemsCallback);
+}
+function getCitationData(itemID) {
+  return citationData.find((x) => x.id === itemID);
 }
 
 onmessage = function (e) {
+  console.log("i am web worker and i have received your message");
   var d = e.data;
   switch (d.command) {
     case "initProcessor":
+      console.log("hi i am webworker");
       preferredLocale = d.localeName;
       citationByIndex = d.citationByIndex;
+      citationData = d.citationData;
       getStyle(d.styleName, d.localeName);
       break;
     case "registerCitation":
