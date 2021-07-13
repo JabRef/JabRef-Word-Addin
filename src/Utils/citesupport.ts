@@ -1,4 +1,5 @@
 "use strict";
+import CiteWorker from "./cite.worker.ts";
 /* global Word Office OfficeExtension*/
 /**
  *   citesupport - Citation support for xHTML documents
@@ -36,7 +37,7 @@ class CiteSupport {
       citationData: citationData,
     };
     var me = this;
-    this.worker = new Worker("citeworker.ts");
+    this.worker = new CiteWorker();
     this.worker.onmessage = function (e) {
       switch (e.data.command) {
         /**
