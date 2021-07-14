@@ -1,47 +1,60 @@
-import axios from "axios";
 import CSL from "citeproc";
-var parseString = require("xml2js").parseString;
 
 const ctx: Worker = self as any;
 var itemsObj = {};
 var style = null;
-var localesObj = null;
+var localesObj = {};
 var preferredLocale = null;
 var citeproc = null;
 var citationByIndex = null;
 var citationData = [];
 
-const sys = {
+var sys = {
   retrieveItem: function (itemID: string | number) {
     return itemsObj[itemID];
   },
-  retrieveLocale: function (locale: string | number) {
-    return localesObj[locale];
+  retrieveLocale: function (lang) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(
+      "GET",
+      "https://raw.githubusercontent.com/Juris-M/citeproc-js-docs/master/locales-" + lang + ".xml",
+      false
+    );
+    xhr.send(null);
+    return xhr.responseText;
   },
 };
 
-async function getFileContent(type: string, filename: string) {
-  if (type === "styles") {
-    filename = filename + ".csl";
-  } else if (type === "locales") {
-    filename = "locales-" + filename + ".xml";
-  }
-  const url = "../data/" + type + "/" + filename;
-  console.log("axios call", url);
-  const resp = await fetch(url);
-  console.log(resp.text());
-  return resp.text();
-}
+// async function getFileContent(type: string, filename: string) {
+//   if (type === "styles") {
+//     filename = filename + ".csl";
+//   } else if (type === "locales") {
+//     filename = "locales-" + filename + ".xml";
+//   }
+//   const url = "../data/" + type + "/" + filename;
+//   console.log("axios call", url);
+//   const resp = await fetch(url).then((resp) => {
+//     return resp.text();
+//   });
+//   return resp;
+// }
 
-async function getLocales(localeName: string) {
-  console.log("inside loxales");
-  localesObj[localeName] = await getFileContent("locales", localeName);
-  console.log("localesObj");
-}
+// async function getLocales(localeName: string) {
+//   localesObj[localeName] = await getFileContent("locales", localeName);
+//   console.log(localesObj);
+// }
 
-async function buildProcessor(styleName: string) {
-  style = await getFileContent("styles", styleName);
-  citeproc = new CSL.Engine(sys, style, preferredLocale);
+// async function getStyles(styleName: any) {
+//   style = await getFileContent("styles", styleName);
+// }
+
+async function buildProcessor(styleID) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://raw.githubusercontent.com/citation-style-language/styles/master/" + styleID + ".csl", false);
+  xhr.send(null);
+  var styleAsText = xhr.responseText;
+  console.log("new citeproc instance");
+  citeproc = new CSL.Engine(sys, styleAsText, preferredLocale);
   var itemIDs = [];
   if (citationByIndex) {
     citationByIndex.forEach((citation) => {
@@ -57,11 +70,13 @@ async function buildProcessor(styleName: string) {
   if (citationByIndex) {
     rebuildData = citeproc.rebuildProcessorState(citationByIndex);
   }
+
   citationByIndex = null;
   var bibRes = null;
   if (citeproc.bibliography.tokens.length) {
     bibRes = citeproc.makeBibliography();
   }
+  console.log("citeproc citationby index", citeproc.registry.citationreg.citationByIndex);
   console.log("sending back");
   ctx.postMessage({
     command: "initProcessor",
@@ -80,15 +95,12 @@ function buildItemsObj(itemIDs) {
 }
 
 ctx.addEventListener("message", async (e) => {
-  console.log("i have received msg");
   const d = e.data;
   switch (d.command) {
     case "initProcessor":
-      console.log(d.styleName);
       preferredLocale = d.localeName;
       citationByIndex = d.citationByIndex;
       citationData = d.citationData;
-      await getLocales(d.localeName);
       await buildProcessor(d.styleName);
       break;
     case "registerCitation":
@@ -98,17 +110,16 @@ ctx.addEventListener("message", async (e) => {
           itemFetchLst.push(item.id);
         }
       });
+      console.log(itemsObj);
       buildItemsObj(itemFetchLst);
       var citeRes = citeproc.processCitationCluster(d.citation, d.preCitations, d.postCitations);
+      console.log("citeproc citationby index", citeproc.registry.citationreg.citationByIndex);
       var bibRes = null;
-      if (citeproc.bibliography.tokens.length) {
-        bibRes = citeproc.makeBibliography();
-      }
+      console.log(citeproc.bibliography.tokens.length);
       ctx.postMessage({
         command: "registerCitation",
         result: "OK",
         citationData: citeRes[1],
-        bibliographyData: bibRes,
         citationByIndex: citeproc.registry.citationreg.citationByIndex,
       });
       break;

@@ -1,6 +1,6 @@
 "use strict";
 import CiteWorker from "./cite.worker.ts";
-/* global Word Office OfficeExtension*/
+/* global Word OfficeExtension*/
 
 class CiteSupport {
   config: {
@@ -19,7 +19,7 @@ class CiteSupport {
       debug: true,
       mode: "in-text",
       defaultLocale: "en-US",
-      defaultStyle: "american-medical-association",
+      defaultStyle: "american-sociological-association",
       citationIdToPos: {},
       citationByIndex: [],
       processorReady: false,
@@ -40,12 +40,11 @@ class CiteSupport {
          */
         case "initProcessor":
           me.debug("initProcessor()");
-          console.log("msg from the processor");
           me.config.mode = e.data.xclass;
           me.config.citationByIndex = e.data.citationByIndex;
           var citationData = me.convertRebuildDataToCitationData(e.data.rebuildData);
-          me.setCitations(citationData);
-          me.setBibliography(e.data.bibliographyData);
+          me.resetCitations(citationData);
+          // me.setBibliography(e.data.bibliographyData);
           me.config.processorReady = true;
           break;
         /**
@@ -120,10 +119,8 @@ class CiteSupport {
    */
   callRegisterCitation(citation: any, preCitations: object[], postCitations: object[]): void {
     this.debug("callRegisterCitation()");
-    this.debug("heinjkdn");
     console.log(this.config.processorReady);
     if (!this.config.processorReady) return;
-    this.debug("Ok, now i'm inside callregisterCitation");
     this.config.processorReady = false;
     this.worker.postMessage({
       command: "registerCitation",
@@ -191,17 +188,45 @@ class CiteSupport {
    */
   async setCitations(data: object[]): Promise<void> {
     this.debug("setCitations()");
+    console.log(data);
+
+    for (var i = 0; i < data.length; i++) {
+      const position = data[i][0];
+      const tag = this.config.citationByIndex[position];
+      const encodedTag = this.encodeString(tag);
+      const totalnumberOfCitation = await this.getTotalNumberOfCitation();
+      const getCitationTag = await this.getCitationTagByIndex(position);
+      if (totalnumberOfCitation < this.config.citationByIndex.length) {
+        this.insertNewCitation(encodedTag, data[i][1]);
+      } else if (getCitationTag != encodedTag) {
+        await this.setCitationTagAtPosition(position, encodedTag);
+        await this.insertTextAtCitation(encodedTag, data[i][1]);
+      }
+    }
+    const getTotalNumberOfCitation = await this.getTotalNumberOfCitation();
+    for (let i = 0; i < getTotalNumberOfCitation; i++) {
+      var citationID = await this.getCitationTagByIndex(i);
+      if (citationID) {
+        this.config.citationIdToPos[citationID] = i;
+      }
+    }
+  }
+  async resetCitations(data: object[]): Promise<void> {
+    this.debug("setCitations()");
+    console.log(data);
 
     for (var i = 0; i < data.length; i++) {
       const position = data[i][0];
       const tag = this.config.citationByIndex[position];
       const encodedTag = this.encodeString(tag);
       const getCitationTag = await this.getCitationTagByIndex(position);
-      console.log("inside", data[i][0]);
-      if (getCitationTag == "NewCitationTag" || getCitationTag != encodedTag) {
-        this.setCitationTagAtPosition(position, encodedTag);
+      console.log(getCitationTag);
+      console.log(encodedTag);
+      if (getCitationTag != encodedTag) {
+        await this.setCitationTagAtPosition(position, encodedTag);
       }
-      this.insertTextAtCitation(encodedTag, data[i][1]);
+      console.log(data[i][1]);
+      await this.insertTextAtCitation(encodedTag, data[i][1]);
     }
 
     // Update citationIdToPos for all nodes
@@ -215,12 +240,28 @@ class CiteSupport {
   }
 
   // Word API
+  async insertNewCitation(tag: string, citationText: string) {
+    Word.run(function (context) {
+      var getSelection = context.document.getSelection();
+      var serviceNameContentControl = getSelection.insertContentControl();
+      serviceNameContentControl.tag = tag;
+      serviceNameContentControl.appearance = "BoundingBox";
+      serviceNameContentControl.insertHtml(citationText, "Replace");
+      return context.sync();
+    }).catch(function (error) {
+      console.log("Error: " + error);
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
   async insertTextAtCitation(tag: string, text: string): Promise<void> {
     Word.run(async function (context) {
+      console.log(tag);
       var contentControls = context.document.contentControls.getByTag(tag).getFirst();
-      context.load(contentControls, "text");
+      contentControls.load("tag");
       await context.sync();
-      contentControls.insertText(text, "Replace");
+      contentControls.insertHtml(text, "Replace");
       return context.sync();
     }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
@@ -264,9 +305,12 @@ class CiteSupport {
       context.load(contentControls, "tag");
       await context.sync();
       const contentControl = contentControls.items[position];
-      contentControl.load("tag");
-      await context.sync();
-      return contentControl.tag;
+      if (contentControl) {
+        contentControl.load("tag");
+        await context.sync();
+        return contentControl.tag;
+      }
+      return null;
     }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
@@ -294,7 +338,7 @@ class CiteSupport {
       }
     });
   }
-  async getCitationByIndex() {
+  async getCitationByIndex(): Promise<object[] | void> {
     Word.run(async function (context) {
       var citationByIndex = [];
       var contentControls = context.document.contentControls;
@@ -319,10 +363,10 @@ class CiteSupport {
 
   // encoding decode String
   encodeString(obj: object): string {
-    return atob(JSON.stringify(obj));
+    return btoa(JSON.stringify(obj));
   }
   decodeString(text: string): object {
-    return JSON.parse(btoa(text));
+    return JSON.parse(atob(text));
   }
 
   /**
@@ -363,10 +407,10 @@ class CiteSupport {
     this.getCitationByIndex();
 
     // Use stored style if available
-    const citationStyle = Office.context.document.settings.get("Style");
-    if (citationStyle) {
-      this.config.defaultStyle = citationStyle;
-    }
+    // const citationStyle = Office.context.document.settings.get("Style");
+    // if (citationStyle) {
+    //   this.config.defaultStyle = citationStyle;
+    // }
 
     // Initialize array and object
     this.config.citationByIndex = [];
@@ -381,9 +425,10 @@ class CiteSupport {
     // duplicate citationIDs in data and node citationIDs.
   }
 
-  async spoofCitations() {
+  async spoofCitations(): Promise<object[] | void> {
     this.debug("spoofCitations()");
     const citationByIndex = await this.getCitationByIndex();
+    console.log("citationByIndex", citationByIndex);
     return citationByIndex;
   }
 }
