@@ -1,4 +1,6 @@
+import axios from "axios";
 import CSL from "citeproc";
+var parseString = require("xml2js").parseString;
 
 const ctx: Worker = self as any;
 var itemsObj = {};
@@ -18,203 +20,106 @@ const sys = {
   },
 };
 
-function getFileContent(type, filename, callback) {
-  var xhr = new XMLHttpRequest();
+async function getFileContent(type: string, filename: string) {
   if (type === "styles") {
     filename = filename + ".csl";
   } else if (type === "locales") {
     filename = "locales-" + filename + ".xml";
-  } else if (type === "items") {
-    filename = filename + ".json";
   }
-  var url = "../data/" + type + "/" + filename;
-
-  xhr.open("GET", url);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        callback(xhr.responseText);
-      } else {
-        callback();
-      }
-    }
-  };
-  xhr.send(null);
+  const url = "../data/" + type + "/" + filename;
+  console.log("axios call", url);
+  const resp = await fetch(url);
+  console.log(resp.text());
+  return resp.text();
 }
 
-function getStyle(styleName, localeName) {
-  // Fetch style, call getLocales()
-  getFileContent("styles", styleName, function (txt) {
-    style = txt;
-    let locales = extractRawLocales(style, localeName);
-    locales = normalizeLocales(locales);
-    getLocales(locales);
-  });
+async function getLocales(localeName: string) {
+  console.log("inside loxales");
+  localesObj[localeName] = await getFileContent("locales", localeName);
+  console.log("localesObj");
 }
 
-function extractRawLocales(style, localeName) {
-  var locales = ["en-US"];
-  if (localeName) {
-    locales.push(localeName);
-  }
-  var m = style.match(/locale=\"[^\"]+\"/g);
-  if (m) {
-    for (var i = 0, ilen = m.length; i < ilen; i++) {
-      var vals = m[i].slice(0, -1).slice(8).split(/\s+/);
-      for (var j = 0, jlen = vals.length; j < jlen; j++) {
-        var val = vals[j];
-        locales.push(val);
-      }
-    }
-  }
-  return locales;
-}
-
-function normalizeLocales(locales) {
-  var obj = {};
-  for (var i = 0, ilen = locales.length; i < ilen; i++) {
-    var locale = locales[i];
-    locale = locale.split("-").slice(0, 2).join("-");
-    if (CSL.LANGS[locale]) {
-      obj[locale] = true;
-    } else {
-      locale = locale.split("-")[0];
-      if (CSL.LANG_BASES[locale]) {
-        locale = CSL.LANG_BASES[locale].split("_").join("-");
-        obj[locale] = true;
-      }
-    }
-  }
-  return Object.keys(obj);
-}
-
-function getLocales(locales) {
-  // Fetch locales, call buildProcessor()
-  localesObj = {};
-  fetchLocale(0, locales, function () {
-    buildProcessor();
-  });
-}
-
-function fetchLocale(pos, locales, callback) {
-  if (pos === locales.length) {
-    callback();
-    return;
-  }
-  getFileContent("locales", locales[pos], function (txt) {
-    var locale = locales[pos];
-    localesObj[locale] = txt;
-    fetchLocale(pos + 1, locales, callback);
-  });
-}
-
-function buildProcessor() {
+async function buildProcessor(styleName: string) {
+  style = await getFileContent("styles", styleName);
   citeproc = new CSL.Engine(sys, style, preferredLocale);
   var itemIDs = [];
-
   if (citationByIndex) {
-    for (var i = 0, ilen = citationByIndex.length; i < ilen; i++) {
-      var citation = citationByIndex[i];
-      for (var j = 0, jlen = citation.citationItems.length; j < jlen; j++) {
-        var itemID = citation.citationItems[j].id;
-        itemIDs.push(itemID);
-      }
-      // Set note numbers for style, assuming that all notes are citesupport notes
-      if (citeproc.opt.xclass === "note") {
-        citation.properties.noteIndex = i + 1;
-      } else {
-        citation.properties.noteIndex = 0;
-      }
-    }
+    citationByIndex.forEach((citation) => {
+      citation.citationItems.forEach((item) => {
+        itemIDs.push(item.id);
+      });
+      citation.properties.noteIndex = 0;
+    });
   }
 
-  getItems(null, itemIDs, function () {
-    var rebuildData = null;
-    if (citationByIndex) {
-      rebuildData = citeproc.rebuildProcessorState(citationByIndex);
-    }
-    citationByIndex = null;
-    var bibRes = null;
-    if (citeproc.bibliography.tokens.length) {
-      bibRes = citeproc.makeBibliography();
-    }
-    ctx.postMessage({
-      command: "initProcessor",
-      xclass: citeproc.opt.xclass,
-      citationByIndex: citeproc.registry.citationreg.citationByIndex,
-      rebuildData: rebuildData,
-      bibliographyData: bibRes,
-      result: "OK",
-    });
+  buildItemsObj(itemIDs);
+  var rebuildData = null;
+  if (citationByIndex) {
+    rebuildData = citeproc.rebuildProcessorState(citationByIndex);
+  }
+  citationByIndex = null;
+  var bibRes = null;
+  if (citeproc.bibliography.tokens.length) {
+    bibRes = citeproc.makeBibliography();
+  }
+  console.log("sending back");
+  ctx.postMessage({
+    command: "initProcessor",
+    xclass: citeproc.opt.xclass,
+    citationByIndex: citeproc.registry.citationreg.citationByIndex,
+    rebuildData: rebuildData,
+    bibliographyData: bibRes,
+    result: "OK",
   });
 }
 
-function getItems(d, itemIDs, itemsCallback) {
-  // Fetch locales, call buildProcessor()
-  fetchItem(0, itemIDs, itemsCallback);
+function buildItemsObj(itemIDs) {
+  itemIDs.forEach((itemID) => {
+    itemsObj[itemID] = citationData.find((x) => x.id === itemID);
+  });
 }
 
-function fetchItem(pos, itemIDs, itemsCallback) {
-  if (pos === itemIDs.length) {
-    itemsCallback();
-    return;
-  }
-  const citation = getCitationData(itemIDs[pos]);
-  const itemID = itemIDs[pos];
-  itemsObj[itemID] = citation;
-  fetchItem(pos + 1, itemIDs, itemsCallback);
-}
-function getCitationData(itemID: string) {
-  return citationData.find((x) => x.id === itemID);
-}
-
-ctx.addEventListener("message", (e) => {
-  console.log("i am web worker and i have received your message");
-  var d = e.data;
+ctx.addEventListener("message", async (e) => {
+  console.log("i have received msg");
+  const d = e.data;
   switch (d.command) {
     case "initProcessor":
-      console.log("hi i am webworker");
+      console.log(d.styleName);
       preferredLocale = d.localeName;
       citationByIndex = d.citationByIndex;
       citationData = d.citationData;
-      getStyle(d.styleName, d.localeName);
+      await getLocales(d.localeName);
+      await buildProcessor(d.styleName);
       break;
     case "registerCitation":
       var itemFetchLst = [];
-      for (var i = 0, ilen = d.citation.citationItems.length; i < ilen; i++) {
-        var itemID = d.citation.citationItems[i].id;
-        if (!itemsObj[itemID]) {
-          itemFetchLst.push(itemID);
+      d.citation.citationItems.forEach((item) => {
+        if (!itemsObj[item.id]) {
+          itemFetchLst.push(item.id);
         }
+      });
+      buildItemsObj(itemFetchLst);
+      var citeRes = citeproc.processCitationCluster(d.citation, d.preCitations, d.postCitations);
+      var bibRes = null;
+      if (citeproc.bibliography.tokens.length) {
+        bibRes = citeproc.makeBibliography();
       }
-      // First callback is executed after items are fetched
-      // Second callback is executed after jurisdictions are fetched
-      getItems(d, itemFetchLst, function () {
-        var citeRes = citeproc.processCitationCluster(d.citation, d.preCitations, d.postCitations);
-        var bibRes = null;
-        if (citeproc.bibliography.tokens.length) {
-          bibRes = citeproc.makeBibliography();
-        }
-        ctx.postMessage({
-          command: "registerCitation",
-          result: "OK",
-          citationData: citeRes[1],
-          bibliographyData: bibRes,
-          citationByIndex: citeproc.registry.citationreg.citationByIndex,
-        });
+      ctx.postMessage({
+        command: "registerCitation",
+        result: "OK",
+        citationData: citeRes[1],
+        bibliographyData: bibRes,
+        citationByIndex: citeproc.registry.citationreg.citationByIndex,
       });
       break;
     case "getBibliography":
-      getItems(null, null, function () {
-        let bibRes = null;
-        if (citeproc.bibliography.tokens.length) {
-          bibRes = citeproc.makeBibliography();
-        }
-        ctx.postMessage({
-          command: "registerCitation",
-          result: "OK",
-          bibliographyData: bibRes,
-        });
+      if (citeproc.bibliography.tokens.length) {
+        bibRes = citeproc.makeBibliography();
+      }
+      ctx.postMessage({
+        command: "registerCitation",
+        result: "OK",
+        bibliographyData: bibRes,
       });
       break;
   }

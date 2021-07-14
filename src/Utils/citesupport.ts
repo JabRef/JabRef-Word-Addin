@@ -1,18 +1,7 @@
 "use strict";
 import CiteWorker from "./cite.worker.ts";
 /* global Word Office OfficeExtension*/
-/**
- *   citesupport - Citation support for xHTML documents
- *
- * - The class should be instantiated as `citesupport`. The event
- *   handlers expect the class object to be available in global
- *   context under that name.
- *
- * - The `spoofDocument()` function brings citation data into memory.
- *
- * - The `setCitations()` function is where citation data for individual
- *   citations would be saved, at the location marked by NOTE.
- */
+
 class CiteSupport {
   config: {
     debug: boolean;
@@ -20,12 +9,12 @@ class CiteSupport {
     defaultLocale: string;
     defaultStyle: string;
     citationIdToPos: {};
-    citationByIndex: any[];
+    citationByIndex: object[];
     processorReady: boolean;
-    citationData: any[];
+    citationData: object[];
   };
   worker: Worker;
-  constructor(citationData) {
+  constructor(citationData: object[]) {
     this.config = {
       debug: true,
       mode: "in-text",
@@ -195,12 +184,9 @@ class CiteSupport {
   /**
    * Update all citations based on data returned by the processor.
    * The update has two effects: (1) the id of all in-text citation
-   * nodes is set to the processor-assigned citationID; and (2)
-   * citation texts are updated. For footnote styles, the footnote
-   * block is regenerated from scratch, using hidden text stored
-   * in the citation elements.
+   * nodes is set to the citationByIndex object; and (2)
+   * citation texts are updated.
    *
-   * mode: The mode of the current style, either `in-text` or `note`
    * data: An array of elements with the form `[citationIndex, citationText, citationID]`
    */
   async setCitations(data: object[]): Promise<void> {
@@ -222,7 +208,9 @@ class CiteSupport {
     const getTotalNumberOfCitation = await this.getTotalNumberOfCitation();
     for (let i = 0; i < getTotalNumberOfCitation; i++) {
       var citationID = await this.getCitationTagByIndex(i);
-      this.config.citationIdToPos[citationID] = i;
+      if (citationID) {
+        this.config.citationIdToPos[citationID] = i;
+      }
     }
   }
 
@@ -241,56 +229,50 @@ class CiteSupport {
       }
     });
   }
-  async getTotalNumberOfCitation(): Promise<number> {
-    try {
-      return Word.run(async function (context) {
-        var contentControls = context.document.contentControls;
-        context.load(contentControls, "tag");
-        await context.sync();
-        return contentControls.items.length;
-      });
-    } catch (error) {
+  async getTotalNumberOfCitation(): Promise<number | void> {
+    return Word.run(async function (context) {
+      var contentControls = context.document.contentControls;
+      context.load(contentControls, "tag");
+      await context.sync();
+      return contentControls.items.length;
+    }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
         console.log("Debug info: " + JSON.stringify(error.debugInfo));
       }
-    }
+    });
   }
   async setCitationTagAtPosition(position: number, encodedTag: string): Promise<void> {
-    try {
-      return Word.run(async function (context) {
-        const contentControls = context.document.contentControls;
-        context.load(contentControls, "tag");
-        await context.sync();
-        const contentControl = contentControls.items[position];
-        contentControl.load("tag");
-        contentControl.tag = encodedTag;
-        return context.sync();
-      });
-    } catch (error) {
+    Word.run(async function (context) {
+      const contentControls = context.document.contentControls;
+      context.load(contentControls, "tag");
+      await context.sync();
+      const contentControl = contentControls.items[position];
+      contentControl.load("tag");
+      contentControl.tag = encodedTag;
+      return context.sync();
+    }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
         console.log("Debug info: " + JSON.stringify(error.debugInfo));
       }
-    }
+    });
   }
-  async getCitationTagByIndex(position: number): Promise<string> {
-    try {
-      return Word.run(async function (context) {
-        const contentControls = context.document.contentControls;
-        context.load(contentControls, "tag");
-        await context.sync();
-        const contentControl = contentControls.items[position];
-        contentControl.load("tag");
-        await context.sync();
-        return contentControl.tag;
-      });
-    } catch (error) {
+  async getCitationTagByIndex(position: number): Promise<string | void> {
+    return Word.run(async function (context) {
+      const contentControls = context.document.contentControls;
+      context.load(contentControls, "tag");
+      await context.sync();
+      const contentControl = contentControls.items[position];
+      contentControl.load("tag");
+      await context.sync();
+      return contentControl.tag;
+    }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
         console.log("Debug info: " + JSON.stringify(error.debugInfo));
       }
-    }
+    });
   }
   async buildCitationByIndexAndCitationIdToPos(): Promise<void> {
     Word.run(async function (context) {
@@ -313,7 +295,7 @@ class CiteSupport {
     });
   }
   async getCitationByIndex() {
-    return Word.run(async function (context) {
+    Word.run(async function (context) {
       var citationByIndex = [];
       var contentControls = context.document.contentControls;
       context.load(contentControls, "tag");
@@ -336,10 +318,10 @@ class CiteSupport {
   }
 
   // encoding decode String
-  encodeString(text: string): string {
-    return atob(JSON.stringify(text));
+  encodeString(obj: object): string {
+    return atob(JSON.stringify(obj));
   }
-  decodeString(text: string): string {
+  decodeString(text: string): object {
     return JSON.parse(btoa(text));
   }
 

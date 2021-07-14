@@ -55,16 +55,16 @@ function Dashboard({ citeSupport }: dashboardProps) {
   };
 
   // Get citationIDs in current citation(In case on multiple citation
-  function getIDs(citationID: string) {
-    var itemIDs = [];
-    var citation = citeSupport.config.citationByIndex.find((citation) => citation.citationID == citationID);
-    if (citation) {
-      itemIDs = citation.citationItems.map((obj: { id: string }) => {
-        return obj.id;
-      });
-    }
-    return itemIDs;
-  }
+  // function getIDs(citationID: string) {
+  //   var itemIDs = [];
+  //   var citation = citeSupport.config.citationByIndex.find((citation) => citation.citationID == citationID);
+  //   if (citation) {
+  //     itemIDs = citation.citationItems.map((obj: { id: string }) => {
+  //       return obj.id;
+  //     });
+  //   }
+  //   return itemIDs;
+  // }
   function insertEmptyContentControl(tag: string) {
     Word.run(function (context) {
       const serviceNameRange = context.document.getSelection();
@@ -91,6 +91,7 @@ function Dashboard({ citeSupport }: dashboardProps) {
       },
     };
     insertEmptyContentControl("NewCitationTag");
+    console.log(citation);
     citeSupport.callRegisterCitation(citation, [], []);
     return;
   }
