@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* global Office */
 
 // Office.onReady(() => {

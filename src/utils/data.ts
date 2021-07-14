@@ -1,4 +1,4 @@
-const data = [
+const data: Array<BibliographyEntry> = [
   {
     id: "ckondtcadsds000101mh7x9g4gia",
     author: "Albert Einstein",
@@ -103,6 +103,7 @@ const data = [
     },
   },
 ];
+
 export type BibliographyEntry = {
   id: string;
   author: string;

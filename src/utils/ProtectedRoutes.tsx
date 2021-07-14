@@ -8,7 +8,7 @@ interface ProtectedRoutesProps {
   path: string;
 }
 
-function ProtectedRoutes({ children, ...rest }: ProtectedRoutesProps) {
+function ProtectedRoutes({ children, ...rest }: ProtectedRoutesProps): JSX.Element {
   const { data, loading } = useMeQuery();
   if (loading) {
     return <Progress title="JabRef" message="Loading JabRef..." logo="../../../assets/jabref.svg" />;

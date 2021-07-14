@@ -39,6 +39,7 @@
          }
     },
     "rules": {
+      "no-nested-ternary": "off",
       "react/jsx-filename-extension": "off",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error",
