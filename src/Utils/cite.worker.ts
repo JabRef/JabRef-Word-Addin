@@ -128,7 +128,7 @@ ctx.addEventListener("message", async (e) => {
         bibRes = citeproc.makeBibliography();
       }
       ctx.postMessage({
-        command: "registerCitation",
+        command: "getBibliography",
         result: "OK",
         bibliographyData: bibRes,
       });

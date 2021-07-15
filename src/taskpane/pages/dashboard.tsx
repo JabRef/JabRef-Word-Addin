@@ -18,6 +18,16 @@ const dashboadStyle = {
   flexDirection: "column" as "column",
 };
 
+const buttonContainer = {
+  display: "flex",
+  flexDirection: "row" as "row",
+  marginTop: "auto",
+  flex: "0 0 auto",
+  width: "100%",
+  alignContent: "flex-start",
+  padding: 16,
+};
+
 function containsSearchTerm(keyword: string) {
   return function (item) {
     return [item.title, item.author, item.year].some((str) =>
@@ -28,10 +38,12 @@ function containsSearchTerm(keyword: string) {
 
 function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
   return function (item) {
-    if (item.title === ev.currentTarget.title) {
-      return { ...item, isSelected: !item.isSelected };
+    if (ev.currentTarget) {
+      if (item.title === ev.currentTarget.title) {
+        return { ...item, isSelected: !item.isSelected };
+      }
+      return item;
     }
-    return item;
   };
 }
 
@@ -54,50 +66,80 @@ function Dashboard({ citeSupport }: dashboardProps) {
     });
   };
 
-  // Get citationIDs in current citation(In case on multiple citation
   // function getIDs(citationID: string) {
-  //   var itemIDs = [];
-  //   var citation = citeSupport.config.citationByIndex.find((citation) => citation.citationID == citationID);
+  //   let itemIDs = [];
+  //   const citation = citeSupport.config.citationByIndex.find((citation) => citation.citationID === citationID);
   //   if (citation) {
-  //     itemIDs = citation.citationItems.map((obj: { id: string }) => {
+  //     itemIDs = citation.citationItems.map((obj) => {
   //       return obj.id;
   //     });
   //   }
   //   return itemIDs;
   // }
   async function insertCitation() {
-    // Reconcile citationByIndex and editor nodes
-    // const citationByIndex = await citeSupport.spoofCitations();
-    // if (citationByIndex) {
-    //   citeSupport.config.citationByIndex = citationByIndex;
+    const isCitation = citeSupport.isCitation();
+    // let citationID = "";
+    if (isCitation) {
+      // citationID = selectedNode.id || "";
+    }
+    // citeSupport.config.citationByIndex = await citeSupport.spoofCitations();
+    // const itemIDs = getIDs(citationID);
+    let citation = null;
+    if (!isCitation) {
+      if (checkedItems.length) {
+        citeSupport.insertEmptyContentControl();
+        citation = {
+          citationItems: checkedItems,
+          properties: {
+            noteIndex: 0,
+          },
+        };
+        console.log(citation);
+      }
+    }
+    // else if (citationID) {
+    //   let citationPosition = -1;
+    //   for (let i = 0; i < citationNodes.length; i++) {
+    //     if (citationNodes[i] === selectedNode) {
+    //       citationPos = i;
+    //       break;
+    //     }
+    //   }
+    //   if (citationPosition === -1) {
+    //     throw "node not found";
+    //   } else {
+    //     citation = citeSupport.config.citationByIndex[citationPosition];
+    //   }
+    //   if (checkedItems.length) {
+    //     citation.citationItems = checkedItems;
+    //   } else {
+    //     // Remove this citation from data and from DOM
+    //   }
     // }
-    // TODO citesupport.config.citationByIndex = citesupport.spoofCitations();
-    const citation = {
-      citationItems: checkedItems,
-      properties: {
-        noteIndex: 0,
-      },
-    };
-    console.log(citation);
-    citeSupport.callRegisterCitation(citation, [], []);
-    return;
+    // Now travel through citations again and figure out where we are
+    let citationsPre = [];
+    let citationsPost = [];
+    const i = await citeSupport.getPositionOfNewCitationTag();
+    console.log("positin", i);
+    if (citeSupport.config.citationByIndex.slice(0, i).length) {
+      citationsPre = citeSupport.config.citationByIndex.slice(0, i).map(function (obj) {
+        return [obj.citationID, 0];
+      });
+    }
+    if (citeSupport.config.citationByIndex.slice(i).length) {
+      citationsPost = citeSupport.config.citationByIndex.slice(i).map(function (obj) {
+        return [obj.citationID, 0];
+      });
+    }
+    citeSupport.callRegisterCitation(citation, citationsPre, citationsPost);
   }
+
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
       {checkedItems.length ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: "auto",
-            flex: "0 0 auto",
-            width: "100%",
-            alignContent: "flex-start",
-            padding: 16,
-          }}
-        >
+        <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>Insert {checkedItems.length} citation</PrimaryButton>
           <DefaultButton style={{ marginLeft: 8 }}>cancel</DefaultButton>
         </div>
