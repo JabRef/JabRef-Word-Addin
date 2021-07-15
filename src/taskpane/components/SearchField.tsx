@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ISearchBoxStyles, SearchBox } from "@fluentui/react";
 import React, { ReactElement } from "react";
 
