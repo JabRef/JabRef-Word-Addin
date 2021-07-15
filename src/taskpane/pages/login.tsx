@@ -66,7 +66,11 @@ function Login() {
                   <img {...imageProps} alt="jabref logo" width={80} />
                 </Stack.Item>
                 <Stack.Item align="center">
-                  <div style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}>Log In</div>
+                  <div
+                    style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}
+                  >
+                    Log In
+                  </div>
                 </Stack.Item>
                 <Stack.Item align="center">
                   {error ? (
@@ -83,8 +87,19 @@ function Login() {
                   ) : null}
                 </Stack.Item>
                 <Stack.Item>
-                  <InputField name="email" type="email" label="Email" placeholder="Email" autoFocus />
-                  <InputField type="password" name="password" label="Password" placeholder="*********" />
+                  <InputField
+                    name="email"
+                    type="email"
+                    label="Email"
+                    placeholder="Email"
+                    autoFocus
+                  />
+                  <InputField
+                    type="password"
+                    name="password"
+                    label="Password"
+                    placeholder="*********"
+                  />
                 </Stack.Item>
                 <Stack.Item align="end">
                   <Link to="www.jabref.org" target="blank">

@@ -19,7 +19,10 @@ export interface bib extends BibliographyEntry {
 
 interface ReferenceListProps {
   list: Array<bib>;
-  onCheckBoxChange: (ev?: React.FormEvent<HTMLInputElement | HTMLElement>, checked?: boolean) => void;
+  onCheckBoxChange: (
+    ev?: React.FormEvent<HTMLInputElement | HTMLElement>,
+    checked?: boolean
+  ) => void;
 }
 const classNames = mergeStyleSets({
   container: {
@@ -102,7 +105,10 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
   };
 
   return (
-    <FocusZone direction={FocusZoneDirection.vertical} className={classNames.container}>
+    <FocusZone
+      direction={FocusZoneDirection.vertical}
+      className={classNames.container}
+    >
       <List items={list} onRenderCell={onRenderCell} />
     </FocusZone>
   );

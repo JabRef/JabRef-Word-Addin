@@ -37,7 +37,9 @@ function Dashboard(): ReactElement {
     setItems(originalItems.filter(containsSearchTerm(keyword)));
   };
 
-  const handleToggleChange = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
+  const handleToggleChange = (
+    ev: React.FormEvent<HTMLElement | HTMLInputElement>
+  ) => {
     setItems((currentItems) => {
       return currentItems.map(onCheckboxChange(ev));
     });

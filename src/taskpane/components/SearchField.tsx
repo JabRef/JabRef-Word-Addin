@@ -2,7 +2,10 @@ import { ISearchBoxStyles, SearchBox } from "@fluentui/react";
 import React, { ReactElement } from "react";
 
 interface SearchFieldProps {
-  onFilterChange: (event?: React.ChangeEvent<HTMLInputElement>, newValue?: string) => void;
+  onFilterChange: (
+    event?: React.ChangeEvent<HTMLInputElement>,
+    newValue?: string
+  ) => void;
 }
 
 const searchBoxStyle: ISearchBoxStyles = {

@@ -14,7 +14,13 @@ function App(props: AppProps): ReactElement {
   const { isOfficeInitialized } = props;
 
   if (!isOfficeInitialized) {
-    return <Progress title="JabRef" message="Loading JabRef..." logo="../../../assets/jabref.svg" />;
+    return (
+      <Progress
+        title="JabRef"
+        message="Loading JabRef..."
+        logo="../../../assets/jabref.svg"
+      />
+    );
   }
   return (
     <div>
