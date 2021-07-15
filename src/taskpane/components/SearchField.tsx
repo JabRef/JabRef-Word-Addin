@@ -21,7 +21,13 @@ const searchBoxStyle: ISearchBoxStyles = {
 function SearchField(props: SearchFieldProps): ReactElement {
   const { onFilterChange } = props;
   return (
-    <SearchBox styles={searchBoxStyle} underlined placeholder="Search" autoComplete="off" onChange={onFilterChange} />
+    <SearchBox
+      styles={searchBoxStyle}
+      underlined
+      placeholder="Search"
+      autoComplete="off"
+      onChange={onFilterChange}
+    />
   );
 }
 export default SearchField;
