@@ -222,3 +222,46 @@ export type BibliographyEntry = {
 };
 
 export default data;
+
+export const citationByIndex = {
+  citationID: "MENDELEY_CITATION_edacf0a6-85e6-4124-90ee-59edce276d5e",
+  citationItems: [
+    {
+      id: "3dac7110-4c58-32d7-9156-94dc292bd081",
+      itemData: {
+        type: "article-journal",
+        id: "3dac7110-4c58-32d7-9156-94dc292bd081",
+        title:
+          "Clebsch-Lagrange variational principle and geometric constraint analysis of relativistic field theories",
+        author: [
+          {
+            family: "Rocks",
+            given: "Tobias",
+            "parse-names": false,
+            "dropping-particle": "",
+            "non-dropping-particle": "",
+          },
+          {
+            family: "Rudolph",
+            given: "Gerd",
+            "parse-names": false,
+            "dropping-particle": "",
+            "non-dropping-particle": "",
+          },
+        ],
+        "container-title": "Journal of Mathematical Physics",
+        DOI: "10.1063/1.5085764",
+        ISSN: "00222488",
+        issued: { "date-parts": [[2021]] },
+        abstract:
+          "Inspired by the Clebsch optimal control problem, we introduce a new variational principle that is suitable for capturing the geometry of relativistic field theories with constraints related to a gauge symmetry. Its special feature is that the Lagrange multipliers couple to the configuration variables via the symmetry group action. The resulting constraints are formulated as a condition on the momentum map of the gauge group action on the phase space of the system. We discuss the Hamiltonian picture and the reduction in the gauge symmetry by stages in this geometric setting. We show that the Yang-Mills-Higgs action and the Einstein-Hilbert action fit into this new framework after a (1 + 3)-splitting. Moreover, we recover the GauÃ constraint of Yang-Mills-Higgs theory and the diffeomorphism constraint of general relativity as momentum map constraints.",
+        issue: "8",
+        volume: "60",
+      },
+      isTemporary: false,
+    },
+  ],
+  properties: { noteIndex: 0 },
+  isEdited: false,
+  manualOverride: { isManuallyOverriden: false, citeprocText: "(Rocks and Rudolph 2021)", manualOverrideText: "" },
+};

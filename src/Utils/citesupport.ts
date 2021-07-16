@@ -187,31 +187,6 @@ class CiteSupport {
    *
    * data: An array of elements with the form `[citationIndex, citationText, citationID]`
    */
-  // async setCitations(data: object[]): Promise<void> {
-  //   this.debug("setCitations()");
-  //   console.log(data);
-
-  //   for (var i = 0; i < data.length; i++) {
-  //     const position = data[i][0];
-  //     const tag = this.config.citationByIndex[position];
-  //     const encodedTag = this.encodeString(tag);
-  //     const totalnumberOfCitation = await this.getTotalNumberOfCitation();
-  //     const getCitationTag = await this.getCitationTagByIndex(position);
-  //     if (totalnumberOfCitation < this.config.citationByIndex.length) {
-  //       this.insertNewCitation(encodedTag, data[i][1]);
-  //     } else if (getCitationTag != encodedTag) {
-  //       await this.setCitationTagAtPosition(position, encodedTag);
-  //       await this.insertTextAtCitation(encodedTag, data[i][1]);
-  //     }
-  //   }
-  //   const getTotalNumberOfCitation = await this.getTotalNumberOfCitation();
-  //   for (let i = 0; i < getTotalNumberOfCitation; i++) {
-  //     var citationID = await this.getCitationTagByIndex(i);
-  //     if (citationID) {
-  //       this.config.citationIdToPos[citationID] = i;
-  //     }
-  //   }
-  // }
   async setCitations(data: object[]): Promise<void> {
     this.debug("setCitations()");
     console.log(data);
@@ -220,7 +195,9 @@ class CiteSupport {
       console.log("inside the setcitation");
       const position = data[i][0];
       const tag = this.config.citationByIndex[position];
+      console.log(tag);
       const encodedTag = this.encodeString(tag);
+      console.log(encodedTag);
       console.log("getting the tag");
       const getCitationTag = await this.getCitationTagByIndex(position);
       console.log(getCitationTag);
@@ -231,7 +208,7 @@ class CiteSupport {
       }
       const getNewCitationTag = await this.getCitationTagByIndex(position);
       console.log(getNewCitationTag);
-      await this.insertTextAtCitation(getNewCitationTag as string, data[i][1]);
+      await this.insertTextInContentControl(getNewCitationTag as string, data[i][1]);
     }
 
     // Update citationIdToPos for all nodes
@@ -259,13 +236,13 @@ class CiteSupport {
       }
     });
   }
-  async insertTextAtCitation(tag: string, text: string): Promise<void> {
+  async insertTextInContentControl(tag: string, text: string): Promise<void> {
     Word.run(async function (context) {
-      let contentControls = context.document.contentControls.getByTag("JABREF-CITATION-" + tag).getFirst();
-      contentControls.load("tag, appearance");
+      let contentControl = context.document.contentControls.getByTag("JABREF-CITATION-" + tag).getFirst();
+      contentControl.load("tag, appearance");
       return context.sync().then(() => {
-        contentControls.insertHtml(text, "Replace");
-        contentControls.appearance = "BoundingBox";
+        contentControl.insertHtml(text, "Replace");
+        contentControl.appearance = "BoundingBox";
         return context.sync();
       });
     }).catch(function (error) {
@@ -300,7 +277,7 @@ class CiteSupport {
   async getPositionOfNewCitationTag() {
     return Word.run(async function (context) {
       const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag");
+      context.load(contentControls, "tag, length");
       await context.sync();
       let length = 0;
       let pos = null;
@@ -311,6 +288,7 @@ class CiteSupport {
         if (tag[0] === "JABREF" && tag[1] === "CITATION") {
           if (tag[2] == "NEW") {
             pos = length;
+            break;
           }
           length++;
         }
@@ -413,6 +391,22 @@ class CiteSupport {
       }
     });
   }
+  createContentControl(tag: string, html: string) {
+    Word.run(function (context) {
+      const getSelection = context.document.getSelection();
+      const contentControl = getSelection.insertContentControl();
+      contentControl.tag = tag;
+      contentControl.appearance = "BoundingBox";
+      contentControl.color = "white";
+      contentControl.insertHtml(html, "Replace");
+      return context.sync();
+    }).catch(function (error) {
+      console.log("Error: " + error);
+      if (error instanceof OfficeExtension.Error) {
+        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
 
   //TODO
   isCitation() {
@@ -438,22 +432,6 @@ class CiteSupport {
     this.createContentControl("bibliography", bib);
   }
 
-  createContentControl(tag: string, html: string) {
-    Word.run(function (context) {
-      const serviceNameRange = context.document.getSelection();
-      const serviceNameContentControl = serviceNameRange.insertContentControl();
-      serviceNameContentControl.tag = tag;
-      serviceNameContentControl.appearance = "BoundingBox";
-      serviceNameContentControl.color = "white";
-      serviceNameContentControl.insertHtml(html, "Replace");
-      return context.sync();
-    }).catch(function (error) {
-      console.log("Error: " + error);
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
   /**
    *   Puts document into the state it would have been
    *   in at first opening had it been properly saved.

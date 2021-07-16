@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import data from "../../utils/data";
+import data, { citationByIndex } from "../../utils/data";
 import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
@@ -47,6 +47,10 @@ function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
   };
 }
 
+function unCheckCheckbox(item) {
+  return { ...item, isSelected: false };
+}
+
 function Dashboard({ citeSupport }: dashboardProps) {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
@@ -63,6 +67,12 @@ function Dashboard({ citeSupport }: dashboardProps) {
   const handleToggleChange = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
     setItems((currentItems) => {
       return currentItems.map(onCheckboxChange(ev));
+    });
+  };
+
+  const unCheckAllCheckbox = () => {
+    setItems((currenItems) => {
+      return currenItems.map(unCheckCheckbox);
     });
   };
 
@@ -120,7 +130,7 @@ function Dashboard({ citeSupport }: dashboardProps) {
     let citationsPre = [];
     let citationsPost = [];
     const i = await citeSupport.getPositionOfNewCitationTag();
-    console.log("positin", i);
+    console.log("position", i);
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex.slice(0, i).map(function (obj) {
         return [obj.citationID, 0];
@@ -131,7 +141,9 @@ function Dashboard({ citeSupport }: dashboardProps) {
         return [obj.citationID, 0];
       });
     }
+    console.log("type", typeof citationByIndex);
     citeSupport.callRegisterCitation(citation, citationsPre, citationsPost);
+    unCheckAllCheckbox();
   }
 
   return (
@@ -141,7 +153,9 @@ function Dashboard({ citeSupport }: dashboardProps) {
       {checkedItems.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>Insert {checkedItems.length} citation</PrimaryButton>
-          <DefaultButton style={{ marginLeft: 8 }}>cancel</DefaultButton>
+          <DefaultButton onClick={unCheckAllCheckbox} style={{ marginLeft: 8 }}>
+            cancel
+          </DefaultButton>
         </div>
       ) : null}
     </div>
