@@ -9,7 +9,7 @@ let citeproc = null;
 let citationByIndex = null;
 let citationData = [];
 
-const sys = {
+let sys = {
   retrieveItem: function (itemID: string | number) {
     return itemsObj[itemID];
   },

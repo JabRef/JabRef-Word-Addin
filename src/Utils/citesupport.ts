@@ -1,4 +1,3 @@
-"use strict";
 import CiteWorker from "./cite.worker.ts";
 /* global Word OfficeExtension*/
 
