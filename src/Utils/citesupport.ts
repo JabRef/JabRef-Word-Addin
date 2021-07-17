@@ -168,9 +168,10 @@ class CiteSupport {
    *   before any editing operations.
    *   @return {void}
    */
-  initDocument = function (): void {
+  initDocument = async function (): Promise<void> {
     this.debug("initDocument()");
-    this.spoofDocument();
+    await this.spoofDocument();
+    console.log("to citeproc", this.config.citationByIndex);
     this.callInitProcessor(
       this.config.defaultStyle,
       this.config.defaultLocale,
@@ -195,20 +196,17 @@ class CiteSupport {
       console.log("inside the setcitation");
       const position = data[i][0];
       const tag = this.config.citationByIndex[position];
-      console.log(tag);
-      const encodedTag = this.encodeString(tag);
+      const encodedTag = btoa(JSON.stringify(tag));
       console.log(encodedTag);
       console.log("getting the tag");
-      const getCitationTag = await this.getCitationTagByIndex(position);
-      console.log(getCitationTag);
+      const citationTag = await this.getCitationTagByIndex(position);
+      console.log(citationTag);
       console.log(encodedTag);
-      if (getCitationTag === "NEW" || getCitationTag != encodedTag) {
+      if (citationTag === "NEW" || citationTag != encodedTag) {
         console.log("OK!, now i'm changing the tag");
         await this.setCitationTagAtPosition(position, encodedTag);
       }
-      const getNewCitationTag = await this.getCitationTagByIndex(position);
-      console.log(getNewCitationTag);
-      await this.insertTextInContentControl(getNewCitationTag as string, data[i][1]);
+      await this.insertTextInContentControl(citationTag as string, data[i][1]);
     }
 
     // Update citationIdToPos for all nodes
@@ -224,8 +222,8 @@ class CiteSupport {
   // Word API
   async insertEmptyContentControl() {
     Word.run(function (context) {
-      let getSelection = context.document.getSelection();
-      let contentControl = getSelection.insertContentControl();
+      const getSelection = context.document.getSelection();
+      const contentControl = getSelection.insertContentControl();
       contentControl.tag = "JABREF-CITATION-NEW";
       contentControl.appearance = "Hidden";
       return context.sync();
@@ -236,9 +234,9 @@ class CiteSupport {
       }
     });
   }
-  async insertTextInContentControl(tag: string, text: string): Promise<void> {
+  async insertTextInContentControl(encodedTag: string, text: string): Promise<void> {
     Word.run(async function (context) {
-      let contentControl = context.document.contentControls.getByTag("JABREF-CITATION-" + tag).getFirst();
+      let contentControl = context.document.contentControls.getByTag("JABREF-CITATION-" + encodedTag).getFirst();
       contentControl.load("tag, appearance");
       return context.sync().then(() => {
         contentControl.insertHtml(text, "Replace");
@@ -252,20 +250,18 @@ class CiteSupport {
       }
     });
   }
-  async getTotalNumberOfCitation() {
+  async getTotalNumberOfCitation(): Promise<number | void> {
     return Word.run(async function (context) {
       const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag");
+      context.load(contentControls, "tag, length");
       await context.sync();
       let length = 0;
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        contentControls.items[i].load("tag");
-        await context.sync();
-        const tag = contentControls.items[i].tag.split("-");
+      contentControls.items.forEach((citation) => {
+        const tag = citation.tag.split("-");
         if (tag[0] === "JABREF" && tag[1] === "CITATION") {
           length++;
         }
-      }
+      });
       return length;
     }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
@@ -274,7 +270,7 @@ class CiteSupport {
       }
     });
   }
-  async getPositionOfNewCitationTag() {
+  async getPositionOfNewCitation(): Promise<number> {
     return Word.run(async function (context) {
       const contentControls = context.document.contentControls;
       context.load(contentControls, "tag, length");
@@ -282,8 +278,6 @@ class CiteSupport {
       let length = 0;
       let pos = null;
       for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        contentControls.items[i].load("tag");
-        await context.sync();
         const tag = contentControls.items[i].tag.split("-");
         if (tag[0] === "JABREF" && tag[1] === "CITATION") {
           if (tag[2] == "NEW") {
@@ -301,14 +295,13 @@ class CiteSupport {
       }
     });
   }
-  async setCitationTagAtPosition(position: number, encodedTag: string): Promise<void> {
+  async setCitationTagAtPosition(position: number, tag: string): Promise<void> {
     Word.run(async function (context) {
       const contentControls = context.document.contentControls;
       context.load(contentControls, "tag");
       await context.sync();
       const contentControl = contentControls.items[position];
-      contentControl.load("tag");
-      contentControl.tag = "JABREF-CITATION-" + encodedTag;
+      contentControl.tag = "JABREF-CITATION-" + tag;
       return context.sync();
     }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
@@ -317,20 +310,19 @@ class CiteSupport {
       }
     });
   }
-  async getCitationTagByIndex(position: number): Promise<string | void> {
+  async getCitationTagByIndex(position: number): Promise<string> {
     return Word.run(async function (context) {
       const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag");
+      context.load(contentControls, "tag, length");
       await context.sync();
       let indexTag = null;
       let pos = 0;
       for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        contentControls.items[i].load("tag");
-        await context.sync();
         const tag = contentControls.items[i].tag.split("-");
         if (tag[0] === "JABREF" && tag[1] === "CITATION") {
           if (pos == position) {
             indexTag = tag[2];
+            break;
           } else {
             pos++;
           }
@@ -344,22 +336,26 @@ class CiteSupport {
       }
     });
   }
-  async buildCitationByIndexAndCitationIdToPos(): Promise<void> {
-    Word.run(async function (context) {
+  async getCitationIdToPos(): Promise<object | void> {
+    return Word.run(async function (context) {
       const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag");
+      context.load(contentControls, "tag, length");
       await context.sync();
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        contentControls.items[i].load("tag");
-        await context.sync();
-        const tag = contentControls.items[i].tag.split("-");
+      let citationIdToPos = {};
+      let pos = 0;
+      contentControls.items.forEach((citation) => {
+        const tag = citation.tag.split("-");
         if (tag[0] === "JABREF" && tag[1] === "CITATION") {
-          const decodetag = this.decodeString(tag[2]);
-          this.citationByIndex.push(this.decodeString(decodetag));
-          this.citationIdToPos[decodetag] = i;
+          citationIdToPos[tag[2]] = pos;
+          pos++;
         }
-      }
-      return context.sync();
+      });
+      return context.sync().then(function () {
+        if (citationIdToPos) {
+          return citationIdToPos;
+        }
+        return {};
+      });
     }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
       if (error instanceof OfficeExtension.Error) {
@@ -367,22 +363,28 @@ class CiteSupport {
       }
     });
   }
-  async getCitationByIndex(): Promise<object[] | void> {
-    Word.run(async function (context) {
-      let citationByIndex = [];
+  async getCitationByIndex(): Promise<Array<object> | void> {
+    console.log("inside citationbyindex");
+    return Word.run(async function (context) {
       const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag");
+      context.load(contentControls, "tag, length");
       await context.sync();
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        contentControls.items[i].load("tag");
-        await context.sync();
-        const tag = contentControls.items[i].tag.split("-");
+      let citationByIndex = [];
+      contentControls.items.forEach((citation) => {
+        console.log("i am insdie loop");
+        console.log(citation.tag);
+        const tag = citation.tag.split("-");
+        console.log(tag);
         if (tag[0] === "JABREF" && tag[1] === "CITATION") {
-          citationByIndex.push(this.decodeString(tag[2]));
+          citationByIndex.push(JSON.parse(atob(tag[2])));
         }
-      }
+      });
+      console.log("citeaklndklkcnldsknklsd", citationByIndex);
       return context.sync().then(function () {
-        return citationByIndex;
+        if (citationByIndex.length) {
+          return citationByIndex;
+        }
+        return [];
       });
     }).catch(function (error) {
       console.log("Error: " + JSON.stringify(error));
@@ -413,14 +415,6 @@ class CiteSupport {
     return false;
   }
 
-  // encoding decode String
-  encodeString(obj: object): string {
-    return btoa(JSON.stringify(obj));
-  }
-  decodeString(text: string): object {
-    return JSON.parse(atob(text));
-  }
-
   /**
    * Replace bibliography with xHTML returned by the processor.
    *
@@ -440,8 +434,6 @@ class CiteSupport {
    */
   async spoofDocument(): Promise<void> {
     this.debug("spoofDocument()");
-    this.getCitationByIndex();
-
     // Use stored style if available
     // const citationStyle = Office.context.document.settings.get("Style");
     // if (citationStyle) {
@@ -449,11 +441,16 @@ class CiteSupport {
     // }
 
     // Initialize array and object
-    this.config.citationByIndex = [];
-    this.config.citationIdToPos = {};
+    const getCitationByIndex = await this.getCitationByIndex();
+    if (getCitationByIndex) {
+      this.config.citationByIndex = getCitationByIndex;
+    }
+    const getCitationIdToPos = await this.getCitationIdToPos();
+    if (getCitationIdToPos) {
+      this.config.citationIdToPos = getCitationIdToPos;
+    }
 
     // Build citationByIndex
-    await this.buildCitationByIndexAndCitationIdToPos();
     console.log("after rerender", this.config.citationByIndex);
     // This gives us assurance of one-to-one correspondence between
     // citation nodes and citationByIndex data. The processor

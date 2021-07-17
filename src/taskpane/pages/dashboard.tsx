@@ -129,7 +129,7 @@ function Dashboard({ citeSupport }: dashboardProps) {
     // Now travel through citations again and figure out where we are
     let citationsPre = [];
     let citationsPost = [];
-    const i = await citeSupport.getPositionOfNewCitationTag();
+    const i = await citeSupport.getPositionOfNewCitation();
     console.log("position", i);
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex.slice(0, i).map(function (obj) {

@@ -9,7 +9,7 @@ const data = [
     volume: "abs/1711.06134",
     author: [
       {
-        family: "Budner",
+        family: "Rocks",
         given: "Pascal",
       },
       {
