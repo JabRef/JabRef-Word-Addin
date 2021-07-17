@@ -2,8 +2,8 @@ import CSL from "citeproc";
 
 const ctx: Worker = self as any;
 var itemsObj = {};
-var style = null;
-var localesObj = {};
+// var style = null;
+// var localesObj = {};
 var preferredLocale = null;
 var citeproc = null;
 var citationByIndex = null;
@@ -25,35 +25,11 @@ var sys = {
   },
 };
 
-// async function getFileContent(type: string, filename: string) {
-//   if (type === "styles") {
-//     filename = filename + ".csl";
-//   } else if (type === "locales") {
-//     filename = "locales-" + filename + ".xml";
-//   }
-//   const url = "../data/" + type + "/" + filename;
-//   console.log("axios call", url);
-//   const resp = await fetch(url).then((resp) => {
-//     return resp.text();
-//   });
-//   return resp;
-// }
-
-// async function getLocales(localeName: string) {
-//   localesObj[localeName] = await getFileContent("locales", localeName);
-//   console.log(localesObj);
-// }
-
-// async function getStyles(styleName: any) {
-//   style = await getFileContent("styles", styleName);
-// }
-
 async function buildProcessor(styleID) {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "https://raw.githubusercontent.com/citation-style-language/styles/master/" + styleID + ".csl", false);
   xhr.send(null);
   var styleAsText = xhr.responseText;
-  console.log("new citeproc instance");
   citeproc = new CSL.Engine(sys, styleAsText, preferredLocale);
   var itemIDs = [];
   if (citationByIndex) {
@@ -76,8 +52,6 @@ async function buildProcessor(styleID) {
   if (citeproc.bibliography.tokens.length) {
     bibRes = citeproc.makeBibliography();
   }
-  console.log("citeproc citationby index", citeproc.registry.citationreg.citationByIndex);
-  console.log("sending back");
   ctx.postMessage({
     command: "initProcessor",
     xclass: citeproc.opt.xclass,

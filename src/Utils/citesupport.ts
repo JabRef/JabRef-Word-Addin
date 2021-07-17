@@ -92,9 +92,7 @@ class CiteSupport {
    */
   callInitProcessor(styleName: string, localeName: string, citationByIndex: object[], citationData: object[]): void {
     this.debug("callInitProcessor()");
-    console.log(this.config.processorReady);
     this.config.processorReady = false;
-    console.log(this.config.processorReady);
     if (!citationByIndex) {
       citationByIndex = [];
     }
@@ -119,10 +117,8 @@ class CiteSupport {
    */
   callRegisterCitation(citation: any, preCitations: object[], postCitations: object[]): void {
     this.debug("callRegisterCitation()");
-    console.log(this.config.processorReady);
     if (!this.config.processorReady) return;
     this.config.processorReady = false;
-    console.log("citations", citation, preCitations, postCitations);
     this.worker.postMessage({
       command: "registerCitation",
       citation: citation,
@@ -171,7 +167,6 @@ class CiteSupport {
   initDocument = async function (): Promise<void> {
     this.debug("initDocument()");
     await this.spoofDocument();
-    console.log("to citeproc", this.config.citationByIndex);
     this.callInitProcessor(
       this.config.defaultStyle,
       this.config.defaultLocale,
@@ -190,20 +185,13 @@ class CiteSupport {
    */
   async setCitations(data: object[]): Promise<void> {
     this.debug("setCitations()");
-    console.log(data);
 
     for (var i = 0; i < data.length; i++) {
-      console.log("inside the setcitation");
       const position = data[i][0];
       const tag = this.config.citationByIndex[position];
       const encodedTag = btoa(JSON.stringify(tag));
-      console.log(encodedTag);
-      console.log("getting the tag");
       const citationTag = await this.getCitationTagByIndex(position);
-      console.log(citationTag);
-      console.log(encodedTag);
       if (citationTag === "NEW" || citationTag != encodedTag) {
-        console.log("OK!, now i'm changing the tag");
         await this.setCitationTagAtPosition(position, encodedTag);
       }
       await this.insertTextInContentControl(citationTag as string, data[i][1]);
@@ -364,22 +352,17 @@ class CiteSupport {
     });
   }
   async getCitationByIndex(): Promise<Array<object> | void> {
-    console.log("inside citationbyindex");
     return Word.run(async function (context) {
       const contentControls = context.document.contentControls;
       context.load(contentControls, "tag, length");
       await context.sync();
       let citationByIndex = [];
       contentControls.items.forEach((citation) => {
-        console.log("i am insdie loop");
-        console.log(citation.tag);
         const tag = citation.tag.split("-");
-        console.log(tag);
         if (tag[0] === "JABREF" && tag[1] === "CITATION") {
           citationByIndex.push(JSON.parse(atob(tag[2])));
         }
       });
-      console.log("citeaklndklkcnldsknklsd", citationByIndex);
       return context.sync().then(function () {
         if (citationByIndex.length) {
           return citationByIndex;
@@ -451,7 +434,6 @@ class CiteSupport {
     }
 
     // Build citationByIndex
-    console.log("after rerender", this.config.citationByIndex);
     // This gives us assurance of one-to-one correspondence between
     // citation nodes and citationByIndex data. The processor
     // and the code for handling its return must cope with possible
@@ -461,7 +443,6 @@ class CiteSupport {
   async spoofCitations(): Promise<object[] | void> {
     this.debug("spoofCitations()");
     const citationByIndex = await this.getCitationByIndex();
-    console.log("citationByIndex", citationByIndex);
     if (!citationByIndex) {
       return [];
     }
