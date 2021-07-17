@@ -1,20 +1,20 @@
 import CSL from "citeproc";
 
 const ctx: Worker = self as any;
-var itemsObj = {};
+let itemsObj = {};
 // var style = null;
 // var localesObj = {};
-var preferredLocale = null;
-var citeproc = null;
-var citationByIndex = null;
-var citationData = [];
+let preferredLocale = null;
+let citeproc = null;
+let citationByIndex = null;
+let citationData = [];
 
-var sys = {
+const sys = {
   retrieveItem: function (itemID: string | number) {
     return itemsObj[itemID];
   },
-  retrieveLocale: function (lang) {
-    var xhr = new XMLHttpRequest();
+  retrieveLocale: function (lang: string) {
+    let xhr = new XMLHttpRequest();
     xhr.open(
       "GET",
       "https://raw.githubusercontent.com/Juris-M/citeproc-js-docs/master/locales-" + lang + ".xml",
@@ -25,13 +25,13 @@ var sys = {
   },
 };
 
-async function buildProcessor(styleID) {
-  var xhr = new XMLHttpRequest();
+async function buildProcessor(styleID: string) {
+  let xhr = new XMLHttpRequest();
   xhr.open("GET", "https://raw.githubusercontent.com/citation-style-language/styles/master/" + styleID + ".csl", false);
   xhr.send(null);
-  var styleAsText = xhr.responseText;
+  let styleAsText = xhr.responseText;
   citeproc = new CSL.Engine(sys, styleAsText, preferredLocale);
-  var itemIDs = [];
+  let itemIDs = [];
   if (citationByIndex) {
     citationByIndex.forEach((citation) => {
       citation.citationItems.forEach((item) => {
@@ -42,13 +42,13 @@ async function buildProcessor(styleID) {
   }
 
   buildItemsObj(itemIDs);
-  var rebuildData = null;
+  let rebuildData = null;
   if (citationByIndex) {
     rebuildData = citeproc.rebuildProcessorState(citationByIndex);
   }
 
   citationByIndex = null;
-  var bibRes = null;
+  let bibRes = null;
   if (citeproc.bibliography.tokens.length) {
     bibRes = citeproc.makeBibliography();
   }
@@ -62,7 +62,7 @@ async function buildProcessor(styleID) {
   });
 }
 
-function buildItemsObj(itemIDs) {
+function buildItemsObj(itemIDs: Array<string | number>) {
   itemIDs.forEach((itemID) => {
     itemsObj[itemID] = citationData.find((x) => x.id === itemID);
   });

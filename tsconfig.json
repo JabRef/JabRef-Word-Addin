@@ -23,7 +23,13 @@
     "pretty": true,
     "typeRoots": [
       "node_modules/@types",
-    ],
+      "node_modules/citeproc-types",
+    ],    
+    "types": [
+      "citeproc-types",
+      "@types/node",
+      "office-js"
+    ]
   },
   "exclude": [
     "node_modules"
