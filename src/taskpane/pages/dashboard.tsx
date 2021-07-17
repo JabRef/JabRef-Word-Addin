@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import data, { citationByIndex } from "../../utils/data";
+import data from "../../utils/data";
 import ReferenceList from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
@@ -92,7 +92,10 @@ function Dashboard({ citeSupport }: dashboardProps) {
     if (isCitation) {
       // citationID = selectedNode.id || "";
     }
-    // citeSupport.config.citationByIndex = await citeSupport.spoofCitations();
+    const citationByIndex = await citeSupport.spoofCitations();
+    if (citationByIndex) {
+      citeSupport.config.citationByIndex = await citeSupport.spoofCitations();
+    }
     // const itemIDs = getIDs(citationID);
     let citation = null;
     if (!isCitation) {
@@ -104,7 +107,6 @@ function Dashboard({ citeSupport }: dashboardProps) {
             noteIndex: 0,
           },
         };
-        console.log(citation);
       }
     }
     // else if (citationID) {

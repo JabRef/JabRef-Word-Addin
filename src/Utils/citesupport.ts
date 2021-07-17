@@ -440,7 +440,7 @@ class CiteSupport {
     // duplicate citationIDs in data and node citationIDs.
   }
 
-  async spoofCitations(): Promise<object[] | void> {
+  async spoofCitations(): Promise<object[]> {
     this.debug("spoofCitations()");
     const citationByIndex = await this.getCitationByIndex();
     if (!citationByIndex) {

@@ -84,12 +84,9 @@ ctx.addEventListener("message", async (e) => {
           itemFetchLst.push(item.id);
         }
       });
-      console.log(itemsObj);
       buildItemsObj(itemFetchLst);
       var citeRes = citeproc.processCitationCluster(d.citation, d.preCitations, d.postCitations);
-      console.log("citeproc citationby index", citeproc.registry.citationreg.citationByIndex);
       var bibRes = null;
-      console.log(citeproc.bibliography.tokens.length);
       ctx.postMessage({
         command: "registerCitation",
         result: "OK",
