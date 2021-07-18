@@ -1,4 +1,4 @@
-import CiteWorker from "./cite.worker.ts";
+import CiteWorker from "./worker/cite.worker.ts";
 /* global Word OfficeExtension*/
 
 class CiteSupport {
@@ -24,9 +24,8 @@ class CiteSupport {
       processorReady: false,
       citationData: citationData,
     };
-    var me = this;
     this.worker = new CiteWorker();
-    this.worker.onmessage = function (e) {
+    this.worker.onmessage = (e) => {
       switch (e.data.command) {
         /**
          *    In response to `callInitProcessor` request, refresh
@@ -38,13 +37,13 @@ class CiteSupport {
          * @param {Object[]} bibliographyData Array of serialized xHTML bibliography entries
          */
         case "initProcessor":
-          me.debug("initProcessor()");
-          me.config.mode = e.data.xclass;
-          me.config.citationByIndex = e.data.citationByIndex;
-          var citationData = me.convertRebuildDataToCitationData(e.data.rebuildData);
-          me.setCitations(citationData);
+          this.debug("initProcessor()");
+          this.config.mode = e.data.xclass;
+          this.config.citationByIndex = e.data.citationByIndex;
+          var citationData = this.convertRebuildDataToCitationData(e.data.rebuildData);
+          this.setCitations(citationData);
           // me.setBibliography(e.data.bibliographyData);
-          me.config.processorReady = true;
+          this.config.processorReady = true;
           break;
         /**
          * In response to `callRegisterCitation`, refresh `config.citationByIndex`,
@@ -57,19 +56,19 @@ class CiteSupport {
          * @param {Object[]} bibliographyData Array of serialized xHTML bibliography entries
          */
         case "registerCitation":
-          me.debug("registerCitation()");
+          this.debug("registerCitation()");
           if (e.data.errors) {
-            me.debug(e.data.errors);
+            this.debug(e.data.errors);
           }
-          me.config.citationByIndex = e.data.citationByIndex;
-          me.setCitations(e.data.citationData);
-          me.config.processorReady = true;
+          this.config.citationByIndex = e.data.citationByIndex;
+          this.setCitations(e.data.citationData);
+          this.config.processorReady = true;
           break;
 
         case "getBibliography":
-          me.debug("getBibliography()");
-          me.setBibliography(e.data.bibliographyData);
-          me.config.processorReady = true;
+          this.debug("getBibliography()");
+          this.setBibliography(e.data.bibliographyData);
+          this.config.processorReady = true;
           break;
       }
     };

@@ -76,27 +76,12 @@ function Dashboard({ citeSupport }: dashboardProps) {
     });
   };
 
-  // function getIDs(citationID: string) {
-  //   let itemIDs = [];
-  //   const citation = citeSupport.config.citationByIndex.find((citation) => citation.citationID === citationID);
-  //   if (citation) {
-  //     itemIDs = citation.citationItems.map((obj) => {
-  //       return obj.id;
-  //     });
-  //   }
-  //   return itemIDs;
-  // }
   async function insertCitation() {
     const isCitation = citeSupport.isCitation();
-    // let citationID = "";
-    if (isCitation) {
-      // citationID = selectedNode.id || "";
-    }
     const citationByIndex = await citeSupport.spoofCitations();
     if (citationByIndex) {
       citeSupport.config.citationByIndex = await citeSupport.spoofCitations();
     }
-    // const itemIDs = getIDs(citationID);
     let citation = null;
     if (!isCitation) {
       if (checkedItems.length) {
@@ -109,30 +94,9 @@ function Dashboard({ citeSupport }: dashboardProps) {
         };
       }
     }
-    // else if (citationID) {
-    //   let citationPosition = -1;
-    //   for (let i = 0; i < citationNodes.length; i++) {
-    //     if (citationNodes[i] === selectedNode) {
-    //       citationPos = i;
-    //       break;
-    //     }
-    //   }
-    //   if (citationPosition === -1) {
-    //     throw "node not found";
-    //   } else {
-    //     citation = citeSupport.config.citationByIndex[citationPosition];
-    //   }
-    //   if (checkedItems.length) {
-    //     citation.citationItems = checkedItems;
-    //   } else {
-    //     // Remove this citation from data and from DOM
-    //   }
-    // }
-    // Now travel through citations again and figure out where we are
     let citationsPre = [];
     let citationsPost = [];
     const i = await citeSupport.getPositionOfNewCitation();
-    console.log("position", i);
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex.slice(0, i).map(function (obj) {
         return [obj.citationID, 0];
@@ -143,7 +107,6 @@ function Dashboard({ citeSupport }: dashboardProps) {
         return [obj.citationID, 0];
       });
     }
-    console.log("type", typeof citationByIndex);
     citeSupport.callRegisterCitation(citation, citationsPre, citationsPost);
     unCheckAllCheckbox();
   }
