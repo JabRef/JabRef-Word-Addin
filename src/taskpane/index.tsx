@@ -1,3 +1,4 @@
+// Todo upgrade react-hot-loader and re-enable these rules
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
