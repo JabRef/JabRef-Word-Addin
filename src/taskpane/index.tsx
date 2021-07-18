@@ -13,7 +13,7 @@ import { initializeIcons, ThemeProvider } from "@fluentui/react";
 import { HashRouter as Router } from "react-router-dom";
 import App from "./components/App";
 import client from "../utils/apolloClient";
-/* global Office */
+
 
 initializeIcons();
 
