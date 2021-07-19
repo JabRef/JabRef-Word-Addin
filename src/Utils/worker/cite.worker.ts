@@ -1,4 +1,8 @@
-import CSL, { MetaData as reference, Citation, CitationRegistry } from "citeproc";
+import CSL, { MetaData, Citation, CitationRegistry } from "citeproc";
+
+interface reference extends Omit<MetaData, "year"> {
+  year?: number;
+}
 
 const ctx: Worker = self as any;
 let itemsObj = {};
@@ -7,7 +11,7 @@ let localesObj = {};
 let preferredLocale = null;
 let citeproc = null;
 let citationByIndex = null;
-let referenceData = [];
+let referenceData = []; // User citation data
 
 interface CitationItem {
   locator?: string;
@@ -46,13 +50,11 @@ function getStyle(styleID: string) {
   return xhr.responseText;
 }
 
-function buildLocalesObj(locales: Array<string>) {
-  if (locales) {
-    locales.push("en-US");
+function buildLocalesObj(locale: string) {
+  if (!locale) {
+    locale = "en-US";
   }
-  locales.forEach((locale) => {
-    localesObj[locale] = getLocale(locale);
-  });
+  localesObj[locale] = getLocale(locale);
 }
 
 function buildItemsObj(itemIDs: Array<string | number>) {
@@ -69,6 +71,7 @@ function setPreferenceAndReferenceData(localeName: string, citationbyIndex: Cita
 
 async function buildProcessor(styleID: string) {
   style = getStyle(styleID);
+  buildLocalesObj(preferredLocale);
   citeproc = new CSL.Engine(sys, style, preferredLocale);
   let itemIDs = [];
   if (citationByIndex) {
@@ -90,7 +93,6 @@ async function buildProcessor(styleID: string) {
   if (citeproc.bibliography.tokens.length) {
     bibRes = citeproc.makeBibliography();
   }
-
   ctx.postMessage({
     command: "initProcessor",
     xclass: citeproc.opt.xclass,

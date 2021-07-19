@@ -43,7 +43,7 @@ class CiteSupport {
           this.onRegisterCitation(event.data.citationByIndex, event.data.citationData);
           break;
 
-        case "setBibliograghy":
+        case "setBibliography":
           this.onSetBibliography(event.data.bibliographyData);
           break;
       }
@@ -66,7 +66,7 @@ class CiteSupport {
     this.config.citationByIndex = citationByIndex;
     var citationData = this.convertRebuildDataToCitationData(rebuildData);
     this.setCitations(citationData);
-    this.setBibliography(bibliographyData);
+    // this.setBibliography(bibliographyData);
     this.config.processorReady = true;
   }
 
@@ -156,7 +156,7 @@ class CiteSupport {
    *   Function to be run immediately after document has been loaded, and
    *   before any editing operations.
    */
-  initDocument = async function (): Promise<void> {
+  initDocument = async (): Promise<void> => {
     this.debug("initDocument()");
     await this.spoofDocument();
     this.callInitProcessor(
@@ -212,7 +212,7 @@ class CiteSupport {
     // Update citationIdToPos for all nodes
     const getTotalNumberOfCitation = await this.getTotalNumberOfCitation();
     for (let i = 0; i < getTotalNumberOfCitation; i++) {
-      var citationID = await this.getCitationTagByIndex(i);
+      let citationID = await this.getCitationTagByIndex(i);
       if (citationID) {
         this.config.citationIdToPos[citationID] = i;
       }
@@ -246,6 +246,10 @@ class CiteSupport {
     if (getCitationIdToPos) {
       this.config.citationIdToPos = getCitationIdToPos;
     }
+  }
+  // TODO: ADD isCitation function to check whether current selection is citation or not
+  isCitation() {
+    return false;
   }
 
   // Word APIs

@@ -78,9 +78,9 @@ function Dashboard({ citeSupport }: dashboardProps) {
 
   async function insertCitation() {
     const isCitation = citeSupport.isCitation();
-    const citationByIndex = await citeSupport.spoofCitations();
+    const citationByIndex = await citeSupport.getCitationByIndex();
     if (citationByIndex) {
-      citeSupport.config.citationByIndex = await citeSupport.spoofCitations();
+      citeSupport.config.citationByIndex = citationByIndex;
     }
     let citation = null;
     if (!isCitation) {
