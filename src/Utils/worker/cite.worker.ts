@@ -1,7 +1,8 @@
 import CSL, { MetaData, Citation, CitationRegistry } from "citeproc";
 
-interface reference extends Omit<MetaData, "year"> {
+interface reference extends Omit<MetaData, "year" | "issued"> {
   year?: number;
+  issued?: unknown;
 }
 
 const ctx: Worker = self as any;

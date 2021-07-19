@@ -1,6 +1,12 @@
-import { Bibliography, Citation, CitationResult, MetaData as referenceData, RebuildProcessorStateData } from "citeproc";
+import { Bibliography, Citation, CitationResult, MetaData, RebuildProcessorStateData } from "citeproc";
 import CiteWorker from "./worker/cite.worker.ts";
 /* global Office Word OfficeExtension*/
+
+interface referenceData extends Omit<MetaData, "year" | "issued"> {
+  year?: number;
+  issued?: unknown;
+}
+
 
 class CiteSupport {
   config: {
