@@ -7,7 +7,6 @@ interface referenceData extends Omit<MetaData, "year" | "issued"> {
   issued?: unknown;
 }
 
-
 class CiteSupport {
   config: {
     debug: boolean;
