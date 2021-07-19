@@ -5,10 +5,10 @@ interface reference extends Omit<MetaData, "year"> {
 }
 
 const ctx: Worker = self as any;
-let itemsObj = {};
-let style = null;
-let localesObj = {};
-let preferredLocale = null;
+let itemsObj: Record<string, reference> = {};
+let localesObj: Record<string, string> = {};
+let style: string = null;
+let preferredLocale: string = null;
 let citeproc = null;
 let citationByIndex = null;
 let referenceData = []; // User citation data
@@ -24,15 +24,15 @@ interface CitationItem {
 }
 
 const sys = {
-  retrieveItem: function (itemID: string | number) {
+  retrieveItem: function (itemID: string | number): reference {
     return itemsObj[itemID];
   },
-  retrieveLocale: function (lang: string) {
+  retrieveLocale: function (lang: string): string {
     return localesObj[lang];
   },
 };
 
-function getLocale(localeId: string) {
+function getLocale(localeId: string): string {
   let xhr = new XMLHttpRequest();
   xhr.open(
     "GET",
@@ -43,33 +43,37 @@ function getLocale(localeId: string) {
   return xhr.responseText;
 }
 
-function getStyle(styleID: string) {
+function getStyle(styleID: string): string {
   let xhr = new XMLHttpRequest();
   xhr.open("GET", "https://raw.githubusercontent.com/citation-style-language/styles/master/" + styleID + ".csl", false);
   xhr.send(null);
   return xhr.responseText;
 }
 
-function buildLocalesObj(locale: string) {
+function buildLocalesObj(locale: string): void {
   if (!locale) {
     locale = "en-US";
   }
   localesObj[locale] = getLocale(locale);
 }
 
-function buildItemsObj(itemIDs: Array<string | number>) {
+function buildItemsObj(itemIDs: Array<string | number>): void {
   itemIDs.forEach((itemID) => {
     itemsObj[itemID] = referenceData.find((x) => x.id === itemID);
   });
 }
 
-function setPreferenceAndReferenceData(localeName: string, citationbyIndex: CitationRegistry, data: Array<reference>) {
+function setPreferenceAndReferenceData(
+  localeName: string,
+  citationbyIndex: CitationRegistry,
+  data: Array<reference>
+): void {
   preferredLocale = localeName;
   citationByIndex = citationbyIndex;
   referenceData = data;
 }
 
-async function buildProcessor(styleID: string) {
+async function buildProcessor(styleID: string): Promise<void> {
   style = getStyle(styleID);
   buildLocalesObj(preferredLocale);
   citeproc = new CSL.Engine(sys, style, preferredLocale);
@@ -107,7 +111,7 @@ function registerCitation(
   citation: Citation,
   preCitations: Array<[string, number]>,
   postCitations: Array<[string, number]>
-) {
+): void {
   const itemFetchLst = citation.citationItems.map((citation: CitationItem): string => {
     if (!itemsObj[citation.id]) {
       return citation.id;
@@ -123,7 +127,7 @@ function registerCitation(
   });
 }
 
-function getBibliography() {
+function getBibliography(): void {
   let bibRes = null;
   if (citeproc.bibliography.tokens.length) {
     bibRes = citeproc.makeBibliography();
