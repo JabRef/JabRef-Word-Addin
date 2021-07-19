@@ -1,5 +1,6 @@
+import { Bibliography, Citation, CitationResult, MetaData as referenceData, RebuildProcessorStateData } from "citeproc";
 import CiteWorker from "./worker/cite.worker.ts";
-/* global Word OfficeExtension*/
+/* global Office Word OfficeExtension*/
 
 class CiteSupport {
   config: {
@@ -10,10 +11,10 @@ class CiteSupport {
     citationIdToPos: {};
     citationByIndex: object[];
     processorReady: boolean;
-    citationData: object[];
+    referenceData: Array<referenceData>;
   };
   worker: Worker;
-  constructor(citationData: object[]) {
+  constructor(referenceData: Array<referenceData>) {
     this.config = {
       debug: true,
       mode: "in-text",
@@ -22,61 +23,74 @@ class CiteSupport {
       citationIdToPos: {},
       citationByIndex: [],
       processorReady: false,
-      citationData: citationData,
+      referenceData: referenceData,
     };
     this.worker = new CiteWorker();
-    this.worker.onmessage = (e) => {
-      switch (e.data.command) {
-        /**
-         *    In response to `callInitProcessor` request, refresh
-         *   `config.mode`, and document citations (if any)
-         *    and document bibliography (if any).
-         *
-         * @param {string} xclass Either `note` or `in-text` as a string
-         * @param {Object[]} rebuildData Array of elements with the form `[citationID, noteNumber, citeString]`
-         * @param {Object[]} bibliographyData Array of serialized xHTML bibliography entries
-         */
+    this.worker.onmessage = (event) => {
+      if (event.data.errors) {
+        this.debug(event.data.errors);
+      }
+      switch (event.data.command) {
         case "initProcessor":
-          this.debug("initProcessor()");
-          this.config.mode = e.data.xclass;
-          this.config.citationByIndex = e.data.citationByIndex;
-          var citationData = this.convertRebuildDataToCitationData(e.data.rebuildData);
-          this.setCitations(citationData);
-          // me.setBibliography(e.data.bibliographyData);
-          this.config.processorReady = true;
+          this.onInitProcessor(
+            event.data.xclass,
+            event.data.rebuildData,
+            event.data.bibliographyData,
+            event.data.citationByIndex
+          );
           break;
-        /**
-         * In response to `callRegisterCitation`, refresh `config.citationByIndex`,
-         *   set citations that require update in the document, replace
-         *   the bibliography in the document, and save the `citationByIndex` array
-         *   for persistence.
-         *
-         * @param {Object[]} citationByIndex Array of registered citation objects
-         * @param {Object[]} citationData Array of elements with the form `[noteNumber, citeString]`
-         * @param {Object[]} bibliographyData Array of serialized xHTML bibliography entries
-         */
         case "registerCitation":
-          this.debug("registerCitation()");
-          if (e.data.errors) {
-            this.debug(e.data.errors);
-          }
-          this.config.citationByIndex = e.data.citationByIndex;
-          this.setCitations(e.data.citationData);
-          this.config.processorReady = true;
+          this.onRegisterCitation(event.data.citationByIndex, event.data.citationData);
           break;
 
-        case "getBibliography":
-          this.debug("getBibliography()");
-          this.setBibliography(e.data.bibliographyData);
-          this.config.processorReady = true;
+        case "setBibliograghy":
+          this.onSetBibliography(event.data.bibliographyData);
           break;
       }
     };
   }
+
+  /**
+   *  In response to `callInitProcessor` request, refresh
+   *  `config.mode`, and document citations (if any)
+   *  and document bibliography (if any).
+   */
+  onInitProcessor(
+    xclass: string,
+    rebuildData: Array<RebuildProcessorStateData>,
+    bibliographyData: Bibliography,
+    citationByIndex: Object[]
+  ) {
+    this.debug("initProcessor()");
+    this.config.mode = xclass;
+    this.config.citationByIndex = citationByIndex;
+    var citationData = this.convertRebuildDataToCitationData(rebuildData);
+    this.setCitations(citationData);
+    this.setBibliography(bibliographyData);
+    this.config.processorReady = true;
+  }
+
+  /**
+   *   In response to `callRegisterCitation`, refresh `config.citationByIndex`,
+   *   set citations that require update in the document, replace
+   *   the bibliography in the document, and save the `citationByIndex` array
+   *   for persistence.
+   */
+  onRegisterCitation(citationByIndex: Object[], citationData: Array<CitationResult>) {
+    this.debug("registerCitation()");
+    this.config.citationByIndex = citationByIndex;
+    this.setCitations(citationData);
+    this.config.processorReady = true;
+  }
+
+  onSetBibliography(bibliographyData: Bibliography) {
+    this.debug("setBibliograghy()");
+    this.setBibliography(bibliographyData);
+    this.config.processorReady = true;
+  }
+
   /**
    * Logs messages to the console if `config.debug` is true
-   * @param  {string} txt The message to log
-   * @return {void}
    */
   debug(txt: string): void {
     if (this.config.debug) {
@@ -88,7 +102,12 @@ class CiteSupport {
    *   Initializes the processor, optionally populating it with a
    *   preexisting list of citations.
    */
-  callInitProcessor(styleName: string, localeName: string, citationByIndex: object[], citationData: object[]): void {
+  callInitProcessor(
+    styleName: string,
+    localeName: string,
+    citationByIndex: object[],
+    referenceData: Array<referenceData>
+  ): void {
     this.debug("callInitProcessor()");
     this.config.processorReady = false;
     if (!citationByIndex) {
@@ -99,7 +118,7 @@ class CiteSupport {
       styleName: styleName,
       localeName: localeName,
       citationByIndex: citationByIndex,
-      citationData: citationData,
+      referenceData: referenceData,
     });
   }
 
@@ -107,13 +126,12 @@ class CiteSupport {
    *    Registers a single citation in the processor to follow
    *    citations described by `preCitations` and precede those
    *    described in `postCitations`.
-   *
-   *    @param {Object{}} citation A citation object
-   *    @param {Object[]} preCitations An array of `[citationID, noteNumber]` pairs in document order
-   *    @param {Object[]} postCitations An array of `[citationID, noteNumber]` pairs in document order
-   *    @return {void}
    */
-  callRegisterCitation(citation: any, preCitations: object[], postCitations: object[]): void {
+  callRegisterCitation(
+    citation: Citation,
+    preCitations: Array<[string, number]>,
+    postCitations: Array<[string, number]>
+  ): void {
     this.debug("callRegisterCitation()");
     if (!this.config.processorReady) return;
     this.config.processorReady = false;
@@ -135,32 +153,8 @@ class CiteSupport {
   }
 
   /**
-   *    Converts the array returned by the processor `rebuildProcessor()` method
-   *    to the form digested by our own `setCitations()` method.
-   *
-   *    rebuildData has this structure:
-   *    [<citation_id>, <note_number>, <citation_string>]
-   *
-   *    setCitations() wants this structure:
-   *    [<citation_index>, <citation_string>, <citation_id>]
-   *
-   *    @param {Object[]} rebuildData An array of values for insertion of citations into a document
-   *    @return {Object[]}
-   */
-  convertRebuildDataToCitationData(rebuildData: object[]): object[] {
-    if (!rebuildData) return null;
-    this.debug("convertRebuildDataToCitationData()");
-    var citationData = rebuildData.map((obj) => [0, obj[2], obj[0]]);
-    for (var i = 0; i < citationData.length; i++) {
-      citationData[i][0] = i;
-    }
-    return citationData;
-  }
-
-  /**
    *   Function to be run immediately after document has been loaded, and
    *   before any editing operations.
-   *   @return {void}
    */
   initDocument = async function (): Promise<void> {
     this.debug("initDocument()");
@@ -169,9 +163,29 @@ class CiteSupport {
       this.config.defaultStyle,
       this.config.defaultLocale,
       this.config.citationByIndex,
-      this.config.citationData
+      this.config.referenceData
     );
   };
+
+  /**
+   *    Converts the array returned by the processor `rebuildProcessor()` method
+   *    to the form digested by our own `setCitations()` method.
+   *
+   *    rebuildData has this structure:
+   *    [<citation_id>, <note_number>, <citation_string>]
+   *
+   *    setCitations() wants this structure:
+   *    [<citation_index>, <citation_string>, <citation_id>]
+   */
+  convertRebuildDataToCitationData(rebuildData: Array<RebuildProcessorStateData>): Array<CitationResult> {
+    if (!rebuildData) return null;
+    this.debug("convertRebuildDataToCitationData()");
+    const citationData = rebuildData.map((obj: RebuildProcessorStateData): CitationResult => [0, obj[2], obj[0]]);
+    for (let i = 0, ilen = citationData.length; i < ilen; i++) {
+      citationData[i][0] = i;
+    }
+    return citationData;
+  }
 
   /**
    * Update all citations based on data returned by the processor.
@@ -181,7 +195,7 @@ class CiteSupport {
    *
    * data: An array of elements with the form `[citationIndex, citationText, citationID]`
    */
-  async setCitations(data: object[]): Promise<void> {
+  async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
 
     for (var i = 0; i < data.length; i++) {
@@ -205,8 +219,37 @@ class CiteSupport {
     }
   }
 
-  // Word API
-  async insertEmptyContentControl() {
+  /**
+   * Replace bibliography with xHTML returned by the processor.
+   */
+  setBibliography(data: Bibliography): void {
+    this.debug("setBibliography()");
+    const bib = data[1].join("\n");
+    this.createContentControl("bibliography", bib);
+  }
+
+  /**
+   *   Puts document into the state it would have been
+   *   in at first opening had it been properly saved.
+   */
+  async spoofDocument(): Promise<void> {
+    this.debug("spoofDocument()");
+    const citationStyle = Office.context.document.settings.get("Style");
+    if (citationStyle) {
+      this.config.defaultStyle = citationStyle;
+    }
+    const getCitationByIndex = await this.getCitationByIndex();
+    if (getCitationByIndex) {
+      this.config.citationByIndex = getCitationByIndex;
+    }
+    const getCitationIdToPos = await this.getCitationIdToPos();
+    if (getCitationIdToPos) {
+      this.config.citationIdToPos = getCitationIdToPos;
+    }
+  }
+
+  // Word APIs
+  async insertEmptyContentControl(): Promise<void> {
     Word.run(function (context) {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
@@ -389,62 +432,6 @@ class CiteSupport {
         console.log("Debug info: " + JSON.stringify(error.debugInfo));
       }
     });
-  }
-
-  //TODO
-  isCitation() {
-    return false;
-  }
-
-  /**
-   * Replace bibliography with xHTML returned by the processor.
-   *
-   * @param {Object[]} data An array consisting of [0] an object with style information and [1] an array of serialized xHMTL bibliography entries.
-   */
-  setBibliography(data: any[][]) {
-    this.debug("setBibliography()");
-    const bib = data[1].join("\n");
-    this.createContentControl("bibliography", bib);
-  }
-
-  /**
-   *   Puts document into the state it would have been
-   *   in at first opening had it been properly saved.
-   *
-   * @return {void}
-   */
-  async spoofDocument(): Promise<void> {
-    this.debug("spoofDocument()");
-    // Use stored style if available
-    // const citationStyle = Office.context.document.settings.get("Style");
-    // if (citationStyle) {
-    //   this.config.defaultStyle = citationStyle;
-    // }
-
-    // Initialize array and object
-    const getCitationByIndex = await this.getCitationByIndex();
-    if (getCitationByIndex) {
-      this.config.citationByIndex = getCitationByIndex;
-    }
-    const getCitationIdToPos = await this.getCitationIdToPos();
-    if (getCitationIdToPos) {
-      this.config.citationIdToPos = getCitationIdToPos;
-    }
-
-    // Build citationByIndex
-    // This gives us assurance of one-to-one correspondence between
-    // citation nodes and citationByIndex data. The processor
-    // and the code for handling its return must cope with possible
-    // duplicate citationIDs in data and node citationIDs.
-  }
-
-  async spoofCitations(): Promise<object[]> {
-    this.debug("spoofCitations()");
-    const citationByIndex = await this.getCitationByIndex();
-    if (!citationByIndex) {
-      return [];
-    }
-    return citationByIndex;
   }
 }
 

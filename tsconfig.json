@@ -26,8 +26,8 @@
       "node_modules/citeproc-types",
     ],    
     "types": [
-      "citeproc-types",
       "@types/node",
+      "citeproc-types",
       "office-js"
     ]
   },
