@@ -7,6 +7,76 @@ interface referenceData extends Omit<MetaData, "year" | "issued"> {
   issued?: unknown;
 }
 
+export interface citation {
+  citationID: string;
+  citationItems?: CitationItemsEntity[] | null;
+  properties: Properties;
+}
+interface CitationItemsEntity {
+  id: string;
+  itemData?: ItemData;
+  isTemporary?: boolean;
+}
+interface ItemData {
+  type?: string;
+  id: string;
+  title: string;
+  author?: AuthorEntity[] | null;
+  issued?: Issued;
+  abstract?: string;
+  year?: number;
+  accessed?: Date;
+  mts?: any;
+  number?: string;
+  editor?: AuthorEntity[];
+  composer?: AuthorEntity[];
+  recipient?: AuthorEntity[];
+  translator?: AuthorEntity[];
+  contributor?: AuthorEntity[];
+  interviewer?: AuthorEntity[];
+  "reviewed-author"?: AuthorEntity[];
+  volume?: string;
+  page?: string;
+  issue?: string;
+  ISSN?: string;
+  ISBN?: string;
+  DOI?: string;
+  PMID?: string;
+  edition?: string;
+  citekey?: string;
+  URL?: string;
+  publisher?: string;
+  "publisher-place"?: string;
+  "container-title"?: string;
+  "container-title-short"?: string;
+  "collection-title"?: string;
+  "container-author"?: AuthorEntity[];
+  archive_location?: string;
+  euId?: string;
+  refId?: string;
+  tags?: any[];
+  note?: string;
+  keyword?: string;
+  notes?: any[];
+  source?: string;
+  creators?: string;
+  etal?: string;
+  ownerTitle?: string;
+  bMetaSync?: boolean;
+  checked?: boolean;
+}
+interface AuthorEntity {
+  family?: string;
+  given?: string;
+}
+interface Issued {
+  "date-parts"?: (number[] | null)[] | null;
+}
+interface Properties {
+  noteIndex?: number;
+}
+
+
 class CiteSupport {
   config: {
     debug: boolean;
@@ -197,8 +267,6 @@ class CiteSupport {
    * The update has two effects: (1) the id of all in-text citation
    * nodes is set to the citationByIndex object; and (2)
    * citation texts are updated.
-   *
-   * data: An array of elements with the form `[citationIndex, citationText, citationID]`
    */
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
@@ -225,7 +293,7 @@ class CiteSupport {
   }
 
   /**
-   * Replace bibliography with xHTML returned by the processor.
+   * Insert bibliography with xHTML returned by the processor.
    */
   setBibliography(data: Bibliography): void {
     this.debug("setBibliography()");
