@@ -1,4 +1,4 @@
-import CSL, { MetaData, Citation, CitationRegistry } from "citeproc";
+import CSL, { MetaData, Citation } from "citeproc";
 
 interface reference extends Omit<MetaData, "year" | "issued"> {
   year?: number;
@@ -64,12 +64,7 @@ function buildItemsObj(itemIDs: Array<string | number>): void {
   });
 }
 
-function setPreferenceAndReferenceData(
-  localeName: string,
-  citationbyIndex: CitationRegistry,
-  data: Array<reference>
-): void {
-  console.log("citationByIndex", citationbyIndex);
+function setPreferenceAndReferenceData(localeName: string, citationbyIndex: Object[], data: Array<reference>): void {
   preferredLocale = localeName;
   citationByIndex = citationbyIndex;
   referenceData = data;

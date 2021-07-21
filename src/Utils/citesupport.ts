@@ -48,7 +48,6 @@ class CiteSupport {
           );
           break;
         case "registerCitation":
-          console.log("*** registerCitation:");
           this.onRegisterCitation(event.data.citationByIndex, event.data.citationData);
           break;
 
@@ -204,13 +203,11 @@ class CiteSupport {
    */
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
-    console.log(data);
 
     for (var i = 0; i < data.length; i++) {
       const position = data[i][0];
       const tag = JSON.stringify(this.config.citationByIndex[position]);
       const citationTag = await this.api.getCitationTagByIndex(position);
-      console.log("citationtag", citationTag);
       if (citationTag === "NEW" || citationTag != tag) {
         await this.api.setCitationTagAtPosition(position, tag);
       }
