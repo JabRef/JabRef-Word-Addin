@@ -54,7 +54,7 @@ const classNames = mergeStyleSets({
   ],
 });
 
-function CitationStyle() {
+function CitationStyle(): JSX.Element {
   const items = [
     { text: "American Political Science Association", value: "american-political-science-association" },
     { text: "IEEE", value: "ieee" },
@@ -62,7 +62,7 @@ function CitationStyle() {
     { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems" },
     { text: "Chicago Manual of Style 16th edition (author-date)", value: "chicago-author-date-16th-edition" },
   ];
-  const preferenceStyle = Office.context.document.settings.get("Style");
+  const preferenceStyle: string | null = Office.context.document.settings.get("Style");
   const selectedStyle = preferenceStyle
     ? items.find((item) => item.value === preferenceStyle).text
     : "American Psychological Association 7th edition";
