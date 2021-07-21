@@ -196,61 +196,29 @@ const data = [
     },
   },
 ];
-
 export type BibliographyEntry = {
-  type?: string;
   id: string;
+  author?: { family?: string; given?: string }[];
   title: string;
-  author?: AuthorEntity[] | null;
-  issued?: Issued;
-  abstract?: string;
-  year?: number;
-  accessed?: Date;
-  mts?: any;
-  number?: string;
-  editor?: AuthorEntity[];
-  composer?: AuthorEntity[];
-  recipient?: AuthorEntity[];
-  translator?: AuthorEntity[];
-  contributor?: AuthorEntity[];
-  interviewer?: AuthorEntity[];
-  "reviewed-author"?: AuthorEntity[];
+  journal?: string;
   volume?: string;
-  page?: string;
-  issue?: string;
-  ISSN?: string;
-  ISBN?: string;
+  number?: string;
+  pages?: string;
+  year?: string;
   DOI?: string;
-  PMID?: string;
-  edition?: string;
-  citekey?: string;
-  URL?: string;
-  publisher?: string;
-  "publisher-place"?: string;
+  type?: string;
+  abstract?: string;
+  keywords?: string;
+  citationKey?: string;
+  other?: unknown;
   "container-title"?: string;
-  "container-title-short"?: string;
-  "collection-title"?: string;
-  "container-author"?: AuthorEntity[];
-  archive_location?: string;
-  euId?: string;
-  refId?: string;
-  tags?: any[];
-  note?: string;
-  keyword?: string;
-  notes?: any[];
+  ISSN?: string;
+  issue?: string;
+  journalAbbreviation?: string;
+  language?: string;
+  page?: string;
   source?: string;
-  creators?: string;
-  etal?: string;
-  ownerTitle?: string;
-  bMetaSync?: boolean;
-  checked?: boolean;
+  issued?: unknown;
 };
-interface AuthorEntity {
-  family?: string;
-  given?: string;
-}
-interface Issued {
-  "date-parts"?: (number[] | null)[] | null;
-}
 
 export default data;
