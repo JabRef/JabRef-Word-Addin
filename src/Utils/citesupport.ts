@@ -1,6 +1,7 @@
 import { Bibliography, Citation, CitationResult, MetaData, RebuildProcessorStateData } from "citeproc";
+import { WordApiSupport } from "./wordApiSupport";
 import CiteWorker from "./worker/cite.worker.ts";
-/* global Office Word OfficeExtension*/
+/* global Office */
 
 interface referenceData extends Omit<MetaData, "year" | "issued"> {
   year?: number;
@@ -19,6 +20,7 @@ class CiteSupport {
     referenceData: Array<referenceData>;
   };
   worker: Worker;
+  api: WordApiSupport;
   constructor(referenceData: Array<referenceData>) {
     this.config = {
       debug: true,
@@ -30,6 +32,7 @@ class CiteSupport {
       processorReady: false,
       referenceData: referenceData,
     };
+    this.api = new WordApiSupport();
     this.worker = new CiteWorker();
     this.worker.onmessage = (event) => {
       if (event.data.errors) {
@@ -45,6 +48,7 @@ class CiteSupport {
           );
           break;
         case "registerCitation":
+          console.log("*** registerCitation:");
           this.onRegisterCitation(event.data.citationByIndex, event.data.citationData);
           break;
 
@@ -200,22 +204,23 @@ class CiteSupport {
    */
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
+    console.log(data);
 
     for (var i = 0; i < data.length; i++) {
       const position = data[i][0];
-      const tag = this.config.citationByIndex[position];
-      const encodedTag = btoa(JSON.stringify(tag));
-      const citationTag = await this.getCitationTagByIndex(position);
-      if (citationTag === "NEW" || citationTag != encodedTag) {
-        await this.setCitationTagAtPosition(position, encodedTag);
+      const tag = JSON.stringify(this.config.citationByIndex[position]);
+      const citationTag = await this.api.getCitationTagByIndex(position);
+      console.log("citationtag", citationTag);
+      if (citationTag === "NEW" || citationTag != tag) {
+        await this.api.setCitationTagAtPosition(position, tag);
       }
-      await this.insertTextInContentControl(citationTag as string, data[i][1]);
+      await this.api.insertTextInContentControl(citationTag as string, data[i][1]);
     }
 
     // Update citationIdToPos for all nodes
-    const getTotalNumberOfCitation = await this.getTotalNumberOfCitation();
+    const getTotalNumberOfCitation = await this.api.getTotalNumberOfCitation();
     for (let i = 0; i < getTotalNumberOfCitation; i++) {
-      let citationID = await this.getCitationTagByIndex(i);
+      let citationID = await this.api.getCitationTagByIndex(i);
       if (citationID) {
         this.config.citationIdToPos[citationID] = i;
       }
@@ -228,7 +233,7 @@ class CiteSupport {
   setBibliography(data: Bibliography): void {
     this.debug("setBibliography()");
     const bib = data[1].join("\n");
-    this.createContentControl("bibliography", bib);
+    this.api.createContentControl("bibliography", bib);
   }
 
   /**
@@ -241,11 +246,11 @@ class CiteSupport {
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
-    const getCitationByIndex = await this.getCitationByIndex();
+    const getCitationByIndex = await this.api.getCitationByIndex();
     if (getCitationByIndex) {
       this.config.citationByIndex = getCitationByIndex;
     }
-    const getCitationIdToPos = await this.getCitationIdToPos();
+    const getCitationIdToPos = await this.api.getCitationIdToPos();
     if (getCitationIdToPos) {
       this.config.citationIdToPos = getCitationIdToPos;
     }
@@ -253,192 +258,6 @@ class CiteSupport {
   // TODO: ADD isCitation function to check whether current selection is citation or not
   isCitation() {
     return false;
-  }
-
-  // Word APIs
-  async insertEmptyContentControl(): Promise<void> {
-    Word.run(function (context) {
-      const getSelection = context.document.getSelection();
-      const contentControl = getSelection.insertContentControl();
-      contentControl.tag = "JABREF-CITATION-NEW";
-      contentControl.appearance = "Hidden";
-      return context.sync();
-    }).catch(function (error) {
-      console.log("Error: " + error);
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  async insertTextInContentControl(encodedTag: string, text: string): Promise<void> {
-    Word.run(async function (context) {
-      let contentControl = context.document.contentControls.getByTag("JABREF-CITATION-" + encodedTag).getFirst();
-      contentControl.load("tag, appearance");
-      return context.sync().then(() => {
-        contentControl.insertHtml(text, "Replace");
-        contentControl.appearance = "BoundingBox";
-        return context.sync();
-      });
-    }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  async getTotalNumberOfCitation(): Promise<number | void> {
-    return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag, length");
-      await context.sync();
-      let length = 0;
-      contentControls.items.forEach((citation) => {
-        const tag = citation.tag.split("-");
-        if (tag[0] === "JABREF" && tag[1] === "CITATION") {
-          length++;
-        }
-      });
-      return length;
-    }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  async getPositionOfNewCitation(): Promise<number> {
-    return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag, length");
-      await context.sync();
-      let length = 0;
-      let pos = null;
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        const tag = contentControls.items[i].tag.split("-");
-        if (tag[0] === "JABREF" && tag[1] === "CITATION") {
-          if (tag[2] == "NEW") {
-            pos = length;
-            break;
-          }
-          length++;
-        }
-      }
-      return pos;
-    }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  async setCitationTagAtPosition(position: number, tag: string): Promise<void> {
-    Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag");
-      await context.sync();
-      const contentControl = contentControls.items[position];
-      contentControl.tag = "JABREF-CITATION-" + tag;
-      return context.sync();
-    }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  async getCitationTagByIndex(position: number): Promise<string> {
-    return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag, length");
-      await context.sync();
-      let indexTag = null;
-      let pos = 0;
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        const tag = contentControls.items[i].tag.split("-");
-        if (tag[0] === "JABREF" && tag[1] === "CITATION") {
-          if (pos == position) {
-            indexTag = tag[2];
-            break;
-          } else {
-            pos++;
-          }
-        }
-      }
-      return indexTag;
-    }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  async getCitationIdToPos(): Promise<object | void> {
-    return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag, length");
-      await context.sync();
-      let citationIdToPos = {};
-      let pos = 0;
-      contentControls.items.forEach((citation) => {
-        const tag = citation.tag.split("-");
-        if (tag[0] === "JABREF" && tag[1] === "CITATION") {
-          citationIdToPos[tag[2]] = pos;
-          pos++;
-        }
-      });
-      return context.sync().then(function () {
-        if (citationIdToPos) {
-          return citationIdToPos;
-        }
-        return {};
-      });
-    }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  async getCitationByIndex(): Promise<Array<object> | void> {
-    return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
-      context.load(contentControls, "tag, length");
-      await context.sync();
-      let citationByIndex = [];
-      contentControls.items.forEach((citation) => {
-        const tag = citation.tag.split("-");
-        if (tag[0] === "JABREF" && tag[1] === "CITATION") {
-          citationByIndex.push(JSON.parse(atob(tag[2])));
-        }
-      });
-      return context.sync().then(function () {
-        if (citationByIndex.length) {
-          return citationByIndex;
-        }
-        return [];
-      });
-    }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
-  }
-  createContentControl(tag: string, html: string) {
-    Word.run(function (context) {
-      const getSelection = context.document.getSelection();
-      const contentControl = getSelection.insertContentControl();
-      contentControl.tag = tag;
-      contentControl.appearance = "BoundingBox";
-      contentControl.color = "white";
-      contentControl.insertHtml(html, "Replace");
-      return context.sync();
-    }).catch(function (error) {
-      console.log("Error: " + error);
-      if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
-      }
-    });
   }
 }
 

@@ -69,6 +69,7 @@ function setPreferenceAndReferenceData(
   citationbyIndex: CitationRegistry,
   data: Array<reference>
 ): void {
+  console.log("citationByIndex", citationbyIndex);
   preferredLocale = localeName;
   citationByIndex = citationbyIndex;
   referenceData = data;
@@ -84,8 +85,7 @@ async function buildProcessor(styleID: string): Promise<void> {
       citation.citationItems.forEach((item) => {
         itemIDs.push(item.id);
       });
-      this.citation.properties.noteIndex = 0;
-    }, citationByIndex);
+    });
   }
 
   buildItemsObj(itemIDs);

@@ -78,14 +78,14 @@ function Dashboard({ citeSupport }: dashboardProps) {
 
   async function insertCitation() {
     const isCitation = citeSupport.isCitation();
-    const citationByIndex = await citeSupport.getCitationByIndex();
+    const citationByIndex = await citeSupport.api.getCitationByIndex();
     if (citationByIndex) {
       citeSupport.config.citationByIndex = citationByIndex;
     }
     let citation = null;
     if (!isCitation) {
       if (checkedItems.length) {
-        citeSupport.insertEmptyContentControl();
+        citeSupport.api.insertEmptyContentControl();
         citation = {
           citationItems: checkedItems,
           properties: {
@@ -96,7 +96,7 @@ function Dashboard({ citeSupport }: dashboardProps) {
     }
     let citationsPre = [];
     let citationsPost = [];
-    const i = await citeSupport.getPositionOfNewCitation();
+    const i = await citeSupport.api.getPositionOfNewCitation();
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex.slice(0, i).map(function (obj) {
         return [obj.citationID, 0];
