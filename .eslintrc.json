@@ -51,7 +51,7 @@
 		  "unused-imports/no-unused-imports": "error",
       "import/no-unresolved": [
         2, 
-        { "caseSensitive": false }
+        { "caseSensitive": false,  "commonjs": true  }
      ],
       "unused-imports/no-unused-vars": [
         "warn",
