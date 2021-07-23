@@ -1,6 +1,7 @@
 {
     "globals": {
-      "JSX": true
+      "JSX": true,
+      "Office": "readonly"
     },
     "env": {
         "browser": true,
@@ -56,5 +57,13 @@
      ],
      "react/jsx-props-no-spreading": "off",
      "no-nested-ternary": "off"
-    }
+    },
+      "overrides": [
+        {
+            "files": ["*.ts"],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ]
 }

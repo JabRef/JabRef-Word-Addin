@@ -1,6 +1,4 @@
 /* eslint-disable no-restricted-globals */
-/* global Office */
-
 // Office.onReady(() => {
 //   // If needed, Office.js is ready to be called
 // });
@@ -28,6 +26,7 @@ function action(event: Office.AddinCommands.Event) {
 }
 
 function getGlobal() {
+  // eslint-disable-next-line no-restricted-globals
   return typeof self !== "undefined"
     ? self
     : typeof window !== "undefined"
