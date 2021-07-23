@@ -48,6 +48,7 @@ Office.initialize = () => {
 
 if ((module as any).hot) {
   (module as any).hot.accept("./components/App", () => {
+    // eslint-disable-next-line import/extensions
     const NextApp = require("./components/App").default;
     render(NextApp);
   });

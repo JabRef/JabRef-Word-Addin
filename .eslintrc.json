@@ -1,61 +1,59 @@
 {
-  "globals": {
-    "JSX": true
-  },
-  "env": {
-    "browser": true,
-    "node": true,
-    "es6": true
-  },
-  "plugins": [
-    "office-addins",
-    "@typescript-eslint",
-    "unused-imports"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:office-addins/react",
-    "airbnb",
-    "airbnb/hooks",
-    "prettier",
-    "plugin:prettier/recommended"
-    ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "settings" : {
-        "import/parsers": {
-          "@typescript-eslint/parser": [".ts",".tsx"]
-         },
-         "import/resolver": {
-             "node": {
-                 "extensions": [".js",".jsx",".ts",".tsx"]
-             }
-         }
+    "globals": {
+      "JSX": true
     },
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:office-addins/react",
+        "airbnb",
+        "airbnb/hooks",
+        "prettier",
+        "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "settings" : {
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts",".tsx"]
+       },
+       "import/resolver": {
+           "node": {
+               "extensions": [".js",".jsx",".ts",".tsx"]
+           }
+       }
+    },
+    "plugins": [
+        "office-addins",
+        "react",
+        "@typescript-eslint",
+        "unused-imports"
+    ],
     "rules": {
-      "no-nested-ternary": "off",
       "react/jsx-filename-extension": "off",
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "error",
-      "no-useless-constructor": "off",
-      "@typescript-eslint/no-useless-constructor": "error",
-      "react/jsx-props-no-spreading": "off",
       "no-use-before-define": "off",
-      "import/extensions": "off",
-		  "unused-imports/no-unused-imports": "error",
-      "import/no-unresolved": [
-        2, 
-        { "caseSensitive": false,  "commonjs": true  }
+      "@typescript-eslint/no-use-before-define": ["error"],
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+        }
      ],
-      "unused-imports/no-unused-vars": [
-        "warn",
-        { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
-      ]
-  }
+     "react/jsx-props-no-spreading": "off"
+    }
 }
