@@ -26,7 +26,6 @@ function action(event: Office.AddinCommands.Event) {
 }
 
 function getGlobal() {
-  // eslint-disable-next-line no-restricted-globals
   return typeof self !== "undefined"
     ? self
     : typeof window !== "undefined"
