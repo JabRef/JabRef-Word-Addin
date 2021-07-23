@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 // Todo upgrade react-hot-loader and re-enable these rules
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable global-require */
@@ -8,7 +9,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { AppContainer } from "react-hot-loader";
 import { initializeIcons, ThemeProvider } from "@fluentui/react";
 import { HashRouter as Router } from "react-router-dom";
@@ -48,7 +48,6 @@ Office.initialize = () => {
 
 if ((module as any).hot) {
   (module as any).hot.accept("./components/App", () => {
-    // eslint-disable-next-line import/extensions
     const NextApp = require("./components/App").default;
     render(NextApp);
   });
