@@ -8121,10 +8121,10 @@ office-addin-node-debugger@^0.4.47:
     office-addin-usage-data "^1.2.6"
     ws "^6.2.1"
 
-office-addin-prettier-config@^1.0.14, office-addin-prettier-config@^1.0.16:
-  version "1.0.16"
-  resolved "https://registry.npmjs.org/office-addin-prettier-config/-/office-addin-prettier-config-1.0.16.tgz"
-  integrity sha512-2Xw8byAqvuY8BpD7cyIeDIxzj/oyBw/czNt3q5GVRTRyucR8co7vU12E8RRWYcYXWS8xZwLg5Z6S8j714AwK3w==
+office-addin-prettier-config@^1.0.16, office-addin-prettier-config@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.1.0.tgz#92ce8f62d7b7ea24e242648f9693a1fce979c8b0"
+  integrity sha512-tCv+FoL+oj5WpXcoKuqgqDIcdvHpEklRvksHD3zxT2eVKrDzgWd8BXsqrPkNIH85zsuPgpje3brobbOvbNqa6A==
 
 office-addin-usage-data@^1.2.6, office-addin-usage-data@^1.3.0:
   version "1.3.0"

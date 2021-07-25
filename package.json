@@ -88,7 +88,7 @@
     "office-addin-dev-certs": "^1.5.12",
     "office-addin-lint": "^1.0.32",
     "office-addin-manifest": "^1.6.0",
-    "office-addin-prettier-config": "^1.0.14",
+    "office-addin-prettier-config": "^1.1.0",
     "postcss-loader": "^4.0.0",
     "prettier": "2.3.2",
     "react-hot-loader": "^4.12.6",
