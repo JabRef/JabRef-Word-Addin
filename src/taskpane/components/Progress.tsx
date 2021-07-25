@@ -1,4 +1,11 @@
-import { DefaultPalette, IStackStyles, IStackTokens, Spinner, SpinnerSize, Stack } from "@fluentui/react";
+import {
+  DefaultPalette,
+  IStackStyles,
+  IStackTokens,
+  Spinner,
+  SpinnerSize,
+  Stack,
+} from "@fluentui/react";
 import React from "react";
 import Wrapper from "./Wrapper";
 

@@ -2,7 +2,6 @@ import React, { ReactElement, useState } from "react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
-// /* global Word */
 
 const dashboadStyle = {
   width: "100%",
@@ -37,7 +36,9 @@ function Dashboard(): ReactElement {
     setItems(originalItems.filter(containsSearchTerm(keyword)));
   };
 
-  const handleToggleChange = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
+  const handleToggleChange = (
+    ev: React.FormEvent<HTMLElement | HTMLInputElement>
+  ) => {
     setItems((currentItems) => {
       return currentItems.map(onCheckboxChange(ev));
     });

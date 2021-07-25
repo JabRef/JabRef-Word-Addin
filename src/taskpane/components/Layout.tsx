@@ -79,8 +79,15 @@ function Layout(): ReactElement {
         </Pivot>
       </Stack>
       <Stack grow disableShrink styles={footerStackStyle} verticalAlign="end">
-        <Stack horizontal style={{ height: "100%" }} horizontalAlign="space-between">
-          <Stack horizontal style={{ alignItems: "center", padding: 8, paddingLeft: 10 }}>
+        <Stack
+          horizontal
+          style={{ height: "100%" }}
+          horizontalAlign="space-between"
+        >
+          <Stack
+            horizontal
+            style={{ alignItems: "center", padding: 8, paddingLeft: 10 }}
+          >
             <img {...imageProps} alt="jabref logo" width={20} />
             <div
               style={{

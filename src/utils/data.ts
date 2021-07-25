@@ -1,4 +1,4 @@
-const data = [
+const data: Array<BibliographyEntry> = [
   {
     id: "ckondtcadsds000101mh7x9g4gia",
     author: "Albert Einstein",
@@ -14,7 +14,8 @@ const data = [
   {
     id: "ckondtcaf000101mh7x9g4gia",
     type: "Article",
-    title: "Clebsch-Lagrange variational principle and geometric constraint analysis of relativistic field theories",
+    title:
+      "Clebsch-Lagrange variational principle and geometric constraint analysis of relativistic field theories",
     author: "Tobias Diez and Gerd Rudolph",
     abstract:
       "Inspired by the Clebsch optimal control problem, we introduce a new variational principle that is suitable for capturing the geometry of relativistic field theories with constraints related to a gauge symmetry. Its special feature is that the Lagrange multipliers couple to the configuration variables via the symmetry group action. The resulting constraints are formulated as a condition on the momentum map of the gauge group action on the phase space of the system. We discuss the Hamiltonian picture and the reduction in the gauge symmetry by stages in this geometric setting. We show that the Yang–Mills–Higgs action and the Einstein–Hilbert action fit into this new framework after a (1 + 3)-splitting. Moreover, we recover the Gaus constraint of Yang–Mills–Higgs theory and the diffeomorphism constraint of general relativity as momentum map constraints.Inspired by the Clebsch optimal control problem, we introduce a new variational principle that is suitable for capturing the geometry of relativistic field theories with constraints related to a gauge symmetry. Its special feature is that the Lagrange multipliers couple to the configuration variables via the symmetry group action. The resulting constraints are formulated as a condition on the momentum map of the gauge group action on the phase space of the system. We discuss the Hamiltonian picture and the reduction in the gauge symmetry by stages in this geometric setting. We show that the Yang–Mills–Higgs action and the Einstein–Hilbert action fit into this new framework after a (1 + 3)-splitting. Moreover, we recover the Gaus constraint of Yang–Mills–Higgs theory and the diffeomorphism constraint of general relativity as momentum map constraints.",
@@ -45,7 +46,8 @@ const data = [
   {
     id: "ckondtcaf000101mh7x9g4gia",
     type: "Article",
-    title: "Clebsch-Lagrange variational principle and geometric constraint analysis of relativistic field theories",
+    title:
+      "Clebsch-Lagrange variational principle and geometric constraint analysis of relativistic field theories",
     author: "Tobias Diez and Gerd Rudolph",
     abstract:
       "Inspired by the Clebsch optimal control problem, we introduce a new variational principle that is suitable for capturing the geometry of relativistic field theories with constraints related to a gauge symmetry. Its special feature is that the Lagrange multipliers couple to the configuration variables via the symmetry group action. The resulting constraints are formulated as a condition on the momentum map of the gauge group action on the phase space of the system. We discuss the Hamiltonian picture and the reduction in the gauge symmetry by stages in this geometric setting. We show that the Yang–Mills–Higgs action and the Einstein–Hilbert action fit into this new framework after a (1 + 3)-splitting. Moreover, we recover the Gaus constraint of Yang–Mills–Higgs theory and the diffeomorphism constraint of general relativity as momentum map constraints.Inspired by the Clebsch optimal control problem, we introduce a new variational principle that is suitable for capturing the geometry of relativistic field theories with constraints related to a gauge symmetry. Its special feature is that the Lagrange multipliers couple to the configuration variables via the symmetry group action. The resulting constraints are formulated as a condition on the momentum map of the gauge group action on the phase space of the system. We discuss the Hamiltonian picture and the reduction in the gauge symmetry by stages in this geometric setting. We show that the Yang–Mills–Higgs action and the Einstein–Hilbert action fit into this new framework after a (1 + 3)-splitting. Moreover, we recover the Gaus constraint of Yang–Mills–Higgs theory and the diffeomorphism constraint of general relativity as momentum map constraints.",
@@ -75,7 +77,8 @@ const data = [
   {
     id: "ckondtcaf000101mh7x9g4gia",
     type: "Article",
-    title: "Clebsch-Lagrange variational principle and geometric constraint analysis of relativistic field theories",
+    title:
+      "Clebsch-Lagrange variational principle and geometric constraint analysis of relativistic field theories",
     author: "Tobias Diez and Gerd Rudolph",
     abstract:
       "Inspired by the Clebsch optimal control problem, we introduce a new variational principle that is suitable for capturing the geometry of relativistic field theories with constraints related to a gauge symmetry. Its special feature is that the Lagrange multipliers couple to the configuration variables via the symmetry group action. The resulting constraints are formulated as a condition on the momentum map of the gauge group action on the phase space of the system. We discuss the Hamiltonian picture and the reduction in the gauge symmetry by stages in this geometric setting. We show that the Yang–Mills–Higgs action and the Einstein–Hilbert action fit into this new framework after a (1 + 3)-splitting. Moreover, we recover the Gaus constraint of Yang–Mills–Higgs theory and the diffeomorphism constraint of general relativity as momentum map constraints.Inspired by the Clebsch optimal control problem, we introduce a new variational principle that is suitable for capturing the geometry of relativistic field theories with constraints related to a gauge symmetry. Its special feature is that the Lagrange multipliers couple to the configuration variables via the symmetry group action. The resulting constraints are formulated as a condition on the momentum map of the gauge group action on the phase space of the system. We discuss the Hamiltonian picture and the reduction in the gauge symmetry by stages in this geometric setting. We show that the Yang–Mills–Higgs action and the Einstein–Hilbert action fit into this new framework after a (1 + 3)-splitting. Moreover, we recover the Gaus constraint of Yang–Mills–Higgs theory and the diffeomorphism constraint of general relativity as momentum map constraints.",
@@ -103,6 +106,7 @@ const data = [
     },
   },
 ];
+
 export type BibliographyEntry = {
   id: string;
   author: string;
