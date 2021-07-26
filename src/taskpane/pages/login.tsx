@@ -52,20 +52,25 @@ function Login() {
         initialValues={{ email: "", password: "" }}
         onSubmit={async (value) => {
           const response = await loginMutation({ variables: value });
+          // eslint-disable-next-line no-underscore-dangle
           if (response.data?.login.__typename === "User") {
             history.push({ pathname: "/" });
           }
         }}
       >
         {({ isSubmitting }) => (
-          <Stack verticalFill={true} styles={stackStylesHeader}>
+          <Stack verticalFill styles={stackStylesHeader}>
             <Form>
               <Stack styles={stackStyles} tokens={verticalGapStackTokens}>
                 <Stack.Item align="center">
                   <img {...imageProps} alt="jabref logo" width={80} />
                 </Stack.Item>
                 <Stack.Item align="center">
-                  <div style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}>Log In</div>
+                  <div
+                    style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}
+                  >
+                    Log In
+                  </div>
                 </Stack.Item>
                 <Stack.Item align="center">
                   {error ? (
@@ -82,11 +87,22 @@ function Login() {
                   ) : null}
                 </Stack.Item>
                 <Stack.Item>
-                  <InputField name="email" type="email" label="Email" placeholder="Email" autoFocus />
-                  <InputField type="password" name="password" label="Password" placeholder="*********" />
+                  <InputField
+                    name="email"
+                    type="email"
+                    label="Email"
+                    placeholder="Email"
+                    autoFocus
+                  />
+                  <InputField
+                    type="password"
+                    name="password"
+                    label="Password"
+                    placeholder="*********"
+                  />
                 </Stack.Item>
                 <Stack.Item align="end">
-                  <Link to="#" target="blank">
+                  <Link to="www.jabref.org" target="blank">
                     Need Help?
                   </Link>
                 </Stack.Item>
@@ -99,7 +115,7 @@ function Login() {
                   <div>Don&apos;t have an account?</div>
                 </Stack.Item>
                 <Stack.Item align="center">
-                  <Link to="#" target="blank">
+                  <Link to="www.jabref.org" target="blank">
                     Sign Up
                   </Link>
                 </Stack.Item>
