@@ -1,6 +1,6 @@
-import React from "react";
-import Progress from "./Progress";
+import React, { ReactElement } from "react";
 import { Switch, Route } from "react-router-dom";
+import Progress from "./Progress";
 import Login from "../pages/login";
 import Layout from "./Layout";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
@@ -10,24 +10,29 @@ export interface AppProps {
   isOfficeInitialized: boolean;
 }
 
-function App(props: AppProps) {
+function App(props: AppProps): ReactElement {
   const { isOfficeInitialized } = props;
 
   if (!isOfficeInitialized) {
-    return <Progress title="JabRef" message="Loading JabRef..." logo="../../../assets/jabref.svg" />;
-  } else {
     return (
-      <div>
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <ProtectedRoutes path="/">
-            <Layout />
-          </ProtectedRoutes>
-        </Switch>
-      </div>
+      <Progress
+        title="JabRef"
+        message="Loading JabRef..."
+        logo="../../../assets/jabref.svg"
+      />
     );
   }
+  return (
+    <div>
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <ProtectedRoutes path="/">
+          <Layout />
+        </ProtectedRoutes>
+      </Switch>
+    </div>
+  );
 }
 export default App;

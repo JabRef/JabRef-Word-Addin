@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   ITheme,
   getTheme,
@@ -8,19 +9,21 @@ import {
   FocusZoneDirection,
   Checkbox,
 } from "@fluentui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import { BibliographyEntry } from "../../utils/data";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-interface bib extends BibliographyEntry {
+export interface bib extends BibliographyEntry {
   isSelected: boolean;
 }
 
 interface ReferenceListProps {
   list: Array<bib>;
-  // eslint-disable-next-line no-unused-vars
-  onCheckBoxChange: (ev?: React.FormEvent<HTMLInputElement | HTMLElement>, checked?: boolean) => void;
+  onCheckBoxChange: (
+    ev?: React.FormEvent<HTMLInputElement | HTMLElement>,
+    checked?: boolean
+  ) => void;
 }
 const classNames = mergeStyleSets({
   container: {
@@ -79,10 +82,11 @@ const classNames = mergeStyleSets({
   },
 });
 
-function ReferenceList(props: ReferenceListProps) {
+function ReferenceList(props: ReferenceListProps): ReactElement {
+  const { list } = props;
   const onRenderCell = (item: bib): JSX.Element => {
     return (
-      <div className={classNames.itemCell} data-is-focusable={true}>
+      <div className={classNames.itemCell} data-is-focusable>
         <Checkbox
           className={classNames.checkbox}
           title={item.title}
@@ -102,8 +106,11 @@ function ReferenceList(props: ReferenceListProps) {
   };
 
   return (
-    <FocusZone direction={FocusZoneDirection.vertical} className={classNames.container}>
-      <List items={props.list} onRenderCell={onRenderCell} />
+    <FocusZone
+      direction={FocusZoneDirection.vertical}
+      className={classNames.container}
+    >
+      <List items={list} onRenderCell={onRenderCell} />
     </FocusZone>
   );
 }

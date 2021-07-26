@@ -12,7 +12,7 @@ import {
   IIconProps,
   IButtonStyles,
 } from "@fluentui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import { useLogoutMutation } from "../../generated/graphql";
 import client from "../../utils/apolloClient";
 import CitationStyle from "../pages/citationStyle";
@@ -55,7 +55,7 @@ const pivotStyle: Partial<IPivotStyles> = {
   },
 };
 
-function Layout() {
+function Layout(): ReactElement {
   const [logoutMutation] = useLogoutMutation();
   return (
     <Wrapper>
@@ -79,9 +79,16 @@ function Layout() {
           </PivotItem>
         </Pivot>
       </Stack>
-      <Stack grow disableShrink={true} styles={footerStackStyle} verticalAlign="end">
-        <Stack horizontal style={{ height: "100%" }} horizontalAlign="space-between">
-          <Stack horizontal style={{ alignItems: "center", padding: 8, paddingLeft: 10 }}>
+      <Stack grow disableShrink styles={footerStackStyle} verticalAlign="end">
+        <Stack
+          horizontal
+          style={{ height: "100%" }}
+          horizontalAlign="space-between"
+        >
+          <Stack
+            horizontal
+            style={{ alignItems: "center", padding: 8, paddingLeft: 10 }}
+          >
             <img {...imageProps} alt="jabref logo" width={20} />
             <div
               style={{
@@ -99,9 +106,7 @@ function Layout() {
             styles={SignOutButtonStyle}
             iconProps={Signout}
             allowDisabledFocus
-            onClick={() => {
-              logoutMutation().then(() => client.resetStore());
-            }}
+            onClick={() => logoutMutation().then(() => client.resetStore())}
           >
             Signout
           </ActionButton>

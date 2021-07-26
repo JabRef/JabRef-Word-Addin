@@ -1,8 +1,13 @@
 import * as React from "react";
 import { FocusZone, FocusZoneDirection } from "@fluentui/react/lib/FocusZone";
 import { List } from "@fluentui/react/lib/List";
-import { ITheme, mergeStyleSets, getTheme, getFocusStyle } from "@fluentui/react/lib/Styling";
-/* global Office */
+import {
+  ITheme,
+  mergeStyleSets,
+  getTheme,
+  getFocusStyle,
+} from "@fluentui/react/lib/Styling";
+import { Stack } from "@fluentui/react";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -56,13 +61,27 @@ const classNames = mergeStyleSets({
 
 function CitationStyle(): JSX.Element {
   const items = [
-    { text: "American Political Science Association", value: "american-political-science-association" },
+    {
+      text: "American Political Science Association",
+      value: "american-political-science-association",
+    },
     { text: "IEEE", value: "ieee" },
-    { text: "American Sociological Association 6th edition", value: "american-sociological-association" },
-    { text: "American Psychological Association 7th edition", value: "advances-in-complex-systems" },
-    { text: "Chicago Manual of Style 16th edition (author-date)", value: "chicago-author-date-16th-edition" },
+    {
+      text: "American Sociological Association 6th edition",
+      value: "american-sociological-association",
+    },
+    {
+      text: "American Psychological Association 7th edition",
+      value: "advances-in-complex-systems",
+    },
+    {
+      text: "Chicago Manual of Style 16th edition (author-date)",
+      value: "chicago-author-date-16th-edition",
+    },
   ];
-  const preferenceStyle: string | null = Office.context.document.settings.get("Style");
+  const preferenceStyle: string | null = Office.context.document.settings.get(
+    "Style"
+  ) as string;
   const selectedStyle = preferenceStyle
     ? items.find((item) => item.value === preferenceStyle).text
     : "American Psychological Association 7th edition";
@@ -77,13 +96,19 @@ function CitationStyle(): JSX.Element {
     return Office.context.document.settings.saveAsync();
   });
 
-  const onRenderCell = (item): JSX.Element => {
+  const onRenderCell = (item: { text: string; value: string }): JSX.Element => {
     return (
-      <div className={classNames.itemCell} data-is-focusable={true}>
-        <div id={item.value} className={classNames.itemName} onClick={onClick}>
+      <Stack className={classNames.itemCell} data-is-focusable>
+        <Stack
+          key={item.value}
+          id={item.value}
+          className={classNames.itemName}
+          onClick={onClick}
+          onKeyDown={onClick}
+        >
           {item.text}
-        </div>
-      </div>
+        </Stack>
+      </Stack>
     );
   };
 

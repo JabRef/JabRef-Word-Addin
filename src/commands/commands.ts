@@ -1,8 +1,7 @@
-/* global Office */
-
-Office.onReady(() => {
-  // If needed, Office.js is ready to be called
-});
+/* eslint-disable no-restricted-globals */
+// Office.onReady(() => {
+//   // If needed, Office.js is ready to be called
+// });
 
 /**
  * Shows a notification when the add-in command is executed.
@@ -17,7 +16,10 @@ function action(event: Office.AddinCommands.Event) {
   };
 
   // Show a notification message
-  Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+  Office.context.mailbox.item.notificationMessages.replaceAsync(
+    "action",
+    message
+  );
 
   // Be sure to indicate when the add-in command function is complete
   event.completed();
@@ -33,7 +35,7 @@ function getGlobal() {
     : undefined;
 }
 
-const g = getGlobal() as any;
+const g = getGlobal();
 
 // The add-in command functions need to be available in global scope
 g.action = action;
