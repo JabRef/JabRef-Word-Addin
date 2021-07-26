@@ -79,15 +79,17 @@ function CitationStyle(): JSX.Element {
       value: "chicago-author-date-16th-edition",
     },
   ];
-  const preferenceStyle: string | null = Office.context.document.settings.get(
-    "Style"
-  ) as string;
+  const preferenceStyle = Office.context.document.settings.get("Style") as
+    | string
+    | null;
   const selectedStyle = preferenceStyle
     ? items.find((item) => item.value === preferenceStyle).text
     : "American Psychological Association 7th edition";
   const [currentStyle, setCurrentStyle] = React.useState(selectedStyle);
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
-    setCurrentStyle(items.find((i) => i.value === ev.currentTarget.id).text);
+    setCurrentStyle(
+      items.find((item) => item.value === ev.currentTarget.id).text
+    );
     Office.context.document.settings.set("Style", ev.currentTarget.id);
   };
 
