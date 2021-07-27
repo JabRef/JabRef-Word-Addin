@@ -22,7 +22,6 @@
     ],
     "pretty": true,
     "typeRoots": [
-<<<<<<< HEAD
       "node_modules/@types",
       "node_modules/citeproc-types",
     ],    
@@ -30,13 +29,6 @@
       "@types/node",
       "citeproc-types",
       "office-js"
-=======
-      "node_modules/@types"
-    ],
-    "types": [
-      "node",
-      "office-js",
->>>>>>> 6925e00bb627bdb78e9622ad41f95a2760d0ffed
     ]
   },
   "exclude": [
