@@ -4,7 +4,8 @@ const data: Array<BibliographyEntry> = [
     type: "article-journal",
     "container-title": "CoRR",
     note: "_eprint: 1711.06134",
-    title: '"Making you happy makes me happy" - Measuring Individual Mood with Smartwatches',
+    title:
+      '"Making you happy makes me happy" - Measuring Individual Mood with Smartwatches',
     URL: "http://arxiv.org/abs/1711.06134",
     volume: "abs/1711.06134",
     author: [
@@ -134,7 +135,8 @@ const data: Array<BibliographyEntry> = [
     DOI: "10.1145/2071423.2071426",
     page: "2",
     publisher: "ACM",
-    title: '"I\'m happy if you are happy.": a model for emotional contagion in game characters',
+    title:
+      '"I\'m happy if you are happy.": a model for emotional contagion in game characters',
     author: [
       {
         family: "Dimas",
@@ -207,7 +209,7 @@ export type BibliographyEntry = {
   pages?: string;
   note?: string;
   editor?: { family?: string; given?: string }[];
-  year?: string;
+  year?: number;
   "collection-title"?: string;
   DOI?: string;
   type?: string;

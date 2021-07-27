@@ -1,9 +1,9 @@
 import React, { ReactElement, useState } from "react";
+import { PrimaryButton, DefaultButton } from "@fluentui/react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
-import { PrimaryButton, DefaultButton } from "@fluentui/react";
 
 interface dashboardProps {
   citeSupport: CiteSupport;
@@ -19,7 +19,7 @@ const dashboadStyle = {
 
 const buttonContainer = {
   display: "flex",
-  flexDirection: "row" as "row",
+  flexDirection: "row" as const,
   marginTop: "auto",
   flex: "0 0 auto",
   width: "100%",
@@ -28,7 +28,7 @@ const buttonContainer = {
 };
 
 function containsSearchTerm(keyword: string) {
-  return function (item?: bib) {
+  return (item?: bib) => {
     return [item.title, item.author, item.year].some((str) =>
       str ? str.toLowerCase().includes(keyword.toLowerCase().trim()) : false
     );
@@ -36,17 +36,15 @@ function containsSearchTerm(keyword: string) {
 }
 
 function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
-  return function (item) {
-    if (ev.currentTarget) {
-      if (item.title === ev.currentTarget.title) {
-        return { ...item, isSelected: !item.isSelected };
-      }
-      return item;
+  return (item: bib) => {
+    if (ev.currentTarget && item.title === ev.currentTarget.title) {
+      return { ...item, isSelected: !item.isSelected };
     }
+    return item;
   };
 }
 
-function unCheckCheckbox(item) {
+function unCheckCheckbox(item: bib): bib {
   return { ...item, isSelected: false };
 }
 
@@ -79,10 +77,7 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
 
   async function insertCitation() {
     const isCitation = citeSupport.isCitation();
-    const citationByIndex = await citeSupport.api.getCitationByIndex();
-    if (citationByIndex) {
-      citeSupport.config.citationByIndex = citationByIndex;
-    }
+    await citeSupport.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {
       if (checkedItems.length) {
@@ -99,14 +94,18 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
     let citationsPost = [];
     const i = await citeSupport.api.getPositionOfNewCitation();
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
-      citationsPre = citeSupport.config.citationByIndex.slice(0, i).map(function (obj) {
-        return [obj.citationID, 0];
-      });
+      citationsPre = citeSupport.config.citationByIndex
+        .slice(0, i)
+        .map(function (obj) {
+          return [obj.citationID, 0];
+        });
     }
     if (citeSupport.config.citationByIndex.slice(i).length) {
-      citationsPost = citeSupport.config.citationByIndex.slice(i).map(function (obj) {
-        return [obj.citationID, 0];
-      });
+      citationsPost = citeSupport.config.citationByIndex
+        .slice(i)
+        .map(function (obj) {
+          return [obj.citationID, 0];
+        });
     }
     citeSupport.callRegisterCitation(citation, citationsPre, citationsPost);
     unCheckAllCheckbox();
@@ -118,7 +117,9 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
       {checkedItems.length ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation}>Insert {checkedItems.length} citation</PrimaryButton>
+          <PrimaryButton onClick={insertCitation}>
+            Insert {checkedItems.length} citation
+          </PrimaryButton>
           <DefaultButton onClick={unCheckAllCheckbox} style={{ marginLeft: 8 }}>
             cancel
           </DefaultButton>

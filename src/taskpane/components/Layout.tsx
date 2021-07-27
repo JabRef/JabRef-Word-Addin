@@ -60,7 +60,7 @@ const pivotStyle: Partial<IPivotStyles> = {
   },
 };
 
-function Layout({ citeSupport }: LayoutProps): ReactElement  {
+function Layout({ citeSupport }: LayoutProps): ReactElement {
   const [logoutMutation] = useLogoutMutation();
   return (
     <Wrapper>

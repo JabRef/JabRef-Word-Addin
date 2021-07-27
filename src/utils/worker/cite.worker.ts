@@ -6,13 +6,13 @@ interface reference extends Omit<MetaData, "year" | "issued"> {
 }
 
 const ctx: Worker = self as any;
-let itemsObj: Record<string, reference> = {};
-let localesObj: Record<string, string> = {};
+const itemsObj: Record<string, reference> = {};
+const localesObj: Record<string, string> = {};
 let style: string = null;
 let preferredLocale: string = null;
 let citeproc = null;
 let citationByIndex = null;
-let referenceData = []; // User citation data
+let referenceData: reference[] = []; // User citation data
 
 interface CitationItem {
   locator?: string;
@@ -25,19 +25,19 @@ interface CitationItem {
 }
 
 const sys = {
-  retrieveItem: function (itemID: string | number): reference {
+  retrieveItem(itemID: string | number): reference {
     return itemsObj[itemID];
   },
-  retrieveLocale: function (lang: string): string {
+  retrieveLocale(lang: string): string {
     return localesObj[lang];
   },
 };
 
 function getLocale(localeId: string): string {
-  let xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open(
     "GET",
-    "https://raw.githubusercontent.com/Juris-M/citeproc-js-docs/master/locales-" + localeId + ".xml",
+    `https://raw.githubusercontent.com/Juris-M/citeproc-js-docs/master/locales-${localeId}.xml`,
     false
   );
   xhr.send(null);
@@ -45,8 +45,12 @@ function getLocale(localeId: string): string {
 }
 
 function getStyle(styleID: string): string {
-  let xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://raw.githubusercontent.com/citation-style-language/styles/master/" + styleID + ".csl", false);
+  const xhr = new XMLHttpRequest();
+  xhr.open(
+    "GET",
+    `https://raw.githubusercontent.com/citation-style-language/styles/master/${styleID}.csl`,
+    false
+  );
   xhr.send(null);
   return xhr.responseText;
 }
@@ -59,22 +63,26 @@ function buildLocalesObj(locale: string): void {
 }
 
 function buildItemsObj(itemIDs: Array<string | number>): void {
-  itemIDs.forEach((itemID) => {
+  itemIDs.forEach((itemID: string) => {
     itemsObj[itemID] = referenceData.find((x) => x.id === itemID);
   });
 }
 
-function setPreferenceAndReferenceData(localeName: string, citationbyIndex: Object[], data: Array<reference>): void {
+function setPreferenceAndReferenceData(
+  localeName: string,
+  citationbyIndex: Object[],
+  data: Array<reference>
+): void {
   preferredLocale = localeName;
   citationByIndex = citationbyIndex;
   referenceData = data;
 }
 
-async function buildProcessor(styleID: string): Promise<void> {
+function buildProcessor(styleID: string): void {
   style = getStyle(styleID);
   buildLocalesObj(preferredLocale);
   citeproc = new CSL.Engine(sys, style, preferredLocale);
-  let itemIDs = [];
+  const itemIDs = [];
   if (citationByIndex) {
     citationByIndex.forEach(function (citation) {
       citation.citationItems.forEach((item) => {
@@ -97,7 +105,7 @@ async function buildProcessor(styleID: string): Promise<void> {
     command: "initProcessor",
     xclass: citeproc.opt.xclass,
     citationByIndex: citeproc.registry.citationreg.citationByIndex,
-    rebuildData: rebuildData,
+    rebuildData,
     bibliographyData: bibRes,
     result: "OK",
   });
@@ -108,13 +116,19 @@ function registerCitation(
   preCitations: Array<[string, number]>,
   postCitations: Array<[string, number]>
 ): void {
-  const itemFetchLst = citation.citationItems.map((citation: CitationItem): string => {
-    if (!itemsObj[citation.id]) {
-      return citation.id;
+  const itemFetchLst = citation.citationItems.map(
+    (citation: CitationItem): string => {
+      if (!itemsObj[citation.id]) {
+        return citation.id;
+      }
     }
-  });
+  );
   buildItemsObj(itemFetchLst);
-  const citeRes = citeproc.processCitationCluster(citation, preCitations, postCitations);
+  const citeRes = citeproc.processCitationCluster(
+    citation,
+    preCitations,
+    postCitations
+  );
   ctx.postMessage({
     command: "registerCitation",
     citationData: citeRes[1],
@@ -138,11 +152,19 @@ function getBibliography(): void {
 ctx.addEventListener("message", async (ev) => {
   switch (ev.data.command) {
     case "initProcessor":
-      setPreferenceAndReferenceData(ev.data.localeName, ev.data.citationByIndex, ev.data.referenceData);
+      setPreferenceAndReferenceData(
+        ev.data.localeName,
+        ev.data.citationByIndex,
+        ev.data.referenceData
+      );
       await buildProcessor(ev.data.styleName);
       break;
     case "registerCitation":
-      registerCitation(ev.data.citation, ev.data.preCitations, ev.data.postCitations);
+      registerCitation(
+        ev.data.citation,
+        ev.data.preCitations,
+        ev.data.postCitations
+      );
       break;
     case "getBibliography":
       getBibliography();

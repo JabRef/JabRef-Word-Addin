@@ -1,11 +1,17 @@
-import { Bibliography, Citation, CitationResult, MetaData, RebuildProcessorStateData } from "citeproc";
+import {
+  Bibliography,
+  Citation,
+  CitationResult,
+  MetaData,
+  RebuildProcessorStateData,
+} from "citeproc";
 import { WordApiSupport } from "./wordApiSupport";
-import CiteWorker from "./worker/cite.worker.ts";
-/* global Office */
+import CiteWorker from "./worker/cite.worker";
 
 interface referenceData extends Omit<MetaData, "year" | "issued"> {
   year?: number;
   issued?: unknown;
+  type?: string;
 }
 
 class CiteSupport {
@@ -19,8 +25,11 @@ class CiteSupport {
     processorReady: boolean;
     referenceData: Array<referenceData>;
   };
+
   worker: Worker;
+
   api: WordApiSupport;
+
   constructor(referenceData: Array<referenceData>) {
     this.config = {
       debug: true,
@@ -30,7 +39,7 @@ class CiteSupport {
       citationIdToPos: {},
       citationByIndex: [],
       processorReady: false,
-      referenceData: referenceData,
+      referenceData,
     };
     this.api = new WordApiSupport();
     this.worker = new CiteWorker();
@@ -48,11 +57,18 @@ class CiteSupport {
           );
           break;
         case "registerCitation":
-          this.onRegisterCitation(event.data.citationByIndex, event.data.citationData);
+          this.onRegisterCitation(
+            event.data.citationByIndex,
+            event.data.citationData
+          );
           break;
 
         case "setBibliography":
           this.onSetBibliography(event.data.bibliographyData);
+          break;
+
+        default:
+          this.updateCitationByIndex();
           break;
       }
     };
@@ -66,13 +82,13 @@ class CiteSupport {
   onInitProcessor(
     xclass: string,
     rebuildData: Array<RebuildProcessorStateData>,
-    bibliographyData: Bibliography,
+    _bibliographyData: Bibliography,
     citationByIndex: Object[]
-  ) {
+  ): void {
     this.debug("initProcessor()");
     this.config.mode = xclass;
     this.config.citationByIndex = citationByIndex;
-    var citationData = this.convertRebuildDataToCitationData(rebuildData);
+    const citationData = this.convertRebuildDataToCitationData(rebuildData);
     this.setCitations(citationData);
     // this.setBibliography(bibliographyData);
     this.config.processorReady = true;
@@ -84,7 +100,10 @@ class CiteSupport {
    *   the bibliography in the document, and save the `citationByIndex` array
    *   for persistence.
    */
-  onRegisterCitation(citationByIndex: Object[], citationData: Array<CitationResult>) {
+  onRegisterCitation(
+    citationByIndex: Object[],
+    citationData: Array<CitationResult>
+  ): void {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
     this.setCitations(citationData);
@@ -102,7 +121,7 @@ class CiteSupport {
    */
   debug(txt: string): void {
     if (this.config.debug) {
-      console.log("*** " + txt);
+      console.log(`*** ${txt}`);
     }
   }
 
@@ -123,10 +142,10 @@ class CiteSupport {
     }
     this.worker.postMessage({
       command: "initProcessor",
-      styleName: styleName,
-      localeName: localeName,
-      citationByIndex: citationByIndex,
-      referenceData: referenceData,
+      styleName,
+      localeName,
+      citationByIndex,
+      referenceData,
     });
   }
 
@@ -145,9 +164,9 @@ class CiteSupport {
     this.config.processorReady = false;
     this.worker.postMessage({
       command: "registerCitation",
-      citation: citation,
-      preCitations: preCitations,
-      postCitations: postCitations,
+      citation,
+      preCitations,
+      postCitations,
     });
   }
 
@@ -185,10 +204,14 @@ class CiteSupport {
    *    setCitations() wants this structure:
    *    [<citation_index>, <citation_string>, <citation_id>]
    */
-  convertRebuildDataToCitationData(rebuildData: Array<RebuildProcessorStateData>): Array<CitationResult> {
+  convertRebuildDataToCitationData(
+    rebuildData: Array<RebuildProcessorStateData>
+  ): Array<CitationResult> {
     if (!rebuildData) return null;
     this.debug("convertRebuildDataToCitationData()");
-    const citationData = rebuildData.map((obj: RebuildProcessorStateData): CitationResult => [0, obj[2], obj[0]]);
+    const citationData = rebuildData.map(
+      (obj: RebuildProcessorStateData): CitationResult => [0, obj[2], obj[0]]
+    );
     for (let i = 0, ilen = citationData.length; i < ilen; i++) {
       citationData[i][0] = i;
     }
@@ -204,20 +227,20 @@ class CiteSupport {
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
 
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       const position = data[i][0];
       const tag = JSON.stringify(this.config.citationByIndex[position]);
       const citationTag = await this.api.getCitationTagByIndex(position);
       if (citationTag === "NEW" || citationTag != tag) {
         await this.api.setCitationTagAtPosition(position, tag);
       }
-      await this.api.insertTextInContentControl(citationTag as string, data[i][1]);
+      await this.api.insertTextInContentControl(citationTag, data[i][1]);
     }
 
     // Update citationIdToPos for all nodes
     const getTotalNumberOfCitation = await this.api.getTotalNumberOfCitation();
     for (let i = 0; i < getTotalNumberOfCitation; i++) {
-      let citationID = await this.api.getCitationTagByIndex(i);
+      const citationID = await this.api.getCitationTagByIndex(i);
       if (citationID) {
         this.config.citationIdToPos[citationID] = i;
       }
@@ -252,6 +275,15 @@ class CiteSupport {
       this.config.citationIdToPos = getCitationIdToPos;
     }
   }
+
+  /** Updates the citationByIndex array after every edit or delete operation */
+  async updateCitationByIndex(): Promise<void> {
+    const citationByIndex = await this.api.getCitationByIndex();
+    if (citationByIndex) {
+      this.config.citationByIndex = citationByIndex;
+    }
+  }
+
   // TODO: ADD isCitation function to check whether current selection is citation or not
   isCitation() {
     return false;
