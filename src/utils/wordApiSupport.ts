@@ -1,7 +1,7 @@
-export class WordApiSupport {
-  constructor() {}
+/* eslint-disable class-methods-use-this */
 
-  async insertEmptyContentControl(): Promise<void> {
+class WordApiSupport {
+  insertEmptyContentControl(): void {
     Word.run(function (context) {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
@@ -9,16 +9,18 @@ export class WordApiSupport {
       contentControl.appearance = "Hidden";
       return context.sync();
     }).catch(function (error) {
-      console.log("Error: " + error);
+      console.log(`Error: ${error}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
-  async insertTextInContentControl(tag: string, text: string): Promise<void> {
-    Word.run(async function (context) {
-      let contentControl = context.document.contentControls.getByTag("JABREF-CITATION-" + tag).getFirst();
+  insertTextInContentControl(tag: string, text: string): void {
+    Word.run(async (context) => {
+      const contentControl = context.document.contentControls
+        .getByTag(`JABREF-CITATION-${tag}`)
+        .getFirst();
       contentControl.load("tag, appearance");
       return context.sync().then(() => {
         contentControl.insertHtml(text, "Replace");
@@ -26,43 +28,43 @@ export class WordApiSupport {
         return context.sync();
       });
     }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
   async getTotalNumberOfCitation(): Promise<number | void> {
-    return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
+    return Word.run(async (context) => {
+      const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
       let length = 0;
       contentControls.items.forEach((citation) => {
-        const tag = citation.tag;
+        const { tag } = citation;
         if (tag.includes("JABREF-CITATION")) {
-          length++;
+          length += 1;
         }
       });
       return length;
     }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
   async getPositionOfNewCitation(): Promise<number> {
     return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
+      const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
       let length = 0;
       let pos = null;
       for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        const tag = contentControls.items[i].tag;
+        const { tag } = contentControls.items[i];
         if (tag.includes("JABREF-CITATION")) {
           if (tag.substring(16) === "NEW") {
             pos = length;
@@ -73,47 +75,47 @@ export class WordApiSupport {
       }
       return pos;
     }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
-  async setCitationTagAtPosition(position: number, tag: string): Promise<void> {
+  setCitationTagAtPosition(position: number, tag: string): void {
     Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
+      const { contentControls } = context.document;
       context.load(contentControls, "tag");
       await context.sync();
       let pos = 0;
       for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
         if (contentControls.items[i].tag.includes("JABREF-CITATION")) {
           if (pos === position) {
-            contentControls.items[i].tag = "JABREF-CITATION-" + tag;
+            contentControls.items[i].tag = `JABREF-CITATION-${tag}`;
             break;
           } else {
-            pos++;
+            pos += 1;
           }
         }
       }
       return context.sync();
     }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
   async getCitationTagByIndex(position: number): Promise<string> {
     return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
+      const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
       let indexTag = null;
       let pos = 0;
       for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
-        const tag = contentControls.items[i].tag;
+        const { tag } = contentControls.items[i];
         if (tag.includes("JABREF-CITATION")) {
           if (pos == position) {
             indexTag = tag.substring(16);
@@ -125,49 +127,49 @@ export class WordApiSupport {
       }
       return indexTag;
     }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
-  async getCitationIdToPos(): Promise<object | void> {
-    return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
+  async getCitationIdToPos(): Promise<Record<string, number> | void> {
+    return Word.run(async (context) => {
+      const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
-      let citationIdToPos = {};
+      const citationIdToPos = {};
       let pos = 0;
       contentControls.items.forEach((citation) => {
-        const tag = citation.tag;
+        const { tag } = citation;
         if (tag.includes("JABREF-CITATION")) {
           citationIdToPos[tag.substring(16)] = pos;
-          pos++;
+          pos += 1;
         }
       });
-      return context.sync().then(function () {
+      return context.sync().then(() => {
         if (citationIdToPos) {
           return citationIdToPos;
         }
         return {};
       });
     }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
   async getCitationByIndex(): Promise<Array<object> | void> {
     return Word.run(async function (context) {
-      const contentControls = context.document.contentControls;
+      const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
-      let citationByIndex = [];
+      const citationByIndex = [];
       contentControls.items.forEach((citation) => {
-        const tag = citation.tag;
+        const { tag } = citation;
         if (tag.includes("JABREF-CITATION")) {
           citationByIndex.push(JSON.parse(tag.substring(16)));
         }
@@ -179,15 +181,15 @@ export class WordApiSupport {
         return [];
       });
     }).catch(function (error) {
-      console.log("Error: " + JSON.stringify(error));
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 
-  createContentControl(tag: string, html: string) {
-    Word.run(function (context) {
+  createContentControl(tag: string, html: string): void {
+    Word.run((context) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
       contentControl.tag = tag;
@@ -196,10 +198,12 @@ export class WordApiSupport {
       contentControl.insertHtml(html, "Replace");
       return context.sync();
     }).catch(function (error) {
-      console.log("Error: " + error);
+      console.log(`Error: ${error}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
   }
 }
+
+export default WordApiSupport;

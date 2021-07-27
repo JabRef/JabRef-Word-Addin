@@ -5,10 +5,11 @@ import {
   MetaData,
   RebuildProcessorStateData,
 } from "citeproc";
-import { WordApiSupport } from "./wordApiSupport";
+import WordApiSupport from "./wordApiSupport";
 import CiteWorker from "./worker/cite.worker";
 
-interface referenceData extends Omit<MetaData, "year" | "issued"> {
+interface referenceDataInterface
+  extends Omit<MetaData, "year" | "issued" | "type"> {
   year?: number;
   issued?: unknown;
   type?: string;
@@ -20,17 +21,17 @@ class CiteSupport {
     mode: string;
     defaultLocale: string;
     defaultStyle: string;
-    citationIdToPos: {};
+    citationIdToPos: Record<string, number>;
     citationByIndex: object[];
     processorReady: boolean;
-    referenceData: Array<referenceData>;
+    referenceData: Array<referenceDataInterface>;
   };
 
   worker: Worker;
 
   api: WordApiSupport;
 
-  constructor(referenceData: Array<referenceData>) {
+  constructor(referenceData: Array<referenceDataInterface>) {
     this.config = {
       debug: true,
       mode: "in-text",
@@ -133,7 +134,7 @@ class CiteSupport {
     styleName: string,
     localeName: string,
     citationByIndex: object[],
-    referenceData: Array<referenceData>
+    referenceData: Array<referenceDataInterface>
   ): void {
     this.debug("callInitProcessor()");
     this.config.processorReady = false;
@@ -212,7 +213,7 @@ class CiteSupport {
     const citationData = rebuildData.map(
       (obj: RebuildProcessorStateData): CitationResult => [0, obj[2], obj[0]]
     );
-    for (let i = 0, ilen = citationData.length; i < ilen; i++) {
+    for (let i = 0, ilen = citationData.length; i < ilen; i += 1) {
       citationData[i][0] = i;
     }
     return citationData;
@@ -227,7 +228,7 @@ class CiteSupport {
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i += 1) {
       const position = data[i][0];
       const tag = JSON.stringify(this.config.citationByIndex[position]);
       const citationTag = await this.api.getCitationTagByIndex(position);
@@ -239,7 +240,7 @@ class CiteSupport {
 
     // Update citationIdToPos for all nodes
     const getTotalNumberOfCitation = await this.api.getTotalNumberOfCitation();
-    for (let i = 0; i < getTotalNumberOfCitation; i++) {
+    for (let i = 0; i < getTotalNumberOfCitation; i += 1) {
       const citationID = await this.api.getCitationTagByIndex(i);
       if (citationID) {
         this.config.citationIdToPos[citationID] = i;
@@ -262,7 +263,9 @@ class CiteSupport {
    */
   async spoofDocument(): Promise<void> {
     this.debug("spoofDocument()");
-    const citationStyle = Office.context.document.settings.get("Style");
+    const citationStyle = Office.context.document.settings.get("Style") as
+      | string
+      | null;
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
