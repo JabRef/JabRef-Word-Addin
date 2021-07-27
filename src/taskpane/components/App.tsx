@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactElement } from "react";
 import Progress from "./Progress";
-=======
-import React, { ReactElement } from "react";
->>>>>>> 6925e00bb627bdb78e9622ad41f95a2760d0ffed
 import { Switch, Route } from "react-router-dom";
-import Progress from "./Progress";
 import Login from "../pages/login";
 import Layout from "./Layout";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
@@ -26,8 +21,15 @@ function App(props: AppProps): ReactElement {
 
   if (!isOfficeInitialized) {
     return (
-<<<<<<< HEAD
-      <div>
+      <Progress
+        title="JabRef"
+        message="Loading JabRef..."
+        logo="../../../assets/jabref.svg"
+      />
+    );
+  }
+  return (
+    <div>
         <Switch>
           <Route path="/login">
             <Login />
@@ -37,26 +39,6 @@ function App(props: AppProps): ReactElement {
           </ProtectedRoutes>
         </Switch>
       </div>
-=======
-      <Progress
-        title="JabRef"
-        message="Loading JabRef..."
-        logo="../../../assets/jabref.svg"
-      />
->>>>>>> 6925e00bb627bdb78e9622ad41f95a2760d0ffed
-    );
-  }
-  return (
-    <div>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <ProtectedRoutes path="/">
-          <Layout />
-        </ProtectedRoutes>
-      </Switch>
-    </div>
   );
 }
 export default App;

@@ -2,16 +2,12 @@ import React, { ReactElement, useState } from "react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
-<<<<<<< HEAD
 import CiteSupport from "../../utils/citesupport";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
-/* global */
 
 interface dashboardProps {
   citeSupport: CiteSupport;
 }
-=======
->>>>>>> 6925e00bb627bdb78e9622ad41f95a2760d0ffed
 
 const dashboadStyle = {
   width: "100%",
@@ -40,31 +36,21 @@ function containsSearchTerm(keyword: string) {
 }
 
 function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
-<<<<<<< HEAD
   return function (item) {
     if (ev.currentTarget) {
       if (item.title === ev.currentTarget.title) {
         return { ...item, isSelected: !item.isSelected };
       }
       return item;
-=======
-  return function (item?: bib) {
-    if (item.title === ev.currentTarget.title) {
-      return { ...item, isSelected: !item.isSelected };
->>>>>>> 6925e00bb627bdb78e9622ad41f95a2760d0ffed
     }
   };
 }
 
-<<<<<<< HEAD
 function unCheckCheckbox(item) {
   return { ...item, isSelected: false };
 }
 
-function Dashboard({ citeSupport }: dashboardProps) {
-=======
-function Dashboard(): ReactElement {
->>>>>>> 6925e00bb627bdb78e9622ad41f95a2760d0ffed
+function Dashboard({ citeSupport }: dashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
   const checkedItems = items

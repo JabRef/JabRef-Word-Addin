@@ -1,4 +1,3 @@
-/* global Word OfficeExtension*/
 export class WordApiSupport {
   constructor() {}
 
