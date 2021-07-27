@@ -1,3 +1,6 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable @typescript-eslint/await-thenable */
 import {
   Bibliography,
   Citation,
@@ -22,7 +25,7 @@ class CiteSupport {
     defaultLocale: string;
     defaultStyle: string;
     citationIdToPos: Record<string, number>;
-    citationByIndex: object[];
+    citationByIndex: unknown[];
     processorReady: boolean;
     referenceData: Array<referenceDataInterface>;
   };
@@ -48,6 +51,7 @@ class CiteSupport {
       if (event.data.errors) {
         this.debug(event.data.errors);
       }
+      // eslint-disable-next-line default-case
       switch (event.data.command) {
         case "initProcessor":
           this.onInitProcessor(
@@ -66,10 +70,6 @@ class CiteSupport {
 
         case "setBibliography":
           this.onSetBibliography(event.data.bibliographyData);
-          break;
-
-        default:
-          this.updateCitationByIndex();
           break;
       }
     };
@@ -111,7 +111,7 @@ class CiteSupport {
     this.config.processorReady = true;
   }
 
-  onSetBibliography(bibliographyData: Bibliography) {
+  onSetBibliography(bibliographyData: Bibliography): void {
     this.debug("setBibliograghy()");
     this.setBibliography(bibliographyData);
     this.config.processorReady = true;
@@ -133,14 +133,11 @@ class CiteSupport {
   callInitProcessor(
     styleName: string,
     localeName: string,
-    citationByIndex: object[],
+    citationByIndex: unknown[],
     referenceData: Array<referenceDataInterface>
   ): void {
     this.debug("callInitProcessor()");
     this.config.processorReady = false;
-    if (!citationByIndex) {
-      citationByIndex = [];
-    }
     this.worker.postMessage({
       command: "initProcessor",
       styleName,
@@ -232,10 +229,10 @@ class CiteSupport {
       const position = data[i][0];
       const tag = JSON.stringify(this.config.citationByIndex[position]);
       const citationTag = await this.api.getCitationTagByIndex(position);
-      if (citationTag === "NEW" || citationTag != tag) {
-        await this.api.setCitationTagAtPosition(position, tag);
+      if (citationTag === "NEW" || citationTag !== tag) {
+        this.api.setCitationTagAtPosition(position, tag);
       }
-      await this.api.insertTextInContentControl(citationTag, data[i][1]);
+      this.api.insertTextInContentControl(citationTag, data[i][1]);
     }
 
     // Update citationIdToPos for all nodes
@@ -287,8 +284,7 @@ class CiteSupport {
     }
   }
 
-  // TODO: ADD isCitation function to check whether current selection is citation or not
-  isCitation() {
+  isCitation(): boolean {
     return false;
   }
 }
