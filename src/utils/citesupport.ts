@@ -84,7 +84,7 @@ class CiteSupport {
     xclass: string,
     rebuildData: Array<RebuildProcessorStateData>,
     _bibliographyData: Bibliography,
-    citationByIndex: Object[]
+    citationByIndex: unknown[]
   ): void {
     this.debug("initProcessor()");
     this.config.mode = xclass;
@@ -102,7 +102,7 @@ class CiteSupport {
    *   for persistence.
    */
   onRegisterCitation(
-    citationByIndex: Object[],
+    citationByIndex: unknown[],
     citationData: Array<CitationResult>
   ): void {
     this.debug("registerCitation()");

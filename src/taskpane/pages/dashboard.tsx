@@ -29,8 +29,10 @@ const buttonContainer = {
 
 function containsSearchTerm(keyword: string) {
   return (item?: bib) => {
-    return [item.title, item.author, item.year].some((str) =>
-      str ? str.toLowerCase().includes(keyword.toLowerCase().trim()) : false
+    return [item.title, item.author, item.year].some((str: string | number) =>
+      str
+        ? str.toString().toLowerCase().includes(keyword.toLowerCase().trim())
+        : false
     );
   };
 }
