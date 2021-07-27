@@ -149,7 +149,7 @@ function getBibliography(): void {
   });
 }
 
-ctx.addEventListener("message", async (ev) => {
+ctx.addEventListener("message", (ev) => {
   switch (ev.data.command) {
     case "initProcessor":
       setPreferenceAndReferenceData(
@@ -157,7 +157,7 @@ ctx.addEventListener("message", async (ev) => {
         ev.data.citationByIndex,
         ev.data.referenceData
       );
-      await buildProcessor(ev.data.styleName);
+      buildProcessor(ev.data.styleName);
       break;
     case "registerCitation":
       registerCitation(
@@ -169,5 +169,6 @@ ctx.addEventListener("message", async (ev) => {
     case "getBibliography":
       getBibliography();
       break;
+    default:
   }
 });

@@ -51,7 +51,6 @@ class CiteSupport {
       if (event.data.errors) {
         this.debug(event.data.errors);
       }
-      // eslint-disable-next-line default-case
       switch (event.data.command) {
         case "initProcessor":
           this.onInitProcessor(
@@ -71,6 +70,7 @@ class CiteSupport {
         case "setBibliography":
           this.onSetBibliography(event.data.bibliographyData);
           break;
+        default:
       }
     };
   }

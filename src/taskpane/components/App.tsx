@@ -16,7 +16,7 @@ function App(props: AppProps): ReactElement {
   const { isOfficeInitialized } = props;
   const [citeSupport] = useState(() => new CiteSupport(data));
   useEffect(() => {
-     citeSupport.initDocument();
+    citeSupport.initDocument();
   });
 
   if (!isOfficeInitialized) {
