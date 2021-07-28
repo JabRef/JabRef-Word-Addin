@@ -99,14 +99,14 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex
         .slice(0, i)
-        .map((obj: citationByIndexInterface) => {
+        .map((obj: citationByIndexInterface): [string, number] => {
           return [obj.citationID, 0];
         });
     }
     if (citeSupport.config.citationByIndex.slice(i).length) {
       citationsPost = citeSupport.config.citationByIndex
         .slice(i)
-        .map((obj: citationByIndexInterface) => {
+        .map((obj: citationByIndexInterface): [string, number] => {
           return [obj.citationID, 0];
         });
     }

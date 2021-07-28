@@ -13,7 +13,7 @@ import {
   citationByIndexInterface,
   referenceDataInterface,
 } from "./cite-interface";
-import WordApiSupport from "./word-api";
+import WordApi from "./word-api";
 import CiteWorker from "./worker/cite.worker";
 
 class CiteSupport {
@@ -43,7 +43,7 @@ class CiteSupport {
       processorReady: false,
       referenceData,
     };
-    this.api = new WordApiSupport();
+    this.api = new WordApi();
     this.worker = new CiteWorker();
     this.worker.onmessage = (event) => {
       if (event.data.errors) {
