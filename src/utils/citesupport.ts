@@ -13,7 +13,7 @@ import {
   citationByIndexInterface,
   referenceDataInterface,
 } from "./cite-interface";
-import WordApiSupport from "./wordApiSupport";
+import WordApiSupport from "./word-api";
 import CiteWorker from "./worker/cite.worker";
 
 class CiteSupport {
