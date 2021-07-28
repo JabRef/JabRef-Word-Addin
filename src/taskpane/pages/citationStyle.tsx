@@ -8,6 +8,7 @@ import {
   getFocusStyle,
 } from "@fluentui/react/lib/Styling";
 import { Stack } from "@fluentui/react";
+import Preference from "../../utils/user-preference";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -79,18 +80,16 @@ function CitationStyle(): JSX.Element {
       value: "chicago-author-date-16th-edition",
     },
   ];
-  const preferenceStyle = Office.context.document.settings.get("Style") as
-    | string
-    | null;
+  const preferenceStyle = Preference.getCitationStyle();
   const [currentStyle, setCurrentStyle] = React.useState(preferenceStyle);
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
     setCurrentStyle(ev.currentTarget.id);
-    Office.context.document.settings.set("Style", ev.currentTarget.id);
+    Preference.setCitationStyle(ev.currentTarget.id);
   };
 
   // Sync with doc settings
   React.useEffect(() => {
-    return Office.context.document.settings.saveAsync();
+    return Preference.syncPreference();
   });
 
   const onRenderCell = (item: { text: string; value: string }): JSX.Element => {
