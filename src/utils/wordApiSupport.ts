@@ -9,7 +9,7 @@ class WordApiSupport {
       contentControl.appearance = "Hidden";
       return context.sync();
     }).catch(function (error) {
-      console.log(`Error: ${error}`);
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
@@ -56,21 +56,21 @@ class WordApiSupport {
     });
   }
 
-  async getPositionOfNewCitation(): Promise<number> {
+  async getPositionOfNewCitation(): Promise<number | void> {
     return Word.run(async function (context) {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
       let length = 0;
-      let pos = null;
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
+      let pos = 0;
+      for (let i = 0, ilen = contentControls.items.length; i < ilen; i += 1) {
         const { tag } = contentControls.items[i];
         if (tag.includes("JABREF-CITATION")) {
           if (tag.substring(16) === "NEW") {
             pos = length;
             break;
           }
-          length++;
+          length += 1;
         }
       }
       return pos;
@@ -88,7 +88,7 @@ class WordApiSupport {
       context.load(contentControls, "tag");
       await context.sync();
       let pos = 0;
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
+      for (let i = 0, ilen = contentControls.items.length; i < ilen; i += 1) {
         if (contentControls.items[i].tag.includes("JABREF-CITATION")) {
           if (pos === position) {
             contentControls.items[i].tag = `JABREF-CITATION-${tag}`;
@@ -107,21 +107,21 @@ class WordApiSupport {
     });
   }
 
-  async getCitationTagByIndex(position: number): Promise<string> {
+  async getCitationTagByIndex(position: number): Promise<string | void> {
     return Word.run(async function (context) {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
-      let indexTag = null;
+      let indexTag: string = null;
       let pos = 0;
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i++) {
+      for (let i = 0, ilen = contentControls.items.length; i < ilen; i += 1) {
         const { tag } = contentControls.items[i];
         if (tag.includes("JABREF-CITATION")) {
-          if (pos == position) {
+          if (pos === position) {
             indexTag = tag.substring(16);
             break;
           } else {
-            pos++;
+            pos += 1;
           }
         }
       }
@@ -162,7 +162,7 @@ class WordApiSupport {
     });
   }
 
-  async getCitationByIndex(): Promise<Array<object> | void> {
+  async getCitationByIndex(): Promise<Array<unknown> | void> {
     return Word.run(async function (context) {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
@@ -176,6 +176,7 @@ class WordApiSupport {
       });
       return context.sync().then(function () {
         if (citationByIndex.length) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return citationByIndex;
         }
         return [];
