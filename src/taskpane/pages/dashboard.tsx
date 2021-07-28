@@ -4,6 +4,7 @@ import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
+import { citationByIndexInterface } from "../../utils/cite-interface";
 
 interface dashboardProps {
   citeSupport: CiteSupport;
@@ -94,18 +95,18 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
     }
     let citationsPre = [];
     let citationsPost = [];
-    const i = await citeSupport.api.getPositionOfNewCitation();
+    const i = (await citeSupport.api.getPositionOfNewCitation()) as number;
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex
         .slice(0, i)
-        .map(function (obj) {
+        .map((obj: citationByIndexInterface) => {
           return [obj.citationID, 0];
         });
     }
     if (citeSupport.config.citationByIndex.slice(i).length) {
       citationsPost = citeSupport.config.citationByIndex
         .slice(i)
-        .map(function (obj) {
+        .map((obj: citationByIndexInterface) => {
           return [obj.citationID, 0];
         });
     }

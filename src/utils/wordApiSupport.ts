@@ -1,5 +1,7 @@
 /* eslint-disable class-methods-use-this */
 
+import { citationByIndexInterface } from "./types";
+
 class WordApiSupport {
   insertEmptyContentControl(): void {
     Word.run(function (context) {
@@ -162,7 +164,7 @@ class WordApiSupport {
     });
   }
 
-  async getCitationByIndex(): Promise<Array<unknown> | void> {
+  async getCitationByIndex(): Promise<Array<citationByIndexInterface> | void> {
     return Word.run(async function (context) {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
@@ -199,7 +201,7 @@ class WordApiSupport {
       contentControl.insertHtml(html, "Replace");
       return context.sync();
     }).catch(function (error) {
-      console.log(`Error: ${error}`);
+      console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }

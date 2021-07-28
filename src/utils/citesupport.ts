@@ -6,18 +6,11 @@ import {
   Bibliography,
   Citation,
   CitationResult,
-  MetaData,
   RebuildProcessorStateData,
 } from "citeproc";
+import { citationByIndexInterface, referenceDataInterface } from "./types";
 import WordApiSupport from "./wordApiSupport";
 import CiteWorker from "./worker/cite.worker";
-
-interface referenceDataInterface
-  extends Omit<MetaData, "year" | "issued" | "type"> {
-  year?: number;
-  issued?: unknown;
-  type?: string;
-}
 
 class CiteSupport {
   config: {
@@ -26,7 +19,7 @@ class CiteSupport {
     defaultLocale: string;
     defaultStyle: string;
     citationIdToPos: Record<string, number>;
-    citationByIndex: unknown[];
+    citationByIndex: Array<citationByIndexInterface>;
     processorReady: boolean;
     referenceData: Array<referenceDataInterface>;
   };
@@ -85,7 +78,7 @@ class CiteSupport {
     xclass: string,
     rebuildData: Array<RebuildProcessorStateData>,
     _bibliographyData: Bibliography,
-    citationByIndex: unknown[]
+    citationByIndex: Array<citationByIndexInterface>
   ): void {
     this.debug("initProcessor()");
     this.config.mode = xclass;
@@ -103,7 +96,7 @@ class CiteSupport {
    *   for persistence.
    */
   onRegisterCitation(
-    citationByIndex: unknown[],
+    citationByIndex: Array<citationByIndexInterface>,
     citationData: Array<CitationResult>
   ): void {
     this.debug("registerCitation()");
@@ -134,7 +127,7 @@ class CiteSupport {
   callInitProcessor(
     styleName: string,
     localeName: string,
-    citationByIndex: unknown[],
+    citationByIndex: Array<citationByIndexInterface>,
     referenceData: Array<referenceDataInterface>
   ): void {
     this.debug("callInitProcessor()");
@@ -229,7 +222,9 @@ class CiteSupport {
     for (let i = 0; i < data.length; i += 1) {
       const position = data[i][0];
       const tag = JSON.stringify(this.config.citationByIndex[position]);
-      const citationTag = await this.api.getCitationTagByIndex(position);
+      const citationTag = (await this.api.getCitationTagByIndex(
+        position
+      )) as string;
       if (citationTag === "NEW" || citationTag !== tag) {
         this.api.setCitationTagAtPosition(position, tag);
       }

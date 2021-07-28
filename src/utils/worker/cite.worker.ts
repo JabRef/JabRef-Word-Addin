@@ -1,21 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import CSL, { MetaData, Citation } from "citeproc";
-
-interface reference extends Omit<MetaData, "year" | "issued"> {
-  year?: number;
-  issued?: unknown;
-}
+import CSL, { Citation } from "citeproc";
+import {
+  citationByIndexInterface,
+  referenceDataInterface,
+} from "../cite-interface";
 
 const ctx: Worker = self as any;
-const itemsObj: Record<string, reference> = {};
+const itemsObj: Record<string, referenceDataInterface> = {};
 const localesObj: Record<string, string> = {};
-let style: string = null;
-let preferredLocale: string = null;
+let style: string;
+let preferredLocale: string;
 let citeproc = null;
-let citationByIndex = null;
-let referenceData: reference[] = []; // User citation data
+let citationByIndex: Array<citationByIndexInterface>;
+let referenceData: Array<referenceDataInterface>; // User citation data
 
 interface CitationItem {
   locator?: string;
@@ -28,7 +28,7 @@ interface CitationItem {
 }
 
 const sys = {
-  retrieveItem(itemID: string | number): reference {
+  retrieveItem(itemID: string | number): referenceDataInterface {
     return itemsObj[itemID];
   },
   retrieveLocale(lang: string): string {
@@ -71,8 +71,8 @@ function buildItemsObj(itemIDs: Array<string | number>): void {
 
 function setPreferenceAndReferenceData(
   localeName: string,
-  citationbyIndex: Object[],
-  data: Array<reference>
+  citationbyIndex: Array<citationByIndexInterface>,
+  data: Array<referenceDataInterface>
 ): void {
   preferredLocale = localeName;
   citationByIndex = citationbyIndex;
@@ -85,7 +85,7 @@ function buildProcessor(styleID: string): void {
   citeproc = new CSL.Engine(sys, style, preferredLocale);
   const itemIDs = [];
   if (citationByIndex) {
-    citationByIndex.forEach(function (citation) {
+    citationByIndex.forEach((citation: citationByIndexInterface) => {
       citation.citationItems.forEach((item) => {
         itemIDs.push(item.id);
       });
