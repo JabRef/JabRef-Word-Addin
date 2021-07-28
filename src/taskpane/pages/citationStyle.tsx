@@ -82,14 +82,9 @@ function CitationStyle(): JSX.Element {
   const preferenceStyle = Office.context.document.settings.get("Style") as
     | string
     | null;
-  const selectedStyle = preferenceStyle
-    ? items.find((item) => item.value === preferenceStyle).text
-    : "American Psychological Association 7th edition";
-  const [currentStyle, setCurrentStyle] = React.useState(selectedStyle);
+  const [currentStyle, setCurrentStyle] = React.useState(preferenceStyle);
   const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
-    setCurrentStyle(
-      items.find((item) => item.value === ev.currentTarget.id).text
-    );
+    setCurrentStyle(ev.currentTarget.id);
     Office.context.document.settings.set("Style", ev.currentTarget.id);
   };
 
@@ -117,7 +112,11 @@ function CitationStyle(): JSX.Element {
   return (
     <>
       <div className={classNames.StyleHeading}>Current Style</div>
-      <div className={classNames.selectedStyle}>{currentStyle}</div>
+      <div className={classNames.selectedStyle}>
+        {currentStyle
+          ? items.find((item) => item.value === currentStyle).text
+          : "American Psychological Association 7th edition"}
+      </div>
       <div className={classNames.StyleHeading}>Change Style</div>
       <div className={classNames.container}>
         <FocusZone direction={FocusZoneDirection.vertical} data-is-scrollable>
