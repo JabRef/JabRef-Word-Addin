@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/await-thenable */
@@ -8,7 +9,10 @@ import {
   CitationResult,
   RebuildProcessorStateData,
 } from "citeproc";
-import { citationByIndexInterface, referenceDataInterface } from "./cite-interface";
+import {
+  citationByIndexInterface,
+  referenceDataInterface,
+} from "./cite-interface";
 import WordApiSupport from "./wordApiSupport";
 import CiteWorker from "./worker/cite.worker";
 
