@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import CSL, { MetaData, Citation } from "citeproc";
 
 interface reference extends Omit<MetaData, "year" | "issued"> {
@@ -55,10 +58,8 @@ function getStyle(styleID: string): string {
   return xhr.responseText;
 }
 
-function buildLocalesObj(locale: string): void {
-  if (!locale) {
-    locale = "en-US";
-  }
+function buildLocalesObj(locales: string): void {
+  const locale = locales != null ? locales : "en-US";
   localesObj[locale] = getLocale(locale);
 }
 
@@ -117,9 +118,9 @@ function registerCitation(
   postCitations: Array<[string, number]>
 ): void {
   const itemFetchLst = citation.citationItems.map(
-    (citation: CitationItem): string => {
-      if (!itemsObj[citation.id]) {
-        return citation.id;
+    (citationItem: CitationItem): string => {
+      if (!itemsObj[citationItem.id]) {
+        return citationItem.id;
       }
     }
   );

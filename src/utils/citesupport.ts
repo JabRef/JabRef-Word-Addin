@@ -1,6 +1,7 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/await-thenable */
+/* eslint-disable class-methods-use-this */
 import {
   Bibliography,
   Citation,
