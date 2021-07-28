@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FocusZone, FocusZoneDirection } from "@fluentui/react/lib/FocusZone";
 import { List } from "@fluentui/react/lib/List";
 import {
