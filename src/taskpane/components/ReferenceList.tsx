@@ -10,11 +10,11 @@ import {
   Checkbox,
 } from "@fluentui/react";
 import React, { ReactElement } from "react";
-import { BibliographyEntry } from "../../utils/data";
+import { referenceDataInterface } from "../../utils/cite-interface";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-export interface bib extends BibliographyEntry {
+export interface bib extends referenceDataInterface {
   isSelected: boolean;
 }
 

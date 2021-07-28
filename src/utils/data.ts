@@ -1,4 +1,6 @@
-const data: Array<BibliographyEntry> = [
+import { referenceDataInterface } from "./cite-interface";
+
+const data: Array<referenceDataInterface> = [
   {
     id: "jabref/QGIFRNH8",
     type: "article-journal",
@@ -198,36 +200,5 @@ const data: Array<BibliographyEntry> = [
     },
   },
 ];
-
-export type BibliographyEntry = {
-  id: string;
-  author?: { family?: string; given?: string }[];
-  title: string;
-  journal?: string;
-  volume?: string;
-  number?: string;
-  pages?: string;
-  note?: string;
-  editor?: { family?: string; given?: string }[];
-  year?: number;
-  "collection-title"?: string;
-  DOI?: string;
-  type?: string;
-  URL?: string;
-  abstract?: string;
-  keywords?: string;
-  citationKey?: string;
-  publisher?: string;
-  other?: unknown;
-  genre?: string;
-  "container-title"?: string;
-  ISSN?: string;
-  issue?: string;
-  journalAbbreviation?: string;
-  language?: string;
-  page?: string;
-  source?: string;
-  issued?: unknown;
-};
 
 export default data;

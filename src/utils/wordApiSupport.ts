@@ -1,6 +1,7 @@
+/* eslint-disable func-names */
 /* eslint-disable class-methods-use-this */
 
-import { citationByIndexInterface } from "./types";
+import { citationByIndexInterface } from "./cite-interface";
 
 class WordApiSupport {
   insertEmptyContentControl(): void {

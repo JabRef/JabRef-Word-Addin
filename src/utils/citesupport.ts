@@ -8,7 +8,7 @@ import {
   CitationResult,
   RebuildProcessorStateData,
 } from "citeproc";
-import { citationByIndexInterface, referenceDataInterface } from "./types";
+import { citationByIndexInterface, referenceDataInterface } from "./cite-interface";
 import WordApiSupport from "./wordApiSupport";
 import CiteWorker from "./worker/cite.worker";
 

@@ -117,13 +117,12 @@ function registerCitation(
   preCitations: Array<[string, number]>,
   postCitations: Array<[string, number]>
 ): void {
-  const itemFetchLst = citation.citationItems.map(
-    (citationItem: CitationItem): string => {
-      if (!itemsObj[citationItem.id]) {
-        return citationItem.id;
-      }
-    }
-  );
+  const itemFetchLst = citation.citationItems
+    .filter(
+      (citationItem: CitationItem): boolean =>
+        itemsObj[citationItem.id] === null
+    )
+    .map((citationItem: CitationItem): string => citationItem.id);
   buildItemsObj(itemFetchLst);
   const citeRes = citeproc.processCitationCluster(
     citation,
