@@ -2,19 +2,19 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/await-thenable */
-/* eslint-disable class-methods-use-this */
 import {
   Bibliography,
   Citation,
   CitationResult,
   RebuildProcessorStateData,
 } from "citeproc";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import CiteWorker from "worker-loader!./worker/cite.worker";
 import {
   citationByIndexInterface,
   referenceDataInterface,
 } from "./cite-interface";
 import WordApi from "./word-api";
-import CiteWorker from "./worker/cite.worker";
 
 class CiteSupport {
   config: {
@@ -283,7 +283,7 @@ class CiteSupport {
     }
   }
 
-  isCitation(): boolean {
+  static isCitation(): boolean {
     return false;
   }
 }
