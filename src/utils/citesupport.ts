@@ -30,7 +30,7 @@ class CiteSupport {
 
   worker: Worker;
 
-  api: WordApiSupport;
+  api: WordApi;
 
   constructor(referenceData: Array<referenceDataInterface>) {
     this.config = {
@@ -43,7 +43,6 @@ class CiteSupport {
       processorReady: false,
       referenceData,
     };
-    this.api = new WordApi();
     this.worker = new CiteWorker();
     this.worker.onmessage = (event) => {
       if (event.data.errors) {
@@ -226,19 +225,19 @@ class CiteSupport {
     for (let i = 0; i < data.length; i += 1) {
       const position = data[i][0];
       const tag = JSON.stringify(this.config.citationByIndex[position]);
-      const citationTag = (await this.api.getCitationTagByIndex(
+      const citationTag = (await WordApi.getCitationTagByIndex(
         position
       )) as string;
       if (citationTag === "NEW" || citationTag !== tag) {
-        this.api.setCitationTagAtPosition(position, tag);
+        WordApi.setCitationTagAtPosition(position, tag);
       }
-      this.api.insertTextInContentControl(citationTag, data[i][1]);
+      WordApi.insertTextInContentControl(citationTag, data[i][1]);
     }
 
     // Update citationIdToPos for all nodes
-    const getTotalNumberOfCitation = await this.api.getTotalNumberOfCitation();
+    const getTotalNumberOfCitation = await WordApi.getTotalNumberOfCitation();
     for (let i = 0; i < getTotalNumberOfCitation; i += 1) {
-      const citationID = await this.api.getCitationTagByIndex(i);
+      const citationID = await WordApi.getCitationTagByIndex(i);
       if (citationID) {
         this.config.citationIdToPos[citationID] = i;
       }
@@ -251,7 +250,7 @@ class CiteSupport {
   setBibliography(data: Bibliography): void {
     this.debug("setBibliography()");
     const bib = data[1].join("\n");
-    this.api.createContentControl("bibliography", bib);
+    WordApi.createContentControl("bibliography", bib);
   }
 
   /**
@@ -266,11 +265,11 @@ class CiteSupport {
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
-    const getCitationByIndex = await this.api.getCitationByIndex();
+    const getCitationByIndex = await WordApi.getCitationByIndex();
     if (getCitationByIndex) {
       this.config.citationByIndex = getCitationByIndex;
     }
-    const getCitationIdToPos = await this.api.getCitationIdToPos();
+    const getCitationIdToPos = await WordApi.getCitationIdToPos();
     if (getCitationIdToPos) {
       this.config.citationIdToPos = getCitationIdToPos;
     }
@@ -278,7 +277,7 @@ class CiteSupport {
 
   /** Updates the citationByIndex array after every edit or delete operation */
   async updateCitationByIndex(): Promise<void> {
-    const citationByIndex = await this.api.getCitationByIndex();
+    const citationByIndex = await WordApi.getCitationByIndex();
     if (citationByIndex) {
       this.config.citationByIndex = citationByIndex;
     }
