@@ -5,6 +5,7 @@ import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
 import { citationByIndexInterface } from "../../utils/cite-interface";
+import WordApi from "../../utils/word-api";
 
 interface dashboardProps {
   citeSupport: CiteSupport;
@@ -79,12 +80,12 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
   };
 
   async function insertCitation() {
-    const isCitation = citeSupport.isCitation();
+    const isCitation = false;
     await citeSupport.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {
       if (checkedItems.length) {
-        citeSupport.api.insertEmptyContentControl();
+        await WordApi.insertEmptyContentControl();
         citation = {
           citationItems: checkedItems,
           properties: {
@@ -95,7 +96,7 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
     }
     let citationsPre = [];
     let citationsPost = [];
-    const i = (await citeSupport.api.getPositionOfNewCitation()) as number;
+    const i = (await WordApi.getPositionOfNewCitation()) as number;
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex
         .slice(0, i)

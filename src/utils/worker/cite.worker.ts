@@ -118,11 +118,8 @@ function registerCitation(
   postCitations: Array<[string, number]>
 ): void {
   const itemFetchLst = citation.citationItems
-    .filter(
-      (citationItem: CitationItem): boolean =>
-        itemsObj[citationItem.id] === null
-    )
-    .map((citationItem: CitationItem): string => citationItem.id);
+    .filter((citationItem: any): boolean => !itemsObj[citationItem.id])
+    .map((citationItem: any): string => citationItem.id);
   buildItemsObj(itemFetchLst);
   const citeRes = citeproc.processCitationCluster(
     citation,
@@ -172,3 +169,5 @@ ctx.addEventListener("message", (ev) => {
     default:
   }
 });
+
+export default null as any;

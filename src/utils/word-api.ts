@@ -1,18 +1,16 @@
 /* eslint-disable no-console */
-/* eslint-disable func-names */
-/* eslint-disable class-methods-use-this */
 
 import { citationByIndexInterface } from "./cite-interface";
 
-class WordApiSupport {
-  insertEmptyContentControl(): void {
-    Word.run(function (context) {
+class WordApi {
+  static async insertEmptyContentControl(): Promise<unknown> {
+    return Word.run((context: Word.RequestContext) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
       contentControl.tag = "JABREF-CITATION-NEW";
       contentControl.appearance = "Hidden";
       return context.sync();
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -20,8 +18,11 @@ class WordApiSupport {
     });
   }
 
-  insertTextInContentControl(tag: string, text: string): void {
-    Word.run(async (context) => {
+  static async insertTextInContentControl(
+    tag: string,
+    text: string
+  ): Promise<unknown> {
+    return Word.run(async (context: Word.RequestContext) => {
       const contentControl = context.document.contentControls
         .getByTag(`JABREF-CITATION-${tag}`)
         .getFirst();
@@ -31,7 +32,7 @@ class WordApiSupport {
         contentControl.appearance = "BoundingBox";
         return context.sync();
       });
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -39,8 +40,8 @@ class WordApiSupport {
     });
   }
 
-  async getTotalNumberOfCitation(): Promise<number | void> {
-    return Word.run(async (context) => {
+  static async getTotalNumberOfCitation(): Promise<number | void> {
+    return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
@@ -52,7 +53,7 @@ class WordApiSupport {
         }
       });
       return length;
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -60,8 +61,8 @@ class WordApiSupport {
     });
   }
 
-  async getPositionOfNewCitation(): Promise<number | void> {
-    return Word.run(async function (context) {
+  static async getPositionOfNewCitation(): Promise<number | void> {
+    return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
@@ -78,7 +79,7 @@ class WordApiSupport {
         }
       }
       return pos;
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -86,8 +87,11 @@ class WordApiSupport {
     });
   }
 
-  setCitationTagAtPosition(position: number, tag: string): void {
-    Word.run(async function (context) {
+  static async setCitationTagAtPosition(
+    position: number,
+    tag: string
+  ): Promise<unknown> {
+    return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
       context.load(contentControls, "tag");
       await context.sync();
@@ -103,7 +107,7 @@ class WordApiSupport {
         }
       }
       return context.sync();
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -111,8 +115,8 @@ class WordApiSupport {
     });
   }
 
-  async getCitationTagByIndex(position: number): Promise<string | void> {
-    return Word.run(async function (context) {
+  static async getCitationTagByIndex(position: number): Promise<string | void> {
+    return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
@@ -130,7 +134,7 @@ class WordApiSupport {
         }
       }
       return indexTag;
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -138,8 +142,8 @@ class WordApiSupport {
     });
   }
 
-  async getCitationIdToPos(): Promise<Record<string, number> | void> {
-    return Word.run(async (context) => {
+  static async getCitationIdToPos(): Promise<Record<string, number> | void> {
+    return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
@@ -158,7 +162,7 @@ class WordApiSupport {
         }
         return {};
       });
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -166,8 +170,8 @@ class WordApiSupport {
     });
   }
 
-  async getCitationByIndex(): Promise<Array<citationByIndexInterface> | void> {
-    return Word.run(async function (context) {
+  static async getCitationByIndex(): Promise<Array<citationByIndexInterface> | void> {
+    return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");
       await context.sync();
@@ -178,14 +182,14 @@ class WordApiSupport {
           citationByIndex.push(JSON.parse(tag.substring(16)));
         }
       });
-      return context.sync().then(function () {
+      return context.sync().then(() => {
         if (citationByIndex.length) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return citationByIndex;
         }
         return [];
       });
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -193,8 +197,8 @@ class WordApiSupport {
     });
   }
 
-  createContentControl(tag: string, html: string): void {
-    Word.run((context) => {
+  static createContentControl(tag: string, html: string): void {
+    Word.run((context: Word.RequestContext) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
       contentControl.tag = tag;
@@ -202,7 +206,7 @@ class WordApiSupport {
       contentControl.color = "white";
       contentControl.insertHtml(html, "Replace");
       return context.sync();
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -211,4 +215,4 @@ class WordApiSupport {
   }
 }
 
-export default WordApiSupport;
+export default WordApi;

@@ -699,23 +699,23 @@
     "@fluentui/set-version" "^8.1.3"
     tslib "^2.1.0"
 
-"@fluentui/font-icons-mdl2@^8.1.6":
-  version "8.1.6"
-  resolved "https://registry.yarnpkg.com/@fluentui/font-icons-mdl2/-/font-icons-mdl2-8.1.6.tgz#6d8b734e4889ac7fefafb8127af466a575f259b5"
-  integrity sha512-tNAaX72NQYbvR9zeiOiVQBQhYtVgPUgh68LKTGywuYGc2WffBu20Xk9wII8iLGmAijLI1QClaCQxaRAL0IkfBA==
+"@fluentui/font-icons-mdl2@^8.1.7":
+  version "8.1.7"
+  resolved "https://registry.yarnpkg.com/@fluentui/font-icons-mdl2/-/font-icons-mdl2-8.1.7.tgz#a1d25d0a504559086ab074304b9afb313d17413b"
+  integrity sha512-piTdL/rKTx3cNBaMBc+u7YtluLfKYt9NY7Z341h3gZyYfgzeO8djU4RD7KpSozocPPGjooMjCjfPWDVh3DZqkw==
   dependencies:
     "@fluentui/set-version" "^8.1.3"
-    "@fluentui/style-utilities" "^8.2.0"
+    "@fluentui/style-utilities" "^8.2.1"
     tslib "^2.1.0"
 
-"@fluentui/foundation-legacy@^8.1.6":
-  version "8.1.6"
-  resolved "https://registry.yarnpkg.com/@fluentui/foundation-legacy/-/foundation-legacy-8.1.6.tgz#b9f77cb41b0fc640baba9c6a7391d5c532836d8a"
-  integrity sha512-TJzUFcpfcJefXNmTOAJBKgIlQXDPw/dIcpO9l2nBfORvy4RnrJK4QjpdJPp5XOhDPtDVjlKPB1WvavoRkPRrbg==
+"@fluentui/foundation-legacy@^8.1.7":
+  version "8.1.7"
+  resolved "https://registry.yarnpkg.com/@fluentui/foundation-legacy/-/foundation-legacy-8.1.7.tgz#055c856bda4f9784eeb4236aee2e95fd2a0f8d8e"
+  integrity sha512-hzzgbtMFp0gPi5qG9+Wa2ImYrfEuld3880g3xsxfrjRgVQ5zcRIkNFNc5//YfiLRqi0y9wNUuDrEI08ZMvxSBA==
   dependencies:
     "@fluentui/merge-styles" "^8.1.3"
     "@fluentui/set-version" "^8.1.3"
-    "@fluentui/style-utilities" "^8.2.0"
+    "@fluentui/style-utilities" "^8.2.1"
     "@fluentui/utilities" "^8.2.1"
     tslib "^2.1.0"
 
@@ -734,15 +734,15 @@
     "@fluentui/set-version" "^8.1.3"
     tslib "^2.1.0"
 
-"@fluentui/react-focus@^8.1.8":
-  version "8.1.8"
-  resolved "https://registry.yarnpkg.com/@fluentui/react-focus/-/react-focus-8.1.8.tgz#ee59ee1e8a644b39b903691d72b48096016b7432"
-  integrity sha512-EUI1TZwM7T2keNEjqIAkeV9ALMlLjz7abqHk0AypKJG3v4YPQHycal37KAHQb+gdVJX2hjVQLxynI1yrquKFUw==
+"@fluentui/react-focus@^8.1.9":
+  version "8.1.9"
+  resolved "https://registry.yarnpkg.com/@fluentui/react-focus/-/react-focus-8.1.9.tgz#26e8e03bff9d0766408a7c6573925e6686d6c430"
+  integrity sha512-vYnenLKUj2Uxj5sjuv6AJJ1kYCqq/stM4ZMCQmJWq2qiMm2TpqW3vMpRspuxwD9BqOVbIFNoj9pEWpxAaTCEqw==
   dependencies:
     "@fluentui/keyboard-key" "^0.3.3"
     "@fluentui/merge-styles" "^8.1.3"
     "@fluentui/set-version" "^8.1.3"
-    "@fluentui/style-utilities" "^8.2.0"
+    "@fluentui/style-utilities" "^8.2.1"
     "@fluentui/utilities" "^8.2.1"
     tslib "^2.1.0"
 
@@ -764,21 +764,21 @@
     "@fluentui/set-version" "^8.1.3"
     tslib "^2.1.0"
 
-"@fluentui/react@^8.23.8":
-  version "8.23.8"
-  resolved "https://registry.yarnpkg.com/@fluentui/react/-/react-8.23.8.tgz#bff870cb8c3726c89f855e1c27c1e040b505bebb"
-  integrity sha512-piomaUcVxDZvA0yueTW/BGMISYdJ9/LJ1FNMgvSnST8/LwWTCRGbswN3tg/IUVULRlENy9th9rBp1TeMZ/DigQ==
+"@fluentui/react@^8.20.2":
+  version "8.25.0"
+  resolved "https://registry.yarnpkg.com/@fluentui/react/-/react-8.25.0.tgz#55201bd1aecf88d4e8cc338bf3e11a2b1e246fe1"
+  integrity sha512-69qaPJ4HDUQBf6nAxd6RuW9c5VoHHtKhb2qrN/yqf1Zu5E6me8LC7WAdo4hCsKNf8dFfJ9zScYcpXBmzC3NEZg==
   dependencies:
     "@fluentui/date-time-utilities" "^8.2.1"
-    "@fluentui/font-icons-mdl2" "^8.1.6"
-    "@fluentui/foundation-legacy" "^8.1.6"
+    "@fluentui/font-icons-mdl2" "^8.1.7"
+    "@fluentui/foundation-legacy" "^8.1.7"
     "@fluentui/merge-styles" "^8.1.3"
-    "@fluentui/react-focus" "^8.1.8"
+    "@fluentui/react-focus" "^8.1.9"
     "@fluentui/react-hooks" "^8.2.4"
     "@fluentui/react-window-provider" "^2.1.3"
     "@fluentui/set-version" "^8.1.3"
-    "@fluentui/style-utilities" "^8.2.0"
-    "@fluentui/theme" "^2.1.4"
+    "@fluentui/style-utilities" "^8.2.1"
+    "@fluentui/theme" "^2.2.0"
     "@fluentui/utilities" "^8.2.1"
     "@microsoft/load-themed-styles" "^1.10.26"
     tslib "^2.1.0"
@@ -790,22 +790,22 @@
   dependencies:
     tslib "^2.1.0"
 
-"@fluentui/style-utilities@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@fluentui/style-utilities/-/style-utilities-8.2.0.tgz#7c7a44ea8a890279e1cb698311fda09f8943bb66"
-  integrity sha512-gdAgBnevDOHbgqAKCaQG4CXN6dONMg8BRSZNqha0I9WdgLJy7F7t4xVo8elPjlDUP72ciYT8J9Z/YNljZzbE0w==
+"@fluentui/style-utilities@^8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@fluentui/style-utilities/-/style-utilities-8.2.1.tgz#a666eb416ff255d3f0a44349dcecdb64e24ffd34"
+  integrity sha512-+ZSl7Hz/C9DX1dYTZBnmP/57fHPK2qrLr0oTLJTq4uLjmG5Hxyo6gZ9/YCrEnW0h1d3tZlNa4LH5X8rux+D8kg==
   dependencies:
     "@fluentui/merge-styles" "^8.1.3"
     "@fluentui/set-version" "^8.1.3"
-    "@fluentui/theme" "^2.1.4"
+    "@fluentui/theme" "^2.2.0"
     "@fluentui/utilities" "^8.2.1"
     "@microsoft/load-themed-styles" "^1.10.26"
     tslib "^2.1.0"
 
-"@fluentui/theme@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@fluentui/theme/-/theme-2.1.4.tgz#3f4a04de614437803d053bf986f2aa0aeeb5c48b"
-  integrity sha512-Y4FWgnYldvAFOo24tfsREMb8/3Tn5uDoYgGO7AAdrksP7VAaavaEVQCOgvHWy3l89Bsxf00/fE+QJ/AHv5Z4CA==
+"@fluentui/theme@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@fluentui/theme/-/theme-2.2.0.tgz#a55e6119efc70c5f35fc0df89ec18d672db932fd"
+  integrity sha512-LKM2ML05WU22It39iw523wGrpLG5qcvmQkSV7HV5NERSeZkI79TYntmXecaKaKWZjdUFTsZDijuhCOkWypNG5Q==
   dependencies:
     "@fluentui/merge-styles" "^8.1.3"
     "@fluentui/set-version" "^8.1.3"
@@ -918,22 +918,6 @@
     "@graphql-codegen/plugin-helpers" "^1.18.8"
     "@graphql-codegen/visitor-plugin-common" "1.22.0"
     auto-bind "~4.0.0"
-    tslib "~2.3.0"
-
-"@graphql-codegen/visitor-plugin-common@1.21.2":
-  version "1.21.2"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-1.21.2.tgz#c72f1f47bee2ba03ceb48abf14e2cb82d9184b32"
-  integrity sha512-Bb5P2Hw7f+lNWfazjcGwVcX434stNd7/EhgA+S2Ro0Bn1xVCK/WL0IHT2TGb+pf6/lWg3Y+J9wo2aOKkqDHT6A==
-  dependencies:
-    "@graphql-codegen/plugin-helpers" "^1.18.7"
-    "@graphql-tools/optimize" "^1.0.1"
-    "@graphql-tools/relay-operation-optimizer" "^6.3.0"
-    array.prototype.flatmap "^1.2.4"
-    auto-bind "~4.0.0"
-    change-case-all "1.0.14"
-    dependency-graph "^0.11.0"
-    graphql-tag "^2.11.0"
-    parse-filepath "^1.0.2"
     tslib "~2.3.0"
 
 "@graphql-codegen/visitor-plugin-common@1.21.3":
