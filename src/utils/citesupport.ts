@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-await-in-loop */
 import {
   Bibliography,
@@ -12,6 +10,25 @@ import {
 } from "citeproc";
 import WordApi from "./word-api";
 import CiteWorker from "./cite.worker";
+
+interface WorkerEventInterface {
+  data?: DataInterface;
+}
+interface DataInterface {
+  errors: string;
+  command: string;
+  localeName: string;
+  citationByIndex: Array<citationByIndexInterface>;
+  referenceData: Array<referenceDataInterface>;
+  styleName: string;
+  citation: Citation;
+  preCitations: Array<[string, number]>;
+  postCitations: Array<[string, number]>;
+  xclass: string;
+  rebuildData: Array<RebuildProcessorStateData>;
+  bibliographyData: Bibliography;
+  citationData: Array<CitationResult>;
+}
 
 class CiteSupport {
   config: {
@@ -38,8 +55,8 @@ class CiteSupport {
       processorReady: false,
       referenceData,
     };
-    this.worker = new CiteWorker() as Worker;
-    this.worker.onmessage = (event) => {
+    this.worker = new CiteWorker();
+    this.worker.onmessage = (event: WorkerEventInterface) => {
       if (event.data.errors) {
         this.debug(event.data.errors);
       }

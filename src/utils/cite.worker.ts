@@ -1,14 +1,35 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable no-restricted-globals */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import CSL, {
+  Bibliography,
   Citation,
   citationByIndexInterface,
   citationItemsInterface,
+  CitationResult,
+  RebuildProcessorStateData,
   referenceDataInterface,
 } from "citeproc";
 
+interface WorkerEventInterface {
+  data?: DataInterface;
+}
+interface DataInterface {
+  errors: string;
+  command: string;
+  localeName: string;
+  citationByIndex: Array<citationByIndexInterface>;
+  referenceData: Array<referenceDataInterface>;
+  styleName: string;
+  citation: Citation;
+  preCitations: Array<[string, number]>;
+  postCitations: Array<[string, number]>;
+  xclass: string;
+  rebuildData: Array<RebuildProcessorStateData>;
+  bibliographyData: Bibliography;
+  citationData: Array<CitationResult>;
+}
 const ctx: Worker = self as never;
 const itemsObj: Record<string, referenceDataInterface> = {};
 const localesObj: Record<string, string> = {};
@@ -139,7 +160,7 @@ function getBibliography(): void {
   });
 }
 
-ctx.addEventListener("message", (ev) => {
+ctx.addEventListener("message", (ev: WorkerEventInterface) => {
   switch (ev.data.command) {
     case "initProcessor":
       setPreferenceAndReferenceData(
