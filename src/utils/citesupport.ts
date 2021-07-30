@@ -1,17 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable no-await-in-loop */
 import {
-  Bibliography,
   Citation,
-  citationByIndexInterface,
   CitationResult,
+  GeneratedBibliography,
+  MetaData,
   RebuildProcessorStateData,
-  referenceDataInterface,
+  StatefulCitation,
 } from "citeproc";
 import WordApi from "./word-api";
-import CiteWorker from "./cite.worker";
+import CiteWorker, {
+  CiteWorkerCommand,
+  CiteWorkerMessage,
+} from "./cite.worker";
 
 class CiteSupport {
   config: {
@@ -20,14 +19,14 @@ class CiteSupport {
     defaultLocale: string;
     defaultStyle: string;
     citationIdToPos: Record<string, number>;
-    citationByIndex: Array<citationByIndexInterface>;
+    citationByIndex: Array<StatefulCitation>;
     processorReady: boolean;
-    referenceData: Array<referenceDataInterface>;
+    referenceData: Array<MetaData>;
   };
 
   worker: Worker;
 
-  constructor(referenceData: Array<referenceDataInterface>) {
+  constructor(referenceData: Array<MetaData>) {
     this.config = {
       debug: true,
       mode: "in-text",
@@ -38,14 +37,15 @@ class CiteSupport {
       processorReady: false,
       referenceData,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     this.worker = new CiteWorker() as Worker;
-    this.worker.onmessage = (event) => {
+    this.worker.onmessage = async (event: MessageEvent<CiteWorkerMessage>) => {
       if (event.data.errors) {
         this.debug(event.data.errors);
       }
       switch (event.data.command) {
         case "initProcessor":
-          this.onInitProcessor(
+          await this.onInitProcessor(
             event.data.xclass,
             event.data.rebuildData,
             event.data.bibliographyData,
@@ -53,7 +53,7 @@ class CiteSupport {
           );
           break;
         case "registerCitation":
-          this.onRegisterCitation(
+          await this.onRegisterCitation(
             event.data.citationByIndex,
             event.data.citationData
           );
@@ -72,17 +72,17 @@ class CiteSupport {
    *  `config.mode`, and document citations (if any)
    *  and document bibliography (if any).
    */
-  onInitProcessor(
+  async onInitProcessor(
     xclass: string,
     rebuildData: Array<RebuildProcessorStateData>,
-    _bibliographyData: Bibliography,
-    citationByIndex: Array<citationByIndexInterface>
-  ): void {
+    _bibliographyData: GeneratedBibliography,
+    citationByIndex: Array<StatefulCitation>
+  ): Promise<void> {
     this.debug("initProcessor()");
     this.config.mode = xclass;
     this.config.citationByIndex = citationByIndex;
     const citationData = this.convertRebuildDataToCitationData(rebuildData);
-    this.setCitations(citationData);
+    await this.setCitations(citationData);
     // this.setBibliography(bibliographyData);
     this.config.processorReady = true;
   }
@@ -93,17 +93,17 @@ class CiteSupport {
    *   the bibliography in the document, and save the `citationByIndex` array
    *   for persistence.
    */
-  onRegisterCitation(
-    citationByIndex: Array<citationByIndexInterface>,
+  async onRegisterCitation(
+    citationByIndex: Array<StatefulCitation>,
     citationData: Array<CitationResult>
-  ): void {
+  ): Promise<void> {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
-    this.setCitations(citationData);
+    await this.setCitations(citationData);
     this.config.processorReady = true;
   }
 
-  onSetBibliography(bibliographyData: Bibliography): void {
+  onSetBibliography(bibliographyData: GeneratedBibliography): void {
     this.debug("setBibliograghy()");
     this.setBibliography(bibliographyData);
     this.config.processorReady = true;
@@ -125,12 +125,12 @@ class CiteSupport {
   callInitProcessor(
     styleName: string,
     localeName: string,
-    citationByIndex: Array<citationByIndexInterface>,
-    referenceData: Array<referenceDataInterface>
+    citationByIndex: Array<StatefulCitation>,
+    referenceData: Array<MetaData>
   ): void {
     this.debug("callInitProcessor()");
     this.config.processorReady = false;
-    this.worker.postMessage({
+    this.work({
       command: "initProcessor",
       styleName,
       localeName,
@@ -152,7 +152,7 @@ class CiteSupport {
     this.debug("callRegisterCitation()");
     if (!this.config.processorReady) return;
     this.config.processorReady = false;
-    this.worker.postMessage({
+    this.work({
       command: "registerCitation",
       citation,
       preCitations,
@@ -164,7 +164,7 @@ class CiteSupport {
     if (!this.config.processorReady) return;
     this.debug("getBibliography()");
     this.config.processorReady = false;
-    this.worker.postMessage({
+    this.work({
       command: "getBibliography",
     });
   }
@@ -183,6 +183,10 @@ class CiteSupport {
       this.config.referenceData
     );
   };
+
+  private work(message: CiteWorkerCommand): void {
+    this.worker.postMessage(message);
+  }
 
   /**
    *    Converts the array returned by the processor `rebuildProcessor()` method
@@ -240,7 +244,7 @@ class CiteSupport {
   /**
    * Insert bibliography with xHTML returned by the processor.
    */
-  setBibliography(data: Bibliography): void {
+  setBibliography(data: GeneratedBibliography): void {
     this.debug("setBibliography()");
     const bib = data[1].join("\n");
     WordApi.createContentControl("bibliography", bib);

@@ -63,7 +63,6 @@
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
     "babel-loader": "^8.2.2",
-    "citeproc-types": "^1.0.2",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.4.1",
     "crlf": "^1.1.1",
