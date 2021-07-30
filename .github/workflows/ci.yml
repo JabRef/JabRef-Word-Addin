@@ -39,4 +39,4 @@ jobs:
         run: yarn lint
 
       - name: Build
-        run: yarn build --https
+        run: yarn build
