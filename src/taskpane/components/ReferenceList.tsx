@@ -9,6 +9,7 @@ import {
   FocusZoneDirection,
   Checkbox,
 } from "@fluentui/react";
+import { referenceDataInterface } from "citeproc";
 import React, { ReactElement } from "react";
 
 const theme: ITheme = getTheme();

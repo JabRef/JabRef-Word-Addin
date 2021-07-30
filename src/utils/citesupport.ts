@@ -11,7 +11,7 @@ import {
   referenceDataInterface,
 } from "citeproc";
 import WordApi from "./word-api";
-import CiteWorker from "./worker/cite.worker";
+import CiteWorker from "./cite.worker";
 
 class CiteSupport {
   config: {

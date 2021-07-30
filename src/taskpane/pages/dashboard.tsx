@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
+import { citationByIndexInterface } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
 import WordApi from "../../utils/word-api";
-import { citationByIndexInterface } from "citeproc";
 
 interface dashboardProps {
   citeSupport: CiteSupport;
