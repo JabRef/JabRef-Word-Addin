@@ -5,10 +5,11 @@
 import CSL, {
   Citation,
   citationByIndexInterface,
+  citationItemsInterface,
   referenceDataInterface,
 } from "citeproc";
 
-const ctx: Worker = self as any;
+const ctx: Worker = self as never;
 const itemsObj: Record<string, referenceDataInterface> = {};
 const localesObj: Record<string, string> = {};
 let style: string;
@@ -16,17 +17,6 @@ let preferredLocale: string;
 let citeproc = null;
 let citationByIndex: Array<citationByIndexInterface>;
 let referenceData: Array<referenceDataInterface>; // User citation data
-
-interface CitationItem {
-  locator?: string;
-  label?: string;
-  "suppress-author"?: boolean;
-  "author-only"?: boolean;
-  prefix?: string;
-  suffix?: string;
-  id: string;
-}
-
 const sys = {
   retrieveItem(itemID: string | number): referenceDataInterface {
     return itemsObj[itemID];
@@ -118,8 +108,11 @@ function registerCitation(
   postCitations: Array<[string, number]>
 ): void {
   const itemFetchLst = citation.citationItems
-    .filter((citationItem: any): boolean => !itemsObj[citationItem.id])
-    .map((citationItem: any): string => citationItem.id);
+    .filter(
+      (citationItem: citationItemsInterface): boolean =>
+        !itemsObj[citationItem.id]
+    )
+    .map((citationItem: citationItemsInterface): string => citationItem.id);
   buildItemsObj(itemFetchLst);
   const citeRes = citeproc.processCitationCluster(
     citation,

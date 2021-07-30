@@ -9,6 +9,10 @@ declare module "citeproc" {
 
   export interface citationByIndexInterface
     extends Omit<StatefulCitation, "citationItems"> {
-    citationItems: Array<referenceDataInterface>;
+    citationItems: Array<citationItemsInterface>;
+  }
+  export interface citationItemsInterface {
+    id: string;
+    item: referenceDataInterface;
   }
 }
