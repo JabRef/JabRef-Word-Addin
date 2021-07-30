@@ -2,11 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import CSL, { Citation } from "citeproc";
-import {
+import CSL, {
+  Citation,
   citationByIndexInterface,
   referenceDataInterface,
-} from "../cite-interface";
+} from "citeproc";
 
 const ctx: Worker = self as any;
 const itemsObj: Record<string, referenceDataInterface> = {};

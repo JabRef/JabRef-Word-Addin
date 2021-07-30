@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { citationByIndexInterface } from "./cite-interface";
+import { citationByIndexInterface } from "citeproc";
 
 class WordApi {
   static async insertEmptyContentControl(): Promise<unknown> {

@@ -1,4 +1,4 @@
-import { referenceDataInterface } from "./cite-interface";
+import { referenceDataInterface } from "citeproc";
 
 const data: Array<referenceDataInterface> = [
   {

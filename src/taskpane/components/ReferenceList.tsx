@@ -10,7 +10,6 @@ import {
   Checkbox,
 } from "@fluentui/react";
 import React, { ReactElement } from "react";
-import { referenceDataInterface } from "../../utils/cite-interface";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;

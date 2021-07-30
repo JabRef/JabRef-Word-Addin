@@ -5,13 +5,11 @@
 import {
   Bibliography,
   Citation,
+  citationByIndexInterface,
   CitationResult,
   RebuildProcessorStateData,
-} from "citeproc";
-import {
-  citationByIndexInterface,
   referenceDataInterface,
-} from "./cite-interface";
+} from "citeproc";
 import WordApi from "./word-api";
 import CiteWorker from "./worker/cite.worker";
 
