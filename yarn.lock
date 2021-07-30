@@ -765,9 +765,15 @@
     tslib "^2.1.0"
 
 "@fluentui/react@^8.20.2":
+<<<<<<< HEAD
   version "8.25.0"
   resolved "https://registry.yarnpkg.com/@fluentui/react/-/react-8.25.0.tgz#55201bd1aecf88d4e8cc338bf3e11a2b1e246fe1"
   integrity sha512-69qaPJ4HDUQBf6nAxd6RuW9c5VoHHtKhb2qrN/yqf1Zu5E6me8LC7WAdo4hCsKNf8dFfJ9zScYcpXBmzC3NEZg==
+=======
+  version "8.24.0"
+  resolved "https://registry.yarnpkg.com/@fluentui/react/-/react-8.24.0.tgz#d74f894fdd04e3e106c4ed833f04b1a3573660f1"
+  integrity sha512-xVPu4zGa6Mi4qpfAO+mQaNFOExTHaQeNMeUhWS4MGpDUd7ZL7+AvX+5afaD+30c+GDYhFaNbIJEyD8WYN9po8A==
+>>>>>>> b9b9c3dc289486f676aeaacb01ab6ea41d832944
   dependencies:
     "@fluentui/date-time-utilities" "^8.2.1"
     "@fluentui/font-icons-mdl2" "^8.1.7"
