@@ -1,45 +1,82 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import CSL, {
-  Bibliography,
   Citation,
-  citationByIndexInterface,
-  citationItemsInterface,
+  CitationKind,
   CitationResult,
+  Engine,
+  GeneratedBibliography,
+  MetaData,
   RebuildProcessorStateData,
-  referenceDataInterface,
+  StatefulCitation,
 } from "citeproc";
 
-interface WorkerEventInterface {
-  data?: DataInterface;
-}
-interface DataInterface {
-  errors: string;
-  command: string;
-  localeName: string;
-  citationByIndex: Array<citationByIndexInterface>;
-  referenceData: Array<referenceDataInterface>;
-  styleName: string;
-  citation: Citation;
-  preCitations: Array<[string, number]>;
-  postCitations: Array<[string, number]>;
-  xclass: string;
-  rebuildData: Array<RebuildProcessorStateData>;
-  bibliographyData: Bibliography;
-  citationData: Array<CitationResult>;
-}
+// eslint-disable-next-line no-restricted-globals
 const ctx: Worker = self as never;
-const itemsObj: Record<string, referenceDataInterface> = {};
+const itemsObj: Record<string, MetaData> = {};
 const localesObj: Record<string, string> = {};
 let style: string;
 let preferredLocale: string;
-let citeproc = null;
-let citationByIndex: Array<citationByIndexInterface>;
-let referenceData: Array<referenceDataInterface>; // User citation data
+let citeproc: Engine | null = null;
+let citationByIndex: Array<StatefulCitation>;
+let referenceData: Array<MetaData>;
+
+export type CiteWorkerInitProcessorCommand = {
+  command: "initProcessor";
+
+  styleName: string;
+  localeName: string;
+  citationByIndex: Array<StatefulCitation>;
+  referenceData: Array<MetaData>;
+};
+
+export type CiteWorkerInitProcessorMessage = {
+  command: "initProcessor";
+
+  xclass: CitationKind;
+  citationByIndex: StatefulCitation[];
+  rebuildData: RebuildProcessorStateData[];
+  bibliographyData: GeneratedBibliography;
+  result: string;
+};
+
+export type CiteWorkerRegisterCitationCommand = {
+  command: "registerCitation";
+
+  citation: Citation;
+  preCitations: Array<[string, number]>;
+  postCitations: Array<[string, number]>;
+};
+
+export type CiteWorkerRegisterCitationMessage = {
+  command: "registerCitation";
+
+  citationData: CitationResult[];
+  citationByIndex: StatefulCitation[];
+  result: string;
+};
+
+export type CiteWorkerGetBibliographyCommand = {
+  command: "getBibliography";
+};
+
+export type CiteWorkerSetBibliographyMessage = {
+  command: "setBibliography";
+
+  bibliographyData: GeneratedBibliography;
+  result: string;
+};
+
+export type CiteWorkerCommand =
+  | CiteWorkerInitProcessorCommand
+  | CiteWorkerRegisterCitationCommand
+  | CiteWorkerGetBibliographyCommand;
+
+export type CiteWorkerMessage =
+  | CiteWorkerInitProcessorMessage
+  | CiteWorkerRegisterCitationMessage
+  | CiteWorkerSetBibliographyMessage;
+
 const sys = {
-  retrieveItem(itemID: string | number): referenceDataInterface {
+  retrieveItem(itemID: string | number): MetaData {
     return itemsObj[itemID];
   },
   retrieveLocale(lang: string): string {
@@ -69,6 +106,10 @@ function getStyle(styleID: string): string {
   return xhr.responseText;
 }
 
+function reportBack(message: CiteWorkerMessage): void {
+  ctx.postMessage(message);
+}
+
 function buildLocalesObj(locales: string): void {
   const locale = locales != null ? locales : "en-US";
   localesObj[locale] = getLocale(locale);
@@ -82,12 +123,23 @@ function buildItemsObj(itemIDs: Array<string | number>): void {
 
 function setPreferenceAndReferenceData(
   localeName: string,
-  citationbyIndex: Array<citationByIndexInterface>,
-  data: Array<referenceDataInterface>
+  citationbyIndex: Array<StatefulCitation>,
+  data: Array<MetaData>
 ): void {
   preferredLocale = localeName;
   citationByIndex = citationbyIndex;
   referenceData = data;
+}
+
+function makeBibliography(): GeneratedBibliography | null {
+  if (citeproc.bibliography.tokens.length) {
+    const result = citeproc.makeBibliography();
+    if (!result) {
+      return null;
+    }
+    return result;
+  }
+  return null;
 }
 
 function buildProcessor(styleID: string): void {
@@ -96,7 +148,7 @@ function buildProcessor(styleID: string): void {
   citeproc = new CSL.Engine(sys, style, preferredLocale);
   const itemIDs = [];
   if (citationByIndex) {
-    citationByIndex.forEach((citation: citationByIndexInterface) => {
+    citationByIndex.forEach((citation: StatefulCitation) => {
       citation.citationItems.forEach((item) => {
         itemIDs.push(item.id);
       });
@@ -104,21 +156,17 @@ function buildProcessor(styleID: string): void {
   }
 
   buildItemsObj(itemIDs);
-  let rebuildData = null;
+  let rebuildData: CSL.RebuildProcessorStateData[] = [];
   if (citationByIndex) {
     rebuildData = citeproc.rebuildProcessorState(citationByIndex);
   }
   citationByIndex = null;
-  let bibRes = null;
-  if (citeproc.bibliography.tokens.length) {
-    bibRes = citeproc.makeBibliography();
-  }
-  ctx.postMessage({
+  reportBack({
     command: "initProcessor",
     xclass: citeproc.opt.xclass,
     citationByIndex: citeproc.registry.citationreg.citationByIndex,
     rebuildData,
-    bibliographyData: bibRes,
+    bibliographyData: makeBibliography(),
     result: "OK",
   });
 }
@@ -129,18 +177,15 @@ function registerCitation(
   postCitations: Array<[string, number]>
 ): void {
   const itemFetchLst = citation.citationItems
-    .filter(
-      (citationItem: citationItemsInterface): boolean =>
-        !itemsObj[citationItem.id]
-    )
-    .map((citationItem: citationItemsInterface): string => citationItem.id);
+    .filter((citationItem) => !itemsObj[citationItem.id])
+    .map((citationItem) => citationItem.id);
   buildItemsObj(itemFetchLst);
   const citeRes = citeproc.processCitationCluster(
     citation,
     preCitations,
     postCitations
   );
-  ctx.postMessage({
+  reportBack({
     command: "registerCitation",
     citationData: citeRes[1],
     citationByIndex: citeproc.registry.citationreg.citationByIndex,
@@ -149,18 +194,14 @@ function registerCitation(
 }
 
 function getBibliography(): void {
-  let bibRes = null;
-  if (citeproc.bibliography.tokens.length) {
-    bibRes = citeproc.makeBibliography();
-  }
-  ctx.postMessage({
+  reportBack({
     command: "setBibliography",
-    bibliographyData: bibRes,
+    bibliographyData: makeBibliography(),
     result: "OK",
   });
 }
 
-ctx.addEventListener("message", (ev: WorkerEventInterface) => {
+ctx.addEventListener("message", (ev: MessageEvent<CiteWorkerCommand>) => {
   switch (ev.data.command) {
     case "initProcessor":
       setPreferenceAndReferenceData(

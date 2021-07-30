@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { citationByIndexInterface } from "citeproc";
+import { StatefulCitation } from "citeproc";
 
 class WordApi {
   static async insertEmptyContentControl(): Promise<unknown> {
@@ -169,7 +169,7 @@ class WordApi {
     });
   }
 
-  static async getCitationByIndex(): Promise<Array<citationByIndexInterface> | void> {
+  static async getCitationByIndex(): Promise<Array<StatefulCitation> | void> {
     return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
       context.load(contentControls, "tag, length");

@@ -23,11 +23,9 @@
     "pretty": true,
     "typeRoots": [
       "node_modules/@types",
-      "node_modules/citeproc-types",
     ],    
     "types": [
       "@types/node",
-      "citeproc-types",
       "office-js"
     ]
   },
