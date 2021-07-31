@@ -44,30 +44,29 @@ class CiteSupport {
     this.worker = new CiteWorker() as Worker;
     this.wordApi = new WordApi();
     this.worker.onmessage = async (event: MessageEvent<CiteWorkerMessage>) => {
-      if (event.data.command === "error") {
-        this.debug(event.data.error);
-      } else {
-        switch (event.data.command) {
-          case "initProcessor":
-            await this.onInitProcessor(
-              event.data.xclass,
-              event.data.rebuildData,
-              event.data.bibliographyData,
-              event.data.citationByIndex
-            );
-            break;
-          case "registerCitation":
-            await this.onRegisterCitation(
-              event.data.citationByIndex,
-              event.data.citationData
-            );
-            break;
+      switch (event.data.command) {
+        case "error":
+          this.debug(event.data.error);
+          break;
+        case "initProcessor":
+          await this.onInitProcessor(
+            event.data.xclass,
+            event.data.rebuildData,
+            event.data.bibliographyData,
+            event.data.citationByIndex
+          );
+          break;
+        case "registerCitation":
+          await this.onRegisterCitation(
+            event.data.citationByIndex,
+            event.data.citationData
+          );
+          break;
 
-          case "setBibliography":
-            this.onSetBibliography(event.data.bibliographyData);
-            break;
-          default:
-        }
+        case "setBibliography":
+          this.onSetBibliography(event.data.bibliographyData);
+          break;
+        default:
       }
     };
   }
