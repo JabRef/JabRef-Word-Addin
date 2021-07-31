@@ -12,9 +12,8 @@
     "dev_server_port": 3000
   },
   "scripts": {
-    "build": "webpack -p --mode production",
+    "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
-    "build-dev": "webpack --mode development  && echo . && echo . && echo . && echo Please use 'build:dev' instead of 'build-dev'.",
     "dev-server": "webpack serve --mode development",
     "lint": "office-addin-lint check --files \"src/**/*.{ts,tsx}\"",
     "lint:fix": "office-addin-lint fix --files \"src/**/*.{ts,tsx}\"",
