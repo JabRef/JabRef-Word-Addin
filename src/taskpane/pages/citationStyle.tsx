@@ -122,7 +122,7 @@ function CitationStyle({ citeSupport }: citationStyleProps): JSX.Element {
       <div className={classNames.selectedStyle}>
         {currentStyle
           ? items.find((item) => item.value === currentStyle).text
-          : "American Psychological Association 7th edition"}
+          : "American Political Science Association"}
       </div>
       <div className={classNames.StyleHeading}>Change Style</div>
       <div className={classNames.container}>

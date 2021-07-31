@@ -65,6 +65,12 @@ export type CiteWorkerSetBibliographyMessage = {
   result: string;
 };
 
+export type CiteWorkerError = {
+  command: "error";
+
+  error: string;
+};
+
 export type CiteWorkerCommand =
   | CiteWorkerInitProcessorCommand
   | CiteWorkerRegisterCitationCommand
@@ -73,7 +79,8 @@ export type CiteWorkerCommand =
 export type CiteWorkerMessage =
   | CiteWorkerInitProcessorMessage
   | CiteWorkerRegisterCitationMessage
-  | CiteWorkerSetBibliographyMessage;
+  | CiteWorkerSetBibliographyMessage
+  | CiteWorkerError;
 
 const sys = {
   retrieveItem(itemID: string | number): MetaData {
@@ -143,32 +150,39 @@ function makeBibliography(): GeneratedBibliography | null {
 }
 
 function buildProcessor(styleID: string): void {
-  style = getStyle(styleID);
-  buildLocalesObj(preferredLocale);
-  citeproc = new CSL.Engine(sys, style, preferredLocale);
-  const itemIDs = [];
-  if (citationByIndex) {
-    citationByIndex.forEach((citation: StatefulCitation) => {
-      citation.citationItems.forEach((item) => {
-        itemIDs.push(item.id);
+  try {
+    style = getStyle(styleID);
+    buildLocalesObj(preferredLocale);
+    citeproc = new CSL.Engine(sys, style, preferredLocale);
+    const itemIDs = [];
+    if (citationByIndex) {
+      citationByIndex.forEach((citation: StatefulCitation) => {
+        citation.citationItems.forEach((item) => {
+          itemIDs.push(item.id);
+        });
       });
+    }
+
+    buildItemsObj(itemIDs);
+    let rebuildData: CSL.RebuildProcessorStateData[] = [];
+    if (citationByIndex) {
+      rebuildData = citeproc.rebuildProcessorState(citationByIndex);
+    }
+    citationByIndex = null;
+    reportBack({
+      command: "initProcessor",
+      xclass: citeproc.opt.xclass,
+      citationByIndex: citeproc.registry.citationreg.citationByIndex,
+      rebuildData,
+      bibliographyData: makeBibliography(),
+      result: "OK",
+    });
+  } catch (error) {
+    reportBack({
+      command: "error",
+      error: JSON.stringify(error, ["name", "message", "stack"], 2),
     });
   }
-
-  buildItemsObj(itemIDs);
-  let rebuildData: CSL.RebuildProcessorStateData[] = [];
-  if (citationByIndex) {
-    rebuildData = citeproc.rebuildProcessorState(citationByIndex);
-  }
-  citationByIndex = null;
-  reportBack({
-    command: "initProcessor",
-    xclass: citeproc.opt.xclass,
-    citationByIndex: citeproc.registry.citationreg.citationByIndex,
-    rebuildData,
-    bibliographyData: makeBibliography(),
-    result: "OK",
-  });
 }
 
 function registerCitation(
@@ -176,29 +190,43 @@ function registerCitation(
   preCitations: Array<[string, number]>,
   postCitations: Array<[string, number]>
 ): void {
-  const itemFetchLst = citation.citationItems
-    .filter((citationItem) => !itemsObj[citationItem.id])
-    .map((citationItem) => citationItem.id);
-  buildItemsObj(itemFetchLst);
-  const citeRes = citeproc.processCitationCluster(
-    citation,
-    preCitations,
-    postCitations
-  );
-  reportBack({
-    command: "registerCitation",
-    citationData: citeRes[1],
-    citationByIndex: citeproc.registry.citationreg.citationByIndex,
-    result: "OK",
-  });
+  try {
+    const itemFetchLst = citation.citationItems
+      .filter((citationItem) => !itemsObj[citationItem.id])
+      .map((citationItem) => citationItem.id);
+    buildItemsObj(itemFetchLst);
+    const citeRes = citeproc.processCitationCluster(
+      citation,
+      preCitations,
+      postCitations
+    );
+    reportBack({
+      command: "registerCitation",
+      citationData: citeRes[1],
+      citationByIndex: citeproc.registry.citationreg.citationByIndex,
+      result: "OK",
+    });
+  } catch (error) {
+    reportBack({
+      command: "error",
+      error: JSON.stringify(error, ["name", "message", "stack"], 2),
+    });
+  }
 }
 
 function getBibliography(): void {
-  reportBack({
-    command: "setBibliography",
-    bibliographyData: makeBibliography(),
-    result: "OK",
-  });
+  try {
+    reportBack({
+      command: "setBibliography",
+      bibliographyData: makeBibliography(),
+      result: "OK",
+    });
+  } catch (error) {
+    reportBack({
+      command: "error",
+      error: JSON.stringify(error, ["name", "message", "stack"], 2),
+    });
+  }
 }
 
 ctx.addEventListener("message", (ev: MessageEvent<CiteWorkerCommand>) => {

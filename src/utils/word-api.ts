@@ -7,7 +7,7 @@ class WordApi {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
       contentControl.tag = "JABREF-CITATION-NEW";
-      contentControl.appearance = "Hidden";
+      contentControl.appearance = "BoundingBox";
       return context.sync();
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
@@ -23,7 +23,7 @@ class WordApi {
   ): Promise<unknown> {
     return Word.run(async (context: Word.RequestContext) => {
       const citationContentControls = context.document.contentControls;
-      context.load(citationContentControls, "tag, length, appearance");
+      context.load(citationContentControls, "tag, length");
       return context.sync().then(() => {
         data.forEach((res: CitationResult) => {
           const position = res[0];
@@ -44,7 +44,6 @@ class WordApi {
             citationContentControl.tag = tag;
           }
           citationContentControl.insertText(res[1], "Replace");
-          citationContentControl.appearance = "BoundingBox";
         });
         return context.sync();
       });
