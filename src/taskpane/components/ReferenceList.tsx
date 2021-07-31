@@ -9,12 +9,12 @@ import {
   FocusZoneDirection,
   Checkbox,
 } from "@fluentui/react";
-import { referenceDataInterface } from "citeproc";
+import { MetaData } from "citeproc";
 import React, { ReactElement } from "react";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-export interface bib extends referenceDataInterface {
+export interface bib extends MetaData {
   isSelected: boolean;
 }
 

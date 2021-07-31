@@ -1,6 +1,6 @@
-import { referenceDataInterface } from "citeproc";
+import { MetaData } from "citeproc";
 
-const data: Array<referenceDataInterface> = [
+const data: Array<MetaData> = [
   {
     id: "jabref/QGIFRNH8",
     type: "article-journal",

@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import {
   Citation,
   CitationResult,
@@ -26,6 +27,8 @@ class CiteSupport {
 
   worker: Worker;
 
+  wordApi: WordApi;
+
   constructor(referenceData: Array<MetaData>) {
     this.config = {
       debug: true,
@@ -39,6 +42,7 @@ class CiteSupport {
     };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     this.worker = new CiteWorker() as Worker;
+    this.wordApi = new WordApi();
     this.worker.onmessage = async (event: MessageEvent<CiteWorkerMessage>) => {
       if (event.data.errors) {
         this.debug(event.data.errors);
@@ -220,24 +224,11 @@ class CiteSupport {
    */
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
-    for (let i = 0; i < data.length; i += 1) {
-      const position = data[i][0];
-      const tag = JSON.stringify(this.config.citationByIndex[position]);
-      const citationTag = (await WordApi.getCitationTagByIndex(
-        position
-      )) as string;
-      if (citationTag === "NEW" || citationTag !== tag) {
-        await WordApi.setCitationTagAtPosition(position, tag);
-      }
-      await WordApi.insertTextInContentControl(tag, data[i][1]);
-    }
+    await this.wordApi.setCitations(data, this.config.citationByIndex);
     // Update citationIdToPos for all nodes
-    const getTotalNumberOfCitation = await WordApi.getTotalNumberOfCitation();
-    for (let i = 0; i < getTotalNumberOfCitation; i += 1) {
-      const citationID = await WordApi.getCitationTagByIndex(i);
-      if (citationID) {
-        this.config.citationIdToPos[citationID] = i;
-      }
+    const citationIsToPos = await WordApi.getCitationIdToPos();
+    if (citationIsToPos) {
+      this.config.citationIdToPos = citationIsToPos;
     }
   }
 

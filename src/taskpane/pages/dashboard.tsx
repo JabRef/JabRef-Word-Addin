@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
-import { citationByIndexInterface } from "citeproc";
+import { StatefulCitation } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -61,7 +61,10 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
       return { id: item.id };
     });
 
-  const onFilterChange = (_: any, keyword: string): void => {
+  const onFilterChange = (
+    _: React.ChangeEvent<HTMLInputElement>,
+    keyword: string
+  ): void => {
     setItems(originalItems.filter(containsSearchTerm(keyword)));
   };
 
@@ -100,14 +103,14 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
     if (citeSupport.config.citationByIndex.slice(0, i).length) {
       citationsPre = citeSupport.config.citationByIndex
         .slice(0, i)
-        .map((obj: citationByIndexInterface): [string, number] => {
+        .map((obj: StatefulCitation): [string, number] => {
           return [obj.citationID, 0];
         });
     }
     if (citeSupport.config.citationByIndex.slice(i).length) {
       citationsPost = citeSupport.config.citationByIndex
         .slice(i)
-        .map((obj: citationByIndexInterface): [string, number] => {
+        .map((obj: StatefulCitation): [string, number] => {
           return [obj.citationID, 0];
         });
     }

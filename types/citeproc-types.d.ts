@@ -617,7 +617,7 @@ declare module "citeproc" {
     title: string;
     year?: number;
 
-    issued?: Date;
+    issued?: Issued;
     accessed?: Date;
     mts?: any;
     number?: string;
@@ -632,6 +632,7 @@ declare module "citeproc" {
     "reviewed-author"?: Author[];
 
     volume?: string;
+    genre?: string; 
     page?: string;
     issue?: string;
     
@@ -661,6 +662,9 @@ declare module "citeproc" {
     ext?: PubExt;
     ownerTitle?: string;
     bMetaSync?: boolean;
+  }
+  export interface Issued {
+    "date-parts"?: string[][];
   }
   export interface ImportInfo {
     dataUrl?: string;
