@@ -177,7 +177,7 @@ class CiteSupport {
    *   Function to be run immediately after document has been loaded, and
    *   before any editing operations.
    */
-  initDocument = async (): Promise<void> => {
+  async initDocument(): Promise<void> {
     this.debug("initDocument()");
     await this.spoofDocument();
     this.callInitProcessor(

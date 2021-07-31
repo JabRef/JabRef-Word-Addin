@@ -80,7 +80,7 @@ function Layout({ citeSupport }: LayoutProps): ReactElement {
           </PivotItem>
           <PivotItem headerText="Citation Style">
             <Stack styles={wrapperStack}>
-              <CitationStyle />
+              <CitationStyle citeSupport={citeSupport} />
             </Stack>
           </PivotItem>
         </Pivot>

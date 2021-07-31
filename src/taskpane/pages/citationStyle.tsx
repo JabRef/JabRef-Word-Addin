@@ -9,6 +9,7 @@ import {
 } from "@fluentui/react/lib/Styling";
 import { Stack } from "@fluentui/react";
 import Preference from "../../utils/user-preference";
+import CiteSupport from "../../utils/citesupport";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -60,7 +61,11 @@ const classNames = mergeStyleSets({
   ],
 });
 
-function CitationStyle(): JSX.Element {
+interface citationStyleProps {
+  citeSupport: CiteSupport;
+}
+
+function CitationStyle({ citeSupport }: citationStyleProps): JSX.Element {
   const items = [
     {
       text: "American Political Science Association",
@@ -82,9 +87,12 @@ function CitationStyle(): JSX.Element {
   ];
   const preferenceStyle = Preference.getCitationStyle();
   const [currentStyle, setCurrentStyle] = React.useState(preferenceStyle);
-  const onClick = (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
+  const onClick = async (
+    ev: React.FormEvent<HTMLElement | HTMLInputElement>
+  ) => {
     setCurrentStyle(ev.currentTarget.id);
     Preference.setCitationStyle(ev.currentTarget.id);
+    await citeSupport.initDocument();
   };
 
   // Sync with doc settings
