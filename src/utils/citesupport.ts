@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import {
   Citation,
   CitationResult,
@@ -62,7 +61,6 @@ class CiteSupport {
             event.data.citationData
           );
           break;
-
         case "setBibliography":
           this.onSetBibliography(event.data.bibliographyData);
           break;
@@ -114,7 +112,7 @@ class CiteSupport {
   }
 
   /**
-   * Logs messages to the console if `config.debug` is true
+   *   Logs messages to the console if `config.debug` is true
    */
   debug(txt: string): void {
     if (this.config.debug) {
@@ -217,10 +215,10 @@ class CiteSupport {
   }
 
   /**
-   * Update all citations based on data returned by the processor.
-   * The update has two effects: (1) the id of all in-text citation
-   * nodes is set to the citationByIndex object; and (2)
-   * citation texts are updated.
+   *    Update all citations based on data returned by the processor.
+   *    The update has two effects: (1) the id of all in-text citation
+   *    nodes is set to the citationByIndex object; and (2)
+   *    citation texts are updated.
    */
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
@@ -233,7 +231,7 @@ class CiteSupport {
   }
 
   /**
-   * Insert bibliography with xHTML returned by the processor.
+   *    Insert bibliography with xHTML returned by the processor.
    */
   setBibliography(data: GeneratedBibliography): void {
     this.debug("setBibliography()");
@@ -263,7 +261,9 @@ class CiteSupport {
     }
   }
 
-  /** Updates the citationByIndex array after every edit or delete operation */
+  /**
+   *  Updates the citationByIndex array after every edit or delete operation
+   */
   async updateCitationByIndex(): Promise<void> {
     const citationByIndex = await WordApi.getCitationByIndex();
     if (citationByIndex) {
