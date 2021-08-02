@@ -71,8 +71,8 @@ class CiteSupport {
 
   /**
    *  In response to `initProcessor` request, refresh
-   *  `config.mode`, document citations, and bibliography
-   *  (if any).
+   *  config.mode, document citations, config.citationByIndex
+   *  and bibliography(if any).
    */
   async onInitProcessor(
     xclass: string,
@@ -232,6 +232,14 @@ class CiteSupport {
     }
   }
 
+  /**
+   *  Converts the array returned by the processor `registerCitation()` method
+   *  to the form digested by our own `setCitations()` method from WordApi.
+   *
+   *  word.api.setCitations() wants this structure:
+   *  [<citation_index>, <citation_string>, <statefullCitation>]
+   */
+
   convertCitationDataToCustomFormat(
     citationData: Array<CitationResult>
   ): Array<[number, string, StatefulCitation]> {
@@ -245,7 +253,7 @@ class CiteSupport {
   }
 
   /**
-   *    Insert bibliography with xHTML returned by the processor.
+   *   Insert bibliography with xHTML returned by the processor.
    */
   setBibliography(data: GeneratedBibliography): void {
     this.debug("setBibliography()");
@@ -276,7 +284,7 @@ class CiteSupport {
   }
 
   /**
-   *  Updates the citationByIndex array after every edit or delete operation
+   *  Update the citationByIndex array after every edit or delete operation
    */
   async updateCitationByIndex(): Promise<void> {
     const citationByIndex = await WordApi.getCitationByIndex();
