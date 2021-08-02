@@ -10,7 +10,7 @@ import CSL, {
 } from "citeproc";
 
 // eslint-disable-next-line no-restricted-globals
-const ctx: Worker = self as never;
+const worker: Worker = self as never;
 const itemsObj: Record<string, MetaData> = {};
 const localesObj: Record<string, string> = {};
 let style: string;
@@ -114,7 +114,7 @@ function getStyle(styleID: string): string {
 }
 
 function reportBack(message: CiteWorkerMessage): void {
-  ctx.postMessage(message);
+  worker.postMessage(message);
 }
 
 function buildLocalesObj(locales: string): void {
@@ -123,7 +123,7 @@ function buildLocalesObj(locales: string): void {
 }
 
 function buildItemsObj(itemIDs: Array<string | number>): void {
-  itemIDs.forEach((itemID: string) => {
+  itemIDs.forEach((itemID) => {
     itemsObj[itemID] = referenceData.find((x) => x.id === itemID);
   });
 }
@@ -229,7 +229,7 @@ function getBibliography(): void {
   }
 }
 
-ctx.addEventListener("message", (ev: MessageEvent<CiteWorkerCommand>) => {
+worker.addEventListener("message", (ev: MessageEvent<CiteWorkerCommand>) => {
   switch (ev.data.command) {
     case "initProcessor":
       setPreferenceAndReferenceData(

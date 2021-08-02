@@ -116,7 +116,7 @@ function Layout({ citeSupport }: LayoutProps): ReactElement {
               citeSupport.getBibliography();
             }}
           >
-            Sync Bib
+            Add bib...
           </ActionButton>
           <ActionButton
             styles={SignOutButtonStyle}

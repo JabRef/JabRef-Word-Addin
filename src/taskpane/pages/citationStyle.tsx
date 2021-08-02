@@ -61,11 +61,11 @@ const classNames = mergeStyleSets({
   ],
 });
 
-interface citationStyleProps {
+interface CitationStyleProps {
   citeSupport: CiteSupport;
 }
 
-function CitationStyle({ citeSupport }: citationStyleProps): JSX.Element {
+function CitationStyle({ citeSupport }: CitationStyleProps): JSX.Element {
   const items = [
     {
       text: "American Political Science Association",

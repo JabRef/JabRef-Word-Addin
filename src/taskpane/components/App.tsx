@@ -16,8 +16,8 @@ function App(props: AppProps): ReactElement {
   const { isOfficeInitialized } = props;
   const [citeSupport] = useState(() => new CiteSupport(data));
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    citeSupport.initDocument();
+    // eslint-disable-next-line no-void
+    void citeSupport.initDocument();
   });
 
   if (!isOfficeInitialized) {

@@ -70,9 +70,9 @@ class CiteSupport {
   }
 
   /**
-   *  In response to `callInitProcessor` request, refresh
-   *  `config.mode`, and document citations (if any)
-   *  and document bibliography (if any).
+   *  In response to `initProcessor` request, refresh
+   *  `config.mode`, document citations, and bibliography
+   *  (if any).
    */
   async onInitProcessor(
     xclass: string,
@@ -90,7 +90,7 @@ class CiteSupport {
   }
 
   /**
-   *   In response to `callRegisterCitation`, refresh `config.citationByIndex`,
+   *   In response to `registerCitation`, refresh `config.citationByIndex`,
    *   set citations that require update in the document, replace
    *   the bibliography in the document, and save the `citationByIndex` array
    *   for persistence.
@@ -124,7 +124,7 @@ class CiteSupport {
    *   Initializes the processor, optionally populating it with a
    *   preexisting list of citations.
    */
-  callInitProcessor(
+  initProcessor(
     styleName: string,
     localeName: string,
     citationByIndex: Array<StatefulCitation>,
@@ -146,7 +146,7 @@ class CiteSupport {
    *    citations described by `preCitations` and precede those
    *    described in `postCitations`.
    */
-  callRegisterCitation(
+  registerCitation(
     citation: Citation,
     preCitations: Array<[string, number]>,
     postCitations: Array<[string, number]>
@@ -172,13 +172,13 @@ class CiteSupport {
   }
 
   /**
-   *   Function to be run immediately after document has been loaded, and
-   *   before any editing operations.
+   *   Function to be run immediately after document has been loaded, In case of change in citation style
+   *   and before any editing operations.
    */
   async initDocument(): Promise<void> {
     this.debug("initDocument()");
     await this.spoofDocument();
-    this.callInitProcessor(
+    this.initProcessor(
       this.config.defaultStyle,
       this.config.defaultLocale,
       this.config.citationByIndex,
@@ -215,19 +215,33 @@ class CiteSupport {
   }
 
   /**
-   *    Update all citations based on data returned by the processor.
-   *    The update has two effects: (1) the id of all in-text citation
-   *    nodes is set to the citationByIndex object; and (2)
-   *    citation texts are updated.
+   *  Update all citations based on data returned by the processor.
+   *  The update has two effects: (1) the id of all in-text citation
+   *  nodes is set to the citationByIndex object; and (2)
+   *  citation texts are updated.
    */
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
-    await this.wordApi.setCitations(data, this.config.citationByIndex);
+    const citationData = this.convertCitationDataToCustomFormat(data);
+    await this.wordApi.setCitations(citationData);
+
     // Update citationIdToPos for all nodes
     const citationIsToPos = await WordApi.getCitationIdToPos();
     if (citationIsToPos) {
       this.config.citationIdToPos = citationIsToPos;
     }
+  }
+
+  convertCitationDataToCustomFormat(
+    citationData: Array<CitationResult>
+  ): Array<[number, string, StatefulCitation]> {
+    if (!citationData) return null;
+    this.debug("convertCitationDataToCustomFormat()");
+    return citationData.map((citation) => [
+      citation[0],
+      citation[1],
+      this.config.citationByIndex[citation[0]],
+    ]);
   }
 
   /**

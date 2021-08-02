@@ -7,7 +7,7 @@ import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
 import WordApi from "../../utils/word-api";
 
-interface dashboardProps {
+interface DashboardProps {
   citeSupport: CiteSupport;
 }
 
@@ -52,7 +52,7 @@ function unCheckCheckbox(item: bib): bib {
   return { ...item, isSelected: false };
 }
 
-function Dashboard({ citeSupport }: dashboardProps): ReactElement {
+function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
   const checkedItems = items
@@ -76,9 +76,9 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
     });
   };
 
-  const unCheckAllCheckbox = () => {
-    setItems((currenItems) => {
-      return currenItems.map(unCheckCheckbox);
+  const unCheckAllCheckboxes = () => {
+    setItems((currentItems) => {
+      return currentItems.map(unCheckCheckbox);
     });
   };
 
@@ -114,8 +114,8 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
           return [obj.citationID, 0];
         });
     }
-    citeSupport.callRegisterCitation(citation, citationsPre, citationsPost);
-    unCheckAllCheckbox();
+    citeSupport.registerCitation(citation, citationsPre, citationsPost);
+    unCheckAllCheckboxes();
   }
 
   return (
@@ -125,10 +125,14 @@ function Dashboard({ citeSupport }: dashboardProps): ReactElement {
       {checkedItems.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
-            Insert {checkedItems.length} citation
+            Insert {checkedItems.length}{" "}
+            {checkedItems.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
-          <DefaultButton onClick={unCheckAllCheckbox} style={{ marginLeft: 8 }}>
-            cancel
+          <DefaultButton
+            onClick={unCheckAllCheckboxes}
+            style={{ marginLeft: 8 }}
+          >
+            Cancel
           </DefaultButton>
         </div>
       ) : null}
