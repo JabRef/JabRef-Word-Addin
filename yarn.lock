@@ -1483,10 +1483,10 @@
   dependencies:
     source-map "^0.6.1"
 
-"@types/webpack-dev-server@^3.1.6":
-  version "3.11.4"
-  resolved "https://registry.npmjs.org/@types/webpack-dev-server/-/webpack-dev-server-3.11.4.tgz"
-  integrity sha512-DCKORHjqNNVuMIDWFrlljftvc9CL0+09p3l7lBpb8dRqgN5SmvkWCY4MPKxoI6wJgdRqohmoNbptkxqSKAzLRg==
+"@types/webpack-dev-server@^3.11.5":
+  version "3.11.5"
+  resolved "https://registry.yarnpkg.com/@types/webpack-dev-server/-/webpack-dev-server-3.11.5.tgz#f4a254a3dd0667c8ee4af90d42afdb4ad1d607f3"
+  integrity sha512-vjsbQBW3fE5FDICkF3w3ZWFRXNwQdKt7JRPLmRy5W0KXlcuew4wgpKWXhgHS71iLNv7Z2PlY9dSSIaYg+bk+9w==
   dependencies:
     "@types/connect-history-api-fallback" "*"
     "@types/express" "*"
