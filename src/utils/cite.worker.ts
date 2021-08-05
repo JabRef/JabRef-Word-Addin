@@ -12,16 +12,16 @@ import CSL, {
 // eslint-disable-next-line no-restricted-globals
 const worker: Worker = self as never;
 
-/** A javaobject maping citationitem id to metadata */
+/** A javaScript object maping citationitem id to metadata */
 const itemsObj: Record<string, MetaData> = {};
 
-/** A javaobject maping RFC 5646 lang tag to serialized XML string */
+/** A javaScript object maping RFC 5646 lang tag to serialized XML string */
 const localesObj: Record<string, string> = {};
 
 /** CSL style as serialized XML (if xmldom.js is used) or as JavaScript object (if xmljson.js is used). */
 let style: string;
 
-/** A language tag compliant with RFC 5646. Defaults to en. */
+/** Language tag compliant with RFC 5646. Defaults to en. */
 let preferredLocale: string;
 
 /** citeproc instance */
