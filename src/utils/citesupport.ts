@@ -122,7 +122,7 @@ class CiteSupport {
 
   /**
    *   Initializes the processor, optionally populating it with a
-   *   preexisting list of citations.
+   *   preexisting list of citations in the document.
    */
   initProcessor(
     styleName: string,
@@ -296,7 +296,7 @@ class CiteSupport {
   async insertCitation(
     checkedItems: Array<Record<string, string>>
   ): Promise<void> {
-    const isCitation = false;
+    const { isCitation } = CiteSupport;
     await this.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {
@@ -330,9 +330,11 @@ class CiteSupport {
     this.registerCitation(citation, citationsPre, citationsPost);
   }
 
-  static isCitation(): boolean {
+  // TODO: Rewrite this function to check whether the current selection is a
+  // citation or not.
+  static isCitation = (): boolean => {
     return false;
-  }
+  };
 }
 
 export default CiteSupport;
