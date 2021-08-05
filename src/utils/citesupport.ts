@@ -123,7 +123,7 @@ class CiteSupport {
   /**
    *   This method is used on page load, on change of style,
    *   and when all citations have been removed from the document.
-   *   The styleName argument is mandatory. If localeID is not provided,
+   *   The styleName argument is mandatory. If localeName is not provided,
    *   the processor will be configured with the en-US locale.
    *   The citesupport.callInitProcessor method implicitly accesses the
    *   config.citationByIndex array. If the array is empty, the processor
@@ -184,8 +184,8 @@ class CiteSupport {
   }
 
   /**
-   *   Function to be run immediately after document has been loaded, In case of change in citation style
-   *   and before any editing operations.
+   *   This method is used on page load, on change of style,
+   *   and when all citations have been removed from the document.
    */
   async initDocument(): Promise<void> {
     this.debug("initDocument()");
@@ -274,8 +274,9 @@ class CiteSupport {
   }
 
   /**
-   *   Puts document into the state it would have been
-   *   in at first opening had it been properly saved.
+   *   This function puts document into the state it
+   *   would have been in at first opening had it been properly
+   *   saved.This function brings citation data into memory.
    */
   async spoofDocument(): Promise<void> {
     this.debug("spoofDocument()");
