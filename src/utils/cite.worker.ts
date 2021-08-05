@@ -11,12 +11,28 @@ import CSL, {
 
 // eslint-disable-next-line no-restricted-globals
 const worker: Worker = self as never;
+
+/** A javaobject maping citationitem id to metadata */
 const itemsObj: Record<string, MetaData> = {};
+
+/** A javaobject maping RFC 5646 lang tag to serialized XML string */
 const localesObj: Record<string, string> = {};
+
+/** CSL style as serialized XML (if xmldom.js is used) or as JavaScript object (if xmljson.js is used). */
 let style: string;
+
+/** A language tag compliant with RFC 5646. Defaults to en. */
 let preferredLocale: string;
+
+/** citeproc instance */
 let citeproc: Engine | null = null;
+
 let citationByIndex: Array<StatefulCitation>;
+
+/** referenceData is a single bundle of metadata
+ *  for a source to be referenced. Every item must
+ *  have an id and a type.
+ */
 let referenceData: Array<MetaData>;
 
 export type CiteWorkerInitProcessorCommand = {
@@ -82,6 +98,18 @@ export type CiteWorkerMessage =
   | CiteWorkerSetBibliographyMessage
   | CiteWorkerError;
 
+/**
+ * Two locally defined synchronous functions on the sys object must be supplied to acquire runtime inputs.
+ *
+ * retrieveLocale: The retrieveLocale() function fetches CSL locales needed at runtime. The function takes a single
+ *                 RFC 5646 language tag as its sole argument, and returns a locale object. The return may
+ *                 be a serialized XML string, an E4X object, a DOM document, or a JSON or JavaScript
+ *                 representation of the locale XML. If the requested locale is not available, the function
+ *                 must return a value that tests false. The function must return a value for the us locale.
+ *
+ * retrieveItem:   The retrieveItem() function fetches citation data for an item. The function takes an item ID
+ *                 as its sole argument, and returns a JavaScript object in CSL JSON format.
+ */
 const sys = {
   retrieveItem(itemID: string | number): MetaData {
     return itemsObj[itemID];
