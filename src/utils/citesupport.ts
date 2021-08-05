@@ -121,8 +121,17 @@ class CiteSupport {
   }
 
   /**
-   *   Initializes the processor, optionally populating it with a
-   *   preexisting list of citations in the document.
+   *   This method is used on page load, on change of style,
+   *   and when all citations have been removed from the document.
+   *   The styleName argument is mandatory. If localeID is not provided,
+   *   the processor will be configured with the en-US locale.
+   *   The citesupport.callInitProcessor method implicitly accesses the
+   *   config.citationByIndex array. If the array is empty, the processor
+   *   will be initialized without citations. If the array contains citations,
+   *   the processor will be initialized to that document state, and
+   *   return an array of arrays as rebuildData, for use in reconstructing
+   *   citations in the document text. Each sub-array contains a citation ID,
+   *   a note number, and a citation string.
    */
   initProcessor(
     styleName: string,
@@ -142,9 +151,12 @@ class CiteSupport {
   }
 
   /**
-   *    Registers a single citation in the processor to follow
-   *    citations described by `preCitations` and precede those
-   *    described in `postCitations`.
+   *    This method is used to add or to edit citations.
+   *    All three arguments are mandatory. citation is an
+   *    ordinary citation object with Id and properties.
+   *    preCitations and postCitations are arrays of arrays,
+   *    in which each sub-array is composed of a citationID
+   *    and a note number.
    */
   registerCitation(
     citation: Citation,
@@ -296,7 +308,7 @@ class CiteSupport {
   async insertCitation(
     checkedItems: Array<Record<string, string>>
   ): Promise<void> {
-    const { isCitation } = CiteSupport;
+    const isCitation = false;
     await this.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {
@@ -332,9 +344,7 @@ class CiteSupport {
 
   // TODO: Rewrite this function to check whether the current selection is a
   // citation or not.
-  static isCitation = (): boolean => {
-    return false;
-  };
+  static isCitation = (): boolean => false;
 }
 
 export default CiteSupport;
