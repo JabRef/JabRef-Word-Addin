@@ -90,10 +90,10 @@ class CiteSupport {
   }
 
   /**
-   *   In response to `registerCitation`, refresh `config.citationByIndex`,
-   *   set citations that require update in the document, replace
-   *   the bibliography in the document, and save the `citationByIndex` array
-   *   for persistence.
+   *  In response to `registerCitation`, refresh `config.citationByIndex`,
+   *  set citations that require update in the document, replace
+   *  the bibliography in the document, and save the `citationByIndex` array
+   *  for persistence.
    */
   async onRegisterCitation(
     citationByIndex: Array<StatefulCitation>,
@@ -121,16 +121,16 @@ class CiteSupport {
   }
 
   /**
-   *   This method is used on page load, on change of style,
-   *   and when all citations have been removed from the document.
-   *   The styleName argument is mandatory. If localeName is not provided,
-   *   the processor will be configured with the en-US locale.
-   *   The method implicitly accesses the config.citationByIndex
-   *   array. If the array is empty, the processor will be initialized without
-   *   citations.If the array contains citations, the processor will be initialized
-   *   to that document state, and return an array of arrays as rebuildData,
-   *   for use in reconstructing citations in the document text. Each sub-array
-   *   contains a citation ID, a note number, and a citation string.
+   *  This method is used on page load, on change of style,
+   *  and when all citations have been removed from the document.
+   *  The styleName argument is mandatory. If localeName is not provided,
+   *  the processor will be configured with the en-US locale.
+   *  The method implicitly accesses the config.citationByIndex
+   *  array. If the array is empty, the processor will be initialized without
+   *  citations.If the array contains citations, the processor will be initialized
+   *  to that document state, and return an array of arrays as rebuildData,
+   *  for use in reconstructing citations in the document text. Each sub-array
+   *  contains a citation ID, a note number, and a citation string.
    */
   initProcessor(
     styleName: string,
@@ -150,12 +150,12 @@ class CiteSupport {
   }
 
   /**
-   *    This method is used to add or edit citations.
-   *    All three arguments are mandatory. citation is an
-   *    ordinary citation object with Id and properties.
-   *    preCitations and postCitations are arrays of arrays,
-   *    in which each sub-array is composed of a citationID
-   *    and a note number.
+   *  This method is used to add or edit citations.
+   *  All three arguments are mandatory. citation is an
+   *  ordinary citation object with Id and properties.
+   *  preCitations and postCitations are arrays of arrays,
+   *  in which each sub-array is composed of a citationID
+   *  and a note number.
    */
   registerCitation(
     citation: Citation,
@@ -183,10 +183,10 @@ class CiteSupport {
   }
 
   /**
-   *   This method is used on page load, on change of style.
-   *   First, this method calls the spoofDocument method, which
-   *   reconstruct the citation by index array and the call
-   *   initProcessor to rebuild the processor state.
+   *  This method is used on page load, on change of style.
+   *  First, this method calls the spoofDocument method, which
+   *  reconstruct the citation by index array and the call
+   *  initProcessor to rebuild the processor state.
    */
   async initDocument(): Promise<void> {
     this.debug("initDocument()");
@@ -204,14 +204,14 @@ class CiteSupport {
   }
 
   /**
-   *    Converts the array returned by the processor `rebuildProcessor()` method
-   *    to the form digested by our own `setCitations()` method.
+   *  Converts the array returned by the processor `rebuildProcessor()` method
+   *  to the form digested by our own `setCitations()` method.
    *
-   *    rebuildData has this structure:
-   *    [<citation_id>, <note_number>, <citation_string>]
+   *  rebuildData has this structure:
+   *  [<citation_id>, <note_number>, <citation_string>]
    *
-   *    setCitations() wants this structure:
-   *    [<citation_index>, <citation_string>, <citation_id>]
+   *  setCitations() wants this structure:
+   *  [<citation_index>, <citation_string>, <citation_id>]
    */
   convertRebuildDataToCitationData(
     rebuildData: Array<RebuildProcessorStateData>
@@ -266,7 +266,7 @@ class CiteSupport {
   }
 
   /**
-   *   Insert bibliography with xHTML returned by the processor.
+   *  Insert bibliography with xHTML returned by the processor.
    */
   setBibliography(data: GeneratedBibliography): void {
     this.debug("setBibliography()");
@@ -275,9 +275,9 @@ class CiteSupport {
   }
 
   /**
-   *   This function puts document into the state it
-   *   would have been in at first opening had it been properly
-   *   saved.This function brings citation data into memory.
+   *  This function puts document into the state it
+   *  would have been in at first opening had it been properly
+   *  saved.This function brings citation data into memory.
    */
   async spoofDocument(): Promise<void> {
     this.debug("spoofDocument()");
