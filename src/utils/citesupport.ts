@@ -293,6 +293,43 @@ class CiteSupport {
     }
   }
 
+  async insertCitation(
+    checkedItems: Array<Record<string, string>>
+  ): Promise<void> {
+    const isCitation = false;
+    await this.updateCitationByIndex();
+    let citation = null;
+    if (!isCitation) {
+      if (checkedItems.length) {
+        await WordApi.insertEmptyContentControl();
+        citation = {
+          citationItems: checkedItems,
+          properties: {
+            noteIndex: 0,
+          },
+        };
+      }
+    }
+    let citationsPre = [];
+    let citationsPost = [];
+    const i = (await WordApi.getPositionOfNewCitation()) as number;
+    if (this.config.citationByIndex.slice(0, i).length) {
+      citationsPre = this.config.citationByIndex
+        .slice(0, i)
+        .map((obj: StatefulCitation): [string, number] => {
+          return [obj.citationID, 0];
+        });
+    }
+    if (this.config.citationByIndex.slice(i).length) {
+      citationsPost = this.config.citationByIndex
+        .slice(i)
+        .map((obj: StatefulCitation): [string, number] => {
+          return [obj.citationID, 0];
+        });
+    }
+    this.registerCitation(citation, citationsPre, citationsPost);
+  }
+
   static isCitation(): boolean {
     return false;
   }

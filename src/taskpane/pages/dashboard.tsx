@@ -1,11 +1,9 @@
 import React, { ReactElement, useState } from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
-import { StatefulCitation } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
-import WordApi from "../../utils/word-api";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -83,38 +81,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   async function insertCitation() {
-    const isCitation = false;
-    await citeSupport.updateCitationByIndex();
-    let citation = null;
-    if (!isCitation) {
-      if (checkedItems.length) {
-        await WordApi.insertEmptyContentControl();
-        citation = {
-          citationItems: checkedItems,
-          properties: {
-            noteIndex: 0,
-          },
-        };
-      }
-    }
-    let citationsPre = [];
-    let citationsPost = [];
-    const i = (await WordApi.getPositionOfNewCitation()) as number;
-    if (citeSupport.config.citationByIndex.slice(0, i).length) {
-      citationsPre = citeSupport.config.citationByIndex
-        .slice(0, i)
-        .map((obj: StatefulCitation): [string, number] => {
-          return [obj.citationID, 0];
-        });
-    }
-    if (citeSupport.config.citationByIndex.slice(i).length) {
-      citationsPost = citeSupport.config.citationByIndex
-        .slice(i)
-        .map((obj: StatefulCitation): [string, number] => {
-          return [obj.citationID, 0];
-        });
-    }
-    citeSupport.registerCitation(citation, citationsPre, citationsPost);
+    await citeSupport.insertCitation(checkedItems);
     unCheckAllCheckboxes();
   }
 
