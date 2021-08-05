@@ -125,13 +125,12 @@ class CiteSupport {
    *   and when all citations have been removed from the document.
    *   The styleName argument is mandatory. If localeName is not provided,
    *   the processor will be configured with the en-US locale.
-   *   The citesupport.callInitProcessor method implicitly accesses the
-   *   config.citationByIndex array. If the array is empty, the processor
-   *   will be initialized without citations. If the array contains citations,
-   *   the processor will be initialized to that document state, and
-   *   return an array of arrays as rebuildData, for use in reconstructing
-   *   citations in the document text. Each sub-array contains a citation ID,
-   *   a note number, and a citation string.
+   *   The method implicitly accesses the config.citationByIndex
+   *   array. If the array is empty, the processor will be initialized without
+   *   citations.If the array contains citations, the processor will be initialized
+   *   to that document state, and return an array of arrays as rebuildData,
+   *   for use in reconstructing citations in the document text. Each sub-array
+   *   contains a citation ID, a note number, and a citation string.
    */
   initProcessor(
     styleName: string,
@@ -151,7 +150,7 @@ class CiteSupport {
   }
 
   /**
-   *    This method is used to add or to edit citations.
+   *    This method is used to add or edit citations.
    *    All three arguments are mandatory. citation is an
    *    ordinary citation object with Id and properties.
    *    preCitations and postCitations are arrays of arrays,
@@ -184,8 +183,10 @@ class CiteSupport {
   }
 
   /**
-   *   This method is used on page load, on change of style,
-   *   and when all citations have been removed from the document.
+   *   This method is used on page load, on change of style.
+   *   First, this method calls the spoofDocument method, which
+   *   reconstruct the citation by index array and the call
+   *   initProcessor to rebuild the processor state.
    */
   async initDocument(): Promise<void> {
     this.debug("initDocument()");
