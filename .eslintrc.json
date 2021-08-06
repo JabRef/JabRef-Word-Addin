@@ -1,7 +1,9 @@
 {
     "globals": {
       "JSX": true,
-      "Office": "readonly"
+      "Office": "readonly",
+      "Word": "readonly",
+      "OfficeExtension": "readonly"
     },
     "env": {
         "browser": true,

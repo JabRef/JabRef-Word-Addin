@@ -26,6 +26,10 @@ module.exports = async (env, options) => {
     module: {
       rules: [
         {
+          test: /\.worker\.ts$/,
+          loader: "worker-loader",
+        },
+        {
           test: /\.tsx?$/,
           use: ["react-hot-loader/webpack", "ts-loader"],
           exclude: /node_modules/,
