@@ -17,15 +17,16 @@
     "allowSyntheticDefaultImports": true,
     "lib": [
       "es7",
-      "dom"
+      "dom",
+      "webworker"
     ],
     "pretty": true,
     "typeRoots": [
-      "node_modules/@types"
-    ],
+      "node_modules/@types",
+    ],    
     "types": [
-      "node",
-      "office-js",
+      "@types/node",
+      "office-js"
     ]
   },
   "exclude": [

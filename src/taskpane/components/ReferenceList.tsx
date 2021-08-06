@@ -9,12 +9,12 @@ import {
   FocusZoneDirection,
   Checkbox,
 } from "@fluentui/react";
+import { MetaData } from "citeproc";
 import React, { ReactElement } from "react";
-import { BibliographyEntry } from "../../utils/data";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-export interface bib extends BibliographyEntry {
+export interface bib extends MetaData {
   isSelected: boolean;
 }
 
@@ -96,10 +96,10 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
         <div className={classNames.itemContent}>
           <div className={classNames.itemType}>{item.type}</div>
           <div className={classNames.itemTitle}>{item.title}</div>
-          <div className={classNames.itemAuthor}>{item.author}</div>
+          {/* <div className={classNames.itemAuthor}>{item.author}</div>
           <div className={classNames.itemYear}>
             {item.journal} {item.year}
-          </div>
+          </div> */}
         </div>
       </div>
     );
