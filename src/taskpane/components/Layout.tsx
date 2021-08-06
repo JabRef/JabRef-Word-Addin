@@ -18,6 +18,11 @@ import client from "../../utils/apolloClient";
 import CitationStyle from "../pages/citationStyle";
 import Dashboard from "../pages/dashboard";
 import Wrapper from "./Wrapper";
+import CiteSupport from "../../utils/citesupport";
+
+interface LayoutProps {
+  citeSupport: CiteSupport;
+}
 
 const wrapperStack: IStackStyles = {
   root: {
@@ -41,6 +46,7 @@ const footerStackStyle: IStackStyles = {
 };
 
 const Signout: IIconProps = { iconName: "SignOut" };
+const SyncBib: IIconProps = { iconName: "InsertSignatureLine" };
 
 const imageProps: IImageProps = {
   imageFit: ImageFit.contain,
@@ -55,7 +61,7 @@ const pivotStyle: Partial<IPivotStyles> = {
   },
 };
 
-function Layout(): ReactElement {
+function Layout({ citeSupport }: LayoutProps): ReactElement {
   const [logoutMutation] = useLogoutMutation();
   return (
     <Wrapper>
@@ -69,12 +75,12 @@ function Layout(): ReactElement {
             }}
           >
             <Stack styles={wrapperStack}>
-              <Dashboard />
+              <Dashboard citeSupport={citeSupport} />
             </Stack>
           </PivotItem>
           <PivotItem headerText="Citation Style">
             <Stack styles={wrapperStack}>
-              <CitationStyle />
+              <CitationStyle citeSupport={citeSupport} />
             </Stack>
           </PivotItem>
         </Pivot>
@@ -102,6 +108,16 @@ function Layout(): ReactElement {
               JabRef
             </div>
           </Stack>
+          <ActionButton
+            styles={SignOutButtonStyle}
+            iconProps={SyncBib}
+            allowDisabledFocus
+            onClick={() => {
+              citeSupport.getBibliography();
+            }}
+          >
+            Add bib...
+          </ActionButton>
           <ActionButton
             styles={SignOutButtonStyle}
             iconProps={Signout}
