@@ -26,6 +26,10 @@ module.exports = async (env, options) => {
     module: {
       rules: [
         {
+          test: /\.worker\.ts$/,
+          loader: "worker-loader",
+        },
+        {
           test: /\.tsx?$/,
           use: ["react-hot-loader/webpack", "ts-loader"],
           exclude: /node_modules/,
@@ -82,15 +86,21 @@ module.exports = async (env, options) => {
         Promise: ["es6-promise", "Promise"],
       }),
     ],
-    devServer: {
+  };
+
+  if (env.WEBPACK_SERVE) {
+    config.devServer = {
       hot: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      https: options.https !== undefined ? options.https : await devCerts.getHttpsServerOptions(),
+      https:
+        options.https !== undefined
+          ? options.https
+          : await devCerts.getHttpsServerOptions(),
       port: process.env.npm_package_config_dev_server_port || 3000,
-    },
-  };
+    }
+  }
 
   return config;
 };
