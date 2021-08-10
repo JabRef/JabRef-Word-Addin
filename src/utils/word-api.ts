@@ -35,6 +35,40 @@ class WordApi {
     });
   }
 
+  static async getnewPositionOfNewCitation(): Promise<number | void> {
+    return Word.run(async (context: Word.RequestContext) => {
+      const { contentControls } = context.document.body;
+      context.load(contentControls, "length, items");
+      const currentposition = context.document.getSelection();
+      await context.sync();
+      const jabRefCitation = contentControls.items.filter(
+        (citation) =>
+          citation.tag.includes("JABREF-CITATION") &&
+          !citation.tag.includes("NEW")
+      );
+      const locationArray = jabRefCitation.map((citation) => {
+        const citationToCompareWith = citation.getRange("Start");
+        const currentSelectionRange = currentposition.getRange("Whole");
+        return citationToCompareWith.compareLocationWith(currentSelectionRange);
+      });
+      await context.sync();
+      for (let i = 0; i < locationArray.length; i += 1) {
+        const index = locationArray[i].value;
+        if (index === "After") {
+          console.log("location", i);
+          return i;
+        }
+      }
+      console.log("location", jabRefCitation.length);
+      return jabRefCitation.length;
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
   static async getPositionOfNewCitation(): Promise<number | void> {
     return Word.run(async (context: Word.RequestContext) => {
       const { contentControls } = context.document;
