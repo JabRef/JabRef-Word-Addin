@@ -245,10 +245,6 @@ class CiteSupport {
     }
   }
 
-  /**
-   *  Insert new citation in the document.
-   */
-
   async insertNewCitation(data: Array<CitationResult>): Promise<void> {
     this.debug("insertNewCitation()");
     const citationData = this.convertCitationDataToCustomFormat(data);
