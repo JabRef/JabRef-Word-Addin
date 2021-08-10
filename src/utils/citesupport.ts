@@ -84,7 +84,7 @@ class CiteSupport {
     this.config.mode = xclass;
     this.config.citationByIndex = citationByIndex;
     const citationData = this.convertRebuildDataToCitationData(rebuildData);
-    await this.setCitations(citationData);
+    await this.updateCitations(citationData);
     // this.setBibliography(bibliographyData);
     this.config.processorReady = true;
   }
@@ -233,8 +233,8 @@ class CiteSupport {
    *  nodes is set to the citationByIndex object; and (2)
    *  citation texts are updated.
    */
-  async setCitations(data: Array<CitationResult>): Promise<void> {
-    this.debug("setCitations()");
+  async updateCitations(data: Array<CitationResult>): Promise<void> {
+    this.debug("updateCitation()");
     const citationData = this.convertCitationDataToCustomFormat(data);
     await this.wordApi.updateCitations(citationData);
 
@@ -244,6 +244,10 @@ class CiteSupport {
       this.config.citationIdToPos = citationIsToPos;
     }
   }
+
+  /**
+   *  Insert new citation in the document.
+   */
 
   async insertNewCitation(data: Array<CitationResult>): Promise<void> {
     this.debug("insertNewCitation()");

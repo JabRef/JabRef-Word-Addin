@@ -56,11 +56,9 @@ class WordApi {
       for (let i = 0; i < locationArray.length; i += 1) {
         const index = locationArray[i].value;
         if (index === "After") {
-          console.log("location", i);
           return i;
         }
       }
-      console.log("location", jabRefCitation.length);
       return jabRefCitation.length;
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
