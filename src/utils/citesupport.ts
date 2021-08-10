@@ -84,7 +84,7 @@ class CiteSupport {
     this.config.mode = xclass;
     this.config.citationByIndex = citationByIndex;
     const citationData = this.convertRebuildDataToCitationData(rebuildData);
-    await this.setCitations(citationData);
+    await this.updateCitations(citationData);
     // this.setBibliography(bibliographyData);
     this.config.processorReady = true;
   }
@@ -101,7 +101,7 @@ class CiteSupport {
   ): Promise<void> {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
-    await this.setCitations(citationData);
+    await this.insertNewCitation(citationData);
     this.config.processorReady = true;
   }
 
@@ -233,10 +233,22 @@ class CiteSupport {
    *  nodes is set to the citationByIndex object; and (2)
    *  citation texts are updated.
    */
-  async setCitations(data: Array<CitationResult>): Promise<void> {
-    this.debug("setCitations()");
+  async updateCitations(data: Array<CitationResult>): Promise<void> {
+    this.debug("updateCitations()");
     const citationData = this.convertCitationDataToCustomFormat(data);
-    await this.wordApi.setCitations(citationData);
+    await this.wordApi.updateCitations(citationData);
+
+    // Update citationIdToPos for all nodes
+    const citationIsToPos = await WordApi.getCitationIdToPos();
+    if (citationIsToPos) {
+      this.config.citationIdToPos = citationIsToPos;
+    }
+  }
+
+  async insertNewCitation(data: Array<CitationResult>): Promise<void> {
+    this.debug("insertNewCitation()");
+    const citationData = this.convertCitationDataToCustomFormat(data);
+    await this.wordApi.insertNewCitation(citationData);
 
     // Update citationIdToPos for all nodes
     const citationIsToPos = await WordApi.getCitationIdToPos();
@@ -315,7 +327,6 @@ class CiteSupport {
     let citation = null;
     if (!isCitation) {
       if (checkedItems.length) {
-        await WordApi.insertEmptyContentControl();
         citation = {
           citationItems: checkedItems,
           properties: {
