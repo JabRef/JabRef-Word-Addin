@@ -234,7 +234,7 @@ class CiteSupport {
    *  citation texts are updated.
    */
   async updateCitations(data: Array<CitationResult>): Promise<void> {
-    this.debug("updateCitation()");
+    this.debug("updateCitations()");
     const citationData = this.convertCitationDataToCustomFormat(data);
     await this.wordApi.updateCitations(citationData);
 
