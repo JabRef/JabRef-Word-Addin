@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
@@ -58,6 +58,32 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     .map((item) => {
       return { id: item.id };
     });
+
+  useEffect(() => {
+    function getPositionOfNewCitation(): Promise<number | void> {
+      return Word.run(async (context: Word.RequestContext) => {
+        const contentControl = context.document
+          .getSelection()
+          .contentControls.getFirst();
+        contentControl.load("tag");
+        await context.sync();
+        console.log(contentControl.tag);
+      }).catch((error) => {
+        console.log(`Error: ${JSON.stringify(error)}`);
+        if (error instanceof OfficeExtension.Error) {
+          console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+        }
+      });
+    }
+
+    Office.context.document.addHandlerAsync(
+      Office.EventType.DocumentSelectionChanged,
+      getPositionOfNewCitation,
+      (result) => {
+        console.log(result);
+      }
+    );
+  });
 
   const onFilterChange = (
     _: React.ChangeEvent<HTMLInputElement>,
