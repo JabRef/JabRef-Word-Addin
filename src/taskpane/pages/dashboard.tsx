@@ -107,37 +107,33 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   // }
   // eslint-disable-next-line consistent-return
   async function getSelectedCitation(): Promise<void> {
-    try {
-      return Word.run(async (context: Word.RequestContext) => {
-        const citation = context.document
-          .getSelection()
-          .contentControls.getFirst();
+    return Word.run(async (context: Word.RequestContext) => {
+      const getSelection = context.document.getSelection();
+      context.load(getSelection, "contentControls");
+      await context.sync();
+      console.log("contentControl", getSelection.contentControls.items.length);
+      if (getSelection.contentControls.items.length !== 0) {
+        const citation = getSelection.contentControls.getFirstOrNullObject();
         citation.load("tag");
         await context.sync();
-        if (citation == null) {
-          console.log("null citation nnnnnnn");
-        }
-        if (citation != null) {
-          const tag = JSON.parse(
-            citation.tag.substring(16)
-          ) as StatefulCitation;
-          const citationId = tag.citationItems.map(
-            (citationItem) => citationItem.id
-          );
-          console.log("citation item array", citationId);
-          // checkCitationItems(citationId);
-        }
-      });
-    } catch (error) {
+        const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
+        const citationId = tag.citationItems.map(
+          (citationItem) => citationItem.id
+        );
+        console.log("citation item array", citationId);
+        // checkCitationItems(citationId);
+      } else {
+        unCheckAllCheckboxes();
+      }
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
-    }
+    });
   }
 
   useEffect(() => {
-    console.log("useeffect***************");
     Office.context.document.addHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
       getSelectedCitation,
@@ -145,14 +141,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         console.log(`result: ${JSON.stringify(result)}`);
       }
     );
-    // return Office.context.document.removeHandlerAsync(
-    //   Office.EventType.DocumentSelectionChanged,
-    //   { handler: getSelectedCitation },
-    //   (result) => {
-    //     console.log(result);
-    //   }
-    // );
-  });
+    return Office.context.document.removeHandlerAsync(
+      Office.EventType.DocumentSelectionChanged,
+      { handler: getSelectedCitation },
+      (result) => {
+        console.log(`result: ${JSON.stringify(result)}`);
+      }
+    );
+  }, []);
 
   const onFilterChange = (
     _: React.ChangeEvent<HTMLInputElement>,
