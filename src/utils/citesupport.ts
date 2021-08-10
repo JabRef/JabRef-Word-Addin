@@ -244,7 +244,6 @@ class CiteSupport {
       this.config.citationIdToPos = citationIsToPos;
     }
   }
-  
 
   async insertNewCitation(data: Array<CitationResult>): Promise<void> {
     this.debug("insertNewCitation()");
