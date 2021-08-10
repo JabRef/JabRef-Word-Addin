@@ -41,12 +41,9 @@ class WordApi {
       context.load(contentControls, "length, items");
       const currentposition = context.document.getSelection();
       await context.sync();
-      const jabRefCitation = contentControls.items.filter((citation) =>
+      const jabRefCitations = contentControls.items.filter((citation) =>
         citation.tag.includes("JABREF-CITATION")
       );
-      const jabRefCitations = (await WordApi.getJabRefCitations(
-        context
-      )) as Array<Word.ContentControl>;
       const locationArray = jabRefCitations.map((citation) => {
         const citationToCompareWith = citation.getRange("Start");
         const currentSelectionRange = currentposition.getRange("Whole");
@@ -59,7 +56,7 @@ class WordApi {
           return i;
         }
       }
-      return jabRefCitation.length;
+      return jabRefCitations.length;
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
@@ -84,10 +81,7 @@ class WordApi {
           return;
         }
         const currentCitationTag = citationContentControl.tag;
-        if (
-          currentCitationTag === "JABREF-CITATION-NEW" ||
-          currentCitationTag !== tag
-        ) {
+        if (currentCitationTag !== tag) {
           citationContentControl.tag = tag;
         }
         citationContentControl.insertText(citationText, "Replace");
