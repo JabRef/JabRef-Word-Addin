@@ -101,7 +101,7 @@ class CiteSupport {
   ): Promise<void> {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
-    await this.setCitations(citationData);
+    await this.insertNewCitation(citationData);
     this.config.processorReady = true;
   }
 
@@ -236,7 +236,19 @@ class CiteSupport {
   async setCitations(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitations()");
     const citationData = this.convertCitationDataToCustomFormat(data);
-    await this.wordApi.setCitations(citationData);
+    await this.wordApi.updateCitations(citationData);
+
+    // Update citationIdToPos for all nodes
+    const citationIsToPos = await WordApi.getCitationIdToPos();
+    if (citationIsToPos) {
+      this.config.citationIdToPos = citationIsToPos;
+    }
+  }
+
+  async insertNewCitation(data: Array<CitationResult>): Promise<void> {
+    this.debug("insertNewCitation()");
+    const citationData = this.convertCitationDataToCustomFormat(data);
+    await this.wordApi.insertNewCitation(citationData);
 
     // Update citationIdToPos for all nodes
     const citationIsToPos = await WordApi.getCitationIdToPos();
@@ -315,7 +327,6 @@ class CiteSupport {
     let citation = null;
     if (!isCitation) {
       if (checkedItems.length) {
-        await WordApi.insertEmptyContentControl();
         citation = {
           citationItems: checkedItems,
           properties: {

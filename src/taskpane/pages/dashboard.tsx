@@ -4,7 +4,6 @@ import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
-import WordApi from "../../utils/word-api";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -82,7 +81,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   async function insertCitation() {
-    await WordApi.getnewPositionOfNewCitation();
     await citeSupport.insertCitation(checkedItems);
     unCheckAllCheckboxes();
   }
