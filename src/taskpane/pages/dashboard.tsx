@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
+import { StatefulCitation } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -59,26 +60,49 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       return { id: item.id };
     });
 
-  useEffect(() => {
-    function getPositionOfNewCitation(): Promise<number | void> {
-      return Word.run(async (context: Word.RequestContext) => {
-        const contentControl = context.document
-          .getSelection()
-          .contentControls.getFirst();
-        contentControl.load("tag");
-        await context.sync();
-        console.log(contentControl.tag);
-      }).catch((error) => {
-        console.log(`Error: ${JSON.stringify(error)}`);
-        if (error instanceof OfficeExtension.Error) {
-          console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
-        }
-      });
-    }
+  const unCheckAllCheckboxes = () => {
+    setItems((currentItems) => {
+      return currentItems.map(unCheckCheckbox);
+    });
+  };
 
+  const checkCitationItems = (itemId: Array<string>) => {
+    setItems((currentItems) => {
+      return currentItems.map((item) => {
+        if (item.id === itemId[0]) {
+          return { ...item, isSelected: true };
+        }
+        return item;
+      });
+    });
+  };
+
+  const getSelectedCitation = async (): Promise<number | void> => {
+    return Word.run(async (context: Word.RequestContext) => {
+      const citation = context.document
+        .getSelection()
+        .contentControls.getFirst();
+      citation.load("tag");
+      await context.sync();
+      if (citation.tag.includes("JABREF-CITATION")) {
+        const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
+        const citationItemId = tag.citationItems.map((citationItem) => {
+          return citationItem.id;
+        });
+        checkCitationItems(citationItemId);
+      }
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  };
+
+  useEffect(() => {
     Office.context.document.addHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
-      getPositionOfNewCitation,
+      getSelectedCitation,
       (result) => {
         console.log(result);
       }
@@ -97,12 +121,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   ) => {
     setItems((currentItems) => {
       return currentItems.map(onCheckboxChange(ev));
-    });
-  };
-
-  const unCheckAllCheckboxes = () => {
-    setItems((currentItems) => {
-      return currentItems.map(unCheckCheckbox);
     });
   };
 
