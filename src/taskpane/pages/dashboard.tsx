@@ -108,7 +108,9 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   // eslint-disable-next-line consistent-return
   async function getSelectedCitation(): Promise<void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const getSelection = context.document.getSelection();
+      const getSelection = context.document
+        .getSelection()
+        .compareLocationWith(context.document.getBody().getStart());
       context.load(getSelection, "contentControls");
       await context.sync();
       console.log("contentControl", getSelection.contentControls.items.length);
@@ -123,7 +125,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         console.log("citation item array", citationId);
         // checkCitationItems(citationId);
       } else {
-        unCheckAllCheckboxes();
+
       }
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
