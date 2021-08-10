@@ -66,47 +66,92 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  const checkCitationItems = (itemId: Array<string>) => {
-    setItems((currentItems) => {
-      return currentItems.map((item) => {
-        if (item.id === itemId[0]) {
-          return { ...item, isSelected: true };
-        }
-        return item;
-      });
-    });
-  };
+  // const checkCitationItems = (itemId: Array<string>) => {
+  //   setItems((currentItems) => {
+  //     return currentItems.map((item) => {
+  //       if (item.id === itemId[0]) {
+  //         return { ...item, isSelected: true };
+  //       }
+  //       return item;
+  //     });
+  //   });
+  // };
+  // function getSelectedCitation(): Promise<void | number> {
+  //   return Word.run(async (context: Word.RequestContext) => {
+  //     const citation = context.document
+  //       .getSelection()
+  //       .contentControls.getFirstOrNullObject();
+  //     citation.load("tag");
+  //     await context.sync();
+  //     const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
+  //     const citationItemId = tag.citationItems.map((citationItem) => {
+  //       return citationItem.id;
+  //     });
+  //     console.log(citationItemId);
 
-  const getSelectedCitation = async (): Promise<number | void> => {
-    return Word.run(async (context: Word.RequestContext) => {
-      const citation = context.document
-        .getSelection()
-        .contentControls.getFirst();
-      citation.load("tag");
-      await context.sync();
-      if (citation.tag.includes("JABREF-CITATION")) {
-        const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
-        const citationItemId = tag.citationItems.map((citationItem) => {
-          return citationItem.id;
-        });
-        checkCitationItems(citationItemId);
-      }
-    }).catch((error) => {
+  //     // if (citation.isNullObject) {
+  //     //   unCheckAllCheckboxes();
+  //     // } else if (citation.tag.includes("JABREF-CITATION")) {
+  //     //   const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
+  //     //   const citationItemId = tag.citationItems.map((citationItem) => {
+  //     //     return citationItem.id;
+  //     //   });
+  //     //   console.log(citationItemId);
+  //     // }
+  //   }).catch((error) => {
+  //     console.log(`Error: ${JSON.stringify(error)}`);
+  //     if (error instanceof OfficeExtension.Error) {
+  //       console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+  //     }
+  //   });
+  // }
+  // eslint-disable-next-line consistent-return
+  async function getSelectedCitation(): Promise<void> {
+    try {
+      return Word.run(async (context: Word.RequestContext) => {
+        const citation = context.document
+          .getSelection()
+          .contentControls.getFirst();
+        citation.load("tag");
+        await context.sync();
+        if (citation == null) {
+          console.log("null citation nnnnnnn");
+        }
+        if (citation != null) {
+          const tag = JSON.parse(
+            citation.tag.substring(16)
+          ) as StatefulCitation;
+          const citationId = tag.citationItems.map(
+            (citationItem) => citationItem.id
+          );
+          console.log("citation item array", citationId);
+          // checkCitationItems(citationId);
+        }
+      });
+    } catch (error) {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
-    });
-  };
+    }
+  }
 
   useEffect(() => {
+    console.log("useeffect***************");
     Office.context.document.addHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
       getSelectedCitation,
       (result) => {
-        console.log(result);
+        console.log(`result: ${JSON.stringify(result)}`);
       }
     );
+    // return Office.context.document.removeHandlerAsync(
+    //   Office.EventType.DocumentSelectionChanged,
+    //   { handler: getSelectedCitation },
+    //   (result) => {
+    //     console.log(result);
+    //   }
+    // );
   });
 
   const onFilterChange = (
