@@ -26,7 +26,7 @@ class WordApi {
 
   static async getJabRefCitations(
     context: Word.RequestContext
-  ): Promise<Array<Word.ContentControl> | void> {
+  ): Promise<Array<Word.ContentControl>> {
     const { contentControls } = context.document;
     context.load(contentControls, "tag, length");
     await context.sync();
@@ -37,26 +37,18 @@ class WordApi {
 
   static async getPositionOfNewCitation(): Promise<number | void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const { contentControls } = context.document.body;
-      context.load(contentControls, "length, items");
       const currentposition = context.document.getSelection();
-      await context.sync();
-      const jabRefCitations = contentControls.items.filter((citation) =>
-        citation.tag.includes("JABREF-CITATION")
-      );
+      const jabRefCitations = await WordApi.getJabRefCitations(context);
       const locationArray = jabRefCitations.map((citation) => {
         const citationToCompareWith = citation.getRange("Start");
         const currentSelectionRange = currentposition.getRange("Whole");
         return citationToCompareWith.compareLocationWith(currentSelectionRange);
       });
       await context.sync();
-      for (let i = 0; i < locationArray.length; i += 1) {
-        const index = locationArray[i].value;
-        if (index === "After") {
-          return i;
-        }
-      }
-      return jabRefCitations.length;
+      const position = locationArray.findIndex(
+        (location) => location.value === "After"
+      );
+      return position !== undefined ? position : jabRefCitations.length;
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
@@ -69,9 +61,7 @@ class WordApi {
     citations: Array<[number, string, StatefulCitation]>
   ): Promise<unknown> {
     return Word.run(async (context: Word.RequestContext) => {
-      const jabRefCitations = (await WordApi.getJabRefCitations(
-        context
-      )) as Array<Word.ContentControl>;
+      const jabRefCitations = await WordApi.getJabRefCitations(context);
       citations.forEach((citation) => {
         const position = citation[0];
         const citationText = citation[1];
@@ -101,9 +91,7 @@ class WordApi {
 
   static async getTotalNumberOfCitations(): Promise<number | void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const jabRefCitations = (await WordApi.getJabRefCitations(
-        context
-      )) as Array<Word.ContentControl>;
+      const jabRefCitations = await WordApi.getJabRefCitations(context);
       return jabRefCitations.length;
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
@@ -115,9 +103,7 @@ class WordApi {
 
   static async getCitationIdToPos(): Promise<Record<string, number> | void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const jabRefCitations = (await WordApi.getJabRefCitations(
-        context
-      )) as Array<Word.ContentControl>;
+      const jabRefCitations = await WordApi.getJabRefCitations(context);
       const citationIdToPos: Record<string, number> = {};
       let pos = 0;
       jabRefCitations.forEach((citation) => {
@@ -139,9 +125,7 @@ class WordApi {
       async (
         context: Word.RequestContext
       ): Promise<Array<StatefulCitation>> => {
-        const jabRefCitations = (await WordApi.getJabRefCitations(
-          context
-        )) as Array<Word.ContentControl>;
+        const jabRefCitations = await WordApi.getJabRefCitations(context);
         return jabRefCitations.map(
           (citation) =>
             JSON.parse(citation.tag.substring(16)) as StatefulCitation
