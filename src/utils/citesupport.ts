@@ -6,7 +6,7 @@ import {
   RebuildProcessorStateData,
   StatefulCitation,
 } from "citeproc";
-import WordApi, { JabrefCitationDataFormat } from "./word-api";
+import WordApi, { CitationDataFormatForWordAPI } from "./word-api";
 import CiteWorker, {
   CiteWorkerCommand,
   CiteWorkerMessage,
@@ -273,7 +273,7 @@ class CiteSupport {
 
   convertCitationDataToCustomFormat(
     citationData: Array<CitationResult>
-  ): Array<JabrefCitationDataFormat> {
+  ): Array<CitationDataFormatForWordAPI> {
     if (!citationData) return null;
     this.debug("convertCitationDataToCustomFormat()");
     return citationData.map((citation) => {

@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import { StatefulCitation } from "citeproc";
 
-export type JabrefCitationDataFormat = {
+export type CitationDataFormatForWordAPI = {
   position: number;
   citationText: string;
   citationTag: StatefulCitation;
 };
 class WordApi {
   async insertNewCitation(
-    citations: Array<JabrefCitationDataFormat>
+    citations: Array<CitationDataFormatForWordAPI>
   ): Promise<unknown> {
     return Word.run((context: Word.RequestContext) => {
       const citationContentControl = context.document
@@ -64,7 +64,7 @@ class WordApi {
   }
 
   async updateCitations(
-    citations: Array<JabrefCitationDataFormat>
+    citations: Array<CitationDataFormatForWordAPI>
   ): Promise<unknown> {
     return Word.run(async (context: Word.RequestContext) => {
       const jabRefCitations = await WordApi.getJabRefCitations(context);
