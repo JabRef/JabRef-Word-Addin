@@ -226,7 +226,7 @@ class WordApi {
     });
   }
 
-  static addEventListener(eventHandler): void {
+  static addEventListener(eventHandler: () => Promise<void>): void {
     return Office.context.document.addHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
       eventHandler,
