@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
 import { StatefulCitation } from "citeproc";
 import data from "../../utils/data";
@@ -54,6 +54,13 @@ function unCheckCheckbox(item: bib): bib {
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
+  const [citationID, _setCitationID] = useState([]);
+  const citationIDinCitation = useRef(citationID);
+  const setCitationID = (ID: Array<string>) => {
+    citationIDinCitation.current = ID;
+    _setCitationID(ID);
+  };
+
   const checkedItems = items
     .filter((item) => item.isSelected)
     .map((item) => {
@@ -66,66 +73,47 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  // const checkCitationItems = (itemId: Array<string>) => {
-  //   setItems((currentItems) => {
-  //     return currentItems.map((item) => {
-  //       if (item.id === itemId[0]) {
-  //         return { ...item, isSelected: true };
-  //       }
-  //       return item;
-  //     });
-  //   });
-  // };
-  // function getSelectedCitation(): Promise<void | number> {
-  //   return Word.run(async (context: Word.RequestContext) => {
-  //     const citation = context.document
-  //       .getSelection()
-  //       .contentControls.getFirstOrNullObject();
-  //     citation.load("tag");
-  //     await context.sync();
-  //     const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
-  //     const citationItemId = tag.citationItems.map((citationItem) => {
-  //       return citationItem.id;
-  //     });
-  //     console.log(citationItemId);
-
-  //     // if (citation.isNullObject) {
-  //     //   unCheckAllCheckboxes();
-  //     // } else if (citation.tag.includes("JABREF-CITATION")) {
-  //     //   const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
-  //     //   const citationItemId = tag.citationItems.map((citationItem) => {
-  //     //     return citationItem.id;
-  //     //   });
-  //     //   console.log(citationItemId);
-  //     // }
-  //   }).catch((error) => {
-  //     console.log(`Error: ${JSON.stringify(error)}`);
-  //     if (error instanceof OfficeExtension.Error) {
-  //       console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
-  //     }
-  //   });
-  // }
-  // eslint-disable-next-line consistent-return
+  const checkCitationItems = (itemId: Array<string>) => {
+    setItems((currentItems) => {
+      return currentItems.map((item) => {
+        if (itemId.filter((id) => item.id === id).length) {
+          return { ...item, isSelected: true };
+        }
+        return item;
+      });
+    });
+  };
+  const unCheckCitationItems = (itemId: Array<string>) => {
+    setItems((currentItems) => {
+      return currentItems.map((item) => {
+        if (itemId.filter((id) => item.id === id).length) {
+          return { ...item, isSelected: false };
+        }
+        return item;
+      });
+    });
+  };
   async function getSelectedCitation(): Promise<void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const getSelection = context.document
-        .getSelection()
-        .compareLocationWith(context.document.getBody().getStart());
+      const getSelection = context.document.getSelection();
       context.load(getSelection, "contentControls");
       await context.sync();
-      console.log("contentControl", getSelection.contentControls.items.length);
       if (getSelection.contentControls.items.length !== 0) {
+        unCheckAllCheckboxes();
         const citation = getSelection.contentControls.getFirstOrNullObject();
         citation.load("tag");
         await context.sync();
         const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
-        const citationId = tag.citationItems.map(
-          (citationItem) => citationItem.id
-        );
-        console.log("citation item array", citationId);
-        // checkCitationItems(citationId);
+        const citationId = tag.citationItems.map((i) => i.id);
+        setCitationID(citationId);
+        checkCitationItems(citationId);
+        console.log("citation Id array", citationIDinCitation.current);
       } else {
-
+        console.log("citationItem in handler", citationIDinCitation.current);
+        if (citationIDinCitation.current.length) {
+          unCheckAllCheckboxes();
+          setCitationID([]);
+        }
       }
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
@@ -143,13 +131,15 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         console.log(`result: ${JSON.stringify(result)}`);
       }
     );
-    return Office.context.document.removeHandlerAsync(
-      Office.EventType.DocumentSelectionChanged,
-      { handler: getSelectedCitation },
-      (result) => {
-        console.log(`result: ${JSON.stringify(result)}`);
-      }
-    );
+    return () =>
+      Office.context.document.removeHandlerAsync(
+        Office.EventType.DocumentSelectionChanged,
+        { handler: getSelectedCitation },
+        (result) => {
+          console.log(`result: ${JSON.stringify(result)}`);
+        }
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFilterChange = (
@@ -176,12 +166,24 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
-      {checkedItems.length ? (
+      {checkedItems.length && citationIDinCitation.current.length === 0 ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
             Insert {checkedItems.length}{" "}
             {checkedItems.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
+          <DefaultButton
+            onClick={unCheckAllCheckboxes}
+            style={{ marginLeft: 8 }}
+          >
+            Cancel
+          </DefaultButton>
+        </div>
+      ) : null}
+      {citationIDinCitation.current.length !== 0 &&
+      checkedItems.length !== 0 ? (
+        <div style={buttonContainer}>
+          <PrimaryButton onClick={insertCitation}>Save</PrimaryButton>
           <DefaultButton
             onClick={unCheckAllCheckboxes}
             style={{ marginLeft: 8 }}
