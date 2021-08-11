@@ -37,11 +37,11 @@ class WordApi {
 
   static async getPositionOfNewCitation(): Promise<number | void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const currentposition = context.document.getSelection();
+      const currentPosition = context.document.getSelection();
       const jabRefCitations = await WordApi.getJabRefCitations(context);
       const locationArray = jabRefCitations.map((citation) => {
         const citationToCompareWith = citation.getRange("Start");
-        const currentSelectionRange = currentposition.getRange("Whole");
+        const currentSelectionRange = currentPosition.getRange("Whole");
         return citationToCompareWith.compareLocationWith(currentSelectionRange);
       });
       await context.sync();
@@ -105,11 +105,9 @@ class WordApi {
     return Word.run(async (context: Word.RequestContext) => {
       const jabRefCitations = await WordApi.getJabRefCitations(context);
       const citationIdToPos: Record<string, number> = {};
-      let pos = 0;
-      jabRefCitations.forEach((citation) => {
+      jabRefCitations.forEach((citation, index) => {
         const { tag } = citation;
-        citationIdToPos[tag.substring(16)] = pos;
-        pos += 1;
+        citationIdToPos[tag.substring(16)] = index;
       });
       return citationIdToPos;
     }).catch((error) => {
