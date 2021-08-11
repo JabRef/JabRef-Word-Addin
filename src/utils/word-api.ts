@@ -3,17 +3,22 @@ import { StatefulCitation } from "citeproc";
 
 class WordApi {
   async insertNewCitation(
-    citations: Array<[number, string, StatefulCitation]>
+    citations: Array<{
+      position: number;
+      citationText: string;
+      citationTag: StatefulCitation;
+    }>
   ): Promise<unknown> {
     return Word.run((context: Word.RequestContext) => {
       const citationContentControl = context.document
         .getSelection()
         .insertContentControl();
       citations.forEach((citation) => {
-        const citationText = citation[1];
+        const { citationText } = citation;
+        const tag = this.generateCitationTag(citation.citationTag);
+        citationContentControl.tag = tag;
         citationContentControl.appearance = "BoundingBox";
         citationContentControl.insertText(citationText, "Replace");
-        citationContentControl.tag = this.generateCitationTag(citation[2]);
       });
       return context.sync();
     }).catch((error) => {
@@ -58,14 +63,18 @@ class WordApi {
   }
 
   async updateCitations(
-    citations: Array<[number, string, StatefulCitation]>
+    citations: Array<{
+      position: number;
+      citationText: string;
+      citationTag: StatefulCitation;
+    }>
   ): Promise<unknown> {
     return Word.run(async (context: Word.RequestContext) => {
       const jabRefCitations = await WordApi.getJabRefCitations(context);
       citations.forEach((citation) => {
-        const position = citation[0];
-        const citationText = citation[1];
-        const tag = this.generateCitationTag(citation[2]);
+        const { position } = citation;
+        const { citationText } = citation;
+        const tag = this.generateCitationTag(citation.citationTag);
         const citationContentControl = jabRefCitations[position];
         if (!citationContentControl) {
           return;

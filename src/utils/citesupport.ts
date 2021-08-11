@@ -262,19 +262,25 @@ class CiteSupport {
    *  to the form digested by our own `setCitations()` method from WordApi.
    *
    *  word.api.setCitations() wants this structure:
-   *  [<citation_index>, <citation_string>, <statefullCitation>]
+   *  [{position: number, citationText: string, citationTag: StatefulCitation}]
    */
 
   convertCitationDataToCustomFormat(
     citationData: Array<CitationResult>
-  ): Array<[number, string, StatefulCitation]> {
+  ): Array<{
+    position: number;
+    citationText: string;
+    citationTag: StatefulCitation;
+  }> {
     if (!citationData) return null;
     this.debug("convertCitationDataToCustomFormat()");
-    return citationData.map((citation) => [
-      citation[0],
-      citation[1],
-      this.config.citationByIndex[citation[0]],
-    ]);
+    return citationData.map((citation) => {
+      return {
+        position: citation[0],
+        citationText: citation[1],
+        citationTag: this.config.citationByIndex[citation[0]],
+      };
+    });
   }
 
   /**
