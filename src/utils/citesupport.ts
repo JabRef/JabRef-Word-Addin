@@ -245,6 +245,11 @@ class CiteSupport {
     }
   }
 
+  /**
+   *  Use this method to insert new citations into the document.
+   *  This method is called by the onRegisterCitation method when
+   *  a new citation is added to the document.
+   */
   async insertNewCitation(data: Array<CitationResult>): Promise<void> {
     this.debug("insertNewCitation()");
     const citationData = this.convertCitationDataToCustomFormat(data);
