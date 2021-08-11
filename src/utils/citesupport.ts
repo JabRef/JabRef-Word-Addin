@@ -101,7 +101,7 @@ class CiteSupport {
   ): Promise<void> {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
-    await this.insertNewCitation(citationData);
+    await this.setCitation(citationData);
     this.config.processorReady = true;
   }
 
@@ -245,11 +245,15 @@ class CiteSupport {
     }
   }
 
-  async insertNewCitation(data: Array<CitationResult>): Promise<void> {
+  async setCitation(data: Array<CitationResult>): Promise<void> {
     this.debug("insertNewCitation()");
+    const isCitation = await WordApi.isCitation();
     const citationData = this.convertCitationDataToCustomFormat(data);
-    await this.wordApi.insertNewCitation(citationData);
-
+    if (isCitation) {
+      await this.wordApi.updateCitations(citationData);
+    } else {
+      await this.wordApi.insertNewCitation(citationData);
+    }
     // Update citationIdToPos for all nodes
     const citationIsToPos = await WordApi.getCitationIdToPos();
     if (citationIsToPos) {
@@ -320,24 +324,35 @@ class CiteSupport {
   }
 
   async insertCitation(
-    checkedItems: Array<Record<string, string>>
+    citationItems: Array<Record<string, string>>
   ): Promise<void> {
-    const isCitation = false;
+    const isCitation = await WordApi.isCitation();
     await this.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {
-      if (checkedItems.length) {
+      if (citationItems.length) {
         citation = {
-          citationItems: checkedItems,
+          citationItems,
           properties: {
             noteIndex: 0,
           },
         };
       }
+    } else {
+      citation = {
+        citationItems,
+      };
     }
     let citationsPre = [];
     let citationsPost = [];
-    const i = (await WordApi.getPositionOfNewCitation()) as number;
+    let i = 0;
+    let offset = 0;
+    if (!isCitation) {
+      i = (await WordApi.getPositionOfNewCitation()) as number;
+    } else {
+      i = (await WordApi.getPositionOfCurrentCitation()) as number;
+      offset = 1;
+    }
     if (this.config.citationByIndex.slice(0, i).length) {
       citationsPre = this.config.citationByIndex
         .slice(0, i)
@@ -345,19 +360,15 @@ class CiteSupport {
           return [obj.citationID, 0];
         });
     }
-    if (this.config.citationByIndex.slice(i).length) {
+    if (this.config.citationByIndex.slice(i + offset).length) {
       citationsPost = this.config.citationByIndex
-        .slice(i)
+        .slice(i + offset)
         .map((obj: StatefulCitation): [string, number] => {
           return [obj.citationID, 0];
         });
     }
     this.registerCitation(citation, citationsPre, citationsPost);
   }
-
-  // TODO: Rewrite this function to check whether the current selection is a
-  // citation or not.
-  static isCitation = (): boolean => false;
 }
 
 export default CiteSupport;

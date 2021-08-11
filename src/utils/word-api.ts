@@ -65,6 +65,60 @@ class WordApi {
     });
   }
 
+  static async isCitation(): Promise<boolean | void> {
+    return Word.run(async (context: Word.RequestContext) => {
+      const currentSelection = context.document
+        .getSelection()
+        .contentControls.getFirstOrNullObject();
+      currentSelection.load("tag");
+      await context.sync();
+      if (
+        !currentSelection.isNullObject &&
+        currentSelection.tag.includes("JABREF-CITATION")
+      ) {
+        return true;
+      }
+      return false;
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
+  static async getPositionOfCurrentCitation(): Promise<number | void> {
+    return Word.run(async (context: Word.RequestContext) => {
+      const { contentControls } = context.document.body;
+      context.load(contentControls, "length, items");
+      const currentCitation = context.document
+        .getSelection()
+        .contentControls.getFirstOrNullObject();
+      await context.sync();
+      const jabRefCitations = contentControls.items.filter((citation) =>
+        citation.tag.includes("JABREF-CITATION")
+      );
+      const locationArray = jabRefCitations.map((citation) => {
+        const citationToCompareWith = citation.getRange("Whole");
+        const currentSelectionRange = currentCitation.getRange("Whole");
+        return citationToCompareWith.compareLocationWith(currentSelectionRange);
+      });
+      await context.sync();
+      for (let i = 0; i < locationArray.length; i += 1) {
+        const index = locationArray[i].value;
+        if (index === "Equal") {
+          return i;
+        }
+      }
+      return jabRefCitations.length;
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
   async updateCitations(
     citations: Array<[number, string, StatefulCitation]>
   ): Promise<unknown> {
@@ -170,6 +224,25 @@ class WordApi {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
+  }
+
+  static addEventListener(eventHandler): void {
+    return Office.context.document.addHandlerAsync(
+      Office.EventType.DocumentSelectionChanged,
+      eventHandler,
+      (result) => {
+        console.log(`result: ${JSON.stringify(result)}`);
+      }
+    );
+  }
+
+  static removeEventListener(): void {
+    return Office.context.document.removeHandlerAsync(
+      Office.EventType.DocumentSelectionChanged,
+      (result) => {
+        console.log(`result: ${JSON.stringify(result)}`);
+      }
+    );
   }
 }
 

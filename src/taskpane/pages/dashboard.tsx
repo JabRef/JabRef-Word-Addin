@@ -5,6 +5,7 @@ import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
+import WordApi from "../../utils/word-api";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -83,6 +84,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       });
     });
   };
+
   const unCheckCitationItems = (itemId: Array<string>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
@@ -93,54 +95,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       });
     });
   };
-  async function getSelectedCitation(): Promise<void> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const getSelection = context.document.getSelection();
-      context.load(getSelection, "contentControls");
-      await context.sync();
-      if (getSelection.contentControls.items.length !== 0) {
-        unCheckAllCheckboxes();
-        const citation = getSelection.contentControls.getFirstOrNullObject();
-        citation.load("tag");
-        await context.sync();
-        const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
-        const citationId = tag.citationItems.map((i) => i.id);
-        setCitationID(citationId);
-        checkCitationItems(citationId);
-        console.log("citation Id array", citationIDinCitation.current);
-      } else {
-        console.log("citationItem in handler", citationIDinCitation.current);
-        if (citationIDinCitation.current.length) {
-          unCheckAllCheckboxes();
-          setCitationID([]);
-        }
-      }
-    }).catch((error) => {
-      console.log(`Error: ${JSON.stringify(error)}`);
-      if (error instanceof OfficeExtension.Error) {
-        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
-      }
-    });
-  }
-
-  useEffect(() => {
-    Office.context.document.addHandlerAsync(
-      Office.EventType.DocumentSelectionChanged,
-      getSelectedCitation,
-      (result) => {
-        console.log(`result: ${JSON.stringify(result)}`);
-      }
-    );
-    return () =>
-      Office.context.document.removeHandlerAsync(
-        Office.EventType.DocumentSelectionChanged,
-        { handler: getSelectedCitation },
-        (result) => {
-          console.log(`result: ${JSON.stringify(result)}`);
-        }
-      );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const onFilterChange = (
     _: React.ChangeEvent<HTMLInputElement>,
@@ -156,6 +110,38 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       return currentItems.map(onCheckboxChange(ev));
     });
   };
+
+  async function getSelectedCitation(): Promise<void> {
+    return Word.run(async (context: Word.RequestContext) => {
+      const getSelection = context.document.getSelection();
+      context.load(getSelection, "contentControls");
+      await context.sync();
+      if (getSelection.contentControls.items.length !== 0) {
+        unCheckCitationItems(citationIDinCitation.current);
+        const citation = getSelection.contentControls.getFirstOrNullObject();
+        citation.load("tag");
+        await context.sync();
+        const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
+        const citationId = tag.citationItems.map((i) => i.id);
+        setCitationID(citationId);
+        checkCitationItems(citationId);
+      } else if (citationIDinCitation.current.length) {
+        unCheckAllCheckboxes();
+        setCitationID([]);
+      }
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
+  useEffect(() => {
+    WordApi.addEventListener(getSelectedCitation);
+    return WordApi.removeEventListener();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function insertCitation() {
     await citeSupport.insertCitation(checkedItems);
