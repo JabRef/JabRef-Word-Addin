@@ -8,19 +8,17 @@ export type CitationDataFormatForWordAPI = {
 };
 class WordApi {
   async insertNewCitation(
-    citations: Array<CitationDataFormatForWordAPI>
+    citation: CitationDataFormatForWordAPI
   ): Promise<unknown> {
     return Word.run((context) => {
       const citationContentControl = context.document
         .getSelection()
         .insertContentControl();
-      citations.forEach((citation) => {
-        const { citationText } = citation;
-        const tag = this.generateCitationTag(citation.citationTag);
-        citationContentControl.tag = tag;
-        citationContentControl.appearance = "BoundingBox";
-        citationContentControl.insertText(citationText, "Replace");
-      });
+      const { citationText } = citation;
+      const tag = this.generateCitationTag(citation.citationTag);
+      citationContentControl.tag = tag;
+      citationContentControl.appearance = "BoundingBox";
+      citationContentControl.insertText(citationText, "Replace");
       return context.sync();
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);

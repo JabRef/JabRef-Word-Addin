@@ -254,7 +254,7 @@ class CiteSupport {
   async insertNewCitation(data: Array<CitationResult>): Promise<void> {
     this.debug("insertNewCitation()");
     const citationData = this.convertCitationDataToCustomFormat(data);
-    await this.wordApi.insertNewCitation(citationData);
+    await this.wordApi.insertNewCitation(citationData[0]);
 
     // Update citationIdToPos for all nodes
     const citationIsToPos = await WordApi.getCitationIdToPos();
