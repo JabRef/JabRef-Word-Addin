@@ -10,7 +10,7 @@ class WordApi {
   async insertNewCitation(
     citations: Array<CitationDataFormatForWordAPI>
   ): Promise<unknown> {
-    return Word.run((context: Word.RequestContext) => {
+    return Word.run((context) => {
       const citationContentControl = context.document
         .getSelection()
         .insertContentControl();
@@ -42,9 +42,10 @@ class WordApi {
   }
 
   static async getPositionOfNewCitation(): Promise<number | void> {
-    return Word.run(async (context: Word.RequestContext) => {
+    return Word.run(async (context) => {
       const currentPosition = context.document.getSelection();
       const jabRefCitations = await WordApi.getJabRefCitations(context);
+      if (jabRefCitations.length === 0) return 0;
       const locationArray = jabRefCitations.map((citation) => {
         const citationToCompareWith = citation.getRange("Start");
         const currentSelectionRange = currentPosition.getRange("Whole");
@@ -54,7 +55,7 @@ class WordApi {
       const position = locationArray.findIndex(
         (location) => location.value === "After"
       );
-      return position !== undefined ? position : jabRefCitations.length;
+      return position !== -1 ? position : jabRefCitations.length;
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
@@ -66,11 +67,10 @@ class WordApi {
   async updateCitations(
     citations: Array<CitationDataFormatForWordAPI>
   ): Promise<unknown> {
-    return Word.run(async (context: Word.RequestContext) => {
+    return Word.run(async (context) => {
       const jabRefCitations = await WordApi.getJabRefCitations(context);
       citations.forEach((citation) => {
-        const { position } = citation;
-        const { citationText } = citation;
+        const { position, citationText } = citation;
         const tag = this.generateCitationTag(citation.citationTag);
         const citationContentControl = jabRefCitations[position];
         if (!citationContentControl) {
@@ -96,7 +96,7 @@ class WordApi {
   };
 
   static async getTotalNumberOfCitations(): Promise<number | void> {
-    return Word.run(async (context: Word.RequestContext) => {
+    return Word.run(async (context) => {
       const jabRefCitations = await WordApi.getJabRefCitations(context);
       return jabRefCitations.length;
     }).catch((error) => {
@@ -108,7 +108,7 @@ class WordApi {
   }
 
   static async getCitationIdToPos(): Promise<Record<string, number> | void> {
-    return Word.run(async (context: Word.RequestContext) => {
+    return Word.run(async (context) => {
       const jabRefCitations = await WordApi.getJabRefCitations(context);
       const citationIdToPos: Record<string, number> = {};
       jabRefCitations.forEach((citation, index) => {
@@ -125,17 +125,12 @@ class WordApi {
   }
 
   static async getCitationByIndex(): Promise<Array<StatefulCitation> | void> {
-    return Word.run(
-      async (
-        context: Word.RequestContext
-      ): Promise<Array<StatefulCitation>> => {
-        const jabRefCitations = await WordApi.getJabRefCitations(context);
-        return jabRefCitations.map(
-          (citation) =>
-            JSON.parse(citation.tag.substring(16)) as StatefulCitation
-        );
-      }
-    ).catch((error) => {
+    return Word.run(async (context): Promise<Array<StatefulCitation>> => {
+      const jabRefCitations = await WordApi.getJabRefCitations(context);
+      return jabRefCitations.map(
+        (citation) => JSON.parse(citation.tag.substring(16)) as StatefulCitation
+      );
+    }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
@@ -144,7 +139,7 @@ class WordApi {
   }
 
   static createContentControl(tag: string, html: string): void {
-    Word.run((context: Word.RequestContext) => {
+    Word.run((context) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
       contentControl.tag = tag;
