@@ -239,7 +239,7 @@ class CiteSupport {
     await this.wordApi.updateCitations(citationData);
 
     // Update citationIdToPos for all nodes
-    const citationIsToPos = await WordApi.getCitationIdToPos();
+    const citationIsToPos = await this.wordApi.getCitationIdToPos();
     if (citationIsToPos) {
       this.config.citationIdToPos = citationIsToPos;
     }
@@ -257,7 +257,7 @@ class CiteSupport {
     await this.wordApi.insertNewCitation(citationData[0]);
 
     // Update citationIdToPos for all nodes
-    const citationIsToPos = await WordApi.getCitationIdToPos();
+    const citationIsToPos = await this.wordApi.getCitationIdToPos();
     if (citationIsToPos) {
       this.config.citationIdToPos = citationIsToPos;
     }
@@ -307,11 +307,11 @@ class CiteSupport {
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
-    const getCitationByIndex = await WordApi.getCitationByIndex();
+    const getCitationByIndex = await this.wordApi.getCitationByIndex();
     if (getCitationByIndex) {
       this.config.citationByIndex = getCitationByIndex;
     }
-    const getCitationIdToPos = await WordApi.getCitationIdToPos();
+    const getCitationIdToPos = await this.wordApi.getCitationIdToPos();
     if (getCitationIdToPos) {
       this.config.citationIdToPos = getCitationIdToPos;
     }
@@ -321,7 +321,7 @@ class CiteSupport {
    *  Update the citationByIndex array after every edit or delete operation
    */
   async updateCitationByIndex(): Promise<void> {
-    const citationByIndex = await WordApi.getCitationByIndex();
+    const citationByIndex = await this.wordApi.getCitationByIndex();
     if (citationByIndex) {
       this.config.citationByIndex = citationByIndex;
     }
@@ -345,7 +345,7 @@ class CiteSupport {
     }
     let citationsPre = [];
     let citationsPost = [];
-    const i = (await WordApi.getPositionOfNewCitation()) as number;
+    const i = (await this.wordApi.getPositionOfNewCitation()) as number;
     if (this.config.citationByIndex.slice(0, i).length) {
       citationsPre = this.config.citationByIndex
         .slice(0, i)
