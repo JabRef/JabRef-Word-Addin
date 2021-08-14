@@ -226,6 +226,21 @@ class WordApi {
     });
   }
 
+  static async removeCurrentCitation(): Promise<unknown> {
+    return Word.run(async (context) => {
+      context.document
+        .getSelection()
+        .contentControls.getFirstOrNullObject()
+        .delete(false);
+      return context.sync();
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
   static addEventListener(eventHandler: () => Promise<void>): void {
     return Office.context.document.addHandlerAsync(
       Office.EventType.DocumentSelectionChanged,

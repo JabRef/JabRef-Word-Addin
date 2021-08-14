@@ -324,9 +324,9 @@ class CiteSupport {
   }
 
   async insertCitation(
-    citationItems: Array<Record<string, string>>
+    citationItems: Array<Record<string, string>>,
+    isCitation: boolean
   ): Promise<void> {
-    const isCitation = await WordApi.isCitation();
     await this.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {

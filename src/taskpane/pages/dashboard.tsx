@@ -61,6 +61,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
   const [citationID, _setCitationID] = useState([]);
+  const [isCitation, setIsCitation] = useState(false);
   const citationIDinCitation = useRef(citationID);
   const setCitationID = (ID: Array<string>) => {
     citationIDinCitation.current = ID;
@@ -78,6 +79,30 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       return currentItems.map(unCheckCheckbox);
     });
   };
+
+  const onFilterChange = (
+    _: React.ChangeEvent<HTMLInputElement>,
+    keyword: string
+  ): void => {
+    setItems(originalItems.filter(containsSearchTerm(keyword)));
+  };
+
+  const handleToggleChange = (
+    ev: React.FormEvent<HTMLElement | HTMLInputElement>
+  ) => {
+    setItems((currentItems) => {
+      return currentItems.map(onCheckboxChange(ev));
+    });
+  };
+
+  async function insertCitation() {
+    if (isCitation && checkedItems.length === 0) {
+      await WordApi.removeCurrentCitation();
+    } else {
+      await citeSupport.insertCitation(checkedItems, isCitation);
+      unCheckAllCheckboxes();
+    }
+  }
 
   const checkCitationItems = (itemId: Array<string>) => {
     setItems((currentItems) => {
@@ -101,26 +126,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  const onFilterChange = (
-    _: React.ChangeEvent<HTMLInputElement>,
-    keyword: string
-  ): void => {
-    setItems(originalItems.filter(containsSearchTerm(keyword)));
-  };
-
-  const handleToggleChange = (
-    ev: React.FormEvent<HTMLElement | HTMLInputElement>
-  ) => {
-    setItems((currentItems) => {
-      return currentItems.map(onCheckboxChange(ev));
-    });
-  };
-
   const getSelectedCitation = useCallback(async (): Promise<void> => {
     const getItemsIDInCitation = await WordApi.getItemsInCurrentSelection();
+    const isCitationValue = (await WordApi.isCitation()) as unknown as boolean;
     if (getItemsIDInCitation) {
       unCheckCitationItems(citationIDinCitation.current);
       setCitationID(getItemsIDInCitation);
+      setIsCitation(() => isCitationValue);
       checkCitationItems(getItemsIDInCitation);
     } else if (citationIDinCitation.current.length) {
       unCheckAllCheckboxes();
@@ -132,11 +144,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     WordApi.addEventListener(getSelectedCitation);
     return WordApi.removeEventListener();
   }, [getSelectedCitation]);
-
-  async function insertCitation() {
-    await citeSupport.insertCitation(checkedItems);
-    unCheckAllCheckboxes();
-  }
 
   return (
     <div style={dashboadStyle}>
@@ -156,8 +163,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
           </DefaultButton>
         </div>
       ) : null}
-      {citationIDinCitation.current.length !== 0 &&
-      checkedItems.length !== 0 ? (
+      {isCitation ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>Save</PrimaryButton>
           <DefaultButton
