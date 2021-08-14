@@ -1,6 +1,11 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
-import { StatefulCitation } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -111,37 +116,22 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  async function getSelectedCitation(): Promise<void> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const getSelection = context.document.getSelection();
-      context.load(getSelection, "contentControls");
-      await context.sync();
-      if (getSelection.contentControls.items.length !== 0) {
-        unCheckCitationItems(citationIDinCitation.current);
-        const citation = getSelection.contentControls.getFirstOrNullObject();
-        citation.load("tag");
-        await context.sync();
-        const tag = JSON.parse(citation.tag.substring(16)) as StatefulCitation;
-        const citationId = tag.citationItems.map((i) => i.id);
-        setCitationID(citationId);
-        checkCitationItems(citationId);
-      } else if (citationIDinCitation.current.length) {
-        unCheckAllCheckboxes();
-        setCitationID([]);
-      }
-    }).catch((error) => {
-      console.log(`Error: ${JSON.stringify(error)}`);
-      if (error instanceof OfficeExtension.Error) {
-        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
-      }
-    });
-  }
+  const getSelectedCitation = useCallback(async (): Promise<void> => {
+    const getItemsIDInCitation = await WordApi.getItemsInCurrentSelection();
+    if (getItemsIDInCitation) {
+      unCheckCitationItems(citationIDinCitation.current);
+      setCitationID(getItemsIDInCitation);
+      checkCitationItems(getItemsIDInCitation);
+    } else if (citationIDinCitation.current.length) {
+      unCheckAllCheckboxes();
+      setCitationID([]);
+    }
+  }, []);
 
   useEffect(() => {
     WordApi.addEventListener(getSelectedCitation);
     return WordApi.removeEventListener();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getSelectedCitation]);
 
   async function insertCitation() {
     await citeSupport.insertCitation(checkedItems);

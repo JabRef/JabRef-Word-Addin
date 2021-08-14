@@ -244,6 +244,31 @@ class WordApi {
       }
     );
   }
+
+  static async getItemsInCurrentSelection(): Promise<Array<string> | void> {
+    return Word.run(async (context: Word.RequestContext) => {
+      const getSelection = context.document.getSelection();
+      context.load(getSelection, "contentControls");
+      await context.sync();
+      if (getSelection.contentControls.items.length !== 0) {
+        const citation = getSelection.contentControls.getFirstOrNullObject();
+        citation.load("tag");
+        await context.sync();
+        if (citation.tag.includes("JABREF-CITATION")) {
+          const tag = JSON.parse(
+            citation.tag.substring(16)
+          ) as StatefulCitation;
+          return tag.citationItems.map((item) => item.id);
+        }
+      }
+      return [];
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
 }
 
 export default WordApi;
