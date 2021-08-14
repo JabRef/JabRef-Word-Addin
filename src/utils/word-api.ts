@@ -9,7 +9,7 @@ export type CitationDataFormatForWordAPI = {
 class WordApi {
   JABREF_CITATION_TAG_PREFIX = "JABREF-CITATION-";
 
-  LENGTH_OF_JABREF_CITATION_TAG_PREFIX = this.JABREF_CITATION_TAG_PREFIX.length;
+  JABREF_CITATION_TAG_PREFIX_LENGTH = this.JABREF_CITATION_TAG_PREFIX.length;
 
   async insertNewCitation(
     citation: CitationDataFormatForWordAPI
@@ -115,9 +115,8 @@ class WordApi {
       const citationIdToPos: Record<string, number> = {};
       jabRefCitations.forEach((citation, index) => {
         const { tag } = citation;
-        citationIdToPos[
-          tag.substring(this.LENGTH_OF_JABREF_CITATION_TAG_PREFIX)
-        ] = index;
+        citationIdToPos[tag.substring(this.JABREF_CITATION_TAG_PREFIX_LENGTH)] =
+          index;
       });
       return citationIdToPos;
     }).catch((error) => {
@@ -134,7 +133,7 @@ class WordApi {
       return jabRefCitations.map(
         (citation) =>
           JSON.parse(
-            citation.tag.substring(this.LENGTH_OF_JABREF_CITATION_TAG_PREFIX)
+            citation.tag.substring(this.JABREF_CITATION_TAG_PREFIX_LENGTH)
           ) as StatefulCitation
       );
     }).catch((error) => {
