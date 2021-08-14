@@ -126,9 +126,16 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  const discardEditing = () => {
+  const discardEdit = () => {
     unCheckAllCheckboxes();
     checkCitationItems(citationIDinCitation.current);
+  };
+
+  const isCitationEdited = (): boolean => {
+    return arraysEqual(
+      checkedItems.map((i) => i.id),
+      citationIDinCitation.current
+    );
   };
 
   const getSelectedCitation = useCallback(async (): Promise<void> => {
@@ -170,22 +177,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       ) : null}
       {isCitation ? (
         <div style={buttonContainer}>
-          <PrimaryButton
-            onClick={insertCitation}
-            disabled={arraysEqual(
-              checkedItems.map((i) => i.id),
-              citationIDinCitation.current
-            )}
-          >
-            Save
+          <PrimaryButton onClick={insertCitation} disabled={isCitationEdited()}>
+            Save changes
           </PrimaryButton>
           <DefaultButton
-            onClick={discardEditing}
+            onClick={discardEdit}
             style={{ marginLeft: 8 }}
-            disabled={arraysEqual(
-              checkedItems.map((i) => i.id),
-              citationIDinCitation.current
-            )}
+            disabled={isCitationEdited()}
           >
             Cancel
           </DefaultButton>
