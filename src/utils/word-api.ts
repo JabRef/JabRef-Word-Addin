@@ -1,13 +1,28 @@
 /* eslint-disable no-console */
 import { StatefulCitation } from "citeproc";
 
+export type CitationDataFormatForWordAPI = {
+  position: number;
+  citationText: string;
+  citationTag: StatefulCitation;
+};
 class WordApi {
-  static async insertEmptyContentControl(): Promise<unknown> {
-    return Word.run((context: Word.RequestContext) => {
-      const getSelection = context.document.getSelection();
-      const contentControl = getSelection.insertContentControl();
-      contentControl.tag = "JABREF-CITATION-NEW";
-      contentControl.appearance = "BoundingBox";
+  JABREF_CITATION_TAG_PREFIX = "JABREF-CITATION-";
+
+  JABREF_CITATION_TAG_PREFIX_LENGTH = this.JABREF_CITATION_TAG_PREFIX.length;
+
+  async insertNewCitation(
+    citation: CitationDataFormatForWordAPI
+  ): Promise<unknown> {
+    return Word.run((context) => {
+      const citationContentControl = context.document
+        .getSelection()
+        .insertContentControl();
+      const { citationText } = citation;
+      const tag = this.generateCitationTag(citation.citationTag);
+      citationContentControl.tag = tag;
+      citationContentControl.appearance = "BoundingBox";
+      citationContentControl.insertText(citationText, "Replace");
       return context.sync();
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
@@ -17,16 +32,32 @@ class WordApi {
     });
   }
 
-  static async getJabRefCitations(): Promise<Array<Word.ContentControl> | void> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const { contentControls } = context.document;
-      context.load(contentControls, "tag, length");
+  async getJabRefCitations(
+    context: Word.RequestContext
+  ): Promise<Array<Word.ContentControl>> {
+    const { contentControls } = context.document;
+    context.load(contentControls, "tag, length");
+    await context.sync();
+    return contentControls.items.filter((citation) =>
+      citation.tag.includes(this.JABREF_CITATION_TAG_PREFIX)
+    );
+  }
+
+  async getPositionOfNewCitation(): Promise<number | void> {
+    return Word.run(async (context) => {
+      const currentPosition = context.document.getSelection();
+      const jabRefCitations = await this.getJabRefCitations(context);
+      if (jabRefCitations.length === 0) return 0;
+      const locationArray = jabRefCitations.map((citation) => {
+        const citationToCompareWith = citation.getRange("Start");
+        const currentSelectionRange = currentPosition.getRange("Whole");
+        return citationToCompareWith.compareLocationWith(currentSelectionRange);
+      });
       await context.sync();
-      return contentControls.items.filter(
-        (citation) =>
-          citation.tag.includes("JABREF-CITATION") &&
-          !citation.tag.includes("NEW")
+      const position = locationArray.findIndex(
+        (location) => location.value === "After"
       );
+      return position !== -1 ? position : jabRefCitations.length;
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
@@ -35,55 +66,20 @@ class WordApi {
     });
   }
 
-  static async getPositionOfNewCitation(): Promise<number | void> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const { contentControls } = context.document;
-      context.load(contentControls, "tag, length");
-      await context.sync();
-      let length = 0;
-      let pos = 0;
-      for (let i = 0, ilen = contentControls.items.length; i < ilen; i += 1) {
-        const { tag } = contentControls.items[i];
-        if (tag.includes("JABREF-CITATION")) {
-          if (tag.substring(16) === "NEW") {
-            pos = length;
-            break;
-          }
-          length += 1;
-        }
-      }
-      return pos;
-    }).catch((error) => {
-      console.log(`Error: ${JSON.stringify(error)}`);
-      if (error instanceof OfficeExtension.Error) {
-        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
-      }
-    });
-  }
-
-  async setCitations(
-    citations: Array<[number, string, StatefulCitation]>
+  async updateCitations(
+    citations: Array<CitationDataFormatForWordAPI>
   ): Promise<unknown> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const { contentControls } = context.document;
-      context.load(contentControls, "tag, length");
-      await context.sync();
-      const jabRefCitations = contentControls.items.filter((citation) =>
-        citation.tag.includes("JABREF-CITATION")
-      );
+    return Word.run(async (context) => {
+      const jabRefCitations = await this.getJabRefCitations(context);
       citations.forEach((citation) => {
-        const position = citation[0];
-        const citationText = citation[1];
-        const tag = this.generateCitationTag(citation[2]);
+        const { position, citationText } = citation;
+        const tag = this.generateCitationTag(citation.citationTag);
         const citationContentControl = jabRefCitations[position];
         if (!citationContentControl) {
           return;
         }
         const currentCitationTag = citationContentControl.tag;
-        if (
-          currentCitationTag === "JABREF-CITATION-NEW" ||
-          currentCitationTag !== tag
-        ) {
+        if (currentCitationTag !== tag) {
           citationContentControl.tag = tag;
         }
         citationContentControl.insertText(citationText, "Replace");
@@ -101,35 +97,55 @@ class WordApi {
     return `JABREF-CITATION-${JSON.stringify(citation)}`;
   };
 
-  static async getTotalNumberOfCitations(): Promise<number | null> {
-    const jabRefCitations =
-      (await WordApi.getJabRefCitations()) as Array<Word.ContentControl>;
-    return jabRefCitations.length;
-  }
-
-  static async getCitationIdToPos(): Promise<Record<string, number> | void> {
-    const jabRefCitations =
-      (await WordApi.getJabRefCitations()) as Array<Word.ContentControl>;
-    const citationIdToPos: Record<string, number> = {};
-    let pos = 0;
-    jabRefCitations.forEach((citation) => {
-      const { tag } = citation;
-      citationIdToPos[tag.substring(16)] = pos;
-      pos += 1;
+  async getTotalNumberOfCitations(): Promise<number | void> {
+    return Word.run(async (context) => {
+      const jabRefCitations = await this.getJabRefCitations(context);
+      return jabRefCitations.length;
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
     });
-    return citationIdToPos;
   }
 
-  static async getCitationByIndex(): Promise<Array<StatefulCitation> | null> {
-    const jabRefCitations =
-      (await WordApi.getJabRefCitations()) as Array<Word.ContentControl>;
-    return jabRefCitations.map(
-      (citation) => JSON.parse(citation.tag.substring(16)) as StatefulCitation
-    );
+  async getCitationIdToPos(): Promise<Record<string, number> | void> {
+    return Word.run(async (context) => {
+      const jabRefCitations = await this.getJabRefCitations(context);
+      const citationIdToPos: Record<string, number> = {};
+      jabRefCitations.forEach((citation, index) => {
+        const { tag } = citation;
+        citationIdToPos[tag.substring(this.JABREF_CITATION_TAG_PREFIX_LENGTH)] =
+          index;
+      });
+      return citationIdToPos;
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
+  async getCitationByIndex(): Promise<Array<StatefulCitation> | void> {
+    return Word.run(async (context): Promise<Array<StatefulCitation>> => {
+      const jabRefCitations = await this.getJabRefCitations(context);
+      return jabRefCitations.map(
+        (citation) =>
+          JSON.parse(
+            citation.tag.substring(this.JABREF_CITATION_TAG_PREFIX_LENGTH)
+          ) as StatefulCitation
+      );
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
   }
 
   static createContentControl(tag: string, html: string): void {
-    Word.run((context: Word.RequestContext) => {
+    Word.run((context) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
       contentControl.tag = tag;
