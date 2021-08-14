@@ -6,7 +6,7 @@ import {
   RebuildProcessorStateData,
   StatefulCitation,
 } from "citeproc";
-import WordApi from "./word-api";
+import WordApi, { CitationDataFormatForWordAPI } from "./word-api";
 import CiteWorker, {
   CiteWorkerCommand,
   CiteWorkerMessage,
@@ -84,7 +84,7 @@ class CiteSupport {
     this.config.mode = xclass;
     this.config.citationByIndex = citationByIndex;
     const citationData = this.convertRebuildDataToCitationData(rebuildData);
-    await this.updateCitations(citationData);
+    await this.setCitation(citationData);
     // this.setBibliography(bibliographyData);
     this.config.processorReady = true;
   }
@@ -228,34 +228,27 @@ class CiteSupport {
   }
 
   /**
-   *  Update all citations based on data returned by the processor.
+   *  This method is called by the onRegisterCitation method when
+   *  a new citation is added to the document. It is responsible
+   *  for adding the new content control with citationText and
+   *  the citationTag attribute to the document.
+   *
+   *  And also updates all citations based on data returned by the processor.
    *  The update has two effects: (1) the id of all in-text citation
    *  nodes is set to the citationByIndex object; and (2)
    *  citation texts are updated.
    */
-  async updateCitations(data: Array<CitationResult>): Promise<void> {
-    this.debug("updateCitations()");
-    const citationData = this.convertCitationDataToCustomFormat(data);
-    await this.wordApi.updateCitations(citationData);
-
-    // Update citationIdToPos for all nodes
-    const citationIsToPos = await WordApi.getCitationIdToPos();
-    if (citationIsToPos) {
-      this.config.citationIdToPos = citationIsToPos;
-    }
-  }
-
   async setCitation(data: Array<CitationResult>): Promise<void> {
-    this.debug("insertNewCitation()");
+    this.debug("setCitation()");
     const isCitation = await WordApi.isCitation();
     const citationData = this.convertCitationDataToCustomFormat(data);
     if (isCitation) {
       await this.wordApi.updateCitations(citationData);
     } else {
-      await this.wordApi.insertNewCitation(citationData);
+      await this.wordApi.insertNewCitation(citationData[0]);
     }
     // Update citationIdToPos for all nodes
-    const citationIsToPos = await WordApi.getCitationIdToPos();
+    const citationIsToPos = await this.wordApi.getCitationIdToPos();
     if (citationIsToPos) {
       this.config.citationIdToPos = citationIsToPos;
     }
@@ -266,19 +259,21 @@ class CiteSupport {
    *  to the form digested by our own `setCitations()` method from WordApi.
    *
    *  word.api.setCitations() wants this structure:
-   *  [<citation_index>, <citation_string>, <statefullCitation>]
+   *  [{position: number, citationText: string, citationTag: StatefulCitation}]
    */
 
   convertCitationDataToCustomFormat(
     citationData: Array<CitationResult>
-  ): Array<[number, string, StatefulCitation]> {
+  ): Array<CitationDataFormatForWordAPI> {
     if (!citationData) return null;
     this.debug("convertCitationDataToCustomFormat()");
-    return citationData.map((citation) => [
-      citation[0],
-      citation[1],
-      this.config.citationByIndex[citation[0]],
-    ]);
+    return citationData.map((citation) => {
+      return {
+        position: citation[0],
+        citationText: citation[1],
+        citationTag: this.config.citationByIndex[citation[0]],
+      };
+    });
   }
 
   /**
@@ -303,11 +298,11 @@ class CiteSupport {
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
-    const getCitationByIndex = await WordApi.getCitationByIndex();
+    const getCitationByIndex = await this.wordApi.getCitationByIndex();
     if (getCitationByIndex) {
       this.config.citationByIndex = getCitationByIndex;
     }
-    const getCitationIdToPos = await WordApi.getCitationIdToPos();
+    const getCitationIdToPos = await this.wordApi.getCitationIdToPos();
     if (getCitationIdToPos) {
       this.config.citationIdToPos = getCitationIdToPos;
     }
@@ -317,7 +312,7 @@ class CiteSupport {
    *  Update the citationByIndex array after every edit or delete operation
    */
   async updateCitationByIndex(): Promise<void> {
-    const citationByIndex = await WordApi.getCitationByIndex();
+    const citationByIndex = await this.wordApi.getCitationByIndex();
     if (citationByIndex) {
       this.config.citationByIndex = citationByIndex;
     }
@@ -348,7 +343,7 @@ class CiteSupport {
     let i = 0;
     let offset = 0;
     if (!isCitation) {
-      i = (await WordApi.getPositionOfNewCitation()) as number;
+      i = (await this.wordApi.getPositionOfNewCitation()) as number;
     } else {
       i = (await WordApi.getPositionOfCurrentCitation()) as number;
       offset = 1;
