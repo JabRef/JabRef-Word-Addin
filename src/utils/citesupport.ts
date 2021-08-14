@@ -84,7 +84,7 @@ class CiteSupport {
     this.config.mode = xclass;
     this.config.citationByIndex = citationByIndex;
     const citationData = this.convertRebuildDataToCitationData(rebuildData);
-    await this.setCitation(citationData);
+    await this.updateCitations(citationData);
     // this.setBibliography(bibliographyData);
     this.config.processorReady = true;
   }
@@ -228,15 +228,28 @@ class CiteSupport {
   }
 
   /**
+   *  Update all citations based on data returned by the processor.
+   *  The update has two effects: (1) the id of all in-text citation
+   *  nodes is set to the citationByIndex object; and (2)
+   *  citation texts are updated.
+   */
+  async updateCitations(data: Array<CitationResult>): Promise<void> {
+    this.debug("updateCitations()");
+    const citationData = this.convertCitationDataToCustomFormat(data);
+    await this.wordApi.updateCitations(citationData);
+
+    // Update citationIdToPos for all nodes
+    const citationIsToPos = await this.wordApi.getCitationIdToPos();
+    if (citationIsToPos) {
+      this.config.citationIdToPos = citationIsToPos;
+    }
+  }
+
+  /**
    *  This method is called by the onRegisterCitation method when
    *  a new citation is added to the document. It is responsible
    *  for adding the new content control with citationText and
    *  the citationTag attribute to the document.
-   *
-   *  And also updates all citations based on data returned by the processor.
-   *  The update has two effects: (1) the id of all in-text citation
-   *  nodes is set to the citationByIndex object; and (2)
-   *  citation texts are updated.
    */
   async setCitation(data: Array<CitationResult>): Promise<void> {
     this.debug("setCitation()");
