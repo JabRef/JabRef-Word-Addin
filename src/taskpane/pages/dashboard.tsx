@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { PrimaryButton, DefaultButton } from "@fluentui/react";
+import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -126,6 +126,11 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
+  const discardEditing = () => {
+    unCheckAllCheckboxes();
+    checkCitationItems(citationIDinCitation.current);
+  };
+
   const getSelectedCitation = useCallback(async (): Promise<void> => {
     const getItemsIDInCitation = await WordApi.getItemsInCurrentSelection();
     const isCitationValue = (await WordApi.isCitation()) as unknown as boolean;
@@ -165,10 +170,22 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       ) : null}
       {isCitation ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation}>Save</PrimaryButton>
+          <PrimaryButton
+            onClick={insertCitation}
+            disabled={arraysEqual(
+              checkedItems.map((i) => i.id),
+              citationIDinCitation.current
+            )}
+          >
+            Save
+          </PrimaryButton>
           <DefaultButton
-            onClick={unCheckAllCheckboxes}
+            onClick={discardEditing}
             style={{ marginLeft: 8 }}
+            disabled={arraysEqual(
+              checkedItems.map((i) => i.id),
+              citationIDinCitation.current
+            )}
           >
             Cancel
           </DefaultButton>
