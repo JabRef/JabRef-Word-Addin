@@ -25,13 +25,13 @@ const dashboadStyle = {
 };
 
 const buttonContainer = {
-  display: "flex",
-  flexDirection: "row" as const,
-  marginTop: "auto",
-  flex: "0 0 auto",
-  width: "100%",
-  alignContent: "flex-start",
   padding: 16,
+  width: "100%",
+  display: "flex",
+  flex: "0 0 auto",
+  marginTop: "auto",
+  alignContent: "flex-start",
+  flexDirection: "row" as const,
 };
 
 function containsSearchTerm(keyword: string) {
@@ -104,7 +104,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     }
   }
 
-  const checkCitationItems = (itemIds: Array<string>) => {
+  const checkItemsInSelectedCitation = (itemIds: Array<string>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
         if (itemIds.some((id) => item.id === id)) {
@@ -115,7 +115,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  const unCheckCitationItems = (itemIds: Array<string>) => {
+  const unCheckItemsInSelectedCitation = (itemIds: Array<string>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
         if (itemIds.some((id) => item.id === id)) {
@@ -128,7 +128,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   const discardEdit = () => {
     unCheckAllCheckboxes();
-    checkCitationItems(citationIDinCitation.current);
+    checkItemsInSelectedCitation(citationIDinCitation.current);
   };
 
   const isCitationEdited = (): boolean => {
@@ -142,10 +142,10 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     const getItemsIDInCitation = await WordApi.getItemsInCurrentSelection();
     const isCitationValue = (await WordApi.isCitation()) as unknown as boolean;
     if (getItemsIDInCitation) {
-      unCheckCitationItems(citationIDinCitation.current);
+      unCheckItemsInSelectedCitation(citationIDinCitation.current);
       setCitationID(getItemsIDInCitation);
       setIsCitation(() => isCitationValue);
-      checkCitationItems(getItemsIDInCitation);
+      checkItemsInSelectedCitation(getItemsIDInCitation);
     } else if (citationIDinCitation.current.length) {
       unCheckAllCheckboxes();
       setCitationID([]);
