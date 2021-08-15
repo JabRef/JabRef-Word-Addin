@@ -60,12 +60,12 @@ function unCheckCheckbox(item: bib): bib {
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
-  const [citationID, _setCitationID] = useState([]);
+  const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitation, setIsCitation] = useState(false);
-  const citationIDinCitation = useRef(citationID);
-  const setCitationID = (ID: Array<string>) => {
-    citationIDinCitation.current = ID;
-    _setCitationID(ID);
+  const ItemsIDsInSelectedCitation = useRef(citationItemsIDs);
+  const setCitationItemsIDs = (ID: Array<string>) => {
+    ItemsIDsInSelectedCitation.current = ID;
+    _setCitationItemsIDs(ID);
   };
 
   const checkedItems = items
@@ -128,13 +128,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   const discardEdit = () => {
     unCheckAllCheckboxes();
-    checkItemsInSelectedCitation(citationIDinCitation.current);
+    checkItemsInSelectedCitation(ItemsIDsInSelectedCitation.current);
   };
 
   const isCitationEdited = (): boolean => {
     return arraysEqual(
       checkedItems.map((i) => i.id),
-      citationIDinCitation.current
+      ItemsIDsInSelectedCitation.current
     );
   };
 
@@ -142,13 +142,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     const getItemsIDInCitation = await WordApi.getItemsInCurrentSelection();
     const isCitationValue = (await WordApi.isCitation()) as unknown as boolean;
     if (getItemsIDInCitation) {
-      unCheckItemsInSelectedCitation(citationIDinCitation.current);
-      setCitationID(getItemsIDInCitation);
+      unCheckItemsInSelectedCitation(ItemsIDsInSelectedCitation.current);
+      setCitationItemsIDs(getItemsIDInCitation);
       setIsCitation(() => isCitationValue);
       checkItemsInSelectedCitation(getItemsIDInCitation);
-    } else if (citationIDinCitation.current.length) {
+    } else if (ItemsIDsInSelectedCitation.current.length) {
       unCheckAllCheckboxes();
-      setCitationID([]);
+      setCitationItemsIDs([]);
     }
   }, []);
 
@@ -161,7 +161,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
-      {checkedItems.length && citationIDinCitation.current.length === 0 ? (
+      {checkedItems.length && !ItemsIDsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
             Insert {checkedItems.length}{" "}
