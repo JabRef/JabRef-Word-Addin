@@ -104,10 +104,10 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     }
   }
 
-  const checkCitationItems = (itemId: Array<string>) => {
+  const checkCitationItems = (itemIds: Array<string>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
-        if (itemId.filter((id) => item.id === id).length) {
+        if (itemIds.some((id) => item.id === id)) {
           return { ...item, isSelected: true };
         }
         return item;
@@ -115,10 +115,10 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  const unCheckCitationItems = (itemId: Array<string>) => {
+  const unCheckCitationItems = (itemIds: Array<string>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
-        if (itemId.filter((id) => item.id === id).length) {
+        if (itemIds.some((id) => item.id === id)) {
           return { ...item, isSelected: false };
         }
         return item;
