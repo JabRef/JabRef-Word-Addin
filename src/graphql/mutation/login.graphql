@@ -1,4 +1,4 @@
-mutation LoginMutation($loginEmail: EmailAddress!, $loginPassword: String!) {
+mutation Login($loginEmail: EmailAddress!, $loginPassword: String!) {
   login(email: $loginEmail, password: $loginPassword) {
     id
     email

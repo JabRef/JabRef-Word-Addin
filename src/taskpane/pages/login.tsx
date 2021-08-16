@@ -51,17 +51,15 @@ function Login() {
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={async (value) => {
-          console.log("error", error);
-          try {
-            const response = await loginMutation({ variables: value });
-            console.log("response", response);
-            // eslint-disable-next-line no-underscore-dangle
-            if (response.data?.login.__typename === "User") {
-              history.push({ pathname: "/" });
-            }
-          } catch (er) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            console.log("error", er.networkError.result.errors);
+          const response = await loginMutation({
+            variables: {
+              loginEmail: value.email,
+              loginPassword: value.password,
+            },
+          });
+          // eslint-disable-next-line no-underscore-dangle
+          if (response.data?.login.__typename === "User") {
+            history.push({ pathname: "/" });
           }
         }}
       >
