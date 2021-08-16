@@ -112,7 +112,7 @@ class CiteSupport {
     bibliographyData: GeneratedBibliography
   ): Promise<void> {
     this.debug("setBibliograghy()");
-    await this.setBibliography(bibliographyData);
+    await this.insertBibliography(bibliographyData);
     this.config.processorReady = true;
   }
 
@@ -293,7 +293,7 @@ class CiteSupport {
   /**
    *  Insert bibliography with xHTML returned by the processor.
    */
-  async setBibliography(data: GeneratedBibliography): Promise<void> {
+  async insertBibliography(data: GeneratedBibliography): Promise<void> {
     this.debug("setBibliography()");
     const bib = data[1].join("\n");
     await this.wordApi.insertBibliography(bib);

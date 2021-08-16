@@ -146,8 +146,8 @@ class WordApi {
     });
   }
 
-  async insertBibliography(html: string): Promise<unknown> {
-    return Word.run((context: Word.RequestContext) => {
+  async insertBibliography(html: string): Promise<void> {
+    await Word.run((context: Word.RequestContext) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
       contentControl.color = "white";
@@ -163,16 +163,20 @@ class WordApi {
     });
   }
 
-  async updateBibliography(html: string): Promise<unknown> {
-    return Word.run(async (context) => {
+  async updateBibliography(html: string): Promise<void> {
+    await Word.run(async (context) => {
       const jabRefBibliography = context.document.body.contentControls.getByTag(
         this.JABREF_BIBLIOGRAPHY_TAG
       );
-      jabRefBibliography.load("tag");
+      context.load(jabRefBibliography, "length, items, tag");
       await context.sync();
       if (jabRefBibliography) {
         jabRefBibliography.items.forEach((item) => {
-          item.insertHtml(html, "Replace");
+          if (html) {
+            item.insertHtml(html, "Replace");
+          } else {
+            item.delete(false);
+          }
         });
       }
       return context.sync();
