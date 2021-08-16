@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-var dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
@@ -59,14 +59,15 @@ module.exports = async (env, options) => {
             from: "./src/taskpane/taskpane.css",
           },
           {
-            to: "[name]." + buildType + ".[ext]",
+            to: `[name].${buildType}.[ext]`,
             from: "manifest*.xml",
             transform(content) {
               if (dev) {
                 return content;
-              } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
               }
+              return content
+                .toString()
+                .replace(new RegExp(urlDev, "g"), urlProd);
             },
           },
         ],
@@ -90,16 +91,19 @@ module.exports = async (env, options) => {
 
   if (env.WEBPACK_SERVE) {
     config.devServer = {
-      hot: true,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
+      proxy: {
+        "/api": "https://jabref-dev.azurewebsites.net",
       },
+      hot: true,
+      // headers: {
+      //   "Access-Control-Allow-Origin": "*",
+      // },
       https:
         options.https !== undefined
           ? options.https
           : await devCerts.getHttpsServerOptions(),
       port: process.env.npm_package_config_dev_server_port || 3000,
-    }
+    };
   }
 
   return config;

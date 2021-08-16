@@ -1,6 +1,6 @@
-mutation Login($email: String!, $password: String!){
-  login(email:$email, password:$password){
-    email
+mutation LoginMutation($loginEmail: EmailAddress!, $loginPassword: String!) {
+  login(email: $loginEmail, password: $loginPassword) {
     id
+    email
   }
 }
