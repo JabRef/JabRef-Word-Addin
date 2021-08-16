@@ -294,7 +294,7 @@ class CiteSupport {
    *  Insert bibliography with xHTML returned by the processor.
    */
   async insertBibliography(data: GeneratedBibliography): Promise<void> {
-    this.debug("setBibliography()");
+    this.debug("insertBibliography()");
     const bib = data[1].join("\n");
     await this.wordApi.insertBibliography(bib);
   }
