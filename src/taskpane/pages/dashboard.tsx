@@ -10,7 +10,6 @@ import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
-import WordApi from "../../utils/word-api";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -155,9 +154,9 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   }, [citeSupport.wordApi]);
 
   useEffect(() => {
-    WordApi.addEventListener(getSelectedCitation);
-    return WordApi.removeEventListener();
-  }, [getSelectedCitation]);
+    citeSupport.wordApi.addEventListener(getSelectedCitation);
+    return citeSupport.wordApi.removeEventListener();
+  }, [citeSupport.wordApi, getSelectedCitation]);
 
   return (
     <div style={dashboadStyle}>

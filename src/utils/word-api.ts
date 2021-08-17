@@ -230,7 +230,6 @@ class WordApi {
     await Word.run((context: Word.RequestContext) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
-      contentControl.color = "white";
       contentControl.appearance = "BoundingBox";
       contentControl.insertHtml(html, "Replace");
       contentControl.tag = this.JABREF_BIBLIOGRAPHY_TAG;
@@ -268,7 +267,7 @@ class WordApi {
     });
   }
 
-  static addEventListener(eventHandler: () => Promise<void>): void {
+  addEventListener = (eventHandler: () => Promise<void>): void => {
     return Office.context.document.addHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
       eventHandler,
@@ -276,16 +275,16 @@ class WordApi {
         console.log(`result: ${JSON.stringify(result)}`);
       }
     );
-  }
+  };
 
-  static removeEventListener(): void {
+  removeEventListener = (): void => {
     return Office.context.document.removeHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
       (result) => {
         console.log(`result: ${JSON.stringify(result)}`);
       }
     );
-  }
+  };
 }
 
 export default WordApi;
