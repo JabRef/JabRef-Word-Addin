@@ -101,7 +101,7 @@ class CiteSupport {
   ): Promise<void> {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
-    await this.setCitation(citationData);
+    await this.upsertCitation(citationData);
     this.config.processorReady = true;
   }
 
@@ -246,16 +246,14 @@ class CiteSupport {
   }
 
   /**
-   *  This method is called by the onRegisterCitation method when
-   *  a new citation is added to the document. It is responsible
-   *  for adding the new content control with citationText and
-   *  the citationTag attribute to the document.
+   *  This method is used to insert new citations or update existing
+   *  ones.
    */
-  async setCitation(data: Array<CitationResult>): Promise<void> {
-    this.debug("setCitation()");
-    const isCitation = await WordApi.isCitation();
+  async upsertCitation(data: Array<CitationResult>): Promise<void> {
+    this.debug("upsertCitation()");
+    const isCitationSelected = await this.wordApi.isCitationSelected();
     const citationData = this.convertCitationDataToCustomFormat(data);
-    if (isCitation) {
+    if (isCitationSelected) {
       await this.wordApi.updateCitations(citationData);
     } else {
       await this.wordApi.insertNewCitation(citationData[0]);
@@ -358,7 +356,7 @@ class CiteSupport {
     if (!isCitation) {
       i = (await this.wordApi.getPositionOfNewCitation()) as number;
     } else {
-      i = (await WordApi.getPositionOfCurrentCitation()) as number;
+      i = (await this.wordApi.getPositionOfSelectedCitation()) as number;
       offset = 1;
     }
     if (this.config.citationByIndex.slice(0, i).length) {

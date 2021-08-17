@@ -66,20 +66,19 @@ class WordApi {
     });
   }
 
-  static async isCitation(): Promise<boolean | void> {
+  async getPositionOfSelectedCitation(): Promise<number | void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const currentSelection = context.document
+      const currentCitation = context.document
         .getSelection()
         .contentControls.getFirstOrNullObject();
-      currentSelection.load("tag");
+      const jabRefCitations = await this.getJabRefCitations(context);
+      const locationArray = jabRefCitations.map((citation) => {
+        const citationToCompareWith = citation.getRange("Whole");
+        const currentSelectionRange = currentCitation.getRange("Whole");
+        return citationToCompareWith.compareLocationWith(currentSelectionRange);
+      });
       await context.sync();
-      if (
-        !currentSelection.isNullObject &&
-        currentSelection.tag.includes("JABREF-CITATION")
-      ) {
-        return true;
-      }
-      return false;
+      return locationArray.findIndex((location) => location.value === "Equal");
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
@@ -88,30 +87,17 @@ class WordApi {
     });
   }
 
-  static async getPositionOfCurrentCitation(): Promise<number | void> {
+  async isCitationSelected(): Promise<boolean | void> {
     return Word.run(async (context: Word.RequestContext) => {
-      const { contentControls } = context.document.body;
-      context.load(contentControls, "length, items");
-      const currentCitation = context.document
+      const currentSelection = context.document
         .getSelection()
         .contentControls.getFirstOrNullObject();
+      currentSelection.load("tag");
       await context.sync();
-      const jabRefCitations = contentControls.items.filter((citation) =>
-        citation.tag.includes("JABREF-CITATION")
+      return (
+        !currentSelection.isNullObject &&
+        currentSelection.tag.includes(this.JABREF_CITATION_TAG_PREFIX)
       );
-      const locationArray = jabRefCitations.map((citation) => {
-        const citationToCompareWith = citation.getRange("Whole");
-        const currentSelectionRange = currentCitation.getRange("Whole");
-        return citationToCompareWith.compareLocationWith(currentSelectionRange);
-      });
-      await context.sync();
-      for (let i = 0; i < locationArray.length; i += 1) {
-        const index = locationArray[i].value;
-        if (index === "Equal") {
-          return i;
-        }
-      }
-      return jabRefCitations.length;
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
@@ -147,8 +133,33 @@ class WordApi {
     });
   }
 
+  async getItemsInSelectedCitation(): Promise<Array<string> | void> {
+    return Word.run(async (context: Word.RequestContext) => {
+      const getSelection = context.document.getSelection();
+      context.load(getSelection, "contentControls");
+      await context.sync();
+      if (getSelection.contentControls.items.length !== 0) {
+        const citation = getSelection.contentControls.getFirstOrNullObject();
+        citation.load("tag");
+        await context.sync();
+        if (citation.tag.includes(this.JABREF_CITATION_TAG_PREFIX)) {
+          const tag = JSON.parse(
+            citation.tag.substring(16)
+          ) as StatefulCitation;
+          return tag.citationItems.map((item) => item.id);
+        }
+      }
+      return [];
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
   generateCitationTag = (citation: StatefulCitation): string => {
-    return `JABREF-CITATION-${JSON.stringify(citation)}`;
+    return this.JABREF_CITATION_TAG_PREFIX + JSON.stringify(citation);
   };
 
   async getTotalNumberOfCitations(): Promise<number | void> {
@@ -215,7 +226,7 @@ class WordApi {
     });
   }
 
-  static async removeCurrentCitation(): Promise<unknown> {
+  removeSelectedCitation = async (): Promise<unknown> => {
     return Word.run(async (context) => {
       context.document
         .getSelection()
@@ -228,7 +239,7 @@ class WordApi {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
-  }
+  };
 
   static addEventListener(eventHandler: () => Promise<void>): void {
     return Office.context.document.addHandlerAsync(
@@ -247,31 +258,6 @@ class WordApi {
         console.log(`result: ${JSON.stringify(result)}`);
       }
     );
-  }
-
-  static async getItemsInCurrentSelection(): Promise<Array<string> | void> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const getSelection = context.document.getSelection();
-      context.load(getSelection, "contentControls");
-      await context.sync();
-      if (getSelection.contentControls.items.length !== 0) {
-        const citation = getSelection.contentControls.getFirstOrNullObject();
-        citation.load("tag");
-        await context.sync();
-        if (citation.tag.includes("JABREF-CITATION")) {
-          const tag = JSON.parse(
-            citation.tag.substring(16)
-          ) as StatefulCitation;
-          return tag.citationItems.map((item) => item.id);
-        }
-      }
-      return [];
-    }).catch((error) => {
-      console.log(`Error: ${JSON.stringify(error)}`);
-      if (error instanceof OfficeExtension.Error) {
-        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
-      }
-    });
   }
 }
 
