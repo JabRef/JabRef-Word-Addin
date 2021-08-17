@@ -67,6 +67,7 @@ export type CiteWorkerRegisterCitationMessage = {
 
   citationData: CitationResult[];
   citationByIndex: StatefulCitation[];
+  bibliographyData: GeneratedBibliography;
   result: string;
 };
 
@@ -232,6 +233,7 @@ function registerCitation(
       command: "registerCitation",
       citationData: citeRes[1],
       citationByIndex: citeproc.registry.citationreg.citationByIndex,
+      bibliographyData: makeBibliography(),
       result: "OK",
     });
   } catch (error) {
