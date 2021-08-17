@@ -135,7 +135,7 @@ class WordApi {
     });
   }
 
-  async getItemsInSelectedCitation(): Promise<Array<string> | void> {
+  async getItemsInSelectedCitation(): Promise<Array<string>> {
     return Word.run(async (context: Word.RequestContext) => {
       const getSelection = context.document.getSelection();
       context.load(getSelection, "contentControls");
@@ -157,6 +157,7 @@ class WordApi {
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
+      return [];
     });
   }
 
