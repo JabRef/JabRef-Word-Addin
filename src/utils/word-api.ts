@@ -9,6 +9,8 @@ export type CitationDataFormatForWordAPI = {
 class WordApi {
   JABREF_CITATION_TAG_PREFIX = "JABREF-CITATION-";
 
+  JABREF_BIBLIOGRAPHY_TAG = "JABREF-BIBLIOGRAPHY";
+
   JABREF_CITATION_TAG_PREFIX_LENGTH = this.JABREF_CITATION_TAG_PREFIX.length;
 
   async insertNewCitation(
@@ -144,14 +146,39 @@ class WordApi {
     });
   }
 
-  static createContentControl(tag: string, html: string): void {
-    Word.run((context) => {
+  async insertBibliography(html: string): Promise<void> {
+    await Word.run((context: Word.RequestContext) => {
       const getSelection = context.document.getSelection();
       const contentControl = getSelection.insertContentControl();
-      contentControl.tag = tag;
-      contentControl.appearance = "BoundingBox";
       contentControl.color = "white";
+      contentControl.appearance = "BoundingBox";
       contentControl.insertHtml(html, "Replace");
+      contentControl.tag = this.JABREF_BIBLIOGRAPHY_TAG;
+      return context.sync();
+    }).catch((error) => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      if (error instanceof OfficeExtension.Error) {
+        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+      }
+    });
+  }
+
+  async updateBibliography(html: string): Promise<void> {
+    await Word.run(async (context) => {
+      const jabRefBibliography = context.document.body.contentControls.getByTag(
+        this.JABREF_BIBLIOGRAPHY_TAG
+      );
+      context.load(jabRefBibliography, "length, items, tag");
+      await context.sync();
+      if (jabRefBibliography) {
+        jabRefBibliography.items.forEach((item) => {
+          if (html) {
+            item.insertHtml(html, "Replace");
+          } else {
+            item.delete(false);
+          }
+        });
+      }
       return context.sync();
     }).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);

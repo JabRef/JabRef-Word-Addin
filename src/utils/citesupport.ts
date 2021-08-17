@@ -58,11 +58,12 @@ class CiteSupport {
         case "registerCitation":
           await this.onRegisterCitation(
             event.data.citationByIndex,
-            event.data.citationData
+            event.data.citationData,
+            event.data.bibliographyData
           );
           break;
         case "setBibliography":
-          this.onSetBibliography(event.data.bibliographyData);
+          await this.onSetBibliography(event.data.bibliographyData);
           break;
         default:
       }
@@ -77,7 +78,7 @@ class CiteSupport {
   async onInitProcessor(
     xclass: string,
     rebuildData: Array<RebuildProcessorStateData>,
-    _bibliographyData: GeneratedBibliography,
+    bibliographyData: GeneratedBibliography,
     citationByIndex: Array<StatefulCitation>
   ): Promise<void> {
     this.debug("initProcessor()");
@@ -85,7 +86,7 @@ class CiteSupport {
     this.config.citationByIndex = citationByIndex;
     const citationData = this.convertRebuildDataToCitationData(rebuildData);
     await this.updateCitations(citationData);
-    // this.setBibliography(bibliographyData);
+    await this.updateBibliography(bibliographyData);
     this.config.processorReady = true;
   }
 
@@ -97,17 +98,21 @@ class CiteSupport {
    */
   async onRegisterCitation(
     citationByIndex: Array<StatefulCitation>,
-    citationData: Array<CitationResult>
+    citationData: Array<CitationResult>,
+    bibliographyData: GeneratedBibliography
   ): Promise<void> {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
     await this.insertNewCitation(citationData);
+    await this.updateBibliography(bibliographyData);
     this.config.processorReady = true;
   }
 
-  onSetBibliography(bibliographyData: GeneratedBibliography): void {
+  async onSetBibliography(
+    bibliographyData: GeneratedBibliography
+  ): Promise<void> {
     this.debug("setBibliograghy()");
-    this.setBibliography(bibliographyData);
+    await this.insertBibliography(bibliographyData);
     this.config.processorReady = true;
   }
 
@@ -288,10 +293,20 @@ class CiteSupport {
   /**
    *  Insert bibliography with xHTML returned by the processor.
    */
-  setBibliography(data: GeneratedBibliography): void {
-    this.debug("setBibliography()");
+  async insertBibliography(data: GeneratedBibliography): Promise<void> {
+    this.debug("insertBibliography()");
     const bib = data[1].join("\n");
-    WordApi.createContentControl("bibliography", bib);
+    await this.wordApi.insertBibliography(bib);
+  }
+
+  /**
+   *  Use this method to update the bibliography as citation in the document
+   *  changes
+   */
+  async updateBibliography(data: GeneratedBibliography): Promise<void> {
+    this.debug("updateBibliography()");
+    const bib = data[1].join("\n");
+    await this.wordApi.updateBibliography(bib);
   }
 
   /**
