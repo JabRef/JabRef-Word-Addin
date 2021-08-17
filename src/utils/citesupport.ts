@@ -299,6 +299,10 @@ class CiteSupport {
     await this.wordApi.insertBibliography(bib);
   }
 
+  /**
+   *  Use this method to update the bibliography as citation in the document
+   *  changes
+   */
   async updateBibliography(data: GeneratedBibliography): Promise<void> {
     this.debug("updateBibliography()");
     const bib = data[1].join("\n");
