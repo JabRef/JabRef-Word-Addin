@@ -31,7 +31,7 @@ const wrapperStack: IStackStyles = {
   },
 };
 
-const SignOutButtonStyle: IButtonStyles = {
+const ButtonStyle: IButtonStyles = {
   root: {
     color: DefaultPalette.white,
   },
@@ -47,6 +47,7 @@ const footerStackStyle: IStackStyles = {
 
 const Signout: IIconProps = { iconName: "SignOut" };
 const SyncBib: IIconProps = { iconName: "InsertSignatureLine" };
+const Sync: IIconProps = { iconName: "Sync" };
 
 const imageProps: IImageProps = {
   imageFit: ImageFit.contain,
@@ -109,17 +110,27 @@ function Layout({ citeSupport }: LayoutProps): ReactElement {
             </div>
           </Stack>
           <ActionButton
-            styles={SignOutButtonStyle}
+            styles={ButtonStyle}
+            iconProps={Sync}
+            allowDisabledFocus
+            onClick={async () => {
+              await citeSupport.initDocument();
+            }}
+          >
+            Sync
+          </ActionButton>
+          <ActionButton
+            styles={ButtonStyle}
             iconProps={SyncBib}
             allowDisabledFocus
             onClick={() => {
               citeSupport.getBibliography();
             }}
           >
-            Add bib...
+            bib
           </ActionButton>
           <ActionButton
-            styles={SignOutButtonStyle}
+            styles={ButtonStyle}
             iconProps={Signout}
             allowDisabledFocus
             onClick={() => logoutMutation().then(() => client.resetStore())}
