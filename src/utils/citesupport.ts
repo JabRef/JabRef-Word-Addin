@@ -103,7 +103,7 @@ class CiteSupport {
   ): Promise<void> {
     this.debug("registerCitation()");
     this.config.citationByIndex = citationByIndex;
-    await this.insertNewCitation(citationData);
+    await this.upsertCitation(citationData);
     await this.updateBibliography(bibliographyData);
     this.config.processorReady = true;
   }
@@ -251,16 +251,18 @@ class CiteSupport {
   }
 
   /**
-   *  This method is called by the onRegisterCitation method when
-   *  a new citation is added to the document. It is responsible
-   *  for adding the new content control with citationText and
-   *  the citationTag attribute to the document.
+   *  This method is used to insert new citations or update existing
+   *  ones.
    */
-  async insertNewCitation(data: Array<CitationResult>): Promise<void> {
-    this.debug("insertNewCitation()");
+  async upsertCitation(data: Array<CitationResult>): Promise<void> {
+    this.debug("upsertCitation()");
+    const isCitationSelected = await this.wordApi.isCitationSelected();
     const citationData = this.convertCitationDataToCustomFormat(data);
-    await this.wordApi.insertNewCitation(citationData[0]);
-
+    if (isCitationSelected) {
+      await this.wordApi.updateCitations(citationData);
+    } else {
+      await this.wordApi.insertNewCitation(citationData[0]);
+    }
     // Update citationIdToPos for all nodes
     const citationIsToPos = await this.wordApi.getCitationIdToPos();
     if (citationIsToPos) {
@@ -322,14 +324,8 @@ class CiteSupport {
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
-    const getCitationByIndex = await this.wordApi.getCitationByIndex();
-    if (getCitationByIndex) {
-      this.config.citationByIndex = getCitationByIndex;
-    }
-    const getCitationIdToPos = await this.wordApi.getCitationIdToPos();
-    if (getCitationIdToPos) {
-      this.config.citationIdToPos = getCitationIdToPos;
-    }
+    this.config.citationByIndex = await this.wordApi.getCitationByIndex();
+    this.config.citationIdToPos = await this.wordApi.getCitationIdToPos();
   }
 
   /**
@@ -343,24 +339,35 @@ class CiteSupport {
   }
 
   async insertCitation(
-    checkedItems: Array<Record<string, string>>
+    citationItems: Array<Record<string, string>>,
+    isCitation: boolean
   ): Promise<void> {
-    const isCitation = false;
     await this.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {
-      if (checkedItems.length) {
+      if (citationItems.length) {
         citation = {
-          citationItems: checkedItems,
+          citationItems,
           properties: {
             noteIndex: 0,
           },
         };
       }
+    } else {
+      citation = {
+        citationItems,
+      };
     }
     let citationsPre = [];
     let citationsPost = [];
-    const i = (await this.wordApi.getPositionOfNewCitation()) as number;
+    let i = 0;
+    let offset = 0;
+    if (!isCitation) {
+      i = await this.wordApi.getPositionOfNewCitation();
+    } else {
+      i = await this.wordApi.getPositionOfSelectedCitation();
+      offset = 1;
+    }
     if (this.config.citationByIndex.slice(0, i).length) {
       citationsPre = this.config.citationByIndex
         .slice(0, i)
@@ -368,19 +375,15 @@ class CiteSupport {
           return [obj.citationID, 0];
         });
     }
-    if (this.config.citationByIndex.slice(i).length) {
+    if (this.config.citationByIndex.slice(i + offset).length) {
       citationsPost = this.config.citationByIndex
-        .slice(i)
+        .slice(i + offset)
         .map((obj: StatefulCitation): [string, number] => {
           return [obj.citationID, 0];
         });
     }
     this.registerCitation(citation, citationsPre, citationsPost);
   }
-
-  // TODO: Rewrite this function to check whether the current selection is a
-  // citation or not.
-  static isCitation = (): boolean => false;
 }
 
 export default CiteSupport;
