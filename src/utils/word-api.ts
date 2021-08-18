@@ -45,7 +45,7 @@ class WordApi {
     );
   }
 
-  async getPositionOfNewCitation(): Promise<number | void> {
+  async getPositionOfNewCitation(): Promise<number> {
     return Word.run(async (context) => {
       const currentPosition = context.document.getSelection();
       const jabRefCitations = await this.getJabRefCitations(context);
@@ -65,10 +65,11 @@ class WordApi {
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
+      return 0;
     });
   }
 
-  async getPositionOfSelectedCitation(): Promise<number | void> {
+  async getPositionOfSelectedCitation(): Promise<number> {
     return Word.run(async (context: Word.RequestContext) => {
       const currentCitation = context.document
         .getSelection()
@@ -86,10 +87,11 @@ class WordApi {
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
+      return 0;
     });
   }
 
-  async isCitationSelected(): Promise<boolean | void> {
+  async isCitationSelected(): Promise<boolean> {
     return Word.run(async (context: Word.RequestContext) => {
       const currentSelection = context.document
         .getSelection()
@@ -105,6 +107,7 @@ class WordApi {
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
+      return false;
     });
   }
 
@@ -192,7 +195,7 @@ class WordApi {
     });
   }
 
-  async getCitationIdToPos(): Promise<Record<string, number> | void> {
+  async getCitationIdToPos(): Promise<Record<string, number>> {
     return Word.run(async (context) => {
       const jabRefCitations = await this.getJabRefCitations(context);
       const citationIdToPos: Record<string, number> = {};
@@ -207,10 +210,11 @@ class WordApi {
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
+      return {};
     });
   }
 
-  async getCitationByIndex(): Promise<Array<StatefulCitation> | void> {
+  async getCitationByIndex(): Promise<Array<StatefulCitation>> {
     return Word.run(async (context): Promise<Array<StatefulCitation>> => {
       const jabRefCitations = await this.getJabRefCitations(context);
       return jabRefCitations.map(
@@ -224,6 +228,7 @@ class WordApi {
       if (error instanceof OfficeExtension.Error) {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
+      return [];
     });
   }
 

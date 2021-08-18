@@ -324,14 +324,8 @@ class CiteSupport {
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
-    const getCitationByIndex = await this.wordApi.getCitationByIndex();
-    if (getCitationByIndex) {
-      this.config.citationByIndex = getCitationByIndex;
-    }
-    const getCitationIdToPos = await this.wordApi.getCitationIdToPos();
-    if (getCitationIdToPos) {
-      this.config.citationIdToPos = getCitationIdToPos;
-    }
+    this.config.citationByIndex = await this.wordApi.getCitationByIndex();
+    this.config.citationIdToPos = await this.wordApi.getCitationIdToPos();
   }
 
   /**
@@ -369,9 +363,9 @@ class CiteSupport {
     let i = 0;
     let offset = 0;
     if (!isCitation) {
-      i = (await this.wordApi.getPositionOfNewCitation()) as number;
+      i = await this.wordApi.getPositionOfNewCitation();
     } else {
-      i = (await this.wordApi.getPositionOfSelectedCitation()) as number;
+      i = await this.wordApi.getPositionOfSelectedCitation();
       offset = 1;
     }
     if (this.config.citationByIndex.slice(0, i).length) {

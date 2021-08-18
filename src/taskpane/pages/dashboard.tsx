@@ -140,8 +140,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const getSelectedCitation = useCallback(async (): Promise<void> => {
     const getItemsIDInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
-    const isCitationValue =
-      (await citeSupport.wordApi.isCitationSelected()) as unknown as boolean;
+    const isCitationValue = await citeSupport.wordApi.isCitationSelected();
     if (getItemsIDInCitation) {
       unCheckItems(itemsIDsInSelectedCitation.current);
       setCitationItemsIDs(getItemsIDInCitation);
