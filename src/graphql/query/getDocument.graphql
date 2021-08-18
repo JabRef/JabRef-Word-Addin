@@ -1,8 +1,5 @@
-query getDocuments($groupId: ID, $query: String) {
-    me {
-        id
-        documents(filterBy: { groupId: $groupId, query: $query }) {
-            ...DocumentForView
-        }
+query UserDocument($userDocumentId: ID!) {
+    userDocument(id: $userDocumentId) {
+        ...DocumentForView
     }
 }
