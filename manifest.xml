@@ -6,8 +6,8 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="JabRef"/>
   <Description DefaultValue="JabRef Word Add-in"/>
-  <IconUrl DefaultValue="https://localhost:3000/assets/jabref.png"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/jabref.png"/>
+  <IconUrl DefaultValue="https://localhost:3000/assets/jabref-icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/jabref-icon-64.png"/>
   <SupportUrl DefaultValue="https://www.jabref.org/#support"/>
   <AppDomains>
     <AppDomain>https://www.jabref.org</AppDomain>
