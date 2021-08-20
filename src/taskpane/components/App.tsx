@@ -24,7 +24,7 @@ function App(props: AppProps): ReactElement {
     return (
       <Progress
         title="JabRef"
-        message="Loading JabRef Addin..."
+        message="Loading JabRef Addin"
         logo="../../../assets/jabref.svg"
       />
     );
