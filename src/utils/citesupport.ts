@@ -178,13 +178,16 @@ class CiteSupport {
     });
   }
 
-  getBibliography(): void {
+  async getBibliography(): Promise<void> {
     if (!this.config.processorReady) return;
     this.debug("getBibliography()");
-    this.config.processorReady = false;
-    this.work({
-      command: "getBibliography",
-    });
+    await this.updateCitationByIndex();
+    if (this.config.citationByIndex.length) {
+      this.config.processorReady = false;
+      this.work({
+        command: "getBibliography",
+      });
+    }
   }
 
   /**
@@ -242,12 +245,6 @@ class CiteSupport {
     this.debug("updateCitations()");
     const citationData = this.convertCitationDataToCustomFormat(data);
     await this.wordApi.updateCitations(citationData);
-
-    // Update citationIdToPos for all nodes
-    const citationIsToPos = await this.wordApi.getCitationIdToPos();
-    if (citationIsToPos) {
-      this.config.citationIdToPos = citationIsToPos;
-    }
   }
 
   /**
@@ -262,11 +259,6 @@ class CiteSupport {
       await this.wordApi.updateCitations(citationData);
     } else {
       await this.wordApi.insertNewCitation(citationData[0]);
-    }
-    // Update citationIdToPos for all nodes
-    const citationIsToPos = await this.wordApi.getCitationIdToPos();
-    if (citationIsToPos) {
-      this.config.citationIdToPos = citationIsToPos;
     }
   }
 
@@ -325,7 +317,6 @@ class CiteSupport {
       this.config.defaultStyle = citationStyle;
     }
     this.config.citationByIndex = await this.wordApi.getCitationByIndex();
-    this.config.citationIdToPos = await this.wordApi.getCitationIdToPos();
   }
 
   /**

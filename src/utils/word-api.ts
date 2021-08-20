@@ -257,11 +257,7 @@ class WordApi {
       await context.sync();
       if (jabRefBibliography) {
         jabRefBibliography.items.forEach((item) => {
-          if (html) {
-            item.insertHtml(html, "Replace");
-          } else {
-            item.delete(false);
-          }
+          item.insertHtml(html, "Replace");
         });
       }
       return context.sync();

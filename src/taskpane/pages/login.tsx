@@ -20,6 +20,7 @@ import Wrapper from "../components/Wrapper";
 const stackStylesHeader: IStackStyles = {
   root: {
     background: DefaultPalette.white,
+    overflow: "hidden",
   },
 };
 
@@ -48,18 +49,20 @@ function Login() {
   const [loginMutation, { error }] = useLoginMutation();
   return (
     <Wrapper>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={async (value) => {
-          const response = await loginMutation({ variables: value });
-          // eslint-disable-next-line no-underscore-dangle
-          if (response.data?.login.__typename === "User") {
-            history.push({ pathname: "/" });
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Stack verticalFill styles={stackStylesHeader}>
+      <Stack verticalFill styles={stackStylesHeader} verticalAlign="center">
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          onSubmit={async (value) => {
+            const response = await loginMutation({
+              variables: value,
+            });
+            // eslint-disable-next-line no-underscore-dangle
+            if (response.data?.login.__typename === "User") {
+              history.push({ pathname: "/" });
+            }
+          }}
+        >
+          {({ isSubmitting }) => (
             <Form>
               <Stack styles={stackStyles} tokens={verticalGapStackTokens}>
                 <Stack.Item align="center">
@@ -121,9 +124,9 @@ function Login() {
                 </Stack.Item>
               </Stack>
             </Form>
-          </Stack>
-        )}
-      </Formik>
+          )}
+        </Formik>
+      </Stack>
     </Wrapper>
   );
 }

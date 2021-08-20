@@ -114,17 +114,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  const unCheckItems = (itemIds: Array<string>) => {
-    setItems((currentItems) => {
-      return currentItems.map((item) => {
-        if (itemIds.some((id) => item.id === id)) {
-          return { ...item, isSelected: false };
-        }
-        return item;
-      });
-    });
-  };
-
   const discardEdit = () => {
     unCheckAllCheckboxes();
     checkItems(itemsIDsInSelectedCitation.current);
@@ -142,7 +131,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       await citeSupport.wordApi.getItemsInSelectedCitation();
     const isCitationValue = await citeSupport.wordApi.isCitationSelected();
     if (getItemsIDInCitation) {
-      unCheckItems(itemsIDsInSelectedCitation.current);
+      unCheckAllCheckboxes();
       setCitationItemsIDs(getItemsIDInCitation);
       setIsCitationSelection(() => isCitationValue);
       checkItems(getItemsIDInCitation);
@@ -154,7 +143,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   useEffect(() => {
     citeSupport.wordApi.addEventListener(getSelectedCitation);
-    return citeSupport.wordApi.removeEventListener();
+    return () => citeSupport.wordApi.removeEventListener();
   }, [citeSupport.wordApi, getSelectedCitation]);
 
   return (

@@ -17,7 +17,7 @@ function ProtectedRoutes({
     return (
       <Progress
         title="JabRef"
-        message="Loading JabRef..."
+        message="Loading JabRef Addin"
         logo="../../../assets/jabref.svg"
       />
     );
@@ -26,7 +26,7 @@ function ProtectedRoutes({
     <Route
       {...rest}
       render={({ location }) =>
-        !data.me ? (
+        !data ? (
           children
         ) : (
           <Redirect
