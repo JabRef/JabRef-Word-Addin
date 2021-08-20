@@ -54,10 +54,7 @@ function Login() {
           initialValues={{ email: "", password: "" }}
           onSubmit={async (value) => {
             const response = await loginMutation({
-              variables: {
-                loginEmail: value.email,
-                loginPassword: value.password,
-              },
+              variables: value,
             });
             // eslint-disable-next-line no-underscore-dangle
             if (response.data?.login.__typename === "User") {
