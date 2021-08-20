@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
@@ -126,10 +120,11 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     );
   };
 
-  const getSelectedCitation = useCallback(async (): Promise<void> => {
+  const getSelectedCitation = async (): Promise<void> => {
     const getItemsIDInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
     const isCitationValue = await citeSupport.wordApi.isCitationSelected();
+    console.log(getItemsIDInCitation);
     if (getItemsIDInCitation) {
       unCheckAllCheckboxes();
       setCitationItemsIDs(getItemsIDInCitation);
@@ -139,12 +134,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       unCheckAllCheckboxes();
       setCitationItemsIDs([]);
     }
-  }, [citeSupport.wordApi]);
+  };
 
   useEffect(() => {
     citeSupport.wordApi.addEventListener(getSelectedCitation);
     return citeSupport.wordApi.removeEventListener();
-  }, [citeSupport.wordApi, getSelectedCitation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div style={dashboadStyle}>

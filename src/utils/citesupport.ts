@@ -178,13 +178,16 @@ class CiteSupport {
     });
   }
 
-  getBibliography(): void {
+  async getBibliography(): Promise<void> {
     if (!this.config.processorReady) return;
     this.debug("getBibliography()");
-    this.config.processorReady = false;
-    this.work({
-      command: "getBibliography",
-    });
+    await this.updateCitationByIndex();
+    if (this.config.citationByIndex.length) {
+      this.config.processorReady = false;
+      this.work({
+        command: "getBibliography",
+      });
+    }
   }
 
   /**

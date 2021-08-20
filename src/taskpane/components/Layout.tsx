@@ -112,8 +112,8 @@ function Layout({ citeSupport }: LayoutProps): ReactElement {
             styles={SignOutButtonStyle}
             iconProps={SyncBib}
             allowDisabledFocus
-            onClick={() => {
-              citeSupport.getBibliography();
+            onClick={async () => {
+              await citeSupport.getBibliography();
             }}
           >
             Add bib...
