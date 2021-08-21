@@ -8,18 +8,26 @@ import {
   FocusZone,
   FocusZoneDirection,
   Checkbox,
+  IDropdownOption,
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
 import React, { ReactElement } from "react";
+import EditCitation, { citationMetaData } from "./EditCitation";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
 export interface bib extends MetaData {
   isSelected: boolean;
+  label: string;
+  locator: string;
+  suffix: string;
+  prefix: string;
+  "suppress-author": boolean;
 }
 
 interface ReferenceListProps {
   list: Array<bib>;
+  metaDataHandler: (metadata: citationMetaData) => void;
   onCheckBoxChange: (
     ev?: React.FormEvent<HTMLInputElement | HTMLElement>,
     checked?: boolean
@@ -92,6 +100,15 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
           title={item.title}
           checked={item.isSelected}
           onChange={props.onCheckBoxChange}
+        />
+        <EditCitation
+          metaDataHandler={props.metaDataHandler}
+          id={item.id}
+          labelProp={item.label}
+          locatorProp={item.locator}
+          prefixProp={item.prefix}
+          suffixProp={item.prefix}
+          isAuthorSuppressProp={item["suppress-author"]}
         />
         <div className={classNames.itemContent}>
           <div className={classNames.itemType}>{item.type}</div>

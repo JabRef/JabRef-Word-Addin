@@ -10,6 +10,7 @@ import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
+import { citationMetaData } from "../components/EditCitation";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -57,7 +58,15 @@ function unCheckCheckbox(item: bib): bib {
 }
 
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
-  const originalItems = data.map((item) => ({ ...item, isSelected: false }));
+  const originalItems = data.map((item) => ({
+    ...item,
+    isSelected: false,
+    label: null,
+    locator: null,
+    suffix: null,
+    prefix: null,
+    "suppress-author": false,
+  }));
   const [items, setItems] = useState(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);
@@ -69,8 +78,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   const checkedItems = items
     .filter((item) => item.isSelected)
-    .map((item) => {
-      return { id: item.id };
+    .map((item: bib) => {
+      return {
+        id: item.id,
+        prefix: item.prefix,
+        suffix: item.suffix,
+        locator: item.locator,
+        "suppress-author": item["suppress-author"],
+      };
     });
 
   const unCheckAllCheckboxes = () => {
@@ -126,6 +141,31 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     );
   };
 
+  const updateCitationMetaData = ({
+    id,
+    label,
+    locator,
+    prefix,
+    suffix,
+    isAuthorSuppress,
+  }: citationMetaData) => {
+    setItems((currentItems) => {
+      return currentItems.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            label,
+            locator,
+            prefix,
+            suffix,
+            "suppress-author": isAuthorSuppress,
+          };
+        }
+        return item;
+      });
+    });
+  };
+
   const getSelectedCitation = useCallback(async (): Promise<void> => {
     const getItemsIDInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
@@ -149,7 +189,11 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
-      <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
+      <ReferenceList
+        list={items}
+        metaDataHandler={updateCitationMetaData}
+        onCheckBoxChange={handleToggleChange}
+      />
       {checkedItems.length && !itemsIDsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
