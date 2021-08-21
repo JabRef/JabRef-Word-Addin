@@ -1,5 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
+import {
+  DefaultButton,
+  IconButton,
+  PrimaryButton,
+} from "@fluentui/react/lib/Button";
 import { Panel, PanelType } from "@fluentui/react/lib/Panel";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useBoolean } from "@fluentui/react-hooks";
@@ -8,10 +12,14 @@ import {
   Dropdown,
   IDropdownOption,
   IDropdownStyles,
+  IIconProps,
   IStackStyles,
   IStackTokens,
+  ITooltipHostStyles,
+  MessageBar,
   Stack,
   TextField,
+  TooltipHost,
 } from "@fluentui/react";
 
 export interface citationMetaData {
@@ -37,15 +45,25 @@ interface EditCitationProps {
 const buttonStyles = { root: { marginRight: 8 } };
 
 const stackToken: IStackTokens = {
-  childrenGap: 20,
+  childrenGap: 25,
 };
 
 const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: { width: 150 },
+  dropdown: {},
 };
-const stackStyles: IStackStyles = {
+
+const editIcon: IIconProps = { iconName: "edit" };
+
+const calloutProps = { gapSpace: 0 };
+const hostStyles: Partial<ITooltipHostStyles> = {
+  root: { display: "inline-block" },
+};
+
+const wrapperStackStyles: IStackStyles = {
   root: {
-    marginTop: 30,
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
   },
 };
 
@@ -91,7 +109,6 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   const [isAuthorSuppress, setIsAuthorSuppress] =
     React.useState(isAuthorSuppressProp);
   const [label, setlabel] = React.useState<string>(labelProp);
-
   const onLabelChange = (
     _event: React.FormEvent<HTMLDivElement>,
     item: IDropdownOption
@@ -136,7 +153,17 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   );
   const onClickHandler = useCallback(() => {
     metaDataHandler({ id, label, prefix, suffix, locator, isAuthorSuppress });
-  }, [id, isAuthorSuppress, label, locator, metaDataHandler, prefix, suffix]);
+    dismissPanel();
+  }, [
+    dismissPanel,
+    id,
+    isAuthorSuppress,
+    label,
+    locator,
+    metaDataHandler,
+    prefix,
+    suffix,
+  ]);
 
   const onRenderFooterContent = React.useCallback(
     () => (
@@ -152,7 +179,18 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
 
   return (
     <div>
-      <DefaultButton text="Open panel" onClick={openPanel} />
+      <TooltipHost
+        content="Add extra info"
+        id="tooltip"
+        calloutProps={calloutProps}
+        styles={hostStyles}
+      >
+        <IconButton
+          iconProps={editIcon}
+          ariaLabel="Add extra info"
+          onClick={openPanel}
+        />
+      </TooltipHost>
       <Panel
         isOpen={isOpen}
         onDismiss={dismissPanel}
@@ -162,50 +200,54 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
         onRenderFooterContent={onRenderFooterContent}
         isFooterAtBottom
       >
-        <Stack
-          horizontal
-          styles={stackStyles}
-          tokens={stackToken}
-          horizontalAlign="stretch"
-        >
-          <Dropdown
-            label="label"
-            placeholder="Select an option"
-            selectedKey={label || undefined}
-            options={LabelOptions}
-            styles={dropdownStyles}
-            onChange={onLabelChange}
-          />
-          <TextField
-            styles={stackStyles}
-            title="locator"
-            label="locator"
-            value={locator}
-            onChange={onLocatorChange}
-          />
-        </Stack>
-        <Stack tokens={stackToken}>
-          <Stack.Item align="auto">
-            <TextField
-              title="Prefix"
-              label="Prefix"
-              value={prefix}
-              onChange={onPrefixChange}
-            />
-            <TextField
-              title="Suffix"
-              label="Suffix"
-              value={suffix}
-              onChange={onSuffixChange}
-            />
-          </Stack.Item>
-          <Stack.Item align="auto">
-            <Checkbox
-              label="Suppress Author"
-              checked={isAuthorSuppress}
-              onChange={onAuthorSuppressChange}
-            />
-          </Stack.Item>
+        <Stack styles={wrapperStackStyles} tokens={stackToken}>
+          <MessageBar>Add more information about the citation.</MessageBar>
+          <Stack horizontal horizontalAlign="stretch" tokens={stackToken}>
+            <Stack.Item>
+              <Dropdown
+                label="label"
+                placeholder="Select an option"
+                selectedKey={label || undefined}
+                options={LabelOptions}
+                styles={dropdownStyles}
+                onChange={onLabelChange}
+              />
+            </Stack.Item>
+            <Stack.Item>
+              <TextField
+                title="locator"
+                label="locator"
+                autoComplete="off"
+                value={locator}
+                onChange={onLocatorChange}
+              />
+            </Stack.Item>
+          </Stack>
+          <Stack tokens={stackToken}>
+            <Stack.Item align="auto">
+              <TextField
+                title="Prefix"
+                label="Prefix"
+                value={prefix}
+                autoComplete="off"
+                onChange={onPrefixChange}
+              />
+              <TextField
+                title="Suffix"
+                label="Suffix"
+                value={suffix}
+                autoComplete="off"
+                onChange={onSuffixChange}
+              />
+            </Stack.Item>
+            <Stack.Item align="auto">
+              <Checkbox
+                label="Suppress Author"
+                checked={isAuthorSuppress}
+                onChange={onAuthorSuppressChange}
+              />
+            </Stack.Item>
+          </Stack>
         </Stack>
       </Panel>
     </div>

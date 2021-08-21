@@ -8,7 +8,6 @@ import {
   FocusZone,
   FocusZoneDirection,
   Checkbox,
-  IDropdownOption,
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
 import React, { ReactElement } from "react";
@@ -95,21 +94,25 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
   const onRenderCell = (item: bib): JSX.Element => {
     return (
       <div className={classNames.itemCell} data-is-focusable>
-        <Checkbox
-          className={classNames.checkbox}
-          title={item.title}
-          checked={item.isSelected}
-          onChange={props.onCheckBoxChange}
-        />
-        <EditCitation
-          metaDataHandler={props.metaDataHandler}
-          id={item.id}
-          labelProp={item.label}
-          locatorProp={item.locator}
-          prefixProp={item.prefix}
-          suffixProp={item.prefix}
-          isAuthorSuppressProp={item["suppress-author"]}
-        />
+        <div style={{ display: "flex", flexDirection: "column" as const }}>
+          <Checkbox
+            className={classNames.checkbox}
+            title={item.title}
+            checked={item.isSelected}
+            onChange={props.onCheckBoxChange}
+          />
+          {item.isSelected && (
+            <EditCitation
+              metaDataHandler={props.metaDataHandler}
+              id={item.id}
+              labelProp={item.label}
+              locatorProp={item.locator}
+              prefixProp={item.prefix}
+              suffixProp={item.prefix}
+              isAuthorSuppressProp={item["suppress-author"]}
+            />
+          )}
+        </div>
         <div className={classNames.itemContent}>
           <div className={classNames.itemType}>{item.type}</div>
           <div className={classNames.itemTitle}>{item.title}</div>
