@@ -21,7 +21,7 @@ export interface bib extends MetaData {
   locator: string;
   suffix: string;
   prefix: string;
-  "suppress-author": boolean;
+  isAuthorSuppressed: boolean;
 }
 
 interface ReferenceListProps {
@@ -109,7 +109,7 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
               locatorProp={item.locator}
               prefixProp={item.prefix}
               suffixProp={item.prefix}
-              isAuthorSuppressProp={item["suppress-author"]}
+              isAuthorSuppressedProp={item.isAuthorSuppressed}
             />
           )}
         </div>

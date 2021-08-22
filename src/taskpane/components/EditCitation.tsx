@@ -26,7 +26,7 @@ export interface citationMetaData {
   id: string;
   label: string;
   locator: string;
-  isAuthorSuppress: boolean;
+  isAuthorSuppressed: boolean;
   prefix: string;
   suffix: string;
 }
@@ -35,7 +35,7 @@ interface EditCitationProps {
   id: string;
   labelProp: string;
   locatorProp: string;
-  isAuthorSuppressProp: boolean;
+  isAuthorSuppressedProp: boolean;
   prefixProp: string;
   suffixProp: string;
   // eslint-disable-next-line no-unused-vars
@@ -49,7 +49,7 @@ const stackToken: IStackTokens = {
 };
 
 const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: {},
+  dropdown: { minWidth: 150 },
 };
 
 const editIcon: IIconProps = { iconName: "edit" };
@@ -96,7 +96,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     id,
     labelProp,
     locatorProp,
-    isAuthorSuppressProp,
+    isAuthorSuppressedProp,
     prefixProp,
     suffixProp,
     metaDataHandler,
@@ -106,8 +106,9 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   const [prefix, setPrefix] = useState<string>(prefixProp);
   const [suffix, setSuffix] = useState<string>(suffixProp);
   const [locator, setLocator] = useState<string>(locatorProp);
-  const [isAuthorSuppress, setIsAuthorSuppress] =
-    React.useState(isAuthorSuppressProp);
+  const [isAuthorSuppressed, setIsAuthorSuppress] = React.useState(
+    isAuthorSuppressedProp
+  );
   const [label, setlabel] = React.useState<string>(labelProp);
   const onLabelChange = (
     _event: React.FormEvent<HTMLDivElement>,
@@ -152,12 +153,12 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     []
   );
   const onClickHandler = useCallback(() => {
-    metaDataHandler({ id, label, prefix, suffix, locator, isAuthorSuppress });
+    metaDataHandler({ id, label, prefix, suffix, locator, isAuthorSuppressed });
     dismissPanel();
   }, [
     dismissPanel,
     id,
-    isAuthorSuppress,
+    isAuthorSuppressed,
     label,
     locator,
     metaDataHandler,
@@ -201,7 +202,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
         isFooterAtBottom
       >
         <Stack styles={wrapperStackStyles} tokens={stackToken}>
-          <MessageBar>Add more information about the citation.</MessageBar>
+          <MessageBar>Add more information.</MessageBar>
           <Stack horizontal horizontalAlign="stretch" tokens={stackToken}>
             <Stack.Item>
               <Dropdown
@@ -243,7 +244,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
             <Stack.Item align="auto">
               <Checkbox
                 label="Suppress Author"
-                checked={isAuthorSuppress}
+                checked={isAuthorSuppressed}
                 onChange={onAuthorSuppressChange}
               />
             </Stack.Item>

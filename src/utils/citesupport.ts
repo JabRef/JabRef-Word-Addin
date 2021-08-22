@@ -11,6 +11,11 @@ import CiteWorker, {
   CiteWorkerCommand,
   CiteWorkerMessage,
 } from "./cite.worker";
+import { citationMetaData } from "../taskpane/components/EditCitation";
+
+interface citationItem extends Omit<citationMetaData, "isAuthorSuppressed"> {
+  "suppress-author": boolean;
+}
 
 class CiteSupport {
   config: {
@@ -330,7 +335,7 @@ class CiteSupport {
   }
 
   async insertCitation(
-    citationItems: Array<Record<string, string>>,
+    citationItems: Array<citationItem>,
     isCitation: boolean
   ): Promise<void> {
     await this.updateCitationByIndex();

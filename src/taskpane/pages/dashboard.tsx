@@ -65,7 +65,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     locator: null,
     suffix: null,
     prefix: null,
-    "suppress-author": false,
+    isAuthorSuppress: false,
   }));
   const [items, setItems] = useState(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
@@ -84,7 +84,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         prefix: item.prefix,
         suffix: item.suffix,
         locator: item.locator,
-        "suppress-author": item["suppress-author"],
+        "suppress-author": item.isAuthorSuppress,
       };
     });
 
@@ -141,7 +141,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     );
   };
 
-  const updateCitationMetaData = ({
+  const updateCitationMetaData = async ({
     id,
     label,
     locator,
@@ -158,12 +158,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             locator,
             prefix,
             suffix,
-            "suppress-author": isAuthorSuppress,
+            isAuthorSuppress,
           };
         }
         return item;
       });
     });
+    await insertCitation();
   };
 
   const getSelectedCitation = useCallback(async (): Promise<void> => {
