@@ -9,9 +9,9 @@ import {
   FocusZoneDirection,
   Checkbox,
 } from "@fluentui/react";
-import { MetaData } from "citeproc";
+import { CitationItem, MetaData } from "citeproc";
 import React, { ReactElement } from "react";
-import EditCitation, { citationMetaData } from "./EditCitation";
+import EditCitation from "./EditCitation";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -21,12 +21,12 @@ export interface bib extends MetaData {
   locator: string;
   suffix: string;
   prefix: string;
-  isAuthorSuppressed: boolean;
+  "suppress-author": boolean;
 }
 
 interface ReferenceListProps {
   list: Array<bib>;
-  metaDataHandler: (metadata: citationMetaData) => void;
+  metaDataHandler: (metadata: CitationItem) => void;
   onCheckBoxChange: (
     ev?: React.FormEvent<HTMLInputElement | HTMLElement>,
     checked?: boolean
@@ -109,7 +109,7 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
               prefixProp={item.prefix}
               suffixProp={item.suffix}
               metaDataHandler={props.metaDataHandler}
-              isAuthorSuppressedProp={item.isAuthorSuppressed}
+              isAuthorSuppressedProp={item["suppress-author"]}
             />
           )}
         </div>

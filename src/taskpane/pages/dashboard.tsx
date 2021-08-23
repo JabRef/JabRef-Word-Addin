@@ -6,11 +6,11 @@ import React, {
   useState,
 } from "react";
 import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
+import { CitationItem } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
-import { citationMetaData } from "../components/EditCitation";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -56,12 +56,12 @@ function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
 function unCheckCheckbox(item: bib): bib {
   return {
     ...item,
-    label: null,
-    suffix: null,
-    prefix: null,
-    locator: null,
     isSelected: false,
-    isAuthorSuppressed: false,
+    label: null,
+    locator: null,
+    prefix: null,
+    suffix: null,
+    "suppress-author": false,
   };
 }
 
@@ -69,17 +69,17 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({
     ...item,
     label: "",
+    locator: "",
     suffix: "",
     prefix: "",
-    locator: "",
     isSelected: false,
-    isAuthorSuppressed: false,
+    "suppress-author": false,
   }));
   const [items, setItems] = useState(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);
   const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
-  const setCitationItemsIDs = (itemsMetadata: Array<citationMetaData>) => {
+  const setCitationItemsIDs = (itemsMetadata: Array<CitationItem>) => {
     itemsIDsInSelectedCitation.current = itemsMetadata;
     _setCitationItemsIDs(itemsMetadata);
   };
@@ -90,10 +90,10 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       return {
         id: item.id,
         label: item.label,
+        locator: item.locator,
         prefix: item.prefix,
         suffix: item.suffix,
-        locator: item.locator,
-        "suppress-author": item.isAuthorSuppressed,
+        "suppress-author": item["suppress-author"],
       };
     });
 
@@ -127,7 +127,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     }
   }
 
-  const checkItems = (itemsMetadata: Array<citationMetaData>) => {
+  const checkItems = (itemsMetadata: Array<CitationItem>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
         const metadata = itemsMetadata.find(
@@ -141,7 +141,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             prefix: metadata.prefix,
             locator: metadata.locator,
             isSelected: true,
-            isAuthorSuppressed: metadata.isAuthorSuppressed,
+            "suppress-author": metadata["suppress-author"],
           };
         }
         return item;
@@ -155,30 +155,20 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   const isCitationEdited = (): boolean => {
-    return arraysEqual(
-      checkedItems.map((i) => i.id),
-      itemsIDsInSelectedCitation.current
-    );
+    return arraysEqual(checkedItems, itemsIDsInSelectedCitation.current);
   };
 
-  const updateCitationMetaData = ({
-    id,
-    label,
-    locator,
-    prefix,
-    suffix,
-    isAuthorSuppressed,
-  }: citationMetaData) => {
+  const updateCitationMetaData = (citation: CitationItem) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
-        if (item.id === id) {
+        if (item.id === citation.id) {
           return {
             ...item,
-            label,
-            locator,
-            prefix,
-            suffix,
-            isAuthorSuppressed,
+            label: citation.label,
+            locator: citation.locator,
+            prefix: citation.prefix,
+            suffix: citation.suffix,
+            "suppress-author": citation["suppress-author"],
           };
         }
         return item;

@@ -21,15 +21,7 @@ import {
   TextField,
   TooltipHost,
 } from "@fluentui/react";
-
-export interface citationMetaData {
-  id: string;
-  label: string;
-  locator: string;
-  isAuthorSuppressed: boolean;
-  prefix: string;
-  suffix: string;
-}
+import { CitationItem } from "citeproc";
 
 interface EditCitationProps {
   id: string;
@@ -39,7 +31,7 @@ interface EditCitationProps {
   prefixProp: string;
   suffixProp: string;
   // eslint-disable-next-line no-unused-vars
-  metaDataHandler: (metadata: citationMetaData) => void;
+  metaDataHandler: (metadata: CitationItem) => void;
 }
 
 const buttonStyles = { root: { marginRight: 8 } };
@@ -153,7 +145,14 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     []
   );
   const onClickHandler = useCallback(() => {
-    metaDataHandler({ id, label, prefix, suffix, locator, isAuthorSuppressed });
+    metaDataHandler({
+      id,
+      label,
+      prefix,
+      suffix,
+      locator,
+      "suppress-author": isAuthorSuppressed,
+    });
     dismissPanel();
   }, [
     dismissPanel,
