@@ -30,27 +30,23 @@ interface EditCitationProps {
   isAuthorSuppressedProp: boolean;
   prefixProp: string;
   suffixProp: string;
+  authorOnlyProp: boolean;
   // eslint-disable-next-line no-unused-vars
   metaDataHandler: (metadata: CitationItem) => void;
 }
 
+const editIcon: IIconProps = { iconName: "edit" };
 const buttonStyles = { root: { marginRight: 8 } };
-
 const stackToken: IStackTokens = {
   childrenGap: 25,
 };
-
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { minWidth: 150 },
 };
-
-const editIcon: IIconProps = { iconName: "edit" };
-
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
 };
-
 const wrapperStackStyles: IStackStyles = {
   root: {
     marginTop: 20,
@@ -91,6 +87,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     isAuthorSuppressedProp,
     prefixProp,
     suffixProp,
+    authorOnlyProp,
     metaDataHandler,
   } = props;
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
@@ -98,9 +95,10 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   const [prefix, setPrefix] = useState<string>(prefixProp);
   const [suffix, setSuffix] = useState<string>(suffixProp);
   const [locator, setLocator] = useState<string>(locatorProp);
-  const [isAuthorSuppressed, setIsAuthorSuppress] = React.useState(
+  const [isAuthorSuppressed, setIsAuthorSuppress] = useState<boolean>(
     isAuthorSuppressedProp
   );
+  const [authorOnly, setAuthorOnly] = useState<boolean>(authorOnlyProp);
   const [label, setlabel] = useState<string>(labelProp);
   const onLabelChange = (
     _event: React.FormEvent<HTMLDivElement>,
@@ -114,6 +112,15 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
       checked?: boolean
     ): void => {
       setIsAuthorSuppress(!!checked);
+    },
+    []
+  );
+  const onAutherOnlyChange = useCallback(
+    (
+      _ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
+      checked?: boolean
+    ): void => {
+      setAuthorOnly(!!checked);
     },
     []
   );
@@ -152,6 +159,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
       suffix,
       locator,
       "suppress-author": isAuthorSuppressed,
+      "author-only": authorOnly,
     });
     dismissPanel();
   }, [
@@ -162,6 +170,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     prefix,
     suffix,
     isAuthorSuppressed,
+    authorOnly,
     metaDataHandler,
   ]);
 
@@ -245,6 +254,13 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
                 label="Suppress Author"
                 checked={isAuthorSuppressed}
                 onChange={onAuthorSuppressChange}
+              />
+            </Stack.Item>
+            <Stack.Item align="auto">
+              <Checkbox
+                label="Author only"
+                checked={authorOnly}
+                onChange={onAutherOnlyChange}
               />
             </Stack.Item>
           </Stack>

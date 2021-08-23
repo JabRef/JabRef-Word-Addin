@@ -62,6 +62,7 @@ function unCheckCheckbox(item: bib): bib {
     prefix: null,
     suffix: null,
     "suppress-author": false,
+    "author-only": false,
   };
 }
 
@@ -74,8 +75,9 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     prefix: "",
     isSelected: false,
     "suppress-author": false,
+    "author-only": false,
   }));
-  const [items, setItems] = useState(originalItems);
+  const [items, setItems] = useState<Array<bib>>(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);
   const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
@@ -94,6 +96,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         prefix: item.prefix,
         suffix: item.suffix,
         "suppress-author": item["suppress-author"],
+        "author-only": item["author-only"],
       };
     });
 
@@ -142,6 +145,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             locator: metadata.locator,
             isSelected: true,
             "suppress-author": metadata["suppress-author"],
+            "author-only": metadata["author-only"],
           };
         }
         return item;
@@ -155,7 +159,10 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   const isCitationEdited = (): boolean => {
-    return arraysEqual(checkedItems, itemsIDsInSelectedCitation.current);
+    return arraysEqual(
+      checkedItems.map((citation) => ({ ...citation })),
+      itemsIDsInSelectedCitation.current
+    );
   };
 
   const updateCitationMetaData = (citation: CitationItem) => {
@@ -169,6 +176,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             prefix: citation.prefix,
             suffix: citation.suffix,
             "suppress-author": citation["suppress-author"],
+            "author-only": citation["author-only"],
           };
         }
         return item;

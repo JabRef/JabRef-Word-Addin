@@ -151,6 +151,7 @@ class WordApi {
           const tag = JSON.parse(
             citation.tag.substring(16)
           ) as StatefulCitation;
+          console.log(tag);
           return tag.citationItems.map((item) => ({
             id: item.id,
             label: item.label,
@@ -158,6 +159,7 @@ class WordApi {
             prefix: item.prefix,
             suffix: item.suffix,
             "suppress-author": item["suppress-author"],
+            "author-only": item["author-only"],
           }));
         }
       }

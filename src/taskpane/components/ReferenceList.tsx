@@ -15,13 +15,8 @@ import EditCitation from "./EditCitation";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-export interface bib extends MetaData {
+export interface bib extends MetaData, CitationItem {
   isSelected: boolean;
-  label: string;
-  locator: string;
-  suffix: string;
-  prefix: string;
-  "suppress-author": boolean;
 }
 
 interface ReferenceListProps {
@@ -110,6 +105,7 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
               suffixProp={item.suffix}
               metaDataHandler={props.metaDataHandler}
               isAuthorSuppressedProp={item["suppress-author"]}
+              authorOnlyProp={item["author-only"]}
             />
           )}
         </div>
