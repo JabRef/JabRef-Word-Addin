@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { StatefulCitation } from "citeproc";
+import { citationMetaData } from "../taskpane/components/EditCitation";
 
 export type CitationDataFormatForWordAPI = {
   position: number;
@@ -138,7 +139,7 @@ class WordApi {
     });
   }
 
-  async getItemsInSelectedCitation(): Promise<Array<string>> {
+  async getItemsInSelectedCitation(): Promise<Array<citationMetaData>> {
     return Word.run(async (context: Word.RequestContext) => {
       const getSelection = context.document.getSelection();
       context.load(getSelection, "contentControls");
@@ -151,7 +152,14 @@ class WordApi {
           const tag = JSON.parse(
             citation.tag.substring(16)
           ) as StatefulCitation;
-          return tag.citationItems.map((item) => item.id);
+          return tag.citationItems.map((item) => ({
+            id: item.id,
+            label: item.label,
+            locator: item.locator,
+            prefix: item.prefix,
+            suffix: item.suffix,
+            isAuthorSuppressed: item["suppress-author"],
+          }));
         }
       }
       return [];

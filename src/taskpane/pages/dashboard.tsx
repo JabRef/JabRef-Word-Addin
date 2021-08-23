@@ -54,26 +54,35 @@ function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
 }
 
 function unCheckCheckbox(item: bib): bib {
-  return { ...item, isSelected: false };
+  return {
+    ...item,
+    label: null,
+    suffix: null,
+    prefix: null,
+    locator: null,
+    isSelected: false,
+    isAuthorSuppressed: false,
+  };
 }
 
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({
     ...item,
+    label: "",
+    suffix: "",
+    prefix: "",
+    locator: "",
     isSelected: false,
-    label: null,
-    locator: null,
-    suffix: null,
-    prefix: null,
-    isAuthorSuppress: false,
+    isAuthorSuppressed: false,
   }));
+
   const [items, setItems] = useState(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);
   const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
-  const setCitationItemsIDs = (ids: Array<string>) => {
-    itemsIDsInSelectedCitation.current = ids;
-    _setCitationItemsIDs(ids);
+  const setCitationItemsIDs = (itemsMetadata: Array<citationMetaData>) => {
+    itemsIDsInSelectedCitation.current = itemsMetadata;
+    _setCitationItemsIDs(itemsMetadata);
   };
 
   const checkedItems = items
@@ -81,10 +90,11 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     .map((item: bib) => {
       return {
         id: item.id,
+        label: item.label,
         prefix: item.prefix,
         suffix: item.suffix,
         locator: item.locator,
-        "suppress-author": item.isAuthorSuppress,
+        "suppress-author": item.isAuthorSuppressed,
       };
     });
 
@@ -118,13 +128,23 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     }
   }
 
-  const checkItems = (itemIds: Array<string>) => {
+  const checkItems = (itemsMetadata: Array<citationMetaData>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
-        if (itemIds.some((id) => item.id === id)) {
-          return { ...item, isSelected: true };
-        }
-        return item;
+        return itemsMetadata.map((metadata) => {
+          if (metadata.id === item.id) {
+            return {
+              ...item,
+              isSelected: true,
+              label: metadata.label,
+              locator: metadata.locator,
+              prefix: metadata.prefix,
+              suffix: metadata.suffix,
+              isAuthorSuppressed: metadata.isAuthorSuppressed,
+            };
+          }
+          return item;
+        })[0];
       });
     });
   };
@@ -141,13 +161,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     );
   };
 
-  const updateCitationMetaData = async ({
+  const updateCitationMetaData = ({
     id,
     label,
     locator,
     prefix,
     suffix,
-    isAuthorSuppress,
+    isAuthorSuppressed,
   }: citationMetaData) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
@@ -158,24 +178,23 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             locator,
             prefix,
             suffix,
-            isAuthorSuppress,
+            isAuthorSuppressed,
           };
         }
         return item;
       });
     });
-    await insertCitation();
   };
 
   const getSelectedCitation = useCallback(async (): Promise<void> => {
-    const getItemsIDInCitation =
+    const getItemsMetaDataInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
     const isCitationValue = await citeSupport.wordApi.isCitationSelected();
-    if (getItemsIDInCitation) {
+    if (getItemsMetaDataInCitation) {
       unCheckAllCheckboxes();
-      setCitationItemsIDs(getItemsIDInCitation);
+      checkItems(getItemsMetaDataInCitation);
+      setCitationItemsIDs(getItemsMetaDataInCitation);
       setIsCitationSelection(() => isCitationValue);
-      checkItems(getItemsIDInCitation);
     } else if (itemsIDsInSelectedCitation.current.length) {
       unCheckAllCheckboxes();
       setCitationItemsIDs([]);

@@ -109,14 +109,14 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   const [isAuthorSuppressed, setIsAuthorSuppress] = React.useState(
     isAuthorSuppressedProp
   );
-  const [label, setlabel] = React.useState<string>(labelProp);
+  const [label, setlabel] = useState<string>(labelProp);
   const onLabelChange = (
     _event: React.FormEvent<HTMLDivElement>,
     item: IDropdownOption
   ): void => {
     setlabel(item.key as string);
   };
-  const onAuthorSuppressChange = React.useCallback(
+  const onAuthorSuppressChange = useCallback(
     (
       _ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
       checked?: boolean
@@ -158,12 +158,12 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   }, [
     dismissPanel,
     id,
-    isAuthorSuppressed,
     label,
     locator,
-    metaDataHandler,
     prefix,
     suffix,
+    isAuthorSuppressed,
+    metaDataHandler,
   ]);
 
   const onRenderFooterContent = React.useCallback(
