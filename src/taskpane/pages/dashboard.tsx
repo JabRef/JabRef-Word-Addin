@@ -130,20 +130,21 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const checkItems = (itemsMetadata: Array<citationMetaData>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
-        return itemsMetadata.map((metadata) => {
-          if (metadata.id === item.id) {
-            return {
-              ...item,
-              isSelected: true,
-              label: metadata.label,
-              locator: metadata.locator,
-              prefix: metadata.prefix,
-              suffix: metadata.suffix,
-              isAuthorSuppressed: metadata.isAuthorSuppressed,
-            };
-          }
-          return item;
-        })[0];
+        const metadata = itemsMetadata.find(
+          (metaData) => metaData.id === item.id
+        );
+        if (metadata) {
+          return {
+            ...item,
+            label: metadata.label,
+            suffix: metadata.suffix,
+            prefix: metadata.prefix,
+            locator: metadata.locator,
+            isSelected: true,
+            isAuthorSuppressed: metadata.isAuthorSuppressed,
+          };
+        }
+        return item;
       });
     });
   };
