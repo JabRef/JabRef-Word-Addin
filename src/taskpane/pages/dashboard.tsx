@@ -75,7 +75,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     isSelected: false,
     isAuthorSuppressed: false,
   }));
-
   const [items, setItems] = useState(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);

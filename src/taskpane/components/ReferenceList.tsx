@@ -103,12 +103,12 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
           />
           {item.isSelected && (
             <EditCitation
-              metaDataHandler={props.metaDataHandler}
               id={item.id}
               labelProp={item.label}
               locatorProp={item.locator}
               prefixProp={item.prefix}
-              suffixProp={item.prefix}
+              suffixProp={item.suffix}
+              metaDataHandler={props.metaDataHandler}
               isAuthorSuppressedProp={item.isAuthorSuppressed}
             />
           )}
