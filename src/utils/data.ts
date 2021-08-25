@@ -12,7 +12,7 @@ const data: Array<MetaData> = [
     volume: "abs/1711.06134",
     author: [
       {
-        family: "Rocks",
+        family: "Welson",
         given: "Pascal",
       },
       {
