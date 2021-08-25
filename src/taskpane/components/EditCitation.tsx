@@ -27,7 +27,7 @@ interface EditCitationProps {
   id: string;
   labelProp: string;
   locatorProp: string;
-  isAuthorSuppressedProp: boolean;
+  suppressAuthorProp: boolean;
   prefixProp: string;
   suffixProp: string;
   authorOnlyProp: boolean;
@@ -84,7 +84,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     id,
     labelProp,
     locatorProp,
-    isAuthorSuppressedProp,
+    suppressAuthorProp,
     prefixProp,
     suffixProp,
     authorOnlyProp,
@@ -95,9 +95,8 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   const [prefix, setPrefix] = useState<string>(prefixProp);
   const [suffix, setSuffix] = useState<string>(suffixProp);
   const [locator, setLocator] = useState<string>(locatorProp);
-  const [isAuthorSuppressed, setIsAuthorSuppress] = useState<boolean>(
-    isAuthorSuppressedProp
-  );
+  const [suppressAuthor, setSuppressAuthor] =
+    useState<boolean>(suppressAuthorProp);
   const [authorOnly, setAuthorOnly] = useState<boolean>(authorOnlyProp);
   const [label, setlabel] = useState<string>(labelProp);
   const onLabelChange = (
@@ -106,12 +105,12 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   ): void => {
     setlabel(item.key as string);
   };
-  const onAuthorSuppressChange = useCallback(
+  const onSuppressAuthorChange = useCallback(
     (
       _ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
       checked?: boolean
     ): void => {
-      setIsAuthorSuppress(!!checked);
+      setSuppressAuthor(!!checked);
     },
     []
   );
@@ -158,7 +157,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
       prefix,
       suffix,
       locator,
-      "suppress-author": isAuthorSuppressed,
+      "suppress-author": suppressAuthor,
       "author-only": authorOnly,
     });
     dismissPanel();
@@ -169,7 +168,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     locator,
     prefix,
     suffix,
-    isAuthorSuppressed,
+    suppressAuthor,
     authorOnly,
     metaDataHandler,
   ]);
@@ -252,13 +251,15 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
             <Stack.Item align="auto">
               <Checkbox
                 label="Suppress Author"
-                checked={isAuthorSuppressed}
-                onChange={onAuthorSuppressChange}
+                disabled={authorOnly}
+                checked={suppressAuthor}
+                onChange={onSuppressAuthorChange}
               />
             </Stack.Item>
             <Stack.Item align="auto">
               <Checkbox
                 label="Author only"
+                disabled={suppressAuthor}
                 checked={authorOnly}
                 onChange={onAutherOnlyChange}
               />

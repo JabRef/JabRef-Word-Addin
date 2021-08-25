@@ -104,7 +104,7 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
               prefixProp={item.prefix}
               suffixProp={item.suffix}
               metaDataHandler={props.metaDataHandler}
-              isAuthorSuppressedProp={item["suppress-author"]}
+              suppressAuthorProp={item["suppress-author"]}
               authorOnlyProp={item["author-only"]}
             />
           )}

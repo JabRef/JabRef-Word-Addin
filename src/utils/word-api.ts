@@ -151,7 +151,6 @@ class WordApi {
           const tag = JSON.parse(
             citation.tag.substring(16)
           ) as StatefulCitation;
-          console.log(tag);
           return tag.citationItems.map((item) => ({
             id: item.id,
             label: item.label,

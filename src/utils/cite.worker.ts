@@ -4,6 +4,7 @@ import CSL, {
   CitationResult,
   Engine,
   GeneratedBibliography,
+  Locator,
   MetaData,
   RebuildProcessorStateData,
   StatefulCitation,
@@ -58,8 +59,8 @@ export type CiteWorkerRegisterCitationCommand = {
   command: "registerCitation";
 
   citation: Citation;
-  preCitations: Array<[string, number]>;
-  postCitations: Array<[string, number]>;
+  preCitations: Locator;
+  postCitations: Locator;
 };
 
 export type CiteWorkerRegisterCitationMessage = {
@@ -216,8 +217,8 @@ function buildProcessor(styleID: string): void {
 
 function registerCitation(
   citation: Citation,
-  preCitations: Array<[string, number]>,
-  postCitations: Array<[string, number]>
+  preCitations: Locator,
+  postCitations: Locator
 ): void {
   try {
     const itemFetchLst = citation.citationItems
