@@ -37,12 +37,12 @@ const stackToken: IStackTokens = {
 };
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: {
-    width: 160,
+    minWidth: 160,
   },
 };
 const wrapperStackStyles: IStackStyles = {
   root: {
-    marginTop: 20,
+    marginTop: 40,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -148,7 +148,6 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
         isOpen={isOpen}
         onDismiss={dismissPanel}
         headerText="Edit Reference"
-        closeButtonAriaLabel="Close"
         type={PanelType.smallFluid}
         onRenderFooterContent={onRenderFooterContent}
         isFooterAtBottom

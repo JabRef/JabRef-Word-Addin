@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
+import { PrimaryButton, DefaultButton } from "@fluentui/react";
 import { CitationItem } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
@@ -151,9 +151,9 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   const isCitationEdited = (): boolean => {
-    return arraysEqual(
-      checkedItems.map((citation) => ({ ...citation })),
-      itemsIDsInSelectedCitation.current
+    return (
+      JSON.stringify(checkedItems.map((citation) => ({ ...citation }))) ===
+      JSON.stringify(itemsIDsInSelectedCitation.current)
     );
   };
 
