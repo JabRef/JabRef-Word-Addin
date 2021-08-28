@@ -15,11 +15,9 @@ import {
   IIconProps,
   IStackStyles,
   IStackTokens,
-  ITooltipHostStyles,
   MessageBar,
   Stack,
   TextField,
-  TooltipHost,
 } from "@fluentui/react";
 import { CitationItem } from "citeproc";
 
@@ -40,11 +38,9 @@ const stackToken: IStackTokens = {
   childrenGap: 25,
 };
 const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: { minWidth: 150 },
-};
-const calloutProps = { gapSpace: 0 };
-const hostStyles: Partial<ITooltipHostStyles> = {
-  root: { display: "inline-block" },
+  dropdown: {
+    width: 160,
+  },
 };
 const wrapperStackStyles: IStackStyles = {
   root: {
@@ -173,18 +169,11 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
 
   return (
     <div>
-      <TooltipHost
-        content="Add extra info"
-        id="tooltip"
-        calloutProps={calloutProps}
-        styles={hostStyles}
-      >
-        <IconButton
-          iconProps={editIcon}
-          ariaLabel="Add extra info"
-          onClick={openPanel}
-        />
-      </TooltipHost>
+      <IconButton
+        iconProps={editIcon}
+        ariaLabel="Add extra info"
+        onClick={openPanel}
+      />
       <Panel
         isOpen={isOpen}
         onDismiss={dismissPanel}
@@ -210,7 +199,6 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
             </Stack.Item>
             <Stack.Item>
               <TextField
-                title="locator"
                 label="locator"
                 autoComplete="off"
                 value={locator}
@@ -221,14 +209,12 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
           <Stack tokens={stackToken}>
             <Stack.Item align="auto">
               <TextField
-                title="Prefix"
                 label="Prefix"
                 value={prefix}
                 autoComplete="off"
                 onChange={onPrefixChange}
               />
               <TextField
-                title="Suffix"
                 label="Suffix"
                 value={suffix}
                 autoComplete="off"
