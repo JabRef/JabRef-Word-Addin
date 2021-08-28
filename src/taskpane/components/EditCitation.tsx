@@ -102,36 +102,28 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     (
       _ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
       checked?: boolean
-    ): void => {
-      setSuppressAuthor(!!checked);
-    },
+    ) => setSuppressAuthor(!!checked),
     []
   );
   const onPrefixChange = useCallback(
     (
       _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
       newValue?: string
-    ) => {
-      setPrefix(newValue || "");
-    },
+    ) => setPrefix(newValue || ""),
     []
   );
   const onSuffixChange = useCallback(
     (
       _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
       newValue?: string
-    ) => {
-      setSuffix(newValue || "");
-    },
+    ) => setSuffix(newValue || ""),
     []
   );
   const onLocatorChange = useCallback(
     (
       _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
       newValue?: string
-    ) => {
-      setLocator(newValue || "");
-    },
+    ) => setLocator(newValue || ""),
     []
   );
   const onClickHandler = useCallback(() => {
