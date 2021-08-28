@@ -8,7 +8,6 @@ import { Panel, PanelType } from "@fluentui/react/lib/Panel";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useBoolean } from "@fluentui/react-hooks";
 import {
-  Checkbox,
   Dropdown,
   IDropdownOption,
   IDropdownStyles,
@@ -25,7 +24,6 @@ interface EditCitationProps {
   id: string;
   labelProp: string;
   locatorProp: string;
-  suppressAuthorProp: boolean;
   prefixProp: string;
   suffixProp: string;
   // eslint-disable-next-line no-unused-vars
@@ -79,32 +77,22 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     id,
     labelProp,
     locatorProp,
-    suppressAuthorProp,
     prefixProp,
     suffixProp,
     metaDataHandler,
   } = props;
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
     useBoolean(false);
+  const [label, setlabel] = useState<string>(labelProp);
   const [prefix, setPrefix] = useState<string>(prefixProp);
   const [suffix, setSuffix] = useState<string>(suffixProp);
   const [locator, setLocator] = useState<string>(locatorProp);
-  const [suppressAuthor, setSuppressAuthor] =
-    useState<boolean>(suppressAuthorProp);
-  const [label, setlabel] = useState<string>(labelProp);
   const onLabelChange = (
     _event: React.FormEvent<HTMLDivElement>,
     item: IDropdownOption
   ): void => {
     setlabel(item.key as string);
   };
-  const onSuppressAuthorChange = useCallback(
-    (
-      _ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
-      checked?: boolean
-    ) => setSuppressAuthor(!!checked),
-    []
-  );
   const onPrefixChange = useCallback(
     (
       _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -133,19 +121,9 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
       prefix,
       suffix,
       locator,
-      "suppress-author": suppressAuthor,
     });
     dismissPanel();
-  }, [
-    metaDataHandler,
-    id,
-    label,
-    prefix,
-    suffix,
-    locator,
-    suppressAuthor,
-    dismissPanel,
-  ]);
+  }, [metaDataHandler, id, label, prefix, suffix, locator, dismissPanel]);
 
   const onRenderFooterContent = React.useCallback(
     () => (
@@ -211,13 +189,6 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
                 value={suffix}
                 autoComplete="off"
                 onChange={onSuffixChange}
-              />
-            </Stack.Item>
-            <Stack.Item align="auto">
-              <Checkbox
-                label="Suppress Author"
-                checked={suppressAuthor}
-                onChange={onSuppressAuthorChange}
               />
             </Stack.Item>
           </Stack>

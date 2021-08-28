@@ -61,8 +61,6 @@ function unCheckCheckbox(item: bib): bib {
     locator: null,
     prefix: null,
     suffix: null,
-    "suppress-author": false,
-    "author-only": false,
   };
 }
 
@@ -74,7 +72,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     suffix: "",
     prefix: "",
     isSelected: false,
-    "suppress-author": false,
   }));
   const [items, setItems] = useState<Array<bib>>(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
@@ -94,7 +91,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         locator: item.locator,
         prefix: item.prefix,
         suffix: item.suffix,
-        "suppress-author": item["suppress-author"],
       };
     });
 
@@ -142,7 +138,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             prefix: metadata.prefix,
             locator: metadata.locator,
             isSelected: true,
-            "suppress-author": metadata["suppress-author"],
           };
         }
         return item;
@@ -172,7 +167,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             locator: citation.locator,
             prefix: citation.prefix,
             suffix: citation.suffix,
-            "suppress-author": citation["suppress-author"],
           };
         }
         return item;
