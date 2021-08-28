@@ -105,7 +105,6 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
               suffixProp={item.suffix}
               metaDataHandler={props.metaDataHandler}
               suppressAuthorProp={item["suppress-author"]}
-              authorOnlyProp={item["author-only"]}
             />
           )}
         </div>

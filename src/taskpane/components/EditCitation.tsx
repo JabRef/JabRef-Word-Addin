@@ -30,7 +30,6 @@ interface EditCitationProps {
   suppressAuthorProp: boolean;
   prefixProp: string;
   suffixProp: string;
-  authorOnlyProp: boolean;
   // eslint-disable-next-line no-unused-vars
   metaDataHandler: (metadata: CitationItem) => void;
 }
@@ -87,7 +86,6 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     suppressAuthorProp,
     prefixProp,
     suffixProp,
-    authorOnlyProp,
     metaDataHandler,
   } = props;
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
@@ -97,7 +95,6 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
   const [locator, setLocator] = useState<string>(locatorProp);
   const [suppressAuthor, setSuppressAuthor] =
     useState<boolean>(suppressAuthorProp);
-  const [authorOnly, setAuthorOnly] = useState<boolean>(authorOnlyProp);
   const [label, setlabel] = useState<string>(labelProp);
   const onLabelChange = (
     _event: React.FormEvent<HTMLDivElement>,
@@ -111,15 +108,6 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
       checked?: boolean
     ): void => {
       setSuppressAuthor(!!checked);
-    },
-    []
-  );
-  const onAutherOnlyChange = useCallback(
-    (
-      _ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
-      checked?: boolean
-    ): void => {
-      setAuthorOnly(!!checked);
     },
     []
   );
@@ -158,19 +146,17 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
       suffix,
       locator,
       "suppress-author": suppressAuthor,
-      "author-only": authorOnly,
     });
     dismissPanel();
   }, [
-    dismissPanel,
+    metaDataHandler,
     id,
     label,
-    locator,
     prefix,
     suffix,
+    locator,
     suppressAuthor,
-    authorOnly,
-    metaDataHandler,
+    dismissPanel,
   ]);
 
   const onRenderFooterContent = React.useCallback(
@@ -217,6 +203,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
                 placeholder="Select an option"
                 selectedKey={label || undefined}
                 options={LabelOptions}
+                defaultSelectedKey="page"
                 styles={dropdownStyles}
                 onChange={onLabelChange}
               />
@@ -251,17 +238,8 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
             <Stack.Item align="auto">
               <Checkbox
                 label="Suppress Author"
-                disabled={authorOnly}
                 checked={suppressAuthor}
                 onChange={onSuppressAuthorChange}
-              />
-            </Stack.Item>
-            <Stack.Item align="auto">
-              <Checkbox
-                label="Author only"
-                disabled={suppressAuthor}
-                checked={authorOnly}
-                onChange={onAutherOnlyChange}
               />
             </Stack.Item>
           </Stack>

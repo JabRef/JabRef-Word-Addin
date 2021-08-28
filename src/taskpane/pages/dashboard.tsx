@@ -75,7 +75,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     prefix: "",
     isSelected: false,
     "suppress-author": false,
-    "author-only": false,
   }));
   const [items, setItems] = useState<Array<bib>>(originalItems);
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
@@ -96,7 +95,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         prefix: item.prefix,
         suffix: item.suffix,
         "suppress-author": item["suppress-author"],
-        "author-only": item["author-only"],
       };
     });
 
@@ -145,7 +143,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             locator: metadata.locator,
             isSelected: true,
             "suppress-author": metadata["suppress-author"],
-            "author-only": metadata["author-only"],
           };
         }
         return item;
@@ -176,7 +173,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             prefix: citation.prefix,
             suffix: citation.suffix,
             "suppress-author": citation["suppress-author"],
-            "author-only": citation["author-only"],
           };
         }
         return item;
