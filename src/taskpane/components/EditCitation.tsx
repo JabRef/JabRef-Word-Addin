@@ -157,7 +157,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
           <Stack horizontal horizontalAlign="stretch" tokens={stackToken}>
             <Stack.Item>
               <Dropdown
-                label="label"
+                label="Label"
                 placeholder="Select an option"
                 selectedKey={label || undefined}
                 options={LabelOptions}
@@ -168,7 +168,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
             </Stack.Item>
             <Stack.Item>
               <TextField
-                label="locator"
+                label="Locator"
                 autoComplete="off"
                 value={locator}
                 onChange={onLocatorChange}

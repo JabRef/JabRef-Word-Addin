@@ -53,7 +53,7 @@ function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
   };
 }
 
-function unCheckCheckbox(item: bib): bib {
+function resetCitation(item: bib): bib {
   return {
     ...item,
     isSelected: false,
@@ -67,36 +67,36 @@ function unCheckCheckbox(item: bib): bib {
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({
     ...item,
-    label: "",
-    locator: "",
-    suffix: "",
-    prefix: "",
+    label: null,
+    locator: null,
+    suffix: null,
+    prefix: null,
     isSelected: false,
   }));
   const [items, setItems] = useState<Array<bib>>(originalItems);
-  const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
-  const [isCitationSelected, setIsCitationSelection] = useState(false);
-  const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
-  const setCitationItemsIDs = (itemsMetadata: Array<CitationItem>) => {
-    itemsIDsInSelectedCitation.current = itemsMetadata;
-    _setCitationItemsIDs(itemsMetadata);
+  const [citationItems, _setCitationItems] = useState([]);
+  const [isCitationSelected, setIsCitationSelection] = useState<boolean>(false);
+  const itemsInSelectedCitation = useRef(citationItems);
+  const setItemsInSelectedCitation = (itemsMetadata: Array<CitationItem>) => {
+    itemsInSelectedCitation.current = itemsMetadata;
+    _setCitationItems(itemsMetadata);
   };
 
   const checkedItems = items
-    .filter((item) => item.isSelected)
-    .map((item: bib) => {
+    .filter(({ isSelected }) => isSelected)
+    .map(({ id, label, locator, prefix, suffix }) => {
       return {
-        id: item.id,
-        label: item.label,
-        locator: item.locator,
-        prefix: item.prefix,
-        suffix: item.suffix,
+        id,
+        label,
+        locator,
+        prefix,
+        suffix,
       };
     });
 
-  const unCheckAllCheckboxes = () => {
+  const resetAllCitations = () => {
     setItems((currentItems) => {
-      return currentItems.map(unCheckCheckbox);
+      return currentItems.map(resetCitation);
     });
   };
 
@@ -120,11 +120,11 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
       await citeSupport.insertCitation(checkedItems, isCitationSelected);
-      unCheckAllCheckboxes();
+      resetAllCitations();
     }
   }
 
-  const checkItems = (itemsMetadata: Array<CitationItem>) => {
+  const setCitationItems = (itemsMetadata: Array<CitationItem>) => {
     setItems((currentItems) => {
       return currentItems.map((item) => {
         const metadata = itemsMetadata.find(
@@ -133,10 +133,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         if (metadata) {
           return {
             ...item,
-            label: metadata.label,
-            suffix: metadata.suffix,
-            prefix: metadata.prefix,
-            locator: metadata.locator,
+            ...metadata,
             isSelected: true,
           };
         }
@@ -146,14 +143,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   const discardEdit = () => {
-    unCheckAllCheckboxes();
-    checkItems(itemsIDsInSelectedCitation.current);
+    resetAllCitations();
+    setCitationItems(itemsInSelectedCitation.current);
   };
 
   const isCitationEdited = (): boolean => {
     return (
       JSON.stringify(checkedItems.map((citation) => ({ ...citation }))) ===
-      JSON.stringify(itemsIDsInSelectedCitation.current)
+      JSON.stringify(itemsInSelectedCitation.current)
     );
   };
 
@@ -163,10 +160,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         if (item.id === citation.id) {
           return {
             ...item,
-            label: citation.label,
-            locator: citation.locator,
-            prefix: citation.prefix,
-            suffix: citation.suffix,
+            ...citation,
           };
         }
         return item;
@@ -175,17 +169,17 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   const getSelectedCitation = useCallback(async (): Promise<void> => {
-    const getItemsMetaDataInCitation =
+    const itemsInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
     const isCitationValue = await citeSupport.wordApi.isCitationSelected();
-    if (getItemsMetaDataInCitation) {
-      unCheckAllCheckboxes();
-      checkItems(getItemsMetaDataInCitation);
-      setCitationItemsIDs(getItemsMetaDataInCitation);
+    if (itemsInSelectedCitation) {
+      resetAllCitations();
+      setCitationItems(itemsInCitation);
+      setItemsInSelectedCitation(itemsInCitation);
       setIsCitationSelection(() => isCitationValue);
-    } else if (itemsIDsInSelectedCitation.current.length) {
-      unCheckAllCheckboxes();
-      setCitationItemsIDs([]);
+    } else if (itemsInSelectedCitation.current.length) {
+      resetAllCitations();
+      setItemsInSelectedCitation([]);
     }
   }, [citeSupport.wordApi]);
 
@@ -202,16 +196,13 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         metaDataHandler={updateCitationMetaData}
         onCheckBoxChange={handleToggleChange}
       />
-      {checkedItems.length && !itemsIDsInSelectedCitation.current.length ? (
+      {checkedItems.length && !itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
             Insert {checkedItems.length}{" "}
             {checkedItems.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
-          <DefaultButton
-            onClick={unCheckAllCheckboxes}
-            style={{ marginLeft: 8 }}
-          >
+          <DefaultButton onClick={resetAllCitations} style={{ marginLeft: 8 }}>
             Cancel
           </DefaultButton>
         </div>
