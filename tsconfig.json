@@ -12,7 +12,6 @@
     "strict": true,
     "allowUnusedLabels": false,
     "noImplicitReturns": true,
-    "strictNullChecks": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
