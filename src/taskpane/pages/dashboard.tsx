@@ -124,7 +124,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     }
   }
 
-  const setCitationItems = (itemsMetadata: Array<CitationItem>) => {
+  const setReferenceState = (itemsMetadata: Array<CitationItem>) => {
     setReferenceList((currentItems) => {
       return currentItems.map((item) => {
         const metadata = itemsMetadata.find(
@@ -144,7 +144,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   const discardEdit = () => {
     resetAllReferences();
-    setCitationItems(itemsInSelectedCitation.current);
+    setReferenceState(itemsInSelectedCitation.current);
   };
 
   const isCitationEdited = (): boolean => {
@@ -174,7 +174,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     const isCitationValue = await citeSupport.wordApi.isCitationSelected();
     if (itemsInSelectedCitation) {
       resetAllReferences();
-      setCitationItems(itemsInCitation);
+      setReferenceState(itemsInCitation);
       setItemsInSelectedCitation(itemsInCitation);
       setCitationSelected(() => isCitationValue);
     } else if (itemsInSelectedCitation.current.length) {
