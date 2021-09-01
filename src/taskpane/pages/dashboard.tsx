@@ -5,7 +5,12 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
+import {
+  PrimaryButton,
+  DefaultButton,
+  arraysEqual,
+  IContextualMenuProps,
+} from "@fluentui/react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -14,6 +19,21 @@ import CiteSupport from "../../utils/citesupport";
 interface DashboardProps {
   citeSupport: CiteSupport;
 }
+
+const menuProps: IContextualMenuProps = {
+  items: [
+    {
+      key: "emailMessage",
+      text: "Email message",
+      iconProps: { iconName: "Mail" },
+    },
+    {
+      key: "calendarEvent",
+      text: "Calendar event",
+      iconProps: { iconName: "Calendar" },
+    },
+  ],
+};
 
 const dashboadStyle = {
   width: "100%",
@@ -152,30 +172,40 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
       {checkedItems.length && !itemsIDsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation}>
+          <PrimaryButton
+            onClick={insertCitation}
+            split
+            splitButtonAriaLabel="See 2 options"
+            aria-roledescription="split button"
+            menuProps={menuProps}
+          >
             Insert {checkedItems.length}{" "}
             {checkedItems.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
           <DefaultButton
             onClick={unCheckAllCheckboxes}
             style={{ marginLeft: 8 }}
-          >
-            Cancel
-          </DefaultButton>
+            text="Cancel"
+          />
         </div>
       ) : null}
       {isCitationSelected ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation} disabled={isCitationEdited()}>
-            Save changes
-          </PrimaryButton>
+          <PrimaryButton
+            text="Save changes"
+            split
+            splitButtonAriaLabel="See 2 options"
+            aria-roledescription="split button"
+            menuProps={menuProps}
+            onClick={insertCitation}
+            disabled={isCitationEdited()}
+          />
           <DefaultButton
+            title="Cancel"
             onClick={discardEdit}
             style={{ marginLeft: 8 }}
             disabled={isCitationEdited()}
-          >
-            Cancel
-          </DefaultButton>
+          />
         </div>
       ) : null}
     </div>
