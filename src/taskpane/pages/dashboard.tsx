@@ -10,6 +10,7 @@ import {
   DefaultButton,
   arraysEqual,
   IContextualMenuProps,
+  CompoundButton,
 } from "@fluentui/react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
@@ -19,21 +20,6 @@ import CiteSupport from "../../utils/citesupport";
 interface DashboardProps {
   citeSupport: CiteSupport;
 }
-
-const menuProps: IContextualMenuProps = {
-  items: [
-    {
-      key: "emailMessage",
-      text: "Email message",
-      iconProps: { iconName: "Mail" },
-    },
-    {
-      key: "calendarEvent",
-      text: "Calendar event",
-      iconProps: { iconName: "Calendar" },
-    },
-  ],
-};
 
 const dashboadStyle = {
   width: "100%",
@@ -79,6 +65,7 @@ function unCheckCheckbox(item: bib): bib {
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
+  const [citationMode, setCitationMode] = useState("none");
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);
   const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
@@ -155,7 +142,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       setCitationItemsIDs(getItemsIDInCitation);
       setIsCitationSelection(() => isCitationValue);
       checkItems(getItemsIDInCitation);
-    } else if (itemsIDsInSelectedCitation.current.length) {
+    } else if (itemsIDsInSelectedCitation.current.length && !isCitationValue) {
       unCheckAllCheckboxes();
       setCitationItemsIDs([]);
     }
@@ -166,26 +153,56 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     return () => citeSupport.wordApi.removeEventListener();
   }, [citeSupport.wordApi, getSelectedCitation]);
 
+  const onModeChange = (ev?: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setCitationMode(() => ev.currentTarget.id);
+  };
+  const menuProps: IContextualMenuProps = {
+    items: [
+      {
+        id: "author-only",
+        key: "author-only",
+        text: "Author only",
+        iconProps: { iconName: "Contact" },
+        onClick: onModeChange,
+      },
+      {
+        id: "suppress-author",
+        key: "suppress-author",
+        text: "Suppress Author",
+        iconProps: { iconName: "Calendar" },
+        onClick: onModeChange,
+      },
+      {
+        id: "none",
+        key: "none",
+        text: "none",
+        iconProps: { iconName: "Calendar" },
+        onClick: onModeChange,
+      },
+    ],
+  };
+
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
       {checkedItems.length && !itemsIDsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
-          <PrimaryButton
-            onClick={insertCitation}
+          <CompoundButton
+            primary
+            text={`Insert ${checkedItems.length} 
+            ${checkedItems.length > 1 ? "citations" : "citation"}`}
+            menuProps={menuProps}
+            secondaryText={citationMode}
             split
             splitButtonAriaLabel="See 2 options"
             aria-roledescription="split button"
-            menuProps={menuProps}
-          >
-            Insert {checkedItems.length}{" "}
-            {checkedItems.length > 1 ? "citations" : "citation"}
-          </PrimaryButton>
-          <DefaultButton
+            onClick={insertCitation}
+          />
+          <CompoundButton
+            text="Cancel"
             onClick={unCheckAllCheckboxes}
             style={{ marginLeft: 8 }}
-            text="Cancel"
           />
         </div>
       ) : null}
@@ -201,7 +218,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             disabled={isCitationEdited()}
           />
           <DefaultButton
-            title="Cancel"
+            text="Cancel"
             onClick={discardEdit}
             style={{ marginLeft: 8 }}
             disabled={isCitationEdited()}
