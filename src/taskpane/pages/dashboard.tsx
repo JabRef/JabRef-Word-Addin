@@ -105,7 +105,11 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     if (isCitationSelected && !checkedItems.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
-      await citeSupport.insertCitation(checkedItems, isCitationSelected);
+      await citeSupport.insertCitation(
+        checkedItems,
+        citationMode,
+        isCitationSelected
+      );
       unCheckAllCheckboxes();
     }
   }
@@ -169,14 +173,21 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
         id: "suppress-author",
         key: "suppress-author",
         text: "Suppress Author",
-        iconProps: { iconName: "Calendar" },
+        iconProps: { iconName: "BlockContact" },
+        onClick: onModeChange,
+      },
+      {
+        id: "composite",
+        key: "composite",
+        text: "composite",
+        iconProps: { iconName: "AddFriend" },
         onClick: onModeChange,
       },
       {
         id: "none",
         key: "none",
         text: "none",
-        iconProps: { iconName: "Calendar" },
+        iconProps: { iconName: "Edit" },
         onClick: onModeChange,
       },
     ],
