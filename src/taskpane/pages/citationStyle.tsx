@@ -65,6 +65,8 @@ interface CitationStyleProps {
   citeSupport: CiteSupport;
 }
 
+const defaultStyle = "American Political Science Association";
+
 function CitationStyle({ citeSupport }: CitationStyleProps): JSX.Element {
   const items = [
     {
@@ -100,19 +102,23 @@ function CitationStyle({ citeSupport }: CitationStyleProps): JSX.Element {
     return Preference.syncPreference();
   });
 
-  const onRenderCell = (item: { text: string; value: string }): JSX.Element => {
+  const onRenderCell = (
+    item: { text: string; value: string } | undefined
+  ): React.ReactNode => {
     return (
-      <Stack className={classNames.itemCell} data-is-focusable>
-        <Stack
-          key={item.value}
-          id={item.value}
-          className={classNames.itemName}
-          onClick={onClick}
-          onKeyDown={onClick}
-        >
-          {item.text}
+      item && (
+        <Stack className={classNames.itemCell} data-is-focusable>
+          <Stack
+            key={item.value}
+            id={item.value}
+            className={classNames.itemName}
+            onClick={onClick}
+            onKeyDown={onClick}
+          >
+            {item.text}
+          </Stack>
         </Stack>
-      </Stack>
+      )
     );
   };
 
@@ -121,8 +127,9 @@ function CitationStyle({ citeSupport }: CitationStyleProps): JSX.Element {
       <div className={classNames.StyleHeading}>Current Style</div>
       <div className={classNames.selectedStyle}>
         {currentStyle
-          ? items.find((item) => item.value === currentStyle).text
-          : "American Political Science Association"}
+          ? items.find((item) => item.value === currentStyle)?.text ??
+            defaultStyle
+          : defaultStyle}
       </div>
       <div className={classNames.StyleHeading}>Change Style</div>
       <div className={classNames.container}>

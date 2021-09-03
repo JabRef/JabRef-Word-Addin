@@ -5,7 +5,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
+import {
+  PrimaryButton,
+  DefaultButton,
+  arraysEqual,
+  ISearchBoxProps,
+} from "@fluentui/react";
+import { Author } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -34,18 +40,19 @@ const buttonContainer = {
 };
 
 function containsSearchTerm(keyword: string) {
-  return (item?: bib) => {
-    return [item.title, item.author, item.year].some((str: string | number) =>
-      str
-        ? str.toString().toLowerCase().includes(keyword.toLowerCase().trim())
-        : false
+  return (item: bib) => {
+    return [item.title, item.author, item.year].some(
+      (str?: string | number | Array<Author>) =>
+        str?.toString().toLowerCase().includes(keyword.toLowerCase().trim())
     );
   };
 }
 
-function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
+function onCheckboxChange(
+  event?: React.FormEvent<HTMLElement | HTMLInputElement>
+) {
   return (item: bib) => {
-    if (ev.currentTarget && item.title === ev.currentTarget.title) {
+    if (event?.currentTarget && item.title === event.currentTarget.title) {
       return { ...item, isSelected: !item.isSelected };
     }
     return item;
@@ -59,7 +66,7 @@ function unCheckCheckbox(item: bib): bib {
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
-  const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
+  const [citationItemsIDs, _setCitationItemsIDs] = useState<Array<string>>([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);
   const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
   const setCitationItemsIDs = (ids: Array<string>) => {
@@ -79,29 +86,27 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  const onFilterChange = (
-    _: React.ChangeEvent<HTMLInputElement>,
-    keyword: string
-  ): void => {
-    setItems(originalItems.filter(containsSearchTerm(keyword)));
+  const onFilterChange: ISearchBoxProps["onChange"] = (_, newValue?): void => {
+    if (newValue) {
+      setItems(originalItems.filter(containsSearchTerm(newValue)));
+    }
   };
 
   const handleToggleChange = (
-    ev: React.FormEvent<HTMLElement | HTMLInputElement>
-  ) => {
-    setItems((currentItems) => {
-      return currentItems.map(onCheckboxChange(ev));
-    });
-  };
+    ev?: React.FormEvent<HTMLElement | HTMLInputElement>
+  ) => setItems((currentItems) => currentItems.map(onCheckboxChange(ev)));
 
-  async function insertCitation() {
-    if (isCitationSelected && !checkedItems.length) {
-      await citeSupport.wordApi.removeSelectedCitation();
-    } else {
-      await citeSupport.insertCitation(checkedItems, isCitationSelected);
-      unCheckAllCheckboxes();
-    }
-  }
+  const insertCitation = useCallback(
+    async function insertCitation() {
+      if (isCitationSelected && !checkedItems.length) {
+        await citeSupport.wordApi.removeSelectedCitation();
+      } else {
+        await citeSupport.insertCitation(checkedItems, isCitationSelected);
+        unCheckAllCheckboxes();
+      }
+    },
+    [checkedItems, citeSupport, isCitationSelected]
+  );
 
   const checkItems = (itemIds: Array<string>) => {
     setItems((currentItems) => {
@@ -148,7 +153,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   return (
     <div style={dashboadStyle}>
-      <SearchField onFilterChange={onFilterChange} />
+      <SearchField onChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
       {checkedItems.length && !itemsIDsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>

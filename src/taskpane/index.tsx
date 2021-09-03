@@ -21,7 +21,7 @@ let isOfficeInitialized = false;
 
 const title = "JabRef Task Pane Add-in";
 
-const render = (Component) => {
+const render = (Component: typeof App): void => {
   ReactDOM.render(
     <ApolloProvider client={client}>
       <AppContainer>

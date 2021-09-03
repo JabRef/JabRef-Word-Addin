@@ -23,7 +23,7 @@
     "pretty": true,
     "typeRoots": [
       "node_modules/@types",
-    ],    
+    ],
     "types": [
       "@types/node",
       "office-js"
