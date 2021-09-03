@@ -5,6 +5,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "sourceMap": true,
+    "strict": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
@@ -23,7 +24,7 @@
     "pretty": true,
     "typeRoots": [
       "node_modules/@types",
-    ],    
+    ],
     "types": [
       "@types/node",
       "office-js"

@@ -57,7 +57,7 @@ function Login() {
               variables: value,
             });
             // eslint-disable-next-line no-underscore-dangle
-            if (response.data?.login.__typename === "User") {
+            if (response.data?.login?.__typename === "User") {
               history.push({ pathname: "/" });
             }
           }}

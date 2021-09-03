@@ -21,20 +21,22 @@ let isOfficeInitialized = false;
 
 const title = "JabRef Task Pane Add-in";
 
-const render = (Component) => {
+const render = (Component: typeof App): void => {
   ReactDOM.render(
-    <ApolloProvider client={client}>
-      <AppContainer>
-        <ThemeProvider>
-          <Router>
-            <Component
-              title={title}
-              isOfficeInitialized={isOfficeInitialized}
-            />
-          </Router>
-        </ThemeProvider>
-      </AppContainer>
-    </ApolloProvider>,
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <AppContainer>
+          <ThemeProvider>
+            <Router>
+              <Component
+                title={title}
+                isOfficeInitialized={isOfficeInitialized}
+              />
+            </Router>
+          </ThemeProvider>
+        </AppContainer>
+      </ApolloProvider>
+    </React.StrictMode>,
     document.getElementById("container")
   );
 };

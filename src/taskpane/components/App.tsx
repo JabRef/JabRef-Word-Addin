@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactElement } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import Progress from "./Progress";
 import Login from "../pages/login";
@@ -12,7 +12,7 @@ export interface AppProps {
   isOfficeInitialized: boolean;
 }
 
-function App(props: AppProps): ReactElement {
+function App(props: AppProps): JSX.Element {
   const { isOfficeInitialized } = props;
   const [citeSupport] = useState(() => new CiteSupport(data));
   useEffect(() => {
@@ -42,4 +42,5 @@ function App(props: AppProps): ReactElement {
     </div>
   );
 }
+
 export default App;

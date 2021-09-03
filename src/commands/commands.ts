@@ -16,7 +16,7 @@ function action(event: Office.AddinCommands.Event) {
   };
 
   // Show a notification message
-  Office.context.mailbox.item.notificationMessages.replaceAsync(
+  Office.context.mailbox.item?.notificationMessages.replaceAsync(
     "action",
     message
   );
@@ -38,4 +38,6 @@ function getGlobal() {
 const g = getGlobal();
 
 // The add-in command functions need to be available in global scope
-g.action = action;
+if (g && g.action) {
+  g.action = action;
+}

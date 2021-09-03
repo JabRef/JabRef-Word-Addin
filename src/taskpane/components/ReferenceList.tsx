@@ -10,10 +10,11 @@ import {
   Checkbox,
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
-import React, { ReactElement } from "react";
+import React from "react";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
+
 export interface bib extends MetaData {
   isSelected: boolean;
 }
@@ -82,26 +83,30 @@ const classNames = mergeStyleSets({
   },
 });
 
-function ReferenceList(props: ReferenceListProps): ReactElement {
-  const { list } = props;
-  const onRenderCell = (item: bib): JSX.Element => {
+function ReferenceList({
+  list,
+  onCheckBoxChange,
+}: ReferenceListProps): JSX.Element {
+  const onRenderCell = (item?: bib): React.ReactNode => {
     return (
-      <div className={classNames.itemCell} data-is-focusable>
-        <Checkbox
-          className={classNames.checkbox}
-          title={item.title}
-          checked={item.isSelected}
-          onChange={props.onCheckBoxChange}
-        />
-        <div className={classNames.itemContent}>
-          <div className={classNames.itemType}>{item.type}</div>
-          <div className={classNames.itemTitle}>{item.title}</div>
-          {/* <div className={classNames.itemAuthor}>{item.author}</div>
+      item && (
+        <div className={classNames.itemCell} data-is-focusable>
+          <Checkbox
+            className={classNames.checkbox}
+            title={item.title}
+            checked={item.isSelected}
+            onChange={onCheckBoxChange}
+          />
+          <div className={classNames.itemContent}>
+            <div className={classNames.itemType}>{item.type}</div>
+            <div className={classNames.itemTitle}>{item.title}</div>
+            {/* <div className={classNames.itemAuthor}>{item.author}</div>
           <div className={classNames.itemYear}>
             {item.journal} {item.year}
           </div> */}
+          </div>
         </div>
-      </div>
+      )
     );
   };
 
