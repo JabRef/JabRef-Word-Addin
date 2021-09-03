@@ -5,7 +5,6 @@
     "jsx": "react",
     "moduleResolution": "node",
     "sourceMap": true,
-    "strict": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,

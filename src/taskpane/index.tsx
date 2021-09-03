@@ -23,20 +23,18 @@ const title = "JabRef Task Pane Add-in";
 
 const render = (Component: typeof App): void => {
   ReactDOM.render(
-    <React.StrictMode>
-      <ApolloProvider client={client}>
-        <AppContainer>
-          <ThemeProvider>
-            <Router>
-              <Component
-                title={title}
-                isOfficeInitialized={isOfficeInitialized}
-              />
-            </Router>
-          </ThemeProvider>
-        </AppContainer>
-      </ApolloProvider>
-    </React.StrictMode>,
+    <ApolloProvider client={client}>
+      <AppContainer>
+        <ThemeProvider>
+          <Router>
+            <Component
+              title={title}
+              isOfficeInitialized={isOfficeInitialized}
+            />
+          </Router>
+        </ThemeProvider>
+      </AppContainer>
+    </ApolloProvider>,
     document.getElementById("container")
   );
 };
