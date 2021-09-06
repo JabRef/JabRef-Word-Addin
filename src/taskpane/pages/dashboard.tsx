@@ -5,7 +5,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
+import {
+  PrimaryButton,
+  DefaultButton,
+  arraysEqual,
+  IContextualMenuProps,
+  CompoundButton,
+} from "@fluentui/react";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -59,6 +65,7 @@ function unCheckCheckbox(item: bib): bib {
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   const originalItems = data.map((item) => ({ ...item, isSelected: false }));
   const [items, setItems] = useState(originalItems);
+  const [citationMode, setCitationMode] = useState("none");
   const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
   const [isCitationSelected, setIsCitationSelection] = useState(false);
   const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
@@ -98,7 +105,11 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     if (isCitationSelected && !checkedItems.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
-      await citeSupport.insertCitation(checkedItems, isCitationSelected);
+      await citeSupport.insertCitation(
+        checkedItems,
+        citationMode,
+        isCitationSelected
+      );
       unCheckAllCheckboxes();
     }
   };
@@ -135,7 +146,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       setCitationItemsIDs(getItemsIDInCitation);
       setIsCitationSelection(() => isCitationValue);
       checkItems(getItemsIDInCitation);
-    } else if (itemsIDsInSelectedCitation.current.length) {
+    } else if (itemsIDsInSelectedCitation.current.length && !isCitationValue) {
       unCheckAllCheckboxes();
       setCitationItemsIDs([]);
     }
@@ -146,36 +157,83 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     return () => citeSupport.wordApi.removeEventListener();
   }, [citeSupport.wordApi, getSelectedCitation]);
 
+  const onModeChange = (ev?: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setCitationMode(() => ev.currentTarget.id);
+  };
+  const menuProps: IContextualMenuProps = {
+    items: [
+      {
+        id: "author-only",
+        key: "author-only",
+        text: "Author only",
+        iconProps: { iconName: "Contact" },
+        onClick: onModeChange,
+      },
+      {
+        id: "suppress-author",
+        key: "suppress-author",
+        text: "Suppress Author",
+        iconProps: { iconName: "BlockContact" },
+        onClick: onModeChange,
+      },
+      {
+        id: "composite",
+        key: "composite",
+        text: "composite",
+        iconProps: { iconName: "AddFriend" },
+        onClick: onModeChange,
+      },
+      {
+        id: "none",
+        key: "none",
+        text: "none",
+        iconProps: { iconName: "Edit" },
+        onClick: onModeChange,
+      },
+    ],
+  };
+
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
       <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
       {checkedItems.length && !itemsIDsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation}>
-            Insert {checkedItems.length}{" "}
-            {checkedItems.length > 1 ? "citations" : "citation"}
-          </PrimaryButton>
-          <DefaultButton
+          <CompoundButton
+            primary
+            text={`Insert ${checkedItems.length} 
+            ${checkedItems.length > 1 ? "citations" : "citation"}`}
+            menuProps={menuProps}
+            secondaryText={citationMode}
+            split
+            splitButtonAriaLabel="See 2 options"
+            aria-roledescription="split button"
+            onClick={insertCitation}
+          />
+          <CompoundButton
+            text="Cancel"
             onClick={unCheckAllCheckboxes}
             style={{ marginLeft: 8 }}
-          >
-            Cancel
-          </DefaultButton>
+          />
         </div>
       ) : null}
       {isCitationSelected ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation} disabled={isCitationEdited()}>
-            Save changes
-          </PrimaryButton>
+          <PrimaryButton
+            text="Save changes"
+            split
+            splitButtonAriaLabel="See 2 options"
+            aria-roledescription="split button"
+            menuProps={menuProps}
+            onClick={insertCitation}
+            disabled={isCitationEdited()}
+          />
           <DefaultButton
+            text="Cancel"
             onClick={discardEdit}
             style={{ marginLeft: 8 }}
             disabled={isCitationEdited()}
-          >
-            Cancel
-          </DefaultButton>
+          />
         </div>
       ) : null}
     </div>

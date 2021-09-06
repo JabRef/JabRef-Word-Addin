@@ -331,6 +331,7 @@ class CiteSupport {
 
   async insertCitation(
     citationItems: Array<Record<string, string>>,
+    citationMode: string,
     isCitation: boolean
   ): Promise<void> {
     await this.updateCitationByIndex();
@@ -341,12 +342,16 @@ class CiteSupport {
           citationItems,
           properties: {
             noteIndex: 0,
+            mode: citationMode,
           },
         };
       }
     } else {
       citation = {
         citationItems,
+        properties: {
+          mode: citationMode,
+        },
       };
     }
     let citationsPre = [];
