@@ -25,14 +25,16 @@ const render = (Component) => {
   ReactDOM.render(
     <ApolloProvider client={client}>
       <AppContainer>
-        <ThemeProvider>
-          <Router>
-            <Component
-              title={title}
-              isOfficeInitialized={isOfficeInitialized}
-            />
-          </Router>
-        </ThemeProvider>
+        <React.StrictMode>
+          <ThemeProvider>
+            <Router>
+              <Component
+                title={title}
+                isOfficeInitialized={isOfficeInitialized}
+              />
+            </Router>
+          </ThemeProvider>
+        </React.StrictMode>
       </AppContainer>
     </ApolloProvider>,
     document.getElementById("container")
