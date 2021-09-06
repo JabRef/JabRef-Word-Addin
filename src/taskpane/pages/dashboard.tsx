@@ -94,14 +94,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  async function insertCitation() {
+  const insertCitation = async () => {
     if (isCitationSelected && !checkedItems.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
       await citeSupport.insertCitation(checkedItems, isCitationSelected);
       unCheckAllCheckboxes();
     }
-  }
+  };
 
   const checkItems = (itemIds: Array<string>) => {
     setItems((currentItems) => {
