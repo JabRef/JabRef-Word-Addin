@@ -151,15 +151,7 @@ class WordApi {
           const tag = JSON.parse(
             citation.tag.substring(16)
           ) as StatefulCitation;
-          return tag.citationItems.map(
-            ({ id, label, locator, prefix, suffix }) => ({
-              id,
-              label,
-              locator,
-              prefix,
-              suffix,
-            })
-          );
+          return tag.citationItems;
         }
       }
       return [];
