@@ -5,7 +5,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { PrimaryButton, DefaultButton, arraysEqual } from "@fluentui/react";
+import { PrimaryButton, DefaultButton } from "@fluentui/react";
+import { CitationItem } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
@@ -52,30 +53,40 @@ function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
   };
 }
 
-function unCheckCheckbox(item: bib): bib {
-  return { ...item, isSelected: false };
+function resetReferenceState(item: bib): bib {
+  return {
+    ...item,
+    isSelected: false,
+    label: null,
+    locator: null,
+    prefix: null,
+    suffix: null,
+  };
 }
 
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
-  const originalItems = data.map((item) => ({ ...item, isSelected: false }));
-  const [items, setItems] = useState(originalItems);
-  const [citationItemsIDs, _setCitationItemsIDs] = useState([]);
-  const [isCitationSelected, setIsCitationSelection] = useState(false);
-  const itemsIDsInSelectedCitation = useRef(citationItemsIDs);
-  const setCitationItemsIDs = (ids: Array<string>) => {
-    itemsIDsInSelectedCitation.current = ids;
-    _setCitationItemsIDs(ids);
+  const originalItems = data.map((item) => ({
+    ...item,
+    label: null,
+    locator: null,
+    suffix: null,
+    prefix: null,
+    isSelected: false,
+  }));
+  const [referenceList, setReferenceList] = useState<Array<bib>>(originalItems);
+  const [citationItems, _setCitationItems] = useState([]);
+  const [citationSelected, setCitationSelected] = useState<boolean>(false);
+  const itemsInSelectedCitation = useRef(citationItems);
+  const setItemsInSelectedCitation = (itemsMetadata: Array<CitationItem>) => {
+    itemsInSelectedCitation.current = itemsMetadata;
+    _setCitationItems(itemsMetadata);
   };
 
-  const checkedItems = items
-    .filter((item) => item.isSelected)
-    .map((item) => {
-      return { id: item.id };
-    });
+  const checkedItems = referenceList.filter(({ isSelected }) => isSelected);
 
-  const unCheckAllCheckboxes = () => {
-    setItems((currentItems) => {
-      return currentItems.map(unCheckCheckbox);
+  const resetAllReferences = () => {
+    setReferenceList((currentItems) => {
+      return currentItems.map(resetReferenceState);
     });
   };
 
@@ -83,31 +94,38 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     _: React.ChangeEvent<HTMLInputElement>,
     keyword: string
   ): void => {
-    setItems(originalItems.filter(containsSearchTerm(keyword)));
+    setReferenceList(originalItems.filter(containsSearchTerm(keyword)));
   };
 
   const handleToggleChange = (
     ev: React.FormEvent<HTMLElement | HTMLInputElement>
   ) => {
-    setItems((currentItems) => {
+    setReferenceList((currentItems) => {
       return currentItems.map(onCheckboxChange(ev));
     });
   };
 
   const insertCitation = async () => {
-    if (isCitationSelected && !checkedItems.length) {
+    if (citationSelected && !checkedItems.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
-      await citeSupport.insertCitation(checkedItems, isCitationSelected);
-      unCheckAllCheckboxes();
+      await citeSupport.insertCitation(checkedItems, citationSelected);
+      resetAllReferences();
     }
   };
 
-  const checkItems = (itemIds: Array<string>) => {
-    setItems((currentItems) => {
+  const setReferenceState = (itemsMetadata: Array<CitationItem>) => {
+    setReferenceList((currentItems) => {
       return currentItems.map((item) => {
-        if (itemIds.some((id) => item.id === id)) {
-          return { ...item, isSelected: true };
+        const metadata = itemsMetadata.find(
+          (metaData) => metaData.id === item.id
+        );
+        if (metadata) {
+          return {
+            ...item,
+            ...metadata,
+            isSelected: true,
+          };
         }
         return item;
       });
@@ -115,29 +133,43 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   const discardEdit = () => {
-    unCheckAllCheckboxes();
-    checkItems(itemsIDsInSelectedCitation.current);
+    resetAllReferences();
+    setReferenceState(itemsInSelectedCitation.current);
   };
 
   const isCitationEdited = (): boolean => {
-    return arraysEqual(
-      checkedItems.map((i) => i.id),
-      itemsIDsInSelectedCitation.current
+    return (
+      JSON.stringify(checkedItems.map((citation) => ({ ...citation }))) ===
+      JSON.stringify(itemsInSelectedCitation.current)
     );
   };
 
+  const updateCitationMetaData = (citation: CitationItem) => {
+    setReferenceList((currentItems) => {
+      return currentItems.map((item) => {
+        if (item.id === citation.id) {
+          return {
+            ...item,
+            ...citation,
+          };
+        }
+        return item;
+      });
+    });
+  };
+
   const getSelectedCitation = useCallback(async (): Promise<void> => {
-    const getItemsIDInCitation =
+    const itemsInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
     const isCitationValue = await citeSupport.wordApi.isCitationSelected();
-    if (getItemsIDInCitation) {
-      unCheckAllCheckboxes();
-      setCitationItemsIDs(getItemsIDInCitation);
-      setIsCitationSelection(() => isCitationValue);
-      checkItems(getItemsIDInCitation);
-    } else if (itemsIDsInSelectedCitation.current.length) {
-      unCheckAllCheckboxes();
-      setCitationItemsIDs([]);
+    if (itemsInSelectedCitation) {
+      resetAllReferences();
+      setReferenceState(itemsInCitation);
+      setItemsInSelectedCitation(itemsInCitation);
+      setCitationSelected(() => isCitationValue);
+    } else if (itemsInSelectedCitation.current.length) {
+      resetAllReferences();
+      setItemsInSelectedCitation([]);
     }
   }, [citeSupport.wordApi]);
 
@@ -149,22 +181,23 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
-      <ReferenceList list={items} onCheckBoxChange={handleToggleChange} />
-      {checkedItems.length && !itemsIDsInSelectedCitation.current.length ? (
+      <ReferenceList
+        list={referenceList}
+        metaDataHandler={updateCitationMetaData}
+        onCheckBoxChange={handleToggleChange}
+      />
+      {checkedItems.length && !itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
             Insert {checkedItems.length}{" "}
             {checkedItems.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
-          <DefaultButton
-            onClick={unCheckAllCheckboxes}
-            style={{ marginLeft: 8 }}
-          >
+          <DefaultButton onClick={resetAllReferences} style={{ marginLeft: 8 }}>
             Cancel
           </DefaultButton>
         </div>
       ) : null}
-      {isCitationSelected ? (
+      {citationSelected ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation} disabled={isCitationEdited()}>
             Save changes

@@ -1,7 +1,9 @@
 import {
   Citation,
+  CitationItem,
   CitationResult,
   GeneratedBibliography,
+  Locator,
   MetaData,
   RebuildProcessorStateData,
   StatefulCitation,
@@ -164,8 +166,8 @@ class CiteSupport {
    */
   registerCitation(
     citation: Citation,
-    preCitations: Array<[string, number]>,
-    postCitations: Array<[string, number]>
+    preCitations: Locator,
+    postCitations: Locator
   ): void {
     this.debug("callRegisterCitation()");
     if (!this.config.processorReady) return;
@@ -330,7 +332,7 @@ class CiteSupport {
   }
 
   async insertCitation(
-    citationItems: Array<Record<string, string>>,
+    citationItems: Array<CitationItem>,
     isCitation: boolean
   ): Promise<void> {
     await this.updateCitationByIndex();
