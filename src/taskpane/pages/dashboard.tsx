@@ -82,17 +82,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     _setCitationItems(itemsMetadata);
   };
 
-  const checkedItems = referenceList
-    .filter(({ isSelected }) => isSelected)
-    .map(({ id, label, locator, prefix, suffix }) => {
-      return {
-        id,
-        label,
-        locator,
-        prefix,
-        suffix,
-      };
-    });
+  const checkedItems = referenceList.filter(({ isSelected }) => isSelected);
 
   const resetAllReferences = () => {
     setReferenceList((currentItems) => {
