@@ -115,14 +115,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     });
   };
 
-  async function insertCitation() {
+  const insertCitation = async () => {
     if (citationSelected && !checkedItems.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
       await citeSupport.insertCitation(checkedItems, citationSelected);
       resetAllReferences();
     }
-  }
+  };
 
   const setReferenceState = (itemsMetadata: Array<CitationItem>) => {
     setReferenceList((currentItems) => {
