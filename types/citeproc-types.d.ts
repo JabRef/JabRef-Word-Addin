@@ -632,10 +632,9 @@ declare module "citeproc" {
     "reviewed-author"?: Author[];
 
     volume?: string;
-    genre?: string; 
+    genre?: string;
     page?: string;
     issue?: string;
-    
     ISSN?: string;
     ISBN?: string;
     DOI?: string;
