@@ -18,6 +18,8 @@
         "plugin:office-addins/react",
         "airbnb",
         "airbnb/hooks",
+        "plugin:jest/recommended",
+        "plugin:jest/style",
         "prettier",
         "plugin:prettier/recommended"
     ],
@@ -41,7 +43,8 @@
         "office-addins",
         "react",
         "@typescript-eslint",
-        "unused-imports"
+        "unused-imports",
+        "jest"
     ],
     "rules": {
       "react/jsx-filename-extension": "off",
