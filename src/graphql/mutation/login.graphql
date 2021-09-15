@@ -1,6 +1,15 @@
-mutation Login($loginEmail: EmailAddress!, $loginPassword: String!) {
-  login(email: $loginEmail, password: $loginPassword) {
-    id
-    email
+mutation Login($email: EmailAddress!, $password: String!) {
+  login(email: $email, password: $password) {
+    ... on UserReturned {
+      user {
+        id
+      }
+    }
+    ... on InputValidationProblem {
+      problems {
+        path
+        message
+      }
+    }
   }
 }
