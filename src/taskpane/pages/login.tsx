@@ -53,12 +53,12 @@ function Login() {
         onSubmit={async (value) => {
           const response = await loginMutation({
             variables: {
-              loginEmail: value.email,
-              loginPassword: value.password,
+              email: value.email,
+              password: value.password,
             },
           });
           // eslint-disable-next-line no-underscore-dangle
-          if (response.data?.login.__typename === "User") {
+          if (response.data?.login.__typename === "UserReturned") {
             history.push({ pathname: "/" });
           }
         }}
