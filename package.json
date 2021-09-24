@@ -28,8 +28,8 @@
     "postinstall": "yarn generate && crlf --set=LF node_modules/.bin/office-addin-*"
   },
   "dependencies": {
-    "@fluentui/react": "^8.30.3",
     "@apollo/client": "^3.4.10",
+    "@fluentui/react": "^8.30.3",
     "citeproc": "^2.4.59",
     "core-js": "^3.17.1",
     "cross-var": "^1.1.0",
@@ -38,6 +38,7 @@
     "es6-promise": "^4.2.8",
     "formik": "^2.2.9",
     "graphql": "^15.5.2",
+    "neverthrow": "^4.2.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.1",
