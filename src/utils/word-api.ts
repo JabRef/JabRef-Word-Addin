@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { CitationItem, StatefulCitation } from "citeproc";
+import { err, ok, Result } from "neverthrow";
 
 export type CitationDataFormatForWordAPI = {
   position: number;
@@ -69,45 +70,53 @@ class WordApi {
     });
   }
 
-  async getPositionOfSelectedCitation(): Promise<number> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const currentCitation = context.document
-        .getSelection()
-        .contentControls.getFirstOrNullObject();
-      const jabRefCitations = await this.getJabRefCitations(context);
-      const locationArray = jabRefCitations.map((citation) => {
-        const citationToCompareWith = citation.getRange("Whole");
-        const currentSelectionRange = currentCitation.getRange("Whole");
-        return citationToCompareWith.compareLocationWith(currentSelectionRange);
-      });
-      await context.sync();
-      return locationArray.findIndex((location) => location.value === "Equal");
-    }).catch((error) => {
-      console.log(`Error: ${JSON.stringify(error)}`);
-      if (error instanceof OfficeExtension.Error) {
-        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+  async getPositionOfSelectedCitation(): Promise<Result<number, Error>> {
+    return Word.run(
+      async (context: Word.RequestContext): Promise<Result<number, Error>> => {
+        const currentCitation = context.document
+          .getSelection()
+          .contentControls.getFirstOrNullObject();
+        const jabRefCitations = await this.getJabRefCitations(context);
+        const locationArray = jabRefCitations.map((citation) => {
+          const citationToCompareWith = citation.getRange("Whole");
+          const currentSelectionRange = currentCitation.getRange("Whole");
+          return citationToCompareWith.compareLocationWith(
+            currentSelectionRange
+          );
+        });
+        await context.sync();
+        const positon = locationArray.findIndex(
+          (location) => location.value === "Equal"
+        );
+        return ok(positon);
       }
-      return 0;
+    ).catch((error) => {
+      if (error instanceof OfficeExtension.Error) {
+        return err(new Error(JSON.stringify(error.debugInfo.message)));
+      }
+      return err(new Error("Something went wrong"));
     });
   }
 
-  async isCitationSelected(): Promise<boolean> {
-    return Word.run(async (context: Word.RequestContext) => {
-      const currentSelection = context.document
-        .getSelection()
-        .contentControls.getFirstOrNullObject();
-      currentSelection.load("tag");
-      await context.sync();
-      return (
-        !currentSelection.isNullObject &&
-        currentSelection.tag.includes(this.JABREF_CITATION_TAG_PREFIX)
-      );
-    }).catch((error) => {
+  async isCitationSelected(): Promise<Result<boolean, Error>> {
+    return Word.run(
+      async (context: Word.RequestContext): Promise<Result<boolean, Error>> => {
+        const currentSelection = context.document
+          .getSelection()
+          .contentControls.getFirstOrNullObject();
+        currentSelection.load("tag");
+        await context.sync();
+        return ok(
+          !currentSelection.isNullObject &&
+            currentSelection.tag.includes(this.JABREF_CITATION_TAG_PREFIX)
+        );
+      }
+    ).catch((error) => {
       console.log(`Error: ${JSON.stringify(error)}`);
       if (error instanceof OfficeExtension.Error) {
-        console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
+        return err(new Error(JSON.stringify(error.debugInfo.message)));
       }
-      return false;
+      return err(new Error("Something went wrong"));
     });
   }
 
