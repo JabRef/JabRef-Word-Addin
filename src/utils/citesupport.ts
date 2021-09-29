@@ -257,7 +257,7 @@ class CiteSupport {
     this.debug("upsertCitation()");
     const isCitationSelected = await this.wordApi.isCitationSelected();
     const citationData = this.convertCitationDataToCustomFormat(data);
-    if (isCitationSelected) {
+    if (isCitationSelected.isOk() && isCitationSelected.value) {
       await this.wordApi.updateCitations(citationData);
     } else {
       await this.wordApi.insertNewCitation(citationData[0]);
@@ -318,7 +318,10 @@ class CiteSupport {
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
-    this.config.citationByIndex = await this.wordApi.getCitationByIndex();
+    const citationByIndex = await this.wordApi.getCitationByIndex();
+    if (citationByIndex.isOk()) {
+      this.config.citationByIndex = citationByIndex.value;
+    }
   }
 
   /**
@@ -326,8 +329,8 @@ class CiteSupport {
    */
   async updateCitationByIndex(): Promise<void> {
     const citationByIndex = await this.wordApi.getCitationByIndex();
-    if (citationByIndex) {
-      this.config.citationByIndex = citationByIndex;
+    if (citationByIndex.isOk()) {
+      this.config.citationByIndex = citationByIndex.value;
     }
   }
 
@@ -356,9 +359,17 @@ class CiteSupport {
     let i = 0;
     let offset = 0;
     if (!isCitation) {
-      i = await this.wordApi.getPositionOfNewCitation();
+      const positionOfNewCitation =
+        await this.wordApi.getPositionOfNewCitation();
+      if (positionOfNewCitation.isOk()) {
+        i = positionOfNewCitation.value;
+      }
     } else {
-      i = await this.wordApi.getPositionOfSelectedCitation();
+      const positionOfSelectedCitation =
+        await this.wordApi.getPositionOfSelectedCitation();
+      if (positionOfSelectedCitation.isOk()) {
+        i = positionOfSelectedCitation.value;
+      }
       offset = 1;
     }
     if (this.config.citationByIndex.slice(0, i).length) {
