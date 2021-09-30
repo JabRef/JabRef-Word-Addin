@@ -10,6 +10,7 @@ import {
 import { Stack } from "@fluentui/react";
 import Preference from "../../utils/user-preference";
 import CiteSupport from "../../utils/citesupport";
+import { successToast } from "../components/Toasts";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -93,6 +94,7 @@ function CitationStyle({ citeSupport }: CitationStyleProps): JSX.Element {
     setCurrentStyle(ev.currentTarget.id);
     Preference.setCitationStyle(ev.currentTarget.id);
     await citeSupport.initDocument();
+    successToast("Citation Style Updated Successfully");
   };
 
   // Sync with doc settings

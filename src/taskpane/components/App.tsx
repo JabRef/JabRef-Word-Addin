@@ -1,5 +1,6 @@
 import React, { useEffect, useState, ReactElement } from "react";
 import { Switch, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Progress from "./Progress";
 import Login from "../pages/login";
 import Layout from "./Layout";
@@ -31,6 +32,21 @@ function App(props: AppProps): ReactElement {
   }
   return (
     <div>
+      <ToastContainer
+        position="top-center"
+        closeButton={false}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        draggable={false}
+        pauseOnHover
+        bodyStyle={{ padding: 0 }}
+        style={{ marginTop: 45, padding: 0, width: "100vw" }}
+        toastClassName={() =>
+          "relative flex p-1 overflow-auto min-h-100vh box-border rounded-md justify-between cursor-pointer"
+        }
+      />
       <Switch>
         <Route path="/login">
           <Login />
