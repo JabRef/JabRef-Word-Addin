@@ -83,7 +83,7 @@
     "html-webpack-plugin": "^4.5.1",
     "less": "^4.1.1",
     "less-loader": "^7.3.0",
-    "office-addin-cli": "^1.0.17",
+    "office-addin-cli": "^1.2.5",
     "office-addin-debugging": "^4.2.2",
     "office-addin-dev-certs": "^1.5.12",
     "office-addin-lint": "^1.3.2",
