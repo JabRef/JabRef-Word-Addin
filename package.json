@@ -75,7 +75,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-unused-imports": "^1.1.4",
+    "eslint-plugin-unused-imports": "^1.1.5",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "file-loader": "^6.2.0",
     "find-process": "^1.4.5",
