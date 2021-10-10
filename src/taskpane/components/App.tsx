@@ -38,11 +38,13 @@ function App(props: AppProps): ReactElement {
         hideProgressBar
         newestOnTop
         closeOnClick
+        limit={5}
         rtl={false}
         draggable={false}
         pauseOnHover
+        autoClose={3000} // 3 seconds
         bodyStyle={{ padding: 0 }}
-        style={{ marginTop: 45, padding: 0, width: "100vw" }}
+        style={{ marginTop: 45, padding: 0 }}
         toastClassName={() =>
           "relative flex p-1 overflow-auto min-h-100vh box-border rounded-md justify-between cursor-pointer"
         }
