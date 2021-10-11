@@ -123,8 +123,8 @@ function Layout({ citeSupport }: LayoutProps): ReactElement {
             styles={ButtonStyle}
             iconProps={SyncBib}
             allowDisabledFocus
-            onClick={() => {
-              citeSupport.getBibliography();
+            onClick={async () => {
+              await citeSupport.getBibliography();
             }}
           >
             bib

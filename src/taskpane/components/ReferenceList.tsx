@@ -9,17 +9,19 @@ import {
   FocusZoneDirection,
   Checkbox,
 } from "@fluentui/react";
-import { MetaData } from "citeproc";
+import { CitationItem, MetaData } from "citeproc";
 import React, { ReactElement } from "react";
+import EditCitation from "./EditCitation";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
-export interface bib extends MetaData {
+export interface bib extends MetaData, CitationItem {
   isSelected: boolean;
 }
 
 interface ReferenceListProps {
   list: Array<bib>;
+  metaDataHandler: (metadata: CitationItem) => void;
   onCheckBoxChange: (
     ev?: React.FormEvent<HTMLInputElement | HTMLElement>,
     checked?: boolean
@@ -87,12 +89,24 @@ function ReferenceList(props: ReferenceListProps): ReactElement {
   const onRenderCell = (item: bib): JSX.Element => {
     return (
       <div className={classNames.itemCell} data-is-focusable>
-        <Checkbox
-          className={classNames.checkbox}
-          title={item.title}
-          checked={item.isSelected}
-          onChange={props.onCheckBoxChange}
-        />
+        <div style={{ display: "flex", flexDirection: "column" as const }}>
+          <Checkbox
+            className={classNames.checkbox}
+            title={item.title}
+            checked={item.isSelected}
+            onChange={props.onCheckBoxChange}
+          />
+          {item.isSelected && (
+            <EditCitation
+              id={item.id}
+              labelProp={item.label}
+              locatorProp={item.locator}
+              prefixProp={item.prefix}
+              suffixProp={item.suffix}
+              metaDataHandler={props.metaDataHandler}
+            />
+          )}
+        </div>
         <div className={classNames.itemContent}>
           <div className={classNames.itemType}>{item.type}</div>
           <div className={classNames.itemTitle}>{item.title}</div>

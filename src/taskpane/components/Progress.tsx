@@ -1,5 +1,6 @@
 import {
   DefaultPalette,
+  ISpinnerStyles,
   IStackStyles,
   IStackTokens,
   Spinner,
@@ -16,13 +17,22 @@ export interface ProgressProps {
 }
 const stackStyles: IStackStyles = {
   root: {
-    paddingTop: 140,
     background: DefaultPalette.white,
   },
 };
 
 const stackToken: IStackTokens = {
-  childrenGap: 60,
+  childrenGap: 45,
+};
+
+const spinnerStyle: ISpinnerStyles = {
+  root: {
+    color: DefaultPalette.blueMid,
+  },
+  label: {
+    color: DefaultPalette.blueMid,
+    fontSize: "1em",
+  },
 };
 
 export default class Progress extends React.PureComponent<ProgressProps> {
@@ -31,12 +41,21 @@ export default class Progress extends React.PureComponent<ProgressProps> {
 
     return (
       <Wrapper>
-        <Stack verticalFill styles={stackStyles} tokens={stackToken}>
+        <Stack
+          verticalFill
+          verticalAlign="center"
+          styles={stackStyles}
+          tokens={stackToken}
+        >
           <Stack.Item align="center">
-            <img width="90" height="90" src={logo} alt={title} title={title} />
+            <img width="80" height="80" src={logo} alt={title} title={title} />
           </Stack.Item>
           <Stack.Item align="center">
-            <Spinner size={SpinnerSize.large} label={message} />
+            <Spinner
+              size={SpinnerSize.large}
+              label={message}
+              styles={spinnerStyle}
+            />
           </Stack.Item>
         </Stack>
       </Wrapper>

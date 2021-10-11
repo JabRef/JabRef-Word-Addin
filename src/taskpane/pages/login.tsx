@@ -20,6 +20,7 @@ import Wrapper from "../components/Wrapper";
 const stackStylesHeader: IStackStyles = {
   root: {
     background: DefaultPalette.white,
+    overflow: "hidden",
   },
 };
 
