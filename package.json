@@ -51,7 +51,7 @@
     "@graphql-codegen/typescript-operations": "2.1.5",
     "@graphql-codegen/typescript-react-apollo": "3.1.4",
     "@types/find-process": "1.2.0",
-    "@types/office-js": "^1.0.206",
+    "@types/office-js": "^1.0.215",
     "@types/office-runtime": "^1.0.21",
     "@types/react": "^17.0.26",
     "@types/react-dom": "^17.0.9",
