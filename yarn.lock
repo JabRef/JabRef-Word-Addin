@@ -8079,10 +8079,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^1.2.3, office-addin-cli@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.2.5.tgz#49a965ae90541e6eef1cdc4603f6b00759ce1647"
-  integrity sha512-/zvP0u5iSrygBsv6KAXgs0QeO9vRs8RofziUuqkFZM/LGKZ2YcwOLyjzOotojPfTjRnfaL+ZSgmaYCiGFYUoMw==
+office-addin-cli@^1.2.3, office-addin-cli@^1.2.5, office-addin-cli@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.3.2.tgz#0fc089981eb896f45804e16934e12918dd6d5895"
+  integrity sha512-UbteR6WEgUCRo83PPIHd8hWZ4pFNNjfhBJBGdJwSNYN+6Hu+QQvndY5asfCs91HVhpCNsIkgStjYGzHh7GhU5w==
   dependencies:
     commander "^6.2.1"
     node-fetch "^2.6.1"
@@ -8150,16 +8150,16 @@ office-addin-lint@^1.3.5:
     office-addin-usage-data "^1.3.5"
     prettier "^2.2.1"
 
-office-addin-manifest@^1.6.0, office-addin-manifest@^1.6.3:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.6.5.tgz#a50cb81b5eabd059862f1b60e46fd7636662783a"
-  integrity sha512-gSlhc1rWIPC/IMwsBFHc9jzsEEu4CdHER3cv2RxWFyFSlofklrF7m3N8W6NXmky8IB9TO9rmaBLhyV6a7kq5Jg==
+office-addin-manifest@^1.6.3, office-addin-manifest@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.7.2.tgz#e25171d9e504e2203dfdea633e4ef10ead598289"
+  integrity sha512-Nxc24oVjJJbgLlD5hodCkiPSibiSsxaax4waYcgkHW4eOQDdESDVMM1FUA2ylMDp4s7E8b4fUPI75yFaqL4RYg==
   dependencies:
     chalk "^2.4.2"
     commander "^6.2.0"
     node-fetch "^2.6.1"
-    office-addin-cli "^1.2.5"
-    office-addin-usage-data "^1.3.5"
+    office-addin-cli "^1.3.2"
+    office-addin-usage-data "^1.4.2"
     path "^0.12.7"
     uuid "^8.3.2"
     xml2js "^0.4.23"
@@ -8180,14 +8180,14 @@ office-addin-prettier-config@^1.0.14, office-addin-prettier-config@^1.1.0:
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.1.0.tgz#92ce8f62d7b7ea24e242648f9693a1fce979c8b0"
   integrity sha512-tCv+FoL+oj5WpXcoKuqgqDIcdvHpEklRvksHD3zxT2eVKrDzgWd8BXsqrPkNIH85zsuPgpje3brobbOvbNqa6A==
 
-office-addin-usage-data@^1.3.3, office-addin-usage-data@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.3.5.tgz#7fa00138ce2badd0a6562d2480e0724a24acc900"
-  integrity sha512-DOKM4vTy2z8EKzmb3xWL0zmGVxQM7MVs7BRitmpc1QR+X/SIgxnDrOOhVGDRBa7jXZUg5FTSxz6OVc195LToSA==
+office-addin-usage-data@^1.3.3, office-addin-usage-data@^1.3.5, office-addin-usage-data@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.4.2.tgz#3714464b584a150366912f5e1704b632d75d0f25"
+  integrity sha512-0sP8Qqp8xgBqrrt7lZvrYZyYS2N8Be0telG0FjhA7RIK7GbcnsfilM/yiJx97CtYWiuVTyiC40kufL6LN+EHYw==
   dependencies:
     applicationinsights "^1.7.3"
     commander "^6.2.0"
-    office-addin-cli "^1.2.5"
+    office-addin-cli "^1.3.2"
     readline-sync "^1.4.9"
 
 on-finished@~2.3.0:
