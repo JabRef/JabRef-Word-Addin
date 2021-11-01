@@ -77,6 +77,7 @@ module.exports = async (env, options) => {
         template: "./src/taskpane/taskpane.html",
         chunks: ["taskpane", "vendor", "polyfills"],
       }),
+      // Needed as Azure deployment expects an index.html file
       new HtmlWebpackPlugin({
         filename: "index.html",
         template: "./src/index.html",
