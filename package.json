@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.39.0",
-    "@apollo/client": "^3.4.15",
+    "@apollo/client": "^3.4.16",
     "citeproc": "^2.4.59",
     "core-js": "^3.18.1",
     "cross-var": "^1.1.0",
