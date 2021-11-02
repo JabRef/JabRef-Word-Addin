@@ -31,7 +31,7 @@
     "@fluentui/react": "^8.39.0",
     "@apollo/client": "^3.4.15",
     "citeproc": "^2.4.59",
-    "core-js": "^3.18.1",
+    "core-js": "^3.19.0",
     "cross-var": "^1.1.0",
     "dotenv": "^10.0.0",
     "dotenv-cli": "^4.1.0",
