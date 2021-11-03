@@ -48,7 +48,7 @@
     "@babel/preset-typescript": "^7.16.0",
     "@graphql-codegen/cli": "2.2.0",
     "@graphql-codegen/typescript": "2.2.2",
-    "@graphql-codegen/typescript-operations": "2.1.5",
+    "@graphql-codegen/typescript-operations": "2.2.0",
     "@graphql-codegen/typescript-react-apollo": "3.2.0",
     "@types/find-process": "1.2.0",
     "@types/office-js": "^1.0.206",
