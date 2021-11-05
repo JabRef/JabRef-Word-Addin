@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { useMeQuery } from "../generated/graphql";
-import Progress from "../taskpane/components/Progress";
+import { useMeQuery } from "../../generated/graphql";
+import Progress from "../components/Progress";
 
 interface ProtectedRoutesProps {
   children: JSX.Element;
@@ -26,7 +26,7 @@ function ProtectedRoutes({
     <Route
       {...rest}
       render={({ location }) =>
-        !data.me ? (
+        !data ? (
           children
         ) : (
           <Redirect

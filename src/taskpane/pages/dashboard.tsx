@@ -10,6 +10,7 @@ import { CitationItem } from "citeproc";
 import data from "../../utils/data";
 import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
+import "react-toastify/dist/ReactToastify.css";
 import CiteSupport from "../../utils/citesupport";
 
 interface DashboardProps {
@@ -164,9 +165,12 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     const isCitationValue = await citeSupport.wordApi.isCitationSelected();
     if (itemsInSelectedCitation) {
       resetAllReferences();
-      setReferenceState(itemsInCitation);
-      setItemsInSelectedCitation(itemsInCitation);
-      setCitationSelected(() => isCitationValue);
+      if (itemsInCitation.isOk()) {
+        setReferenceState(itemsInCitation.value);
+        setItemsInSelectedCitation(itemsInCitation.value);
+      }
+      if (isCitationValue.isOk())
+        setCitationSelected(() => isCitationValue.value);
     } else if (itemsInSelectedCitation.current.length) {
       resetAllReferences();
       setItemsInSelectedCitation([]);

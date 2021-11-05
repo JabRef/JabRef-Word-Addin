@@ -14,10 +14,10 @@ import {
 } from "@fluentui/react";
 import React, { ReactElement } from "react";
 import { useLogoutMutation } from "../../generated/graphql";
-import client from "../../utils/apolloClient";
+import client from "../../plugins/apolloClient";
 import CitationStyle from "../pages/citationStyle";
 import Dashboard from "../pages/dashboard";
-import Wrapper from "./Wrapper";
+import Wrapper from "../components/Wrapper";
 import CiteSupport from "../../utils/citesupport";
 
 interface LayoutProps {
