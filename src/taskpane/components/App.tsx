@@ -3,8 +3,8 @@ import { Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Progress from "./Progress";
 import Login from "../pages/login";
-import Layout from "./Layout";
-import ProtectedRoutes from "../../utils/ProtectedRoutes";
+import Layout from "../layout/Layout";
+import ProtectedRoutes from "../router/ProtectedRoutes";
 import CiteSupport from "../../utils/citesupport";
 import data from "../../utils/data";
 
