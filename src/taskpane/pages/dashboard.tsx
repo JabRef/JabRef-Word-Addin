@@ -10,7 +10,7 @@ import { CitationItem, MetaData } from "citeproc";
 import data from "../../utils/data";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
-import DocumentList from "../components/ReferenceList";
+import DocumentList from "../components/DocumentList";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -32,7 +32,6 @@ const buttonContainer = {
   alignContent: "flex-start",
   flexDirection: "row" as const,
 };
-
 function containsSearchTerm(keyword: string) {
   return (item?: MetaData) => {
     return [item.title, item.author, item.year].some((str: string | number) =>
@@ -44,7 +43,7 @@ function containsSearchTerm(keyword: string) {
 }
 
 function Dashboard({ citeSupport }: DashboardProps): ReactElement {
-  const originalItems = data; // Replace with getData hook
+  const originalItems = data; // TODO: Replace with getData hook
 
   // ===========================================================================
   // States
@@ -62,10 +61,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     _setCitationItems(itemsMetadata);
   };
 
-  const checkedItems = data.filter(
-    (document) => !!selectedDocuments.find((item) => item.id === document.id)
-  );
-
   const handleSelection = (id: string, checked: boolean) => {
     setSelectedDocuments((currentItems) => {
       return checked
@@ -75,6 +70,17 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   };
 
   const clearSelection = () => setSelectedDocuments([]);
+
+  const updateCitationMetaData = (citationItem: CitationItem) => {
+    const { id, label, prefix, suffix, locator } = citationItem;
+    setSelectedDocuments((currentItems) => {
+      return currentItems.map((item) => {
+        return item.id === id
+          ? { ...item, label, prefix, suffix, locator }
+          : item;
+      });
+    });
+  };
 
   const updateSelectedDocuments = (documents: Array<CitationItem>) => {
     setSelectedDocuments(() => documents);
@@ -89,10 +95,10 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   const insertCitation = async () => {
     const citationSelected = itemsInSelectedCitation.current.length > 0;
-    if (citationSelected && !checkedItems.length) {
+    if (citationSelected && !selectedDocuments.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
-      await citeSupport.insertCitation(checkedItems, citationSelected);
+      await citeSupport.insertCitation(selectedDocuments, citationSelected);
       clearSelection();
       setItemsInSelectedCitation([]);
     }
@@ -110,6 +116,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       setItemsInSelectedCitation([]);
     }
   }, [citeSupport.wordApi]);
+
+  const undoEdit = () => {
+    updateSelectedDocuments(itemsInSelectedCitation.current);
+  };
+
+  const editCheck = () =>
+    JSON.stringify(selectedDocuments) ===
+    JSON.stringify(itemsInSelectedCitation.current);
 
   // ===========================================================================
   // Event Listener
@@ -130,14 +144,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       <DocumentList
         referenceList={referenceList}
         selectedItems={selectedDocuments}
-        // metaDataHandler={updateCitationMetaData}
+        metaDataHandler={updateCitationMetaData}
         handleSelection={handleSelection}
       />
-      {checkedItems.length && !itemsInSelectedCitation.current.length ? (
+      {selectedDocuments.length && !itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
-            Insert {checkedItems.length}{" "}
-            {checkedItems.length > 1 ? "citations" : "citation"}
+            Insert {selectedDocuments.length}{" "}
+            {selectedDocuments.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
           <DefaultButton onClick={clearSelection} style={{ marginLeft: 8 }}>
             Cancel
@@ -146,10 +160,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       ) : null}
       {itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation} disabled={}>
+          <PrimaryButton onClick={insertCitation} disabled={editCheck()}>
             Save changes
           </PrimaryButton>
-          <DefaultButton onClick={} style={{ marginLeft: 8 }} disabled={}>
+          <DefaultButton
+            onClick={undoEdit}
+            style={{ marginLeft: 8 }}
+            disabled={editCheck()}
+          >
             Cancel
           </DefaultButton>
         </div>

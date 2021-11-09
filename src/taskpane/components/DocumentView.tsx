@@ -8,10 +8,12 @@ import {
   mergeStyleSets,
 } from "@fluentui/react";
 import { CitationItem, MetaData } from "citeproc";
+import EditCitation from "./EditCitation";
 
 interface DocumentViewProps {
   document: MetaData;
   selectedDocuments: Array<CitationItem>;
+  metaDataHandler: (metadata: CitationItem) => void;
   handleSelection: (id: string, checked: boolean) => void;
 }
 
@@ -73,6 +75,7 @@ const DocumentView: React.FC<DocumentViewProps> = ({
   document,
   selectedDocuments,
   handleSelection,
+  metaDataHandler,
 }) => {
   return (
     <li className={classNames.itemCell} data-is-focusable>
@@ -86,6 +89,15 @@ const DocumentView: React.FC<DocumentViewProps> = ({
             handleSelection(document.id, checked);
           }}
         />
+        {!!selectedDocuments.find(
+          (citation) => citation.id === document.id
+        ) && (
+          <EditCitation
+            document={document}
+            metaDataHandler={metaDataHandler}
+            selectedDocuments={selectedDocuments}
+          />
+        )}
       </div>
       <div className={classNames.itemContent}>
         <div className={classNames.itemType}>{document.type}</div>

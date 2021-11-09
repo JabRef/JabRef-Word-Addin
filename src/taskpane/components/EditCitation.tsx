@@ -18,14 +18,11 @@ import {
   Stack,
   TextField,
 } from "@fluentui/react";
-import { CitationItem } from "citeproc";
+import { CitationItem, MetaData } from "citeproc";
 
 interface EditCitationProps {
-  id: string;
-  labelProp: string;
-  locatorProp: string;
-  prefixProp: string;
-  suffixProp: string;
+  selectedDocuments: Array<CitationItem>;
+  document: MetaData;
   // eslint-disable-next-line no-unused-vars
   metaDataHandler: (metadata: CitationItem) => void;
 }
@@ -70,17 +67,18 @@ const LabelOptions: Array<LabelOptionInterface> = [
   { key: "paragraph", text: "Paragraph" },
 ];
 
-const EditCitation: React.FunctionComponent<EditCitationProps> = (
-  props: EditCitationProps
-) => {
+const EditCitation: React.FunctionComponent<EditCitationProps> = ({
+  selectedDocuments,
+  document,
+  metaDataHandler,
+}: EditCitationProps) => {
   const {
     id,
-    labelProp,
-    locatorProp,
-    prefixProp,
-    suffixProp,
-    metaDataHandler,
-  } = props;
+    label: labelProp,
+    prefix: prefixProp,
+    suffix: suffixProp,
+    locator: locatorProp,
+  } = selectedDocuments.find((doc) => doc.id === document.id);
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
     useBoolean(false);
   const [label, setlabel] = useState<string>(labelProp);
