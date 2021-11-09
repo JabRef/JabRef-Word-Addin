@@ -18,13 +18,11 @@ import {
   Stack,
   TextField,
 } from "@fluentui/react";
-import { CitationItem, MetaData } from "citeproc";
+import { MetaData } from "citeproc";
+import { useCitationStore } from "./CitationStoreContext";
 
 interface EditCitationProps {
-  selectedDocuments: Array<CitationItem>;
   document: MetaData;
-  // eslint-disable-next-line no-unused-vars
-  citationDataHandler: (metadata: CitationItem) => void;
 }
 
 const editIcon: IIconProps = { iconName: "edit" };
@@ -68,17 +66,16 @@ const LabelOptions: Array<LabelOptionInterface> = [
 ];
 
 const EditCitation: React.FunctionComponent<EditCitationProps> = ({
-  selectedDocuments,
   document,
-  citationDataHandler,
 }: EditCitationProps) => {
+  const { selectedCitations, dispatch } = useCitationStore();
   const {
     id,
     label: labelProp,
     prefix: prefixProp,
     suffix: suffixProp,
     locator: locatorProp,
-  } = selectedDocuments.find((doc) => doc.id === document.id);
+  } = selectedCitations.find((doc) => doc.id === document.id);
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
     useBoolean(false);
   const [label, setlabel] = useState<string>(labelProp);
@@ -113,15 +110,17 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
     []
   );
   const onClickHandler = useCallback(() => {
-    citationDataHandler({
+    const citation = {
       id,
       label,
       prefix,
       suffix,
       locator,
-    });
+    };
+    dispatch({ type: "update", citation });
+
     dismissPanel();
-  }, [citationDataHandler, id, label, prefix, suffix, locator, dismissPanel]);
+  }, [id, label, prefix, suffix, locator, dispatch, dismissPanel]);
 
   const onRenderFooterContent = React.useCallback(
     () => (

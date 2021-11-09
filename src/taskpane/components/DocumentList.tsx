@@ -10,9 +10,6 @@ export interface bib extends MetaData, CitationItem {
 
 interface ReferenceListProps {
   referenceList: Array<MetaData>;
-  selectedItems: Array<CitationItem>;
-  citationDataHandler: (metadata: CitationItem) => void;
-  handleSelection: (id: string, checked?: boolean) => void;
 }
 const classNames = mergeStyleSets({
   container: {
@@ -22,12 +19,7 @@ const classNames = mergeStyleSets({
   },
 });
 
-function DocumentList({
-  referenceList,
-  selectedItems,
-  handleSelection,
-  citationDataHandler,
-}: ReferenceListProps): ReactElement {
+function DocumentList({ referenceList }: ReferenceListProps): ReactElement {
   return (
     <FocusZone
       direction={FocusZoneDirection.vertical}
@@ -35,12 +27,7 @@ function DocumentList({
     >
       <ul>
         {referenceList.map((document) => (
-          <DocumentView
-            document={document}
-            citationDataHandler={citationDataHandler}
-            selectedDocuments={selectedItems}
-            handleSelection={handleSelection}
-          />
+          <DocumentView document={document} />
         ))}
       </ul>
     </FocusZone>

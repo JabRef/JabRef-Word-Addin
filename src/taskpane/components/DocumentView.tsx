@@ -7,14 +7,12 @@ import {
   ITheme,
   mergeStyleSets,
 } from "@fluentui/react";
-import { CitationItem, MetaData } from "citeproc";
+import { MetaData } from "citeproc";
 import EditCitation from "./EditCitation";
+import { useCitationStore } from "./CitationStoreContext";
 
 interface DocumentViewProps {
   document: MetaData;
-  selectedDocuments: Array<CitationItem>;
-  citationDataHandler: (metadata: CitationItem) => void;
-  handleSelection: (id: string, checked: boolean) => void;
 }
 
 const theme: ITheme = getTheme();
@@ -71,33 +69,26 @@ const classNames = mergeStyleSets({
   },
 });
 
-const DocumentView: React.FC<DocumentViewProps> = ({
-  document,
-  selectedDocuments,
-  handleSelection,
-  citationDataHandler,
-}) => {
+const DocumentView: React.FC<DocumentViewProps> = ({ document }) => {
+  const { selectedCitations, dispatch } = useCitationStore();
   return (
     <li className={classNames.itemCell} data-is-focusable>
       <div style={{ display: "flex", flexDirection: "column" as const }}>
         <Checkbox
           className={classNames.checkbox}
           checked={
-            !!selectedDocuments.find((citation) => citation.id === document.id)
+            !!selectedCitations.find((citation) => citation.id === document.id)
           }
           onChange={(_e, checked) => {
-            handleSelection(document.id, checked);
+            dispatch({
+              type: checked ? "add" : "remove",
+              citation: document,
+            });
           }}
         />
-        {!!selectedDocuments.find(
+        {!!selectedCitations.find(
           (citation) => citation.id === document.id
-        ) && (
-          <EditCitation
-            document={document}
-            citationDataHandler={citationDataHandler}
-            selectedDocuments={selectedDocuments}
-          />
-        )}
+        ) && <EditCitation document={document} />}
       </div>
       <div className={classNames.itemContent}>
         <div className={classNames.itemType}>{document.type}</div>

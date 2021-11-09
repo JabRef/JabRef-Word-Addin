@@ -11,6 +11,7 @@ import data from "../../utils/data";
 import SearchField from "../components/SearchField";
 import CiteSupport from "../../utils/citesupport";
 import DocumentList from "../components/DocumentList";
+import { useCitationStore } from "../components/CitationStoreContext";
 
 interface DashboardProps {
   citeSupport: CiteSupport;
@@ -49,41 +50,16 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   // States
   // ===========================================================================
 
-  const [selectedDocuments, setSelectedDocuments] = useState<
-    Array<CitationItem>
-  >([]);
+  const { selectedCitations, dispatch } = useCitationStore();
   const [referenceList, setReferenceList] =
     useState<Array<MetaData>>(originalItems);
-  const [citationItems, _setCitationItems] = useState([]);
+  const [citationItems, _setCitationItems] = useState<
+    Array<CitationItem | null>
+  >([]);
   const itemsInSelectedCitation = useRef(citationItems);
   const setItemsInSelectedCitation = (itemsMetadata: Array<CitationItem>) => {
     itemsInSelectedCitation.current = itemsMetadata;
     _setCitationItems(itemsMetadata);
-  };
-
-  const handleSelection = (id: string, checked: boolean) => {
-    setSelectedDocuments((currentItems) => {
-      return checked
-        ? [...currentItems, { id }]
-        : [...currentItems.filter((item) => item.id !== id)];
-    });
-  };
-
-  const clearSelection = () => setSelectedDocuments([]);
-
-  const addCitationData = (citationItem: CitationItem) => {
-    const { id, label, prefix, suffix, locator } = citationItem;
-    setSelectedDocuments((currentItems) => {
-      return currentItems.map((item) => {
-        return item.id === id
-          ? { ...item, label, prefix, suffix, locator }
-          : item;
-      });
-    });
-  };
-
-  const updateSelectedDocuments = (documents: Array<CitationItem>) => {
-    setSelectedDocuments(() => documents);
   };
 
   const onFilterChange = (
@@ -95,35 +71,35 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   const insertCitation = async () => {
     const citationSelected = itemsInSelectedCitation.current.length > 0;
-    if (citationSelected && !selectedDocuments.length) {
+    if (citationSelected && !selectedCitations.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
-      await citeSupport.insertCitation(selectedDocuments, citationSelected);
-      clearSelection();
+      await citeSupport.insertCitation(selectedCitations, citationSelected);
+      dispatch({ type: "empty" });
       setItemsInSelectedCitation([]);
     }
   };
 
   const undoEdit = () => {
-    updateSelectedDocuments(itemsInSelectedCitation.current);
+    dispatch({ type: "replace", citations: itemsInSelectedCitation.current });
   };
 
   const editCheck = () =>
-    JSON.stringify(selectedDocuments) ===
+    JSON.stringify(selectedCitations) ===
     JSON.stringify(itemsInSelectedCitation.current);
 
   const getSelectedCitation = useCallback(async (): Promise<void> => {
     const itemsInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
     if (itemsInCitation.length) {
-      clearSelection();
-      updateSelectedDocuments(itemsInCitation);
+      dispatch({ type: "empty" });
+      dispatch({ type: "replace", citations: itemsInCitation });
       setItemsInSelectedCitation(itemsInCitation);
     } else if (itemsInSelectedCitation.current.length) {
-      clearSelection();
+      dispatch({ type: "empty" });
       setItemsInSelectedCitation([]);
     }
-  }, [citeSupport.wordApi]);
+  }, [citeSupport.wordApi, dispatch]);
 
   // ===========================================================================
   // Event Listener
@@ -141,20 +117,15 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
-      <DocumentList
-        referenceList={referenceList}
-        selectedItems={selectedDocuments}
-        citationDataHandler={addCitationData}
-        handleSelection={handleSelection}
-      />
-      {selectedDocuments.length && !itemsInSelectedCitation.current.length ? (
+      <DocumentList referenceList={referenceList} />
+      {selectedCitations.length && !itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
-            Insert {selectedDocuments.length}{" "}
-            {selectedDocuments.length > 1 ? "citations" : "citation"}
+            Insert {selectedCitations.length}{" "}
+            {selectedCitations.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
           <DefaultButton
-            onClick={clearSelection}
+            onClick={() => dispatch({ type: "empty" })}
             text="Cancel"
             style={{ marginLeft: 8 }}
           />
