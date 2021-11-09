@@ -11,7 +11,7 @@ export interface bib extends MetaData, CitationItem {
 interface ReferenceListProps {
   referenceList: Array<MetaData>;
   selectedItems: Array<CitationItem>;
-  metaDataHandler: (metadata: CitationItem) => void;
+  citationDataHandler: (metadata: CitationItem) => void;
   handleSelection: (id: string, checked?: boolean) => void;
 }
 const classNames = mergeStyleSets({
@@ -26,7 +26,7 @@ function DocumentList({
   referenceList,
   selectedItems,
   handleSelection,
-  metaDataHandler,
+  citationDataHandler,
 }: ReferenceListProps): ReactElement {
   return (
     <FocusZone
@@ -37,7 +37,7 @@ function DocumentList({
         {referenceList.map((document) => (
           <DocumentView
             document={document}
-            metaDataHandler={metaDataHandler}
+            citationDataHandler={citationDataHandler}
             selectedDocuments={selectedItems}
             handleSelection={handleSelection}
           />

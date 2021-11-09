@@ -24,7 +24,7 @@ interface EditCitationProps {
   selectedDocuments: Array<CitationItem>;
   document: MetaData;
   // eslint-disable-next-line no-unused-vars
-  metaDataHandler: (metadata: CitationItem) => void;
+  citationDataHandler: (metadata: CitationItem) => void;
 }
 
 const editIcon: IIconProps = { iconName: "edit" };
@@ -70,7 +70,7 @@ const LabelOptions: Array<LabelOptionInterface> = [
 const EditCitation: React.FunctionComponent<EditCitationProps> = ({
   selectedDocuments,
   document,
-  metaDataHandler,
+  citationDataHandler,
 }: EditCitationProps) => {
   const {
     id,
@@ -113,7 +113,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
     []
   );
   const onClickHandler = useCallback(() => {
-    metaDataHandler({
+    citationDataHandler({
       id,
       label,
       prefix,
@@ -121,7 +121,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
       locator,
     });
     dismissPanel();
-  }, [metaDataHandler, id, label, prefix, suffix, locator, dismissPanel]);
+  }, [citationDataHandler, id, label, prefix, suffix, locator, dismissPanel]);
 
   const onRenderFooterContent = React.useCallback(
     () => (

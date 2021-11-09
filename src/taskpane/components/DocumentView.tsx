@@ -13,7 +13,7 @@ import EditCitation from "./EditCitation";
 interface DocumentViewProps {
   document: MetaData;
   selectedDocuments: Array<CitationItem>;
-  metaDataHandler: (metadata: CitationItem) => void;
+  citationDataHandler: (metadata: CitationItem) => void;
   handleSelection: (id: string, checked: boolean) => void;
 }
 
@@ -75,7 +75,7 @@ const DocumentView: React.FC<DocumentViewProps> = ({
   document,
   selectedDocuments,
   handleSelection,
-  metaDataHandler,
+  citationDataHandler,
 }) => {
   return (
     <li className={classNames.itemCell} data-is-focusable>
@@ -94,7 +94,7 @@ const DocumentView: React.FC<DocumentViewProps> = ({
         ) && (
           <EditCitation
             document={document}
-            metaDataHandler={metaDataHandler}
+            citationDataHandler={citationDataHandler}
             selectedDocuments={selectedDocuments}
           />
         )}

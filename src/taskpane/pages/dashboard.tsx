@@ -71,7 +71,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
 
   const clearSelection = () => setSelectedDocuments([]);
 
-  const updateCitationMetaData = (citationItem: CitationItem) => {
+  const addCitationData = (citationItem: CitationItem) => {
     const { id, label, prefix, suffix, locator } = citationItem;
     setSelectedDocuments((currentItems) => {
       return currentItems.map((item) => {
@@ -104,6 +104,14 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     }
   };
 
+  const undoEdit = () => {
+    updateSelectedDocuments(itemsInSelectedCitation.current);
+  };
+
+  const editCheck = () =>
+    JSON.stringify(selectedDocuments) ===
+    JSON.stringify(itemsInSelectedCitation.current);
+
   const getSelectedCitation = useCallback(async (): Promise<void> => {
     const itemsInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
@@ -116,14 +124,6 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       setItemsInSelectedCitation([]);
     }
   }, [citeSupport.wordApi]);
-
-  const undoEdit = () => {
-    updateSelectedDocuments(itemsInSelectedCitation.current);
-  };
-
-  const editCheck = () =>
-    JSON.stringify(selectedDocuments) ===
-    JSON.stringify(itemsInSelectedCitation.current);
 
   // ===========================================================================
   // Event Listener
@@ -144,7 +144,7 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
       <DocumentList
         referenceList={referenceList}
         selectedItems={selectedDocuments}
-        metaDataHandler={updateCitationMetaData}
+        citationDataHandler={addCitationData}
         handleSelection={handleSelection}
       />
       {selectedDocuments.length && !itemsInSelectedCitation.current.length ? (
@@ -153,23 +153,26 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
             Insert {selectedDocuments.length}{" "}
             {selectedDocuments.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
-          <DefaultButton onClick={clearSelection} style={{ marginLeft: 8 }}>
-            Cancel
-          </DefaultButton>
+          <DefaultButton
+            onClick={clearSelection}
+            text="Cancel"
+            style={{ marginLeft: 8 }}
+          />
         </div>
       ) : null}
       {itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation} disabled={editCheck()}>
-            Save changes
-          </PrimaryButton>
+          <PrimaryButton
+            onClick={insertCitation}
+            disabled={editCheck()}
+            text="Save changes"
+          />
           <DefaultButton
             onClick={undoEdit}
             style={{ marginLeft: 8 }}
             disabled={editCheck()}
-          >
-            Cancel
-          </DefaultButton>
+            text="Cancel"
+          />
         </div>
       ) : null}
     </div>
