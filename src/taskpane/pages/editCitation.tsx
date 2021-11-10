@@ -19,7 +19,7 @@ import {
   TextField,
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
-import { useCitationStore } from "./CitationStoreContext";
+import { useCitationStore } from "../context/CitationStoreContext";
 
 interface EditCitationProps {
   document: MetaData;
@@ -123,12 +123,12 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
   }, [id, label, prefix, suffix, locator, dispatch, dismissPanel]);
 
   const onDismiss = useCallback(() => {
-    setLocator(labelProp);
+    setLocator(locatorProp);
     setPrefix(prefixProp);
     setSuffix(suffixProp);
     setlabel(labelProp);
     dismissPanel();
-  }, [dismissPanel, labelProp, prefixProp, suffixProp]);
+  }, [dismissPanel, labelProp, locatorProp, prefixProp, suffixProp]);
 
   const onRenderFooterContent = React.useCallback(
     () => (

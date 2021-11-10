@@ -9,13 +9,9 @@ import { PrimaryButton, DefaultButton } from "@fluentui/react";
 import { CitationItem, MetaData } from "citeproc";
 import data from "../../utils/data";
 import SearchField from "../components/SearchField";
-import CiteSupport from "../../utils/citesupport";
 import DocumentList from "../components/DocumentList";
-import { useCitationStore } from "../components/CitationStoreContext";
-
-interface DashboardProps {
-  citeSupport: CiteSupport;
-}
+import { useCitationStore } from "../context/CitationStoreContext";
+import { useCiteSupport } from "../context/CiteSupportContext";
 
 const dashboadStyle = {
   width: "100%",
@@ -43,13 +39,9 @@ function containsSearchTerm(keyword: string) {
   };
 }
 
-function Dashboard({ citeSupport }: DashboardProps): ReactElement {
-  const originalItems = data; // TODO: Replace with getData hook
-
-  // ===========================================================================
-  // States
-  // ===========================================================================
-
+function Dashboard(): ReactElement {
+  const originalItems = data; // TODO: Replace with getData hooK
+  const citeSupport = useCiteSupport();
   const { selectedCitations, dispatch } = useCitationStore();
   const [referenceList, setReferenceList] =
     useState<Array<MetaData>>(originalItems);
@@ -101,18 +93,10 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     }
   }, [citeSupport.wordApi, dispatch]);
 
-  // ===========================================================================
-  // Event Listener
-  // ===========================================================================
-
   useEffect(() => {
     citeSupport.wordApi.addEventListener(getSelectedCitation);
     return () => citeSupport.wordApi.removeEventListener();
   }, [citeSupport.wordApi, getSelectedCitation]);
-
-  // ===========================================================================
-  // Render
-  // ===========================================================================
 
   return (
     <div style={dashboadStyle}>

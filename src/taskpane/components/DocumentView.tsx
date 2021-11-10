@@ -8,8 +8,8 @@ import {
   mergeStyleSets,
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
-import EditCitation from "./EditCitation";
-import { useCitationStore } from "./CitationStoreContext";
+import EditCitation from "../pages/editCitation";
+import { useCitationStore } from "../context/CitationStoreContext";
 
 interface DocumentViewProps {
   document: MetaData;
