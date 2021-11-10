@@ -122,16 +122,26 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
     dismissPanel();
   }, [id, label, prefix, suffix, locator, dispatch, dismissPanel]);
 
+  const onDismiss = useCallback(() => {
+    setLocator(labelProp);
+    setPrefix(prefixProp);
+    setSuffix(suffixProp);
+    setlabel(labelProp);
+    dismissPanel();
+  }, [dismissPanel, labelProp, prefixProp, suffixProp]);
+
   const onRenderFooterContent = React.useCallback(
     () => (
       <div>
-        <PrimaryButton onClick={onClickHandler} styles={buttonStyles}>
-          Save
-        </PrimaryButton>
-        <DefaultButton onClick={dismissPanel}>Cancel</DefaultButton>
+        <PrimaryButton
+          onClick={onClickHandler}
+          styles={buttonStyles}
+          text="Save"
+        />
+        <DefaultButton onClick={onDismiss} text="Cancel" />
       </div>
     ),
-    [dismissPanel, onClickHandler]
+    [onClickHandler, onDismiss]
   );
 
   return (
@@ -143,6 +153,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
       />
       <Panel
         isOpen={isOpen}
+        hasCloseButton={false}
         onDismiss={dismissPanel}
         headerText="Edit Reference"
         type={PanelType.smallFluid}

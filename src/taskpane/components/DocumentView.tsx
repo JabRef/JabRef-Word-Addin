@@ -72,7 +72,7 @@ const classNames = mergeStyleSets({
 const DocumentView: React.FC<DocumentViewProps> = ({ document }) => {
   const { selectedCitations, dispatch } = useCitationStore();
   return (
-    <li className={classNames.itemCell} data-is-focusable>
+    <li key={document.id} className={classNames.itemCell} data-is-focusable>
       <div style={{ display: "flex", flexDirection: "column" as const }}>
         <Checkbox
           className={classNames.checkbox}
