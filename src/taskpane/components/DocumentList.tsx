@@ -14,7 +14,6 @@ interface ReferenceListProps {
 const classNames = mergeStyleSets({
   container: {
     overflow: "auto",
-    padding: "0.25rem 0.25rem 0px",
     webkitBoxFlex: "1 1 auto",
   },
 });

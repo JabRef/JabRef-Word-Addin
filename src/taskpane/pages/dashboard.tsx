@@ -22,11 +22,13 @@ const dashboadStyle = {
 };
 const buttonContainer = {
   padding: 16,
-  width: "100%",
   display: "flex",
   flex: "0 0 auto",
   marginTop: "auto",
+  justifyContent: "center" as const,
   alignContent: "flex-start",
+  borderTop: "1px solid #eaeaea",
+  boxShadow: "0px 1px 4px 0px rgba(0,0,0,0.2)",
   flexDirection: "row" as const,
 };
 function containsSearchTerm(keyword: string) {

@@ -1,20 +1,20 @@
+import { IStackStyles, Stack } from "@fluentui/react";
 import React, { ReactElement } from "react";
 
 interface WrapperProps {
   children: React.ReactNode;
 }
+const wrapperStackStyles: IStackStyles = {
+  root: {
+    height: "100vh",
+  },
+};
 
 function Wrapper({ children }: WrapperProps): ReactElement {
   return (
-    <div
-      style={{
-        height: "100vh",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
+    <Stack verticalFill styles={wrapperStackStyles}>
       {children}
-    </div>
+    </Stack>
   );
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
 import {
   Checkbox,
@@ -6,6 +5,7 @@ import {
   getTheme,
   ITheme,
   mergeStyleSets,
+  Separator,
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
 import EditCitation from "../pages/editCitation";
@@ -16,37 +16,38 @@ interface DocumentViewProps {
 }
 
 const theme: ITheme = getTheme();
-const { palette, semanticColors, fonts } = theme;
+const { palette, fonts } = theme;
 const classNames = mergeStyleSets({
   itemCell: [
     getFocusStyle(theme, { inset: -1 }),
     {
-      backgroundColor: theme.palette.neutralLighterAlt,
-      minHeight: 54,
-      padding: "0.25rem",
-      margin: 2,
-      boxSizing: "border-box",
-      borderBottom: `1px solid ${semanticColors.bodyDivider}`,
+      backgroundColor: theme.palette.white,
+      cursor: "default",
+      width: "90%",
+      margin: "0 auto",
+      flex: "0 0 auto",
       display: "flex",
-      selectors: {
-        "&:hover": { background: palette.themeLighterAlt },
-      },
+      flexDirection: "row",
+      boxSizing: "border-box",
     },
   ],
   itemContent: {
-    marginLeft: 10,
-    boxSizing: "border-box",
-    overflow: "auto",
     flexGrow: 1,
+    display: "flex",
+    overflow: "auto",
+    paddingLeft: "0.25rem",
+    boxSizing: "border-box",
+    flexDirection: "column",
+    justifyContent: "flex-start",
   },
   itemTitle: [
-    fonts.mediumPlus,
+    fonts.medium,
     {
-      whiteSpace: "nowrap",
-      position: "relative",
-      maxHeight: "5.4em",
-      lineHeight: "1.8em",
+      display: "block",
       overflow: "hidden",
+      maxHeight: "3.6em",
+      lineHeight: "1.8em",
+      wordWrap: "break-word",
       textOverflow: "ellipsis",
     },
   ],
@@ -60,45 +61,57 @@ const classNames = mergeStyleSets({
     color: palette.neutralTertiary,
   },
   itemType: {
-    fontSize: fonts.smallPlus,
+    fontSize: fonts.mediumPlus,
     color: palette.neutralTertiary,
   },
-  checkbox: {
-    marginTop: 6,
-    marginLeft: 4,
-  },
 });
+
+const buttonContainerStyle = {
+  display: "flex",
+  paddingTop: "0.1rem",
+  flexDirection: "column" as const,
+  justifyContent: "space-between",
+  alignItems: "center",
+  boxSizing: "border-box" as const,
+  width: "30px",
+  flexGrow: 0,
+  flexShrink: 0,
+};
 
 const DocumentView: React.FC<DocumentViewProps> = ({ document }) => {
   const { selectedCitations, dispatch } = useCitationStore();
   return (
-    <li key={document.id} className={classNames.itemCell} data-is-focusable>
-      <div style={{ display: "flex", flexDirection: "column" as const }}>
-        <Checkbox
-          className={classNames.checkbox}
-          checked={
-            !!selectedCitations.find((citation) => citation.id === document.id)
-          }
-          onChange={(_e, checked) => {
-            dispatch({
-              type: checked ? "add" : "remove",
-              citation: document,
-            });
-          }}
-        />
-        {!!selectedCitations.find(
-          (citation) => citation.id === document.id
-        ) && <EditCitation document={document} />}
-      </div>
-      <div className={classNames.itemContent}>
-        <div className={classNames.itemType}>{document.type}</div>
-        <div className={classNames.itemTitle}>{document.title}</div>
-        {/* <div className={classNames.itemAuthor}>{item.author}</div>
+    <>
+      <li key={document.id} className={classNames.itemCell} data-is-focusable>
+        <div style={buttonContainerStyle}>
+          <Checkbox
+            checked={
+              !!selectedCitations.find(
+                (citation) => citation.id === document.id
+              )
+            }
+            onChange={(_e, checked) => {
+              dispatch({
+                type: checked ? "add" : "remove",
+                citation: document,
+              });
+            }}
+          />
+          {!!selectedCitations.find(
+            (citation) => citation.id === document.id
+          ) && <EditCitation document={document} />}
+        </div>
+        <div className={classNames.itemContent}>
+          <div className={classNames.itemType}>{document.type}</div>
+          <div className={classNames.itemTitle}>{document.title}</div>
+          {/* <div className={classNames.itemAuthor}>{item.author}</div>
           <div className={classNames.itemYear}>
             {item.journal} {item.year}
           </div> */}
-      </div>
-    </li>
+        </div>
+      </li>
+      <Separator />
+    </>
   );
 };
 

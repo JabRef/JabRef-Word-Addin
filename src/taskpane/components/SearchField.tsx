@@ -11,11 +11,9 @@ interface SearchFieldProps {
 
 const searchBoxStyle: ISearchBoxStyles = {
   root: {
-    margin: 8,
-    marginTop: 10,
-    flexGrow: 0,
-    flexShrink: 0,
-    flexBasis: "auto",
+    width: "90%",
+    flex: "0 0 auto",
+    margin: "1rem auto",
   },
 };
 

@@ -6,6 +6,7 @@ import Layout from "../Layout/Layout";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
 import { CitationStoreProvider } from "../context/CitationStoreContext";
 import { CiteSupportContextProvider } from "../context/CiteSupportContext";
+import Wrapper from "./Wrapper";
 
 export interface AppProps {
   title: string;
@@ -25,7 +26,7 @@ function App(props: AppProps): ReactElement {
     );
   }
   return (
-    <div>
+    <Wrapper>
       <Switch>
         <Route path="/login">
           <Login />
@@ -38,7 +39,7 @@ function App(props: AppProps): ReactElement {
           </CiteSupportContextProvider>
         </ProtectedRoutes>
       </Switch>
-    </div>
+    </Wrapper>
   );
 }
 export default App;
