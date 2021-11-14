@@ -6,6 +6,9 @@
     ],
     "cSpell.words": [
       "citeproc"
-    ]
+    ],
+    "yaml.schemas": {
+      "https://json.schemastore.org/github-workflow": "/.github/workflows/**/*.yml"
+    }
   }
   
