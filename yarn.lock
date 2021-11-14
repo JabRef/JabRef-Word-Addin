@@ -4894,10 +4894,10 @@ eslint-plugin-jsx-a11y@^6.4.1:
     jsx-ast-utils "^3.1.0"
     language-tags "^1.0.5"
 
-eslint-plugin-office-addins@^1.0.0, eslint-plugin-office-addins@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-office-addins/-/eslint-plugin-office-addins-1.0.3.tgz#be5cb6ea5f8fd23a99de0bb5101164a69b2a8962"
-  integrity sha512-hKY5rGkaUPGhO2n3/5csG2n0BA0c4aA9OBusXnT2RrCUOlgcX3sse7csk46cYR0j32m7Jtfb5+PmC2ZVZcMMPA==
+eslint-plugin-office-addins@^1.0.3, eslint-plugin-office-addins@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-office-addins/-/eslint-plugin-office-addins-1.1.2.tgz#5216c9efbc882947562e80e1cc7bfad93ad9e9a9"
+  integrity sha512-1aEN/9kaPao+Dbn93EtKFcXnU5yDnW/ZFYBb4iOwCdXPpLmLvFTEx5S3xKAAF0uEQtyS3cl8T1iE+XFd15GEAw==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.31.0"
     "@typescript-eslint/experimental-utils" "^4.31.0"
@@ -4907,7 +4907,7 @@ eslint-plugin-office-addins@^1.0.0, eslint-plugin-office-addins@^1.0.3:
     eslint-plugin-prettier "^4.0.0"
     eslint-plugin-react "^7.25.1"
     eslint-plugin-react-native "^3.11.0"
-    office-addin-prettier-config "^1.1.0"
+    office-addin-prettier-config "^1.1.1"
     prettier "^2.4.0"
     requireindex "~1.2.0"
     typescript "^4.4.2"
