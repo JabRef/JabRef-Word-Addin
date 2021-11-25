@@ -33,7 +33,7 @@ export function useCiteSupport(): CiteSupport {
   const context = useContext(CiteSupportContext);
   if (!context) {
     throw new Error(
-      "useCiteSupport must be used within a CiteSupportContextProvider. Wrap a parent component in <CiteSupportContextProvider> to fix this error."
+      "useCiteSupport must be used within a CiteSupportProvider. Wrap a parent component in <CiteSupportProvider> to fix this error."
     );
   }
   return context;
