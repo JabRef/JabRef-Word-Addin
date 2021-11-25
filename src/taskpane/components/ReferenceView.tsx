@@ -11,7 +11,7 @@ import { MetaData } from "citeproc";
 import EditCitation from "../pages/editCitation";
 import { useCitationStore } from "../contexts/CitationStoreContext";
 
-interface DocumentViewProps {
+interface ReferenceViewProps {
   document: MetaData;
 }
 
@@ -69,7 +69,7 @@ const classNames = mergeStyleSets({
   },
 });
 
-const DocumentView: React.FC<DocumentViewProps> = ({ document }) => {
+const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
   const { selectedCitations, dispatch } = useCitationStore();
   return (
     <li key={document.id} className={classNames.itemCell} data-is-focusable>
@@ -102,4 +102,4 @@ const DocumentView: React.FC<DocumentViewProps> = ({ document }) => {
   );
 };
 
-export default DocumentView;
+export default ReferenceView;

@@ -9,9 +9,9 @@ import { PrimaryButton, DefaultButton } from "@fluentui/react";
 import { CitationItem, MetaData } from "citeproc";
 import data from "../../utils/data";
 import SearchField from "../components/SearchField";
-import DocumentList from "../components/ReferenceList";
 import { useCitationStore } from "../contexts/CitationStoreContext";
 import { useCiteSupport } from "../contexts/CiteSupportContext";
+import ReferenceList from "../components/ReferenceList";
 
 const dashboadStyle = {
   width: "100%",
@@ -84,7 +84,6 @@ function Dashboard(): ReactElement {
     const itemsInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
     if (itemsInCitation.length) {
-      dispatch({ type: "empty" });
       dispatch({ type: "replace", citations: itemsInCitation });
       setItemsInSelectedCitation(itemsInCitation);
     } else if (itemsInSelectedCitation.current.length) {
@@ -101,7 +100,7 @@ function Dashboard(): ReactElement {
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
-      <DocumentList referenceList={referenceList} />
+      <ReferenceList referenceList={referenceList} />
       {selectedCitations.length && !itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
