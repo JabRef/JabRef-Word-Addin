@@ -11,7 +11,7 @@ import {
 import React, { ReactElement } from "react";
 import { useLogoutMutation } from "../../generated/graphql";
 import client from "../../utils/apolloClient";
-import { useCiteSupport } from "../context/CiteSupportContext";
+import { useCiteSupport } from "../contexts/CiteSupportContext";
 
 const SignOutButtonStyle: IButtonStyles = {
   root: {
@@ -21,10 +21,10 @@ const SignOutButtonStyle: IButtonStyles = {
 
 const footerStackStyle: IStackStyles = {
   root: {
-    background: DefaultPalette.neutralDark,
+    background: DefaultPalette.neutralPrimary,
     boxSizing: "border-box",
     padding: "0.15rem",
-    height: "45px",
+    height: "42px",
   },
 };
 
