@@ -9,9 +9,9 @@ import {
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
 import EditCitation from "../pages/editCitation";
-import { useCitationStore } from "../context/CitationStoreContext";
+import { useCitationStore } from "../contexts/CitationStoreContext";
 
-interface DocumentViewProps {
+interface ReferenceViewProps {
   document: MetaData;
 }
 
@@ -77,8 +77,7 @@ const buttonContainerStyle = {
   flexGrow: 0,
   flexShrink: 0,
 };
-
-const DocumentView: React.FC<DocumentViewProps> = ({ document }) => {
+const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
   const { selectedCitations, dispatch } = useCitationStore();
   return (
     <>
@@ -115,4 +114,4 @@ const DocumentView: React.FC<DocumentViewProps> = ({ document }) => {
   );
 };
 
-export default DocumentView;
+export default ReferenceView;

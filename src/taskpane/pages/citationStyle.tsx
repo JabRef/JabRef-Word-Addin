@@ -9,7 +9,7 @@ import {
 } from "@fluentui/react/lib/Styling";
 import { Stack } from "@fluentui/react";
 import Preference from "../../utils/user-preference";
-import { useCiteSupport } from "../context/CiteSupportContext";
+import { useCiteSupport } from "../contexts/CiteSupportContext";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;

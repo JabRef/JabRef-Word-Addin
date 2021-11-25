@@ -2,7 +2,7 @@
 import { mergeStyleSets, FocusZone, FocusZoneDirection } from "@fluentui/react";
 import { CitationItem, MetaData } from "citeproc";
 import React, { ReactElement } from "react";
-import DocumentView from "./DocumentView";
+import ReferenceView from "./ReferenceView";
 
 export interface bib extends MetaData, CitationItem {
   isSelected: boolean;
@@ -18,7 +18,7 @@ const classNames = mergeStyleSets({
   },
 });
 
-function DocumentList({ referenceList }: ReferenceListProps): ReactElement {
+function ReferenceList({ referenceList }: ReferenceListProps): ReactElement {
   return (
     <FocusZone
       direction={FocusZoneDirection.vertical}
@@ -26,11 +26,11 @@ function DocumentList({ referenceList }: ReferenceListProps): ReactElement {
     >
       <ul>
         {referenceList.map((document) => (
-          <DocumentView document={document} />
+          <ReferenceView document={document} />
         ))}
       </ul>
     </FocusZone>
   );
 }
 
-export default DocumentList;
+export default ReferenceList;
