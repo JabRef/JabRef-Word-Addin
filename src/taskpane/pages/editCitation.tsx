@@ -19,7 +19,7 @@ import {
   TextField,
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
-import { useCitationStore } from "../context/CitationStoreContext";
+import { useCitationStore } from "../contexts/CitationStoreContext";
 
 interface EditCitationProps {
   document: MetaData;

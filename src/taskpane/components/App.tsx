@@ -4,8 +4,8 @@ import Progress from "./Progress";
 import Login from "../pages/login";
 import Layout from "../Layout/Layout";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
-import { CitationStoreProvider } from "../context/CitationStoreContext";
-import { CiteSupportContextProvider } from "../context/CiteSupportContext";
+import { CitationStoreProvider } from "../contexts/CitationStoreContext";
+import { CiteSupportProvider } from "../contexts/CiteSupportContext";
 
 export interface AppProps {
   title: string;
@@ -31,11 +31,11 @@ function App(props: AppProps): ReactElement {
           <Login />
         </Route>
         <ProtectedRoutes path="/">
-          <CiteSupportContextProvider>
+          <CiteSupportProvider>
             <CitationStoreProvider>
               <Layout />
             </CitationStoreProvider>
-          </CiteSupportContextProvider>
+          </CiteSupportProvider>
         </ProtectedRoutes>
       </Switch>
     </div>

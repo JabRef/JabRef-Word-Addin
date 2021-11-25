@@ -8,15 +8,15 @@ import React, {
 import CiteSupport from "../../utils/citesupport";
 import data from "../../utils/data";
 
-interface CiteSupportContextProviderProps {
+interface CiteSupportProviderProps {
   children: ReactNode;
 }
 
 const CiteSupportContext = createContext<CiteSupport>(null);
 
-export function CiteSupportContextProvider({
+export function CiteSupportProvider({
   children,
-}: CiteSupportContextProviderProps): JSX.Element {
+}: CiteSupportProviderProps): JSX.Element {
   const [citeSupport] = useState(() => new CiteSupport(data));
   useEffect(() => {
     // eslint-disable-next-line no-void

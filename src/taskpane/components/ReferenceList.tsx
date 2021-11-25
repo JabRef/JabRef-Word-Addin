@@ -2,7 +2,7 @@
 import { mergeStyleSets, FocusZone, FocusZoneDirection } from "@fluentui/react";
 import { CitationItem, MetaData } from "citeproc";
 import React, { ReactElement } from "react";
-import DocumentView from "./DocumentView";
+import DocumentView from "./ReferenceView";
 
 export interface bib extends MetaData, CitationItem {
   isSelected: boolean;

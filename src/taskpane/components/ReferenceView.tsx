@@ -9,7 +9,7 @@ import {
 } from "@fluentui/react";
 import { MetaData } from "citeproc";
 import EditCitation from "../pages/editCitation";
-import { useCitationStore } from "../context/CitationStoreContext";
+import { useCitationStore } from "../contexts/CitationStoreContext";
 
 interface DocumentViewProps {
   document: MetaData;

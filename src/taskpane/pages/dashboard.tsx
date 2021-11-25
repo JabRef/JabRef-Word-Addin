@@ -9,9 +9,9 @@ import { PrimaryButton, DefaultButton } from "@fluentui/react";
 import { CitationItem, MetaData } from "citeproc";
 import data from "../../utils/data";
 import SearchField from "../components/SearchField";
-import DocumentList from "../components/DocumentList";
-import { useCitationStore } from "../context/CitationStoreContext";
-import { useCiteSupport } from "../context/CiteSupportContext";
+import DocumentList from "../components/ReferenceList";
+import { useCitationStore } from "../contexts/CitationStoreContext";
+import { useCiteSupport } from "../contexts/CiteSupportContext";
 
 const dashboadStyle = {
   width: "100%",
