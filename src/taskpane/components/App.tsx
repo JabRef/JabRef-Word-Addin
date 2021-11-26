@@ -1,11 +1,11 @@
-import React, { useEffect, useState, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { Switch, Route } from "react-router-dom";
 import Progress from "./Progress";
 import Login from "../pages/login";
-import Layout from "./Layout";
+import Layout from "../Layout/Layout";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
-import CiteSupport from "../../utils/citesupport";
-import data from "../../utils/data";
+import { CitationStoreProvider } from "../contexts/CitationStoreContext";
+import { CiteSupportProvider } from "../contexts/CiteSupportContext";
 
 export interface AppProps {
   title: string;
@@ -14,11 +14,6 @@ export interface AppProps {
 
 function App(props: AppProps): ReactElement {
   const { isOfficeInitialized } = props;
-  const [citeSupport] = useState(() => new CiteSupport(data));
-  useEffect(() => {
-    // eslint-disable-next-line no-void
-    void citeSupport.initDocument();
-  });
 
   if (!isOfficeInitialized) {
     return (
@@ -36,7 +31,11 @@ function App(props: AppProps): ReactElement {
           <Login />
         </Route>
         <ProtectedRoutes path="/">
-          <Layout citeSupport={citeSupport} />
+          <CiteSupportProvider>
+            <CitationStoreProvider>
+              <Layout />
+            </CitationStoreProvider>
+          </CiteSupportProvider>
         </ProtectedRoutes>
       </Switch>
     </div>

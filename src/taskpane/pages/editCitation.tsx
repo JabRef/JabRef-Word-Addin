@@ -18,16 +18,11 @@ import {
   Stack,
   TextField,
 } from "@fluentui/react";
-import { CitationItem } from "citeproc";
+import { MetaData } from "citeproc";
+import { useCitationStore } from "../contexts/CitationStoreContext";
 
 interface EditCitationProps {
-  id: string;
-  labelProp: string;
-  locatorProp: string;
-  prefixProp: string;
-  suffixProp: string;
-  // eslint-disable-next-line no-unused-vars
-  metaDataHandler: (metadata: CitationItem) => void;
+  document: MetaData;
 }
 
 const editIcon: IIconProps = { iconName: "edit" };
@@ -70,17 +65,17 @@ const LabelOptions: Array<LabelOptionInterface> = [
   { key: "paragraph", text: "Paragraph" },
 ];
 
-const EditCitation: React.FunctionComponent<EditCitationProps> = (
-  props: EditCitationProps
-) => {
+const EditCitation: React.FunctionComponent<EditCitationProps> = ({
+  document,
+}: EditCitationProps) => {
+  const { selectedCitations, dispatch } = useCitationStore();
   const {
     id,
-    labelProp,
-    locatorProp,
-    prefixProp,
-    suffixProp,
-    metaDataHandler,
-  } = props;
+    label: labelProp,
+    prefix: prefixProp,
+    suffix: suffixProp,
+    locator: locatorProp,
+  } = selectedCitations.find((doc) => doc.id === document.id);
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
     useBoolean(false);
   const [label, setlabel] = useState<string>(labelProp);
@@ -115,26 +110,38 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
     []
   );
   const onClickHandler = useCallback(() => {
-    metaDataHandler({
+    const citation = {
       id,
       label,
       prefix,
       suffix,
       locator,
-    });
+    };
+    dispatch({ type: "update", citation });
+
     dismissPanel();
-  }, [metaDataHandler, id, label, prefix, suffix, locator, dismissPanel]);
+  }, [id, label, prefix, suffix, locator, dispatch, dismissPanel]);
+
+  const onDismiss = useCallback(() => {
+    setLocator(locatorProp);
+    setPrefix(prefixProp);
+    setSuffix(suffixProp);
+    setlabel(labelProp);
+    dismissPanel();
+  }, [dismissPanel, labelProp, locatorProp, prefixProp, suffixProp]);
 
   const onRenderFooterContent = React.useCallback(
     () => (
       <div>
-        <PrimaryButton onClick={onClickHandler} styles={buttonStyles}>
-          Save
-        </PrimaryButton>
-        <DefaultButton onClick={dismissPanel}>Cancel</DefaultButton>
+        <PrimaryButton
+          onClick={onClickHandler}
+          styles={buttonStyles}
+          text="Save"
+        />
+        <DefaultButton onClick={onDismiss} text="Cancel" />
       </div>
     ),
-    [dismissPanel, onClickHandler]
+    [onClickHandler, onDismiss]
   );
 
   return (
@@ -146,6 +153,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = (
       />
       <Panel
         isOpen={isOpen}
+        hasCloseButton={false}
         onDismiss={dismissPanel}
         headerText="Edit Reference"
         type={PanelType.smallFluid}

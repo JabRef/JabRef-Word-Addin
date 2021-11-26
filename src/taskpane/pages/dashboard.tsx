@@ -6,15 +6,12 @@ import React, {
   useState,
 } from "react";
 import { PrimaryButton, DefaultButton } from "@fluentui/react";
-import { CitationItem } from "citeproc";
+import { CitationItem, MetaData } from "citeproc";
 import data from "../../utils/data";
-import ReferenceList, { bib } from "../components/ReferenceList";
 import SearchField from "../components/SearchField";
-import CiteSupport from "../../utils/citesupport";
-
-interface DashboardProps {
-  citeSupport: CiteSupport;
-}
+import { useCitationStore } from "../contexts/CitationStoreContext";
+import { useCiteSupport } from "../contexts/CiteSupportContext";
+import ReferenceList from "../components/ReferenceList";
 
 const dashboadStyle = {
   width: "100%",
@@ -23,7 +20,6 @@ const dashboadStyle = {
   overflow: "hidden",
   flexDirection: "column" as const,
 };
-
 const buttonContainer = {
   padding: 16,
   width: "100%",
@@ -33,9 +29,8 @@ const buttonContainer = {
   alignContent: "flex-start",
   flexDirection: "row" as const,
 };
-
 function containsSearchTerm(keyword: string) {
-  return (item?: bib) => {
+  return (item?: MetaData) => {
     return [item.title, item.author, item.year].some((str: string | number) =>
       str
         ? str.toString().toLowerCase().includes(keyword.toLowerCase().trim())
@@ -44,50 +39,19 @@ function containsSearchTerm(keyword: string) {
   };
 }
 
-function onCheckboxChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>) {
-  return (item: bib) => {
-    if (ev.currentTarget && item.title === ev.currentTarget.title) {
-      return { ...item, isSelected: !item.isSelected };
-    }
-    return item;
-  };
-}
-
-function resetReferenceState(item: bib): bib {
-  return {
-    ...item,
-    isSelected: false,
-    label: null,
-    locator: null,
-    prefix: null,
-    suffix: null,
-  };
-}
-
-function Dashboard({ citeSupport }: DashboardProps): ReactElement {
-  const originalItems = data.map((item) => ({
-    ...item,
-    label: null,
-    locator: null,
-    suffix: null,
-    prefix: null,
-    isSelected: false,
-  }));
-  const [referenceList, setReferenceList] = useState<Array<bib>>(originalItems);
-  const [citationItems, _setCitationItems] = useState([]);
-  const [citationSelected, setCitationSelected] = useState<boolean>(false);
+function Dashboard(): ReactElement {
+  const originalItems = data; // TODO: Replace with getData hooK
+  const citeSupport = useCiteSupport();
+  const { selectedCitations, dispatch } = useCitationStore();
+  const [referenceList, setReferenceList] =
+    useState<Array<MetaData>>(originalItems);
+  const [citationItems, _setCitationItems] = useState<
+    Array<CitationItem | null>
+  >([]);
   const itemsInSelectedCitation = useRef(citationItems);
   const setItemsInSelectedCitation = (itemsMetadata: Array<CitationItem>) => {
     itemsInSelectedCitation.current = itemsMetadata;
     _setCitationItems(itemsMetadata);
-  };
-
-  const checkedItems = referenceList.filter(({ isSelected }) => isSelected);
-
-  const resetAllReferences = () => {
-    setReferenceList((currentItems) => {
-      return currentItems.map(resetReferenceState);
-    });
   };
 
   const onFilterChange = (
@@ -97,81 +61,36 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
     setReferenceList(originalItems.filter(containsSearchTerm(keyword)));
   };
 
-  const handleToggleChange = (
-    ev: React.FormEvent<HTMLElement | HTMLInputElement>
-  ) => {
-    setReferenceList((currentItems) => {
-      return currentItems.map(onCheckboxChange(ev));
-    });
-  };
-
   const insertCitation = async () => {
-    if (citationSelected && !checkedItems.length) {
+    const citationSelected = itemsInSelectedCitation.current.length > 0;
+    if (citationSelected && !selectedCitations.length) {
       await citeSupport.wordApi.removeSelectedCitation();
     } else {
-      await citeSupport.insertCitation(checkedItems, citationSelected);
-      resetAllReferences();
+      await citeSupport.insertCitation(selectedCitations, citationSelected);
+      dispatch({ type: "empty" });
+      setItemsInSelectedCitation([]);
     }
   };
 
-  const setReferenceState = (itemsMetadata: Array<CitationItem>) => {
-    setReferenceList((currentItems) => {
-      return currentItems.map((item) => {
-        const metadata = itemsMetadata.find(
-          (metaData) => metaData.id === item.id
-        );
-        if (metadata) {
-          return {
-            ...item,
-            ...metadata,
-            isSelected: true,
-          };
-        }
-        return item;
-      });
-    });
+  const undoEdit = () => {
+    dispatch({ type: "replace", citations: itemsInSelectedCitation.current });
   };
 
-  const discardEdit = () => {
-    resetAllReferences();
-    setReferenceState(itemsInSelectedCitation.current);
-  };
-
-  const isCitationEdited = (): boolean => {
-    return (
-      JSON.stringify(checkedItems.map((citation) => ({ ...citation }))) ===
-      JSON.stringify(itemsInSelectedCitation.current)
-    );
-  };
-
-  const updateCitationMetaData = (citation: CitationItem) => {
-    setReferenceList((currentItems) => {
-      return currentItems.map((item) => {
-        if (item.id === citation.id) {
-          return {
-            ...item,
-            ...citation,
-          };
-        }
-        return item;
-      });
-    });
-  };
+  const editCheck = () =>
+    JSON.stringify(selectedCitations) ===
+    JSON.stringify(itemsInSelectedCitation.current);
 
   const getSelectedCitation = useCallback(async (): Promise<void> => {
     const itemsInCitation =
       await citeSupport.wordApi.getItemsInSelectedCitation();
-    const isCitationValue = await citeSupport.wordApi.isCitationSelected();
-    if (itemsInSelectedCitation) {
-      resetAllReferences();
-      setReferenceState(itemsInCitation);
+    if (itemsInCitation.length) {
+      dispatch({ type: "replace", citations: itemsInCitation });
       setItemsInSelectedCitation(itemsInCitation);
-      setCitationSelected(() => isCitationValue);
     } else if (itemsInSelectedCitation.current.length) {
-      resetAllReferences();
+      dispatch({ type: "empty" });
       setItemsInSelectedCitation([]);
     }
-  }, [citeSupport.wordApi]);
+  }, [citeSupport.wordApi, dispatch]);
 
   useEffect(() => {
     citeSupport.wordApi.addEventListener(getSelectedCitation);
@@ -181,34 +100,33 @@ function Dashboard({ citeSupport }: DashboardProps): ReactElement {
   return (
     <div style={dashboadStyle}>
       <SearchField onFilterChange={onFilterChange} />
-      <ReferenceList
-        list={referenceList}
-        metaDataHandler={updateCitationMetaData}
-        onCheckBoxChange={handleToggleChange}
-      />
-      {checkedItems.length && !itemsInSelectedCitation.current.length ? (
+      <ReferenceList referenceList={referenceList} />
+      {selectedCitations.length && !itemsInSelectedCitation.current.length ? (
         <div style={buttonContainer}>
           <PrimaryButton onClick={insertCitation}>
-            Insert {checkedItems.length}{" "}
-            {checkedItems.length > 1 ? "citations" : "citation"}
-          </PrimaryButton>
-          <DefaultButton onClick={resetAllReferences} style={{ marginLeft: 8 }}>
-            Cancel
-          </DefaultButton>
-        </div>
-      ) : null}
-      {citationSelected ? (
-        <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation} disabled={isCitationEdited()}>
-            Save changes
+            Insert {selectedCitations.length}{" "}
+            {selectedCitations.length > 1 ? "citations" : "citation"}
           </PrimaryButton>
           <DefaultButton
-            onClick={discardEdit}
+            onClick={() => dispatch({ type: "empty" })}
+            text="Cancel"
             style={{ marginLeft: 8 }}
-            disabled={isCitationEdited()}
-          >
-            Cancel
-          </DefaultButton>
+          />
+        </div>
+      ) : null}
+      {itemsInSelectedCitation.current.length ? (
+        <div style={buttonContainer}>
+          <PrimaryButton
+            onClick={insertCitation}
+            disabled={editCheck()}
+            text="Save changes"
+          />
+          <DefaultButton
+            onClick={undoEdit}
+            style={{ marginLeft: 8 }}
+            disabled={editCheck()}
+            text="Cancel"
+          />
         </div>
       ) : null}
     </div>

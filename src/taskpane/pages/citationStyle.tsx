@@ -9,7 +9,7 @@ import {
 } from "@fluentui/react/lib/Styling";
 import { Stack } from "@fluentui/react";
 import Preference from "../../utils/user-preference";
-import CiteSupport from "../../utils/citesupport";
+import { useCiteSupport } from "../contexts/CiteSupportContext";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -61,11 +61,8 @@ const classNames = mergeStyleSets({
   ],
 });
 
-interface CitationStyleProps {
-  citeSupport: CiteSupport;
-}
-
-function CitationStyle({ citeSupport }: CitationStyleProps): JSX.Element {
+function CitationStyle(): JSX.Element {
+  const citeSupport = useCiteSupport();
   const items = [
     {
       text: "American Political Science Association",
