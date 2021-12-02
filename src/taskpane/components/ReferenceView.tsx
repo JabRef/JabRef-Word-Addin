@@ -22,7 +22,7 @@ const classNames = mergeStyleSets({
     getFocusStyle(theme, { inset: -1 }),
     {
       backgroundColor: theme.palette.white,
-      cursor: "default",
+      cursor: "pointer",
       width: "90%",
       margin: "0 auto",
       flex: "0 0 auto",
@@ -82,7 +82,7 @@ const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
   return (
     <>
       <li key={document.id} className={classNames.itemCell} data-is-focusable>
-        <div style={buttonContainerStyle}>
+        <div style={buttonContainerStyle} key={document.id}>
           <Checkbox
             checked={
               !!selectedCitations.find(

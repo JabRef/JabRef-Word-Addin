@@ -8,6 +8,7 @@ import { Panel, PanelType } from "@fluentui/react/lib/Panel";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useBoolean } from "@fluentui/react-hooks";
 import {
+  DefaultPalette,
   Dropdown,
   IDropdownOption,
   IDropdownStyles,
@@ -27,6 +28,18 @@ interface EditCitationProps {
 
 const editIcon: IIconProps = { iconName: "edit" };
 const buttonStyles = { root: { marginRight: 8 } };
+const iconButtonStyle = {
+  rootHovered: {
+    backgroundColor: "transparent",
+    color: DefaultPalette.blueMid,
+    transform: "scale(1.05)",
+  },
+  rootPressed: {
+    backgroundColor: "transparent",
+    color: DefaultPalette.blueMid,
+    transform: "scale(1.1)",
+  },
+};
 const stackToken: IStackTokens = {
   childrenGap: 25,
 };
@@ -150,6 +163,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
         iconProps={editIcon}
         ariaLabel="Add extra info"
         onClick={openPanel}
+        styles={iconButtonStyle}
       />
       <Panel
         isOpen={isOpen}

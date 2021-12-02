@@ -13,6 +13,11 @@ import Footer from "../components/Footer";
 const pivotItemStyles = {
   height: "calc(100vh - 90px)",
   overflow: "hidden",
+  selectors: {
+    "&:hover": { background: DefaultPalette.white },
+  },
+  hoverBackground: DefaultPalette.white,
+  background: DefaultPalette.white,
 };
 
 const pivotStyle: Partial<IPivotStyles> = {
@@ -20,8 +25,13 @@ const pivotStyle: Partial<IPivotStyles> = {
     display: "flex",
     overflow: "hidden",
     justifyContent: "center",
-    backgroundColor: DefaultPalette.white,
     borderBottom: "1px solid rgba(29, 4, 4, 0.11)",
+  },
+  link: {
+    selectors: {
+      "&:hover": { background: "transparent" },
+      "&:active": { background: "transparent" },
+    },
   },
 };
 

@@ -25,6 +25,7 @@ const classNames = mergeStyleSets({
       minHeight: 34,
       boxSizing: "border-box",
       padding: "0 25px",
+      cursor: "pointer",
       display: "flex",
       selectors: {
         "&:hover": { background: palette.themeLighterAlt },
@@ -114,7 +115,7 @@ function CitationStyle(): JSX.Element {
   };
 
   return (
-    <>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <div className={classNames.StyleHeading}>Current Style</div>
       <div className={classNames.selectedStyle}>
         {currentStyle
@@ -123,11 +124,11 @@ function CitationStyle(): JSX.Element {
       </div>
       <div className={classNames.StyleHeading}>Change Style</div>
       <div className={classNames.container}>
-        <FocusZone direction={FocusZoneDirection.vertical} data-is-scrollable>
+        <FocusZone direction={FocusZoneDirection.vertical}>
           <List items={items} onRenderCell={onRenderCell} />
         </FocusZone>
       </div>
-    </>
+    </div>
   );
 }
 
