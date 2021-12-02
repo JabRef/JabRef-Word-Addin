@@ -5,7 +5,7 @@ import React, { ReactElement } from "react";
 type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
-  defaulValue: string;
+  defaultValue: string;
 };
 
 function InputField({ defaultValue, ...props }: InputFieldProps): ReactElement {

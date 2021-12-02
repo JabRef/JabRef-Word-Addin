@@ -92,7 +92,7 @@ function Login() {
                 <Stack.Item>
                   <InputField
                     name="email"
-                    defaulValue=""
+                    defaultValue=""
                     type="email"
                     label="Email"
                     placeholder="Email"
@@ -101,7 +101,7 @@ function Login() {
                   <InputField
                     type="password"
                     name="password"
-                    defaulValue=""
+                    defaultValue=""
                     label="Password"
                     placeholder="*********"
                   />
