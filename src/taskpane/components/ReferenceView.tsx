@@ -23,6 +23,7 @@ const classNames = mergeStyleSets({
     {
       backgroundColor: theme.palette.white,
       cursor: "pointer",
+      minHeight: "60px",
       width: "90%",
       margin: "0 auto",
       flex: "0 0 auto",
@@ -100,7 +101,20 @@ const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
             (citation) => citation.id === document.id
           ) && <EditCitation document={document} />}
         </div>
-        <div className={classNames.itemContent}>
+        <div
+          className={classNames.itemContent}
+          role="presentation"
+          onClick={() =>
+            dispatch({
+              type: !selectedCitations.find(
+                (citation) => citation.id === document.id
+              )
+                ? "add"
+                : "remove",
+              citation: document,
+            })
+          }
+        >
           <div className={classNames.itemType}>{document.type}</div>
           <div className={classNames.itemTitle}>{document.title}</div>
           {/* <div className={classNames.itemAuthor}>{item.author}</div>
