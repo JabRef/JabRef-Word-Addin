@@ -53,7 +53,7 @@
     "@types/find-process": "1.2.0",
     "@types/office-js": "^1.0.217",
     "@types/office-runtime": "^1.0.22",
-    "@types/react": "^17.0.34",
+    "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-router-dom": "^5.3.2",
