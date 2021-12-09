@@ -29,6 +29,7 @@ const buttonContainer = {
   alignContent: "flex-start",
   borderTop: "1px solid #eaeaea",
   boxShadow: "0px 1px 4px 0px rgba(0,0,0,0.2)",
+  backgroundColor: "#fafafa",
   flexDirection: "row" as const,
 };
 function containsSearchTerm(keyword: string) {

@@ -14,8 +14,16 @@ import client from "../../utils/apolloClient";
 import { useCiteSupport } from "../contexts/CiteSupportContext";
 
 const SignOutButtonStyle: IButtonStyles = {
-  root: {
-    color: DefaultPalette.white,
+  icon: {
+    color: "rgba(255,255,255,.8)",
+  },
+  iconHovered: {
+    color: "rgba(255, 255, 255,.9)",
+    transform: "scale(1.05)",
+  },
+  iconPressed: {
+    transform: "scale(0.95)",
+    color: "rgba(255, 255, 255,.9)",
   },
 };
 
@@ -70,19 +78,19 @@ function Footer(): ReactElement {
       <Stack grow horizontal horizontalAlign="end">
         <ActionButton
           styles={SignOutButtonStyle}
+          ariaLabel="Add Bibliography"
           iconProps={SyncBib}
           allowDisabledFocus
           onClick={async () => {
             await citeSupport.getBibliography();
           }}
-          text="Add Bib"
         />
         <ActionButton
           styles={SignOutButtonStyle}
           iconProps={Signout}
+          ariaLabel="Sign Out"
           allowDisabledFocus
           onClick={() => logoutMutation().then(() => client.resetStore())}
-          text="Sign Out"
         />
       </Stack>
     </Stack>
