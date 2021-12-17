@@ -39,6 +39,7 @@ const classNames = mergeStyleSets({
     paddingLeft: "0.25rem",
     boxSizing: "border-box",
     flexDirection: "column",
+    alignItems: "flex-start",
     justifyContent: "flex-start",
   },
   itemTitle: [
@@ -62,14 +63,15 @@ const classNames = mergeStyleSets({
     color: palette.neutralTertiary,
   },
   itemType: {
-    fontSize: fonts.mediumPlus,
-    color: palette.neutralTertiary,
+    fontSize: fonts.medium.fontSize,
+    color: palette.black,
+    fontWeight: fonts.xLarge.fontWeight,
   },
 });
 
 const buttonContainerStyle = {
   display: "flex",
-  paddingTop: "0.1rem",
+  paddingTop: "0.25rem",
   flexDirection: "column" as const,
   justifyContent: "space-between",
   alignItems: "center",
@@ -82,7 +84,7 @@ const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
   const { selectedCitations, dispatch } = useCitationStore();
   return (
     <>
-      <li key={document.id} className={classNames.itemCell} data-is-focusable>
+      <li className={classNames.itemCell} data-is-focusable>
         <div style={buttonContainerStyle} key={document.id}>
           <Checkbox
             checked={
@@ -115,7 +117,12 @@ const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
             })
           }
         >
-          <div className={classNames.itemType}>{document.type}</div>
+          <div
+            className={classNames.itemType}
+            style={{ textTransform: "capitalize" }}
+          >
+            {document.type}
+          </div>
           <div className={classNames.itemTitle}>{document.title}</div>
           {/* <div className={classNames.itemAuthor}>{item.author}</div>
           <div className={classNames.itemYear}>

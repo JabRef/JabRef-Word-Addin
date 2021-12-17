@@ -26,7 +26,7 @@ function ReferenceList({ referenceList }: ReferenceListProps): ReactElement {
     >
       <ul>
         {referenceList.map((document) => (
-          <ReferenceView document={document} />
+          <ReferenceView key={document.id} document={document} />
         ))}
       </ul>
     </FocusZone>
