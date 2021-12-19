@@ -21,16 +21,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Get PR info
-        uses: jwalton/gh-find-current-pr@v1
-        id: findPr
-        with:
-          state: open
-        run: echo "Your PR is ${PR}"
-        if: success() && steps.findPr.outputs.number
-        env:
-          PR: ${{ steps.findPr.outputs.pr }}
-
       - name: Build and deploy to Azure
         uses: Azure/static-web-apps-deploy@v1
         with:
