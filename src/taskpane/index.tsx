@@ -13,7 +13,7 @@ import { AppContainer } from "react-hot-loader";
 import { initializeIcons, ThemeProvider } from "@fluentui/react";
 import { HashRouter as Router } from "react-router-dom";
 import App from "./components/App";
-import client from "../utils/apolloClient";
+import client from "../plugins/apollo/apolloClient";
 
 initializeIcons();
 

@@ -10,7 +10,7 @@ import {
 } from "@fluentui/react";
 import React, { ReactElement } from "react";
 import { useLogoutMutation } from "../../generated/graphql";
-import client from "../../utils/apolloClient";
+import client from "../../plugins/apollo/apolloClient";
 import { useCiteSupport } from "../contexts/CiteSupportContext";
 
 const SignOutButtonStyle: IButtonStyles = {

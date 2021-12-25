@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import Progress from "./Progress";
 import Login from "../pages/login";
 import Layout from "../Layout/Layout";
-import ProtectedRoutes from "../../utils/ProtectedRoutes";
+import ProtectedRoutes from "../routes/ProtectedRoutes";
 import { CitationStoreProvider } from "../contexts/CitationStoreContext";
 import { CiteSupportProvider } from "../contexts/CiteSupportContext";
 import Wrapper from "./Wrapper";
