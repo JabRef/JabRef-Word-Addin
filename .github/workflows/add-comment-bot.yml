@@ -1,16 +1,18 @@
+name: Comment Url
+
 on:
   pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      URL_PROD: "https://lively-ground-0d7c50410-${{github.event.number}}.centralus.azurestaticapps.net"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            $URL_PROD
+            https://lively-ground-0d7c50410-${{github.event.number}}.centralus.azurestaticapps.net/manifest.prod.xml
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          repo-token-user-login: "Bot[bot]" # The user.login for temporary GitHub tokens
-          allow-repeats: false # This is the default
+          repo-token-user-login: "github-actions[bot]" # The user.login for temporary GitHub tokens
+          allow-repeats: true
