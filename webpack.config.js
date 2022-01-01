@@ -6,12 +6,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 var dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
-const urlDev = process.env.urlDev || "https://localhost:3000/";
-const prodUrl = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
-
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
-  const urlProd = env.urlProd || prodUrl;
+  const urlDev = process.env.urlDev || "https://localhost:3000";
+  const urlProd = env.URL_PROD || "https://www.contoso.com";
   const buildType = dev ? "dev" : "prod";
   const config = {
     devtool: "source-map",
@@ -58,6 +56,10 @@ module.exports = async (env, options) => {
           {
             to: "taskpane.css",
             from: "./src/taskpane/taskpane.css",
+          },
+          {
+            from: "./assets",
+            to: "assets",
           },
           {
             to: "[name]." + buildType + ".[ext]",
