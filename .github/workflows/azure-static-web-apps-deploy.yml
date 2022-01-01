@@ -33,7 +33,7 @@ jobs:
           app_location: "/"
           # Built app content directory
           output_location: "dist"
-          app_build_command: "npm run build --env $URL_PROD"
+          app_build_command: "npm run build --env URL_PROD=$URL_PROD"
 
   cleanup_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
