@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and deploy
     env:
-      URL_PROD: https://lively-ground-0d7c50410-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH").centralus.azurestaticapps.net
+      URL_PROD: "https://lively-ground-0d7c50410-${{github.event.number}}.centralus.azurestaticapps.net"
 
     steps:
       - name: Checkout
@@ -33,7 +33,7 @@ jobs:
           app_location: "/"
           # Built app content directory
           output_location: "dist"
-          app_build_command: "npm run build --env URL_PROD"
+          app_build_command: "npm run build --env $URL_PROD"
 
   cleanup_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
