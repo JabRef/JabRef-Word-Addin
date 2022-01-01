@@ -29,6 +29,7 @@ jobs:
           action: "upload"
           # App source code path
           app_location: "/"
+          app_build_command: "npm run build --env urlProd=$(jq --raw-output .pull_request.number '$GITHUB_EVENT_PATH')"
           # Built app content directory
           output_location: "dist"
 
