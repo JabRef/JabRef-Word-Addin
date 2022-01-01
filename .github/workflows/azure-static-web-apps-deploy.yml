@@ -18,11 +18,11 @@ jobs:
       URL_PROD: https://lively-ground-0d7c50410-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH").centralus.azurestaticapps.net
 
     steps:
+      - run: echo "🎉 The job was automatically triggered by a $URL_PROD event."
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: true
-      - run: echo "🎉 The job was automatically triggered by a $URL_PROD event."
 
       - name: Build and deploy to Azure
         uses: Azure/static-web-apps-deploy@v1
