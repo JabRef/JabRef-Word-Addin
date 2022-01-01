@@ -4,13 +4,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      URL_PROD: "https://lively-ground-0d7c50410-${{github.event.number}}.centralus.azurestaticapps.net"
     steps:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            **Hello**
-            🌏
-            !
+            $URL_PROD
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          repo-token-user-login: "github-actions[bot]" # The user.login for temporary GitHub tokens
+          repo-token-user-login: "Bot[bot]" # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
