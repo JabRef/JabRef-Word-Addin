@@ -18,7 +18,7 @@ jobs:
       PR: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
 
     steps:
-      - run: echo "🎉 The job was automatically triggered by a $PR event."
+      - run: echo "🎉 The job was automatically triggered by a ${{github.event.number}} event."
       - name: Checkout
         uses: actions/checkout@v2
         with:
