@@ -18,6 +18,7 @@ jobs:
       URL_PROD: "https://lively-ground-0d7c50410-${{github.event.number}}.centralus.azurestaticapps.net"
 
     steps:
+      - run: echo "🎉 The job was automatically triggered by a $URL_PROD event."
       - name: Checkout
         uses: actions/checkout@v2
         with:
