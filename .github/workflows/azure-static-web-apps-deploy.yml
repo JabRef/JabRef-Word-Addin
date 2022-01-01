@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and deploy
     env:
-      URL_PROD: https://lively-ground-0d7c50410-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH").centralus.azurestaticapps.net
+      PR: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+      URL_PROD: https://lively-ground-0d7c50410-$PR.centralus.azurestaticapps.net
 
     steps:
       - run: echo "🎉 The job was automatically triggered by a $URL_PROD event."
