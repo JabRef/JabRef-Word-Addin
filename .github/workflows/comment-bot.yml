@@ -1,0 +1,24 @@
+# name: Comment Manifest Url
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     types: [opened]
+#     branches:
+#       - main
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - uses: mshick/add-pr-comment@v1
+#         with:
+#           message: |
+#             https://lively-ground-0d7c50410-${{github.event.number}}.centralus.azurestaticapps.net/manifest.prod.xml
+#           repo-token: ${{ secrets.GITHUB_TOKEN }}
+#           repo-token-user-login: "github-actions[bot]" # The user.login for temporary GitHub tokens
+#           allow-repeats: false # Don't comment the same URL twice

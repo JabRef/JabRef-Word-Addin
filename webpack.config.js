@@ -6,11 +6,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 var dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 
-const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
-
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
+  const urlDev = process.env.urlDev || "https://localhost:3000";
+  const urlProd = env.URL_PROD || "https://www.contoso.com";
   const buildType = dev ? "dev" : "prod";
   const config = {
     devtool: "source-map",
@@ -59,13 +58,19 @@ module.exports = async (env, options) => {
             from: "./src/taskpane/taskpane.css",
           },
           {
+            from: "./assets",
+            to: "assets",
+          },
+          {
             to: "[name]." + buildType + ".[ext]",
             from: "manifest*.xml",
             transform(content) {
               if (dev) {
                 return content;
               } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
+                return content
+                  .toString()
+                  .replace(new RegExp(urlDev, "g"), urlProd);
               }
             },
           },
@@ -105,7 +110,7 @@ module.exports = async (env, options) => {
           ? options.https
           : await devCerts.getHttpsServerOptions(),
       port: process.env.npm_package_config_dev_server_port || 3000,
-    }
+    };
   }
 
   return config;
