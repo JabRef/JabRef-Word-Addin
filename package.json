@@ -85,7 +85,7 @@
     "less-loader": "^7.3.0",
     "office-addin-cli": "^1.2.5",
     "office-addin-debugging": "^4.3.5",
-    "office-addin-dev-certs": "^1.7.2",
+    "office-addin-dev-certs": "^1.7.6",
     "office-addin-lint": "^1.4.4",
     "office-addin-manifest": "^1.7.6",
     "office-addin-prettier-config": "^1.1.2",
