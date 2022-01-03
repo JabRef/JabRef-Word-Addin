@@ -11,8 +11,7 @@ on:
 
 jobs:
   build_and_deploy:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') && ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     name: Build and deploy
 
     steps:
