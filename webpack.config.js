@@ -65,7 +65,9 @@ module.exports = async (env, options) => {
               if (dev) {
                 return content;
               } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
+                return content
+                  .toString()
+                  .replace(new RegExp(urlDev, "g"), urlProd);
               }
             },
           },
@@ -105,7 +107,7 @@ module.exports = async (env, options) => {
           ? options.https
           : await devCerts.getHttpsServerOptions(),
       port: process.env.npm_package_config_dev_server_port || 3000,
-    }
+    };
   }
 
   return config;
