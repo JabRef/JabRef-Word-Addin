@@ -1,12 +1,8 @@
-import React, { useCallback, useState } from "react";
-import {
-  DefaultButton,
-  IconButton,
-  PrimaryButton,
-} from "@fluentui/react/lib/Button";
-import { Panel, PanelType } from "@fluentui/react/lib/Panel";
+import React, { useCallback, useState } from 'react';
+import { DefaultButton, IconButton, PrimaryButton } from '@fluentui/react/lib/Button';
+import { Panel, PanelType } from '@fluentui/react/lib/Panel';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { useBoolean } from "@fluentui/react-hooks";
+import { useBoolean } from '@fluentui/react-hooks';
 import {
   DefaultPalette,
   Dropdown,
@@ -18,26 +14,26 @@ import {
   MessageBar,
   Stack,
   TextField,
-} from "@fluentui/react";
-import { MetaData } from "citeproc";
-import { useCitationStore } from "../contexts/CitationStoreContext";
+} from '@fluentui/react';
+import { MetaData } from 'citeproc';
+import { useCitationStore } from '../contexts/CitationStoreContext';
 
 interface EditCitationProps {
   document: MetaData;
 }
 
-const editIcon: IIconProps = { iconName: "edit" };
+const editIcon: IIconProps = { iconName: 'edit' };
 const buttonStyles = { root: { marginRight: 8 } };
 const iconButtonStyle = {
   rootHovered: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     color: DefaultPalette.blueMid,
-    transform: "scale(1.05)",
+    transform: 'scale(1.05)',
   },
   rootPressed: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     color: DefaultPalette.blueMid,
-    transform: "scale(1.1)",
+    transform: 'scale(1.1)',
   },
 };
 const stackToken: IStackTokens = {
@@ -62,20 +58,20 @@ interface LabelOptionInterface {
 }
 
 const LabelOptions: Array<LabelOptionInterface> = [
-  { key: "column", text: "Column" },
-  { key: "figure", text: "Figure" },
-  { key: "book", text: "Book" },
-  { key: "chapter", text: "Chapter" },
-  { key: "volume", text: "Volume" },
-  { key: "page", text: "Page" },
-  { key: "folio", text: "Folio" },
-  { key: "issue", text: "Issue" },
-  { key: "opus", text: "Opus" },
-  { key: "part", text: "Part" },
-  { key: "line", text: "Line" },
-  { key: "note", text: "Note" },
-  { key: "section", text: "Section" },
-  { key: "paragraph", text: "Paragraph" },
+  { key: 'column', text: 'Column' },
+  { key: 'figure', text: 'Figure' },
+  { key: 'book', text: 'Book' },
+  { key: 'chapter', text: 'Chapter' },
+  { key: 'volume', text: 'Volume' },
+  { key: 'page', text: 'Page' },
+  { key: 'folio', text: 'Folio' },
+  { key: 'issue', text: 'Issue' },
+  { key: 'opus', text: 'Opus' },
+  { key: 'part', text: 'Part' },
+  { key: 'line', text: 'Line' },
+  { key: 'note', text: 'Note' },
+  { key: 'section', text: 'Section' },
+  { key: 'paragraph', text: 'Paragraph' },
 ];
 
 const EditCitation: React.FunctionComponent<EditCitationProps> = ({
@@ -89,37 +85,27 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
     suffix: suffixProp,
     locator: locatorProp,
   } = selectedCitations.find((doc) => doc.id === document.id);
-  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
-    useBoolean(false);
+  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
   const [label, setlabel] = useState<string>(labelProp);
   const [prefix, setPrefix] = useState<string>(prefixProp);
   const [suffix, setSuffix] = useState<string>(suffixProp);
   const [locator, setLocator] = useState<string>(locatorProp);
-  const onLabelChange = (
-    _event: React.FormEvent<HTMLDivElement>,
-    item: IDropdownOption
-  ): void => {
+  const onLabelChange = (_event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void => {
     setlabel(item.key as string);
   };
   const onPrefixChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string
-    ) => setPrefix(newValue || ""),
+    (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) =>
+      setPrefix(newValue || ''),
     []
   );
   const onSuffixChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string
-    ) => setSuffix(newValue || ""),
+    (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) =>
+      setSuffix(newValue || ''),
     []
   );
   const onLocatorChange = useCallback(
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-      newValue?: string
-    ) => setLocator(newValue || ""),
+    (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) =>
+      setLocator(newValue || ''),
     []
   );
   const onClickHandler = useCallback(() => {
@@ -130,7 +116,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
       suffix,
       locator,
     };
-    dispatch({ type: "update", citation });
+    dispatch({ type: 'update', citation });
 
     dismissPanel();
   }, [id, label, prefix, suffix, locator, dispatch, dismissPanel]);
@@ -146,11 +132,7 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
   const onRenderFooterContent = React.useCallback(
     () => (
       <div>
-        <PrimaryButton
-          onClick={onClickHandler}
-          styles={buttonStyles}
-          text="Save"
-        />
+        <PrimaryButton onClick={onClickHandler} styles={buttonStyles} text="Save" />
         <DefaultButton onClick={onDismiss} text="Cancel" />
       </div>
     ),

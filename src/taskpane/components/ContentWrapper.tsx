@@ -1,16 +1,16 @@
-import React from "react";
+import React, { ReactElement, ReactNode } from 'react';
 
 interface ContentWrapperProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-function ContentWrapper({ children }: ContentWrapperProps): JSX.Element {
+function ContentWrapper({ children }: ContentWrapperProps): ReactElement {
   return (
     <div
       style={{
-        width: "90%",
-        height: "100%",
-        margin: "0 auto",
+        width: '90%',
+        height: '100%',
+        margin: '0 auto',
       }}
     >
       {children}

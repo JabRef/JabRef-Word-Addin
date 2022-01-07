@@ -1,12 +1,12 @@
-import { IStackStyles, Stack } from "@fluentui/react";
-import React, { ReactElement } from "react";
+import { IStackStyles, Stack } from '@fluentui/react';
+import React, { ReactElement, ReactNode } from 'react';
 
 interface WrapperProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 const wrapperStackStyles: IStackStyles = {
   root: {
-    height: "100vh",
+    height: '100vh',
   },
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Checkbox,
   getFocusStyle,
@@ -6,10 +6,10 @@ import {
   ITheme,
   mergeStyleSets,
   Separator,
-} from "@fluentui/react";
-import { MetaData } from "citeproc";
-import EditCitation from "../pages/editCitation";
-import { useCitationStore } from "../contexts/CitationStoreContext";
+} from '@fluentui/react';
+import { MetaData } from 'citeproc';
+import EditCitation from '../pages/editCitation';
+import { useCitationStore } from '../contexts/CitationStoreContext';
 
 interface ReferenceViewProps {
   document: MetaData;
@@ -22,35 +22,35 @@ const classNames = mergeStyleSets({
     getFocusStyle(theme, { inset: -1 }),
     {
       backgroundColor: theme.palette.white,
-      cursor: "pointer",
-      minHeight: "60px",
-      width: "90%",
-      margin: "0 auto",
-      flex: "0 0 auto",
-      display: "flex",
-      flexDirection: "row",
-      boxSizing: "border-box",
+      cursor: 'pointer',
+      minHeight: '60px',
+      width: '90%',
+      margin: '0 auto',
+      flex: '0 0 auto',
+      display: 'flex',
+      flexDirection: 'row',
+      boxSizing: 'border-box',
     },
   ],
   itemContent: {
     flexGrow: 1,
-    display: "flex",
-    overflow: "auto",
-    paddingLeft: "0.25rem",
-    boxSizing: "border-box",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    display: 'flex',
+    overflow: 'auto',
+    paddingLeft: '0.25rem',
+    boxSizing: 'border-box',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
   itemTitle: [
     fonts.medium,
     {
-      display: "block",
-      overflow: "hidden",
-      maxHeight: "3.6em",
-      lineHeight: "1.8em",
-      wordWrap: "break-word",
-      textOverflow: "ellipsis",
+      display: 'block',
+      overflow: 'hidden',
+      maxHeight: '3.6em',
+      lineHeight: '1.8em',
+      wordWrap: 'break-word',
+      textOverflow: 'ellipsis',
     },
   ],
   itemAuthor: {
@@ -70,13 +70,13 @@ const classNames = mergeStyleSets({
 });
 
 const buttonContainerStyle = {
-  display: "flex",
-  paddingTop: "0.25rem",
-  flexDirection: "column" as const,
-  justifyContent: "space-between",
-  alignItems: "center",
-  boxSizing: "border-box" as const,
-  width: "30px",
+  display: 'flex',
+  paddingTop: '0.25rem',
+  flexDirection: 'column' as const,
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  boxSizing: 'border-box' as const,
+  width: '30px',
   flexGrow: 0,
   flexShrink: 0,
 };
@@ -87,40 +87,31 @@ const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
       <li className={classNames.itemCell} data-is-focusable>
         <div style={buttonContainerStyle} key={document.id}>
           <Checkbox
-            checked={
-              !!selectedCitations.find(
-                (citation) => citation.id === document.id
-              )
-            }
+            checked={!!selectedCitations.find((citation) => citation.id === document.id)}
             onChange={(_e, checked) => {
               dispatch({
-                type: checked ? "add" : "remove",
+                type: checked ? 'add' : 'remove',
                 citation: document,
               });
             }}
           />
-          {!!selectedCitations.find(
-            (citation) => citation.id === document.id
-          ) && <EditCitation document={document} />}
+          {!!selectedCitations.find((citation) => citation.id === document.id) && (
+            <EditCitation document={document} />
+          )}
         </div>
         <div
           className={classNames.itemContent}
           role="presentation"
           onClick={() =>
             dispatch({
-              type: !selectedCitations.find(
-                (citation) => citation.id === document.id
-              )
-                ? "add"
-                : "remove",
+              type: !selectedCitations.find((citation) => citation.id === document.id)
+                ? 'add'
+                : 'remove',
               citation: document,
             })
           }
         >
-          <div
-            className={classNames.itemType}
-            style={{ textTransform: "capitalize" }}
-          >
+          <div className={classNames.itemType} style={{ textTransform: 'capitalize' }}>
             {document.type}
           </div>
           <div className={classNames.itemTitle}>{document.title}</div>
