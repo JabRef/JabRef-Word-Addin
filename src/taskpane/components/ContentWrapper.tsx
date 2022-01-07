@@ -8,9 +8,13 @@ function ContentWrapper({ children }: ContentWrapperProps): ReactElement {
   return (
     <div
       style={{
-        width: '90%',
+        width: '100%',
         height: '100%',
         margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
       }}
     >
       {children}

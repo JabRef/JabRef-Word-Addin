@@ -4,9 +4,8 @@ import Progress from './Progress';
 import Login from '../pages/login';
 import Layout from '../Layout/Layout';
 import ProtectedRoutes from '../routes/ProtectedRoutes';
-import { CitationStoreProvider } from '../contexts/CitationStoreContext';
-import { CiteSupportProvider } from '../contexts/CiteSupportContext';
 import Wrapper from './Wrapper';
+import Context from '../contexts/index';
 
 export interface AppProps {
   title: string;
@@ -28,11 +27,9 @@ function App(props: AppProps): ReactElement {
           <Login />
         </Route>
         <ProtectedRoutes path="/">
-          <CiteSupportProvider>
-            <CitationStoreProvider>
-              <Layout />
-            </CitationStoreProvider>
-          </CiteSupportProvider>
+          <Context>
+            <Layout />
+          </Context>
         </ProtectedRoutes>
       </Switch>
     </Wrapper>

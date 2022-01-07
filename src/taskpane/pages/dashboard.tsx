@@ -6,24 +6,19 @@ import SearchField from '../components/SearchField';
 import { useCitationStore } from '../contexts/CitationStoreContext';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
 import ReferenceList from '../components/ReferenceList';
+import ContentWrapper from '../components/ContentWrapper';
 
-const dashboadStyle = {
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  overflow: 'hidden',
-  flexDirection: 'column' as const,
-};
 const buttonContainer = {
   padding: 16,
   display: 'flex',
+  width: '100%',
   flex: '0 0 auto',
   marginTop: 'auto',
   justifyContent: 'center' as const,
   alignContent: 'flex-start',
   borderTop: '1px solid #eaeaea',
-  boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.2)',
   backgroundColor: '#fafafa',
+  boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.2)',
   flexDirection: 'row' as const,
 };
 function containsSearchTerm(keyword: string) {
@@ -85,7 +80,7 @@ function Dashboard(): ReactElement {
   }, [citeSupport.wordApi, getSelectedCitation]);
 
   return (
-    <div style={dashboadStyle}>
+    <ContentWrapper>
       <SearchField onFilterChange={onFilterChange} />
       <ReferenceList referenceList={referenceList} />
       {selectedCitations.length && !itemsInSelectedCitation.current.length ? (
@@ -112,7 +107,7 @@ function Dashboard(): ReactElement {
           />
         </div>
       ) : null}
-    </div>
+    </ContentWrapper>
   );
 }
 

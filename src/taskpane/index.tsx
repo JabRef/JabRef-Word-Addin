@@ -6,20 +6,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import ReactDOM from "react-dom";
-import { ApolloProvider } from "@apollo/client";
-import { AppContainer } from "react-hot-loader";
-import { initializeIcons, ThemeProvider } from "@fluentui/react";
-import { HashRouter as Router } from "react-router-dom";
-import App from "./components/App";
-import client from "../plugins/apollo/apolloClient";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ApolloProvider } from '@apollo/client';
+import { AppContainer } from 'react-hot-loader';
+import { initializeIcons, ThemeProvider } from '@fluentui/react';
+import { HashRouter as Router } from 'react-router-dom';
+import App from './components/App';
+import client from '../plugins/apollo/apolloClient';
 
 initializeIcons();
 
 let isOfficeInitialized = false;
 
-const title = "JabRef Task Pane Add-in";
+const title = 'JabRef Task Pane Add-in';
 
 const render = (Component) => {
   ReactDOM.render(
@@ -27,15 +27,12 @@ const render = (Component) => {
       <AppContainer>
         <ThemeProvider>
           <Router>
-            <Component
-              title={title}
-              isOfficeInitialized={isOfficeInitialized}
-            />
+            <Component title={title} isOfficeInitialized={isOfficeInitialized} />
           </Router>
         </ThemeProvider>
       </AppContainer>
     </ApolloProvider>,
-    document.getElementById("container")
+    document.getElementById('container')
   );
 };
 
@@ -46,8 +43,8 @@ Office.initialize = () => {
 };
 
 if ((module as any).hot) {
-  (module as any).hot.accept("./components/App", () => {
-    const NextApp = require("./components/App").default;
+  (module as any).hot.accept('./components/App', () => {
+    const NextApp = require('./components/App').default;
     render(NextApp);
   });
 }

@@ -44,6 +44,7 @@ const dropdownStyles: Partial<IDropdownStyles> = {
     minWidth: 160,
   },
 };
+
 const wrapperStackStyles: IStackStyles = {
   root: {
     marginTop: 40,
