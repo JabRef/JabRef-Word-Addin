@@ -10,6 +10,8 @@ import {
 import { Stack } from "@fluentui/react";
 import Preference from "../../utils/user-preference";
 import { useCiteSupport } from "../contexts/CiteSupportContext";
+import SearchAutoComplete from "../components/SearchAutoComplete";
+import styleName from "../../utils/styleName";
 
 const theme: ITheme = getTheme();
 const { palette, semanticColors, fonts } = theme;
@@ -47,6 +49,7 @@ const classNames = mergeStyleSets({
       padding: 20,
       paddingBottom: 5,
       paddingTop: 15,
+      alignSelf: "flex-start",
     },
   ],
   selectedStyle: [
@@ -114,7 +117,20 @@ function CitationStyle(): JSX.Element {
   };
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex" as const,
+        flexDirection: "column" as const,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <SearchAutoComplete
+        items={styleName}
+        inputHandler={onClick}
+        style={{ width: "100%" }}
+      />
+
       <div className={classNames.StyleHeading}>Current Style</div>
       <div className={classNames.selectedStyle}>
         {currentStyle
@@ -127,7 +143,7 @@ function CitationStyle(): JSX.Element {
           <List items={items} onRenderCell={onRenderCell} />
         </FocusZone>
       </div>
-    </>
+    </div>
   );
 }
 
