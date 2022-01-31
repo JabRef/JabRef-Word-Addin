@@ -1,49 +1,78 @@
-import { IPivotStyles, DefaultPalette, Pivot, PivotItem, Stack } from '@fluentui/react';
-import React, { ReactElement } from 'react';
-import CitationStyle from '../pages/citationStyle';
-import Dashboard from '../pages/dashboard';
+/* eslint-disable no-void */
+import { Pivot, PivotItem, Stack, StackItem } from '@fluentui/react';
+import React, { ReactElement, useState } from 'react';
+import CitationStyle from '../pages/CitationStyle';
+import Dashboard from '../pages/Dashboard';
 import Footer from '../components/Footer';
+import { pivotStyle, scrollableStack } from '../styles/layout';
+import { useCiteSupport } from '../contexts/CiteSupportContext';
+import { useLogoutMutation } from '../../generated/graphql';
+import client from '../../plugins/apollo/apolloClient';
+import { useTheme } from '../contexts/ThemeContext';
+import { Theme } from '../../../types';
+import Preference from '../../utils/user-preference';
 
-const pivotItemStyles = {
-  height: 'calc(100vh - 90px)',
-  overflow: 'hidden',
-  selectors: {
-    '&:hover': { background: DefaultPalette.white },
-  },
-  hoverBackground: DefaultPalette.white,
-  background: DefaultPalette.white,
-};
+type pivotItem = 'citationStyle' | 'dashboard';
 
-const pivotStyle: Partial<IPivotStyles> = {
-  root: {
-    display: 'flex',
-    overflow: 'hidden',
-    justifyContent: 'center',
-    borderBottom: '1px solid rgba(29, 4, 4, 0.11)',
-  },
-  link: {
-    selectors: {
-      '&:hover': { background: 'transparent' },
-      '&:active': { background: 'transparent' },
-    },
-  },
+const getTabId = (itemKey: string) => {
+  return `appTabs${itemKey}`;
 };
 
 function Layout(): ReactElement {
+  const { theme, setTheme } = useTheme();
+  const [selectedKey, setSelectedKey] = useState<pivotItem>('dashboard');
+
+  const handleLinkClick = (item?: PivotItem) => {
+    if (item) setSelectedKey(item.props.itemKey as pivotItem);
+  };
+
+  const citeSupport = useCiteSupport();
+  const [logoutMutation] = useLogoutMutation();
+
+  const onLogout = async () => {
+    await logoutMutation();
+    void client.resetStore();
+  };
+
+  const onSyncBibliography = async () => {
+    await citeSupport.getBibliography();
+  };
+
+  const onThemeChange = () => {
+    if (theme === Theme.LIGHT) {
+      setTheme(Theme.DARK);
+    } else {
+      setTheme(Theme.LIGHT);
+    }
+    Preference.syncPreference();
+  };
+
   return (
-    <>
-      <Stack grow>
-        <Pivot aria-label="NAV" styles={pivotStyle} linkSize="normal">
-          <PivotItem headerText="Library" style={pivotItemStyles}>
-            <Dashboard />
-          </PivotItem>
-          <PivotItem headerText="Citation Style" style={pivotItemStyles}>
-            <CitationStyle />
-          </PivotItem>
+    <Stack verticalFill>
+      <Stack.Item>
+        <Pivot
+          aria-label="NAV"
+          linkSize="normal"
+          getTabId={getTabId}
+          styles={pivotStyle}
+          onLinkClick={handleLinkClick}
+        >
+          <PivotItem headerText="Library" itemKey="dashboard" />
+          <PivotItem headerText="Citation Style" itemKey="citationStyles" />
         </Pivot>
-      </Stack>
-      <Footer />
-    </>
+      </Stack.Item>
+      <StackItem styles={scrollableStack} grow>
+        {selectedKey === 'dashboard' ? <Dashboard /> : <CitationStyle />}
+      </StackItem>
+      <Stack.Item>
+        <Footer
+          onLogout={onLogout}
+          onSyncBibliography={onSyncBibliography}
+          onThemeChange={onThemeChange}
+          theme={theme}
+        />
+      </Stack.Item>
+    </Stack>
   );
 }
 

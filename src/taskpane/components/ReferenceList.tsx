@@ -13,8 +13,9 @@ interface ReferenceListProps {
 }
 const classNames = mergeStyleSets({
   container: {
+    flexDirection: 'row',
     overflow: 'auto',
-    webkitBoxFlex: '1 1 auto',
+    flex: '1 1 auto',
   },
 });
 

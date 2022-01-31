@@ -1,37 +1,34 @@
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
-import { PrimaryButton, DefaultButton } from '@fluentui/react';
+import { Stack } from '@fluentui/react';
 import { CitationItem, MetaData } from 'citeproc';
 import data from '../../utils/data';
 import SearchField from '../components/SearchField';
 import { useCitationStore } from '../contexts/CitationStoreContext';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
 import ReferenceList from '../components/ReferenceList';
-import ContentWrapper from '../components/ContentWrapper';
+import { scrollableStack } from '../styles/layout';
+import ButtonGroup from '../components/ButtonGroup';
+import { CitationMode } from '../../../types';
 
-const buttonContainer = {
-  padding: 16,
-  display: 'flex',
-  width: '100%',
-  flex: '0 0 auto',
-  marginTop: 'auto',
-  justifyContent: 'center' as const,
-  alignContent: 'flex-start',
-  borderTop: '1px solid #eaeaea',
-  backgroundColor: '#fafafa',
-  boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.2)',
-  flexDirection: 'row' as const,
-};
 function containsSearchTerm(keyword: string) {
   return (item?: MetaData) => {
     return [item.title, item.author, item.year].some((str: string | number) =>
-      str ? str.toString().toLowerCase().includes(keyword.toLowerCase().trim()) : false
+      str ? str.toString().toLowerCase().includes(keyword?.toLowerCase().trim()) : false
     );
   };
 }
 
+const buttonLabel = (length: number) =>
+  length > 0
+    ? length > 1
+      ? `Insert ${length} citations `
+      : `Insert ${length} citation `
+    : 'Remove citation';
+
 function Dashboard(): ReactElement {
   const originalItems = data; // TODO: Replace with getData hooK
   const citeSupport = useCiteSupport();
+  const [mode, setMode] = useState<CitationMode>(CitationMode.REST);
   const { selectedCitations, dispatch } = useCitationStore();
   const [referenceList, setReferenceList] = useState<Array<MetaData>>(originalItems);
   const [citationItems, _setCitationItems] = useState<Array<CitationItem | null>>([]);
@@ -55,6 +52,16 @@ function Dashboard(): ReactElement {
       setItemsInSelectedCitation([]);
     }
   };
+
+  useEffect(() => {
+    if (selectedCitations.length && !itemsInSelectedCitation.current.length) {
+      setMode(CitationMode.CITE);
+    } else if (itemsInSelectedCitation.current.length) {
+      setMode(CitationMode.EDIT);
+    } else {
+      setMode(CitationMode.REST);
+    }
+  }, [selectedCitations, itemsInSelectedCitation.current.length, setMode]);
 
   const undoEdit = () => {
     dispatch({ type: 'replace', citations: itemsInSelectedCitation.current });
@@ -80,34 +87,36 @@ function Dashboard(): ReactElement {
   }, [citeSupport.wordApi, getSelectedCitation]);
 
   return (
-    <ContentWrapper>
-      <SearchField onFilterChange={onFilterChange} />
-      <ReferenceList referenceList={referenceList} />
-      {selectedCitations.length && !itemsInSelectedCitation.current.length ? (
-        <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation}>
-            Insert {selectedCitations.length}{' '}
-            {selectedCitations.length > 1 ? 'citations' : 'citation'}
-          </PrimaryButton>
-          <DefaultButton
-            onClick={() => dispatch({ type: 'empty' })}
-            text="Cancel"
-            style={{ marginLeft: 8 }}
+    <Stack verticalFill>
+      <Stack.Item>
+        <SearchField onFilterChange={onFilterChange} />
+      </Stack.Item>
+      <Stack.Item grow styles={scrollableStack}>
+        <ReferenceList referenceList={referenceList} />
+      </Stack.Item>
+      <Stack.Item>
+        {mode === CitationMode.CITE && (
+          <ButtonGroup
+            label1={buttonLabel(selectedCitations.length)}
+            label2="Cancel"
+            onClick1={insertCitation}
+            onClick2={() => dispatch({ type: 'empty' })}
+            disabled1={false}
+            disabled2={false}
           />
-        </div>
-      ) : null}
-      {itemsInSelectedCitation.current.length ? (
-        <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation} disabled={editCheck()} text="Save changes" />
-          <DefaultButton
-            onClick={undoEdit}
-            style={{ marginLeft: 8 }}
-            disabled={editCheck()}
-            text="Cancel"
+        )}
+        {mode === CitationMode.EDIT && (
+          <ButtonGroup
+            label1={buttonLabel(selectedCitations.length)}
+            label2="Cancel"
+            onClick1={insertCitation}
+            onClick2={undoEdit}
+            disabled1={editCheck()}
+            disabled2={editCheck()}
           />
-        </div>
-      ) : null}
-    </ContentWrapper>
+        )}
+      </Stack.Item>
+    </Stack>
   );
 }
 

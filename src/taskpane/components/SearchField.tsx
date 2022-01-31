@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { ISearchBoxStyles, SearchBox } from '@fluentui/react';
+import globalStyles from '../styles';
 
 interface SearchFieldProps {
   // eslint-disable-next-line no-unused-vars
@@ -8,14 +9,11 @@ interface SearchFieldProps {
 
 const searchBoxStyle: ISearchBoxStyles = {
   root: {
-    width: '90%',
-    flex: '0 0 auto',
-    margin: '1rem auto',
+    margin: `1rem ${globalStyles.margin}`,
   },
 };
 
-function SearchField(props: SearchFieldProps): ReactElement {
-  const { onFilterChange } = props;
+function SearchField({ onFilterChange }: SearchFieldProps): ReactElement {
   return (
     <SearchBox
       underlined

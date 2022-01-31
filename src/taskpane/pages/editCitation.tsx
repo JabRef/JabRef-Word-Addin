@@ -1,84 +1,39 @@
-import React, { useCallback, useState } from 'react';
-import { DefaultButton, IconButton, PrimaryButton } from '@fluentui/react/lib/Button';
+import React from 'react';
+import { IconButton } from '@fluentui/react/lib/Button';
 import { Panel, PanelType } from '@fluentui/react/lib/Panel';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useBoolean } from '@fluentui/react-hooks';
+import { MetaData } from 'citeproc';
+import { useFormik } from 'formik';
 import {
-  DefaultPalette,
   Dropdown,
   IDropdownOption,
-  IDropdownStyles,
   IIconProps,
-  IStackStyles,
-  IStackTokens,
   MessageBar,
   Stack,
   TextField,
 } from '@fluentui/react';
-import { MetaData } from 'citeproc';
 import { useCitationStore } from '../contexts/CitationStoreContext';
+import LabelOptions from '../../constants/LabelOptions';
+import ButtonGroup from '../components/ButtonGroup';
+import {
+  buttonContainerStack,
+  dropdownStyles,
+  iconButtonStyle,
+  stackToken,
+} from '../styles/editCitation';
 
 interface EditCitationProps {
   document: MetaData;
 }
 
 const editIcon: IIconProps = { iconName: 'edit' };
-const buttonStyles = { root: { marginRight: 8 } };
-const iconButtonStyle = {
-  rootHovered: {
-    backgroundColor: 'transparent',
-    color: DefaultPalette.blueMid,
-    transform: 'scale(1.05)',
-  },
-  rootPressed: {
-    backgroundColor: 'transparent',
-    color: DefaultPalette.blueMid,
-    transform: 'scale(1.1)',
-  },
-};
-const stackToken: IStackTokens = {
-  childrenGap: 25,
-};
-const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: {
-    minWidth: 160,
-  },
-};
-
-const wrapperStackStyles: IStackStyles = {
-  root: {
-    marginTop: 40,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-};
-
-interface LabelOptionInterface {
-  key: string;
-  text: string;
-}
-
-const LabelOptions: Array<LabelOptionInterface> = [
-  { key: 'column', text: 'Column' },
-  { key: 'figure', text: 'Figure' },
-  { key: 'book', text: 'Book' },
-  { key: 'chapter', text: 'Chapter' },
-  { key: 'volume', text: 'Volume' },
-  { key: 'page', text: 'Page' },
-  { key: 'folio', text: 'Folio' },
-  { key: 'issue', text: 'Issue' },
-  { key: 'opus', text: 'Opus' },
-  { key: 'part', text: 'Part' },
-  { key: 'line', text: 'Line' },
-  { key: 'note', text: 'Note' },
-  { key: 'section', text: 'Section' },
-  { key: 'paragraph', text: 'Paragraph' },
-];
 
 const EditCitation: React.FunctionComponent<EditCitationProps> = ({
   document,
 }: EditCitationProps) => {
   const { selectedCitations, dispatch } = useCitationStore();
+
   const {
     id,
     label: labelProp,
@@ -86,62 +41,51 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
     suffix: suffixProp,
     locator: locatorProp,
   } = selectedCitations.find((doc) => doc.id === document.id);
+
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
-  const [label, setlabel] = useState<string>(labelProp);
-  const [prefix, setPrefix] = useState<string>(prefixProp);
-  const [suffix, setSuffix] = useState<string>(suffixProp);
-  const [locator, setLocator] = useState<string>(locatorProp);
-  const onLabelChange = (_event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void => {
-    setlabel(item.key as string);
+
+  const {
+    values: formValues,
+    handleSubmit,
+    handleChange,
+  } = useFormik({
+    initialValues: {
+      label: labelProp || '',
+      prefix: prefixProp || '',
+      suffix: suffixProp || '',
+      locator: locatorProp || '',
+    },
+    onSubmit: (values) => {
+      const citation = {
+        id,
+        ...values,
+      };
+      dispatch({ type: 'update', citation });
+      dismissPanel();
+    },
+  });
+
+  const onLabelChange = (_event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void =>
+    handleChange('label')(item.key as string);
+
+  const onDismiss = () => {
+    dismissPanel();
   };
-  const onPrefixChange = useCallback(
-    (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) =>
-      setPrefix(newValue || ''),
-    []
-  );
-  const onSuffixChange = useCallback(
-    (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) =>
-      setSuffix(newValue || ''),
-    []
-  );
-  const onLocatorChange = useCallback(
-    (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) =>
-      setLocator(newValue || ''),
-    []
-  );
-  const onClickHandler = useCallback(() => {
-    const citation = {
-      id,
-      label,
-      prefix,
-      suffix,
-      locator,
-    };
-    dispatch({ type: 'update', citation });
 
-    dismissPanel();
-  }, [id, label, prefix, suffix, locator, dispatch, dismissPanel]);
-
-  const onDismiss = useCallback(() => {
-    setLocator(locatorProp);
-    setPrefix(prefixProp);
-    setSuffix(suffixProp);
-    setlabel(labelProp);
-    dismissPanel();
-  }, [dismissPanel, labelProp, locatorProp, prefixProp, suffixProp]);
-
-  const onRenderFooterContent = React.useCallback(
-    () => (
-      <div>
-        <PrimaryButton onClick={onClickHandler} styles={buttonStyles} text="Save" />
-        <DefaultButton onClick={onDismiss} text="Cancel" />
-      </div>
-    ),
-    [onClickHandler, onDismiss]
+  const onRenderFooterContent = () => (
+    <ButtonGroup
+      label1="Save"
+      label2="Cancel"
+      onClick1={handleSubmit}
+      onClick2={onDismiss}
+      disabled1={false}
+      disabled2={false}
+      styles={buttonContainerStack}
+    />
   );
 
   return (
-    <div>
+    <Stack>
       <IconButton
         iconProps={editIcon}
         ariaLabel="Add extra info"
@@ -157,26 +101,29 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
         onRenderFooterContent={onRenderFooterContent}
         isFooterAtBottom
       >
-        <Stack styles={wrapperStackStyles} tokens={stackToken}>
-          <MessageBar>Add more information.</MessageBar>
+        <Stack tokens={stackToken}>
+          <Stack.Item styles={{ root: { marginTop: '1.14rem' } }}>
+            <MessageBar>Add more information.</MessageBar>
+          </Stack.Item>
           <Stack horizontal horizontalAlign="stretch" tokens={stackToken}>
-            <Stack.Item>
+            <Stack.Item grow>
               <Dropdown
                 label="Label"
+                id="label"
                 placeholder="Select an option"
-                selectedKey={label || undefined}
+                selectedKey={formValues.label || undefined}
                 options={LabelOptions}
-                defaultSelectedKey="page"
                 styles={dropdownStyles}
                 onChange={onLabelChange}
               />
             </Stack.Item>
-            <Stack.Item>
+            <Stack.Item grow>
               <TextField
                 label="Locator"
+                id="locator"
                 autoComplete="off"
-                value={locator}
-                onChange={onLocatorChange}
+                value={formValues.locator}
+                onChange={handleChange}
               />
             </Stack.Item>
           </Stack>
@@ -184,21 +131,23 @@ const EditCitation: React.FunctionComponent<EditCitationProps> = ({
             <Stack.Item align="auto">
               <TextField
                 label="Prefix"
-                value={prefix}
+                id="prefix"
+                value={formValues.prefix}
                 autoComplete="off"
-                onChange={onPrefixChange}
+                onChange={handleChange}
               />
               <TextField
                 label="Suffix"
-                value={suffix}
+                id="suffix"
+                value={formValues.suffix}
                 autoComplete="off"
-                onChange={onSuffixChange}
+                onChange={handleChange}
               />
             </Stack.Item>
           </Stack>
         </Stack>
       </Panel>
-    </div>
+    </Stack>
   );
 };
 

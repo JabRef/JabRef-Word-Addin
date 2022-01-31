@@ -1,61 +1,18 @@
 import React from 'react';
-import { FocusZone, FocusZoneDirection } from '@fluentui/react/lib/FocusZone';
 import { List } from '@fluentui/react/lib/List';
-import { ITheme, mergeStyleSets, getTheme, getFocusStyle } from '@fluentui/react/lib/Styling';
-import { Stack } from '@fluentui/react';
+import { Icon, IIconProps, Stack } from '@fluentui/react';
 import Preference from '../../utils/user-preference';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
+import {
+  classNames,
+  container,
+  heading,
+  listContainer,
+  selectedStyle,
+  selectedStyleIcon,
+} from '../styles/citationStyles';
 
-const theme: ITheme = getTheme();
-const { palette, semanticColors, fonts } = theme;
-const classNames = mergeStyleSets({
-  container: {
-    overflow: 'auto',
-    padding: '0.25rem 0.25rem 0px',
-    webkitBoxFlex: '1 1 auto',
-  },
-  itemCell: [
-    getFocusStyle(theme, { inset: -1 }),
-    {
-      minHeight: 34,
-      boxSizing: 'border-box',
-      padding: '0 25px',
-      cursor: 'pointer',
-      display: 'flex',
-      selectors: {
-        '&:hover': { background: palette.themeLighterAlt },
-      },
-    },
-  ],
-  itemName: [
-    fonts.medium,
-    {
-      padding: '8px 0',
-      borderBottom: `1px solid ${semanticColors.bodyDivider}`,
-      minWidth: '100%',
-    },
-  ],
-  StyleHeading: [
-    fonts.medium,
-    {
-      color: palette.neutralSecondary,
-      fontWeight: 'bold',
-      padding: 20,
-      paddingBottom: 5,
-      paddingTop: 15,
-    },
-  ],
-  selectedStyle: [
-    fonts.medium,
-    {
-      color: palette.themeDarkAlt,
-      padding: 20,
-      paddingBottom: 5,
-      paddingTop: 5,
-      fontWeight: 'bold',
-    },
-  ],
-});
+export const Signout: IIconProps = { iconName: 'Pinned' };
 
 function CitationStyle(): JSX.Element {
   const citeSupport = useCiteSupport();
@@ -78,11 +35,12 @@ function CitationStyle(): JSX.Element {
       value: 'chicago-author-date-16th-edition',
     },
   ];
-  const preferenceStyle = Preference.getCitationStyle();
+
+  const preferenceStyle = Preference.getItem('style');
   const [currentStyle, setCurrentStyle] = React.useState(preferenceStyle);
   const onClick = async (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
     setCurrentStyle(ev.currentTarget.id);
-    Preference.setCitationStyle(ev.currentTarget.id);
+    Preference.setItem('style', ev.currentTarget.id);
     await citeSupport.initDocument();
   };
 
@@ -94,13 +52,7 @@ function CitationStyle(): JSX.Element {
   const onRenderCell = (item: { text: string; value: string }): JSX.Element => {
     return (
       <Stack className={classNames.itemCell} data-is-focusable>
-        <Stack
-          key={item.value}
-          id={item.value}
-          className={classNames.itemName}
-          onClick={onClick}
-          onKeyDown={onClick}
-        >
+        <Stack key={item.value} id={item.value} className={classNames.itemName} onClick={onClick}>
           {item.text}
         </Stack>
       </Stack>
@@ -108,20 +60,19 @@ function CitationStyle(): JSX.Element {
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div className={classNames.StyleHeading}>Current Style</div>
-      <div className={classNames.selectedStyle}>
+    <Stack verticalFill styles={container}>
+      <Stack.Item styles={heading}>Current Style</Stack.Item>
+      <Stack.Item styles={selectedStyle}>
+        <Icon iconName="Pinned" styles={selectedStyleIcon} />
         {currentStyle
           ? items.find((item) => item.value === currentStyle).text
           : 'American Political Science Association'}
-      </div>
-      <div className={classNames.StyleHeading}>Change Style</div>
-      <div className={classNames.container}>
-        <FocusZone direction={FocusZoneDirection.vertical}>
-          <List items={items} onRenderCell={onRenderCell} />
-        </FocusZone>
-      </div>
-    </div>
+      </Stack.Item>
+      <Stack.Item styles={heading}>Change Style</Stack.Item>
+      <Stack.Item grow styles={listContainer}>
+        <List items={items} onRenderCell={onRenderCell} />
+      </Stack.Item>
+    </Stack>
   );
 }
 

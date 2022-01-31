@@ -1,38 +1,28 @@
 import React, { ReactElement } from 'react';
-import { Switch, Route } from 'react-router-dom';
 import Progress from './Progress';
-import Login from '../pages/login';
-import Layout from '../Layout/Layout';
-import ProtectedRoutes from '../routes/ProtectedRoutes';
 import Wrapper from './Wrapper';
-import Context from '../contexts/index';
+import { ThemeContextProvider } from '../contexts/ThemeContext';
+import { Theme } from '../../../types';
+import Index from '../routes/Index';
 
 export interface AppProps {
   title: string;
+  theme: Theme;
   isOfficeInitialized: boolean;
 }
 
-function App(props: AppProps): ReactElement {
-  const { isOfficeInitialized } = props;
-
+function App({ isOfficeInitialized, theme }: AppProps): ReactElement {
   if (!isOfficeInitialized) {
     return (
       <Progress title="JabRef" message="Loading JabRef Addin" logo="../../../assets/jabref.svg" />
     );
   }
   return (
-    <Wrapper>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <ProtectedRoutes path="/">
-          <Context>
-            <Layout />
-          </Context>
-        </ProtectedRoutes>
-      </Switch>
-    </Wrapper>
+    <ThemeContextProvider initTheme={theme}>
+      <Wrapper>
+        <Index />
+      </Wrapper>
+    </ThemeContextProvider>
   );
 }
 export default App;
