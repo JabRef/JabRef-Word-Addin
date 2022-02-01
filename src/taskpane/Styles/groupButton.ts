@@ -1,9 +1,10 @@
-import { IStackItemStyles, IStackStyles } from '@fluentui/react';
+import { IStackItemStyles, IStackStyles, Depths } from '@fluentui/react';
 import globalStyles from '.';
 
 const buttonContainerStack: IStackStyles = {
   root: {
     padding: globalStyles.margin,
+    boxShadow: Depths.depth16,
   },
 };
 

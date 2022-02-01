@@ -1,22 +1,21 @@
-import { PrimaryButton, Stack } from '@fluentui/react';
+import { DefaultButton, Icon, Stack } from '@fluentui/react';
 import React from 'react';
-import { heading, logo, logoStyle, svg } from '../styles/auth';
+import { container, heading, iconStyle, logo, logoStyle, textOnlyButton } from '../styles/auth';
 
 function Auth(): JSX.Element {
   return (
-    <Stack verticalFill horizontalAlign="center">
-      <Stack.Item styles={logoStyle} align="center">
+    <Stack verticalFill horizontalAlign="center" styles={container}>
+      <Stack.Item styles={logoStyle} align="start">
         <img style={logo} src="../../../assets/svgs/authlogo.svg" alt="JabRef" />
       </Stack.Item>
-      <Stack.Item align="center" styles={heading}>
+      <Stack.Item align="start" styles={heading}>
         Stay on top of your Literature
-      </Stack.Item>
-      <Stack.Item>
-        <img style={svg} src="../../../assets/svgs/auth.svg" alt="JabRef" />
       </Stack.Item>
       <Stack.Item grow>
         <Stack verticalFill verticalAlign="center" horizontalAlign="center">
-          <PrimaryButton text="Sign In" />
+          <DefaultButton styles={textOnlyButton} text="Get Started">
+            <Icon styles={iconStyle} iconName="Forward" />
+          </DefaultButton>
         </Stack>
       </Stack.Item>
     </Stack>

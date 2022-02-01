@@ -2,6 +2,7 @@
 import { ThemeProvider } from '@fluentui/react/lib/utilities/ThemeProvider/ThemeProvider';
 import React, { createContext } from 'react';
 import { Theme } from '../../../types';
+import Preference from '../../utils/user-preference';
 import darkTheme from '../styles/themes/dark';
 import lightTheme from '../styles/themes/light';
 
@@ -20,7 +21,15 @@ const ThemeContext = createContext<ThemeContextInterface>(null);
 const getTheme = (theme: Theme) => (theme === Theme.DARK ? darkTheme : lightTheme);
 
 export function ThemeContextProvider({ children, initTheme }: ThemeContextProps): JSX.Element {
-  const [theme, setTheme] = React.useState(initTheme);
+  const [theme, setThemeValue] = React.useState(initTheme);
+  const setTheme = () => {
+    setThemeValue((prevVal) => {
+      const newVal = prevVal === Theme.DARK ? Theme.LIGHT : Theme.DARK;
+      Preference.setItem('theme', newVal.toString());
+      Preference.syncPreference();
+      return newVal;
+    });
+  };
   const value = { theme, setTheme };
   return (
     <ThemeContext.Provider value={value}>

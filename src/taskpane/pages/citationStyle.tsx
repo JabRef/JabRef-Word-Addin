@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from '@fluentui/react/lib/List';
-import { Icon, IIconProps, Stack } from '@fluentui/react';
+import { Icon, Stack } from '@fluentui/react';
 import Preference from '../../utils/user-preference';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
 import {
@@ -11,8 +11,6 @@ import {
   selectedStyle,
   selectedStyleIcon,
 } from '../styles/citationStyles';
-
-export const Signout: IIconProps = { iconName: 'Pinned' };
 
 function CitationStyle(): JSX.Element {
   const citeSupport = useCiteSupport();

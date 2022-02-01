@@ -42,6 +42,7 @@ const render = (Component) => {
 void Office.onReady(() => {
   isOfficeInitialized = true;
   theme = Preference.getItem('theme') === '0' ? Theme.LIGHT : Theme.DARK;
+  console.log('$$$$$$', Preference.getItem('theme') === '0');
   render(App);
 });
 

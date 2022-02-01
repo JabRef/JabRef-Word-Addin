@@ -10,7 +10,6 @@ import { useLogoutMutation } from '../../generated/graphql';
 import client from '../../plugins/apollo/apolloClient';
 import { useTheme } from '../contexts/ThemeContext';
 import { Theme } from '../../../types';
-import Preference from '../../utils/user-preference';
 
 type pivotItem = 'citationStyle' | 'dashboard';
 
@@ -44,7 +43,6 @@ function Layout(): ReactElement {
     } else {
       setTheme(Theme.LIGHT);
     }
-    Preference.syncPreference();
   };
 
   return (

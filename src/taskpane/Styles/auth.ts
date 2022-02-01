@@ -1,52 +1,63 @@
-import { getTheme, IStackItemStyles, IStackStyles } from '@fluentui/react';
+import {
+  getTheme,
+  IButtonStyles,
+  IIconStyles,
+  IStackItemStyles,
+  IStackStyles,
+} from '@fluentui/react';
 import globalStyles from '.';
 
 const { palette, fonts } = getTheme();
 export const logoStyle: IStackStyles = {
   root: {
-    margin: `0rem ${globalStyles.margin}`,
+    margin: `1rem ${globalStyles.margin}`,
+  },
+};
+
+export const container: IStackStyles = {
+  root: {
+    backgroundImage: `linear-gradient(to bottom,rgba(9, 32, 63, 0.8), rgba(83, 120, 149, 0.4)), url('../../../assets/images/login-page.jpg')`,
+    backgroundSize: 'cover',
+  },
+};
+
+export const iconStyle: IIconStyles = {
+  root: {
+    marginLeft: '0.2rem',
   },
 };
 
 export const heading: IStackItemStyles = {
   root: {
-    fontSize: fonts.xxLarge.fontSize,
-    fontWeight: 700,
+    fontSize: 50,
+    fontWeight: 600,
     margin: `1rem ${globalStyles.margin}`,
-    color: palette.neutralPrimary,
+    color: palette.themeLighter,
   },
 };
 
-export const bodyText: IStackItemStyles = {
+export const textOnlyButton: IButtonStyles = {
   root: {
-    fontSize: fonts.small.fontSize,
-    fontWeight: fonts.small.fontWeight,
-    margin: `1rem ${globalStyles.margin}`,
-    color: palette.neutralDark,
+    marginTop: 'auto',
+    marginBottom: '5rem',
+    backgroundColor: 'transparent',
+    padding: '1rem',
+    fontSize: fonts.mediumPlus.fontSize,
+    color: palette.white,
   },
-};
-
-export const containerStyle: IStackStyles = {
-  root: {
-    backgroundColor: palette.white,
-    margin: `0rem ${globalStyles.margin}`,
+  rootHovered: {
+    backgroundColor: 'transparent',
+    color: palette.white,
+    borderColor: palette.themeLighter,
   },
-};
-
-export const logoText: IStackStyles = {
-  root: {
-    fontSize: fonts.superLarge.fontSize,
-    fontFamily: fonts.superLarge.fontFamily,
-    fontWeight: fonts.superLarge.fontWeight,
+  rootPressed: {
+    backgroundColor: 'transparent',
+    color: palette.white,
+    borderColor: palette.themeLighter,
   },
 };
 
 export const logo = {
   width: '12rem',
   height: '5rem',
-};
-
-export const svg = {
-  width: '20rem',
-  height: '15rem',
 };
