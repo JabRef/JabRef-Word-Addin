@@ -33,7 +33,7 @@
     "citeproc": "^2.4.62",
     "core-js": "^3.20.2",
     "cross-var": "^1.1.0",
-    "dotenv": "^10.0.0",
+    "dotenv": "^15.0.0",
     "dotenv-cli": "^4.1.1",
     "es6-promise": "^4.2.8",
     "formik": "^2.2.9",
