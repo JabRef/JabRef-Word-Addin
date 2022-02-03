@@ -1462,10 +1462,10 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-15.6.1.tgz"
   integrity sha512-7EIraBEyRHEe7CH+Fm1XvgqU6uwZN8Q7jppJGcqjROMT29qhAuuOxYB1uEY5UMYQKEmA5D+5tBnhdaPXSsLONA==
 
-"@types/office-js@^1.0.228":
-  version "1.0.228"
-  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-1.0.228.tgz#591724b0f16ce7458b69c77e04ddbb320b14d3d6"
-  integrity sha512-R+HbzoufMVSiuckpkd1aiFnnGOLf1dmANLiWpllGbwnKhuPrWkyDoH4gmjQ3r1RB0tDYO75c0De/oqsbVK4o9w==
+"@types/office-js@^1.0.237":
+  version "1.0.237"
+  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-1.0.237.tgz#c6e48e6314d16cfec744b972963cf30b22ba7949"
+  integrity sha512-+RWpag0Bg2/mCudtxs2uublfR0JomMSANw54GpcbijkbyagRF9qwPRwVBMKtoQe/s9eTFhAGPx6ofn2/D5zIdQ==
 
 "@types/office-runtime@^1.0.23":
   version "1.0.23"
@@ -1523,10 +1523,10 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.38":
-  version "17.0.38"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.38.tgz#f24249fefd89357d5fa71f739a686b8d7c7202bd"
-  integrity sha512-SI92X1IA+FMnP3qM5m4QReluXzhcmovhZnLNm3pyeQlooi02qI7sLiepEYqT678uNiyc25XfCqxREFpy3W7YhQ==
+"@types/react@*", "@types/react@^17.0.39":
+  version "17.0.39"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.39.tgz#d0f4cde092502a6db00a1cded6e6bf2abb7633ce"
+  integrity sha512-UVavlfAxDd/AgAacMa60Azl7ygyQNRwC/DsHZmKgNvPmRR5p70AJ5Q9EAmL2NWOJmeV+vVUI4IAP7GZrN8h8Ug==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -1983,22 +1983,22 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@webpack-cli/configtest@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@webpack-cli/configtest/-/configtest-1.1.0.tgz#8342bef0badfb7dfd3b576f2574ab80c725be043"
-  integrity sha512-ttOkEkoalEHa7RaFYpM0ErK1xc4twg3Am9hfHhL7MVqlHebnkYd2wuI/ZqTDj0cVzZho6PdinY0phFZV3O0Mzg==
+"@webpack-cli/configtest@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@webpack-cli/configtest/-/configtest-1.1.1.tgz#9f53b1b7946a6efc2a749095a4f450e2932e8356"
+  integrity sha512-1FBc1f9G4P/AxMqIgfZgeOTuRnwZMten8E7zap5zgpPInnCrP8D4Q81+4CWIch8i/Nf7nXjP0v6CjjbHOrXhKg==
 
-"@webpack-cli/info@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@webpack-cli/info/-/info-1.4.0.tgz#b9179c3227ab09cbbb149aa733475fcf99430223"
-  integrity sha512-F6b+Man0rwE4n0409FyAJHStYA5OIZERxmnUfLVwv0mc0V1wLad3V7jqRlMkgKBeAq07jUvglacNaa6g9lOpuw==
+"@webpack-cli/info@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@webpack-cli/info/-/info-1.4.1.tgz#2360ea1710cbbb97ff156a3f0f24556e0fc1ebea"
+  integrity sha512-PKVGmazEq3oAo46Q63tpMr4HipI3OPfP7LiNOEJg963RMgT0rqheag28NCML0o3GIzA3DmxP1ZIAv9oTX1CUIA==
   dependencies:
     envinfo "^7.7.3"
 
-"@webpack-cli/serve@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@webpack-cli/serve/-/serve-1.6.0.tgz#2c275aa05c895eccebbfc34cfb223c6e8bd591a2"
-  integrity sha512-ZkVeqEmRpBV2GHvjjUZqEai2PpUbuq8Bqd//vEYsp63J8WyexI8ppCqVS3Zs0QADf6aWuPdU+0XsPI647PVlQA==
+"@webpack-cli/serve@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@webpack-cli/serve/-/serve-1.6.1.tgz#0de2875ac31b46b6c5bb1ae0a7d7f0ba5678dffe"
+  integrity sha512-gNGTiTrjEVQ0OcVnzsRSqTxaBSr+dmTfm+qJsCDluky8uhdLWep7Gcr62QsAKHTMxjCS/8nEITsmFAhfIx+QSw==
 
 "@wry/context@^0.6.0":
   version "0.6.0"
@@ -4971,6 +4971,24 @@ eslint-plugin-office-addins@^1.1.4:
     eslint-plugin-react "^7.25.1"
     eslint-plugin-react-native "^3.11.0"
     office-addin-prettier-config "^1.1.3"
+    prettier "^2.4.0"
+    requireindex "~1.2.0"
+    typescript "^4.4.2"
+
+eslint-plugin-office-addins@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-office-addins/-/eslint-plugin-office-addins-2.0.0.tgz#adcd2ef0711b71a0d23fbde7f509193bf889f535"
+  integrity sha512-Ng3DNdK6fhg21lZVg9WE4+MWgA2j6bvHlKbV3CKtjE5S5BP5ob2xQ+kXChmkVjPIkmzDMki7cqH4ViRNg4rxbQ==
+  dependencies:
+    "@typescript-eslint/eslint-plugin" "^4.31.0"
+    "@typescript-eslint/experimental-utils" "^4.31.0"
+    "@typescript-eslint/parser" "^4.31.0"
+    eslint "^7.32.0"
+    eslint-config-prettier "^8.3.0"
+    eslint-plugin-prettier "^4.0.0"
+    eslint-plugin-react "^7.25.1"
+    eslint-plugin-react-native "^3.11.0"
+    office-addin-prettier-config "^1.1.4"
     prettier "^2.4.0"
     requireindex "~1.2.0"
     typescript "^4.4.2"
@@ -7999,10 +8017,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^1.2.5, office-addin-cli@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.3.4.tgz#7f0056b3554f51d3f8b2ced167a845bdf11b4a88"
-  integrity sha512-xN5An2EzCqtWxRtSUXd8r3L0aZMM0YypYIWVqmvqnWLoB3BT2uT/7H/yFkt9F31ba1e7hRKUj7TLPl+S5eHfAw==
+office-addin-cli@^1.2.5, office-addin-cli@^1.3.4, office-addin-cli@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.3.5.tgz#a19404762cfbfa5ca42b53da5f71cc15585e1bf8"
+  integrity sha512-vyQrACfzD4ARauKdKj20qWUu4LgQIXE3FPeWOdD6KfUfkrUv2ZbXmaI65gmOHIBXHrS3ICkrYOYR4igKvzkpGw==
   dependencies:
     commander "^6.2.1"
     node-fetch "^2.6.1"
@@ -8070,16 +8088,17 @@ office-addin-lint@^1.4.5:
     office-addin-usage-data "^1.4.5"
     prettier "^2.2.1"
 
-office-addin-manifest@^1.7.6:
-  version "1.7.6"
-  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.7.6.tgz#b91db9805a34843d1d734ddb9d3bcbc725e65466"
-  integrity sha512-Wt5bAf2TxnBaJxKzMmWxmNdHJd2cXxSklTS9SL4XyVqTvb6e7ZcmN773ByuUjptjN+HgSwFa4W5pAYHHVCPH6Q==
+office-addin-manifest@^1.7.6, office-addin-manifest@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.7.7.tgz#39f4ec7c95d092eba256bfcf1f5f62d710c19baf"
+  integrity sha512-wBkDBiNTAaJew/69J8GJ89IOp+bBQyVFts29HKIJ8XohxNGelkoMXJDZ9onL9qO85V/hOFQJmAzWC19ZumRbPQ==
   dependencies:
     chalk "^2.4.2"
     commander "^6.2.0"
+    jszip "^3.7.1"
     node-fetch "^2.6.1"
-    office-addin-cli "^1.3.4"
-    office-addin-usage-data "^1.4.5"
+    office-addin-cli "^1.3.5"
+    office-addin-usage-data "^1.4.6"
     path "^0.12.7"
     uuid "^8.3.2"
     xml2js "^0.4.23"
@@ -8095,19 +8114,19 @@ office-addin-node-debugger@^0.6.5:
     office-addin-usage-data "^1.4.5"
     ws "^7.4.6"
 
-office-addin-prettier-config@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.1.3.tgz#26de1935205ca856a89d84d9abad72969cf860ed"
-  integrity sha512-Csi95wQ/J7MvP96VnKdRoySzlqKTQGxBpD2ppTYRoOamT+HBMgOBETAFTcczY0ddFQCv/iuaGDWeGSk8hYeFog==
+office-addin-prettier-config@^1.1.3, office-addin-prettier-config@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.1.4.tgz#938b81d9291cddfe696dc129b4ae15c73956d94c"
+  integrity sha512-OWPkg2KBdDp0B5Yr+Vs94ZR/HUd0GhwUQf+aAzUyv7Ddv1gwU6IMY2/AoYfvL0Eo9DzwVMVsZgqwBS5FMerH9Q==
 
-office-addin-usage-data@^1.4.5:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.4.5.tgz#9e348bdc7635bebdeded8072ae81f68d9e4b4127"
-  integrity sha512-ZLSs3P6cA1T5ydt8CTcrs+7D2iZO1KmgdMSMRuSpyeDP7tOwztp/G4sY0o4SyH+EbXv7UxyFtyhq9zbt1/gW0Q==
+office-addin-usage-data@^1.4.5, office-addin-usage-data@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.4.6.tgz#ef4f55edcdfb33b1c9742afac493e89d594831e9"
+  integrity sha512-7qUSR8NwWJox2ItPyGSgDHdO7jkcBaoWRVWbhccHXefn5Ehs7pJkA5SqQy92LckR/8MeQpRCzUlDHpm228R77w==
   dependencies:
     applicationinsights "^1.7.3"
     commander "^6.2.0"
-    office-addin-cli "^1.3.4"
+    office-addin-cli "^1.3.5"
     readline-sync "^1.4.9"
 
 on-finished@~2.3.0:
@@ -10592,15 +10611,15 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-4.0.2.tgz"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webpack-cli@^4.9.1:
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-4.9.1.tgz#b64be825e2d1b130f285c314caa3b1ba9a4632b3"
-  integrity sha512-JYRFVuyFpzDxMDB+v/nanUdQYcZtqFPGzmlW4s+UkPMFhSpfRNmf1z4AwYcHJVdvEFAM7FFCQdNTpsBYhDLusQ==
+webpack-cli@^4.9.2:
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-4.9.2.tgz#77c1adaea020c3f9e2db8aad8ea78d235c83659d"
+  integrity sha512-m3/AACnBBzK/kMTcxWHcZFPrw/eQuY4Df1TxvIWfWM2x7mRqBQCqKEd96oCUa9jkapLBaFfRce33eGDb4Pr7YQ==
   dependencies:
     "@discoveryjs/json-ext" "^0.5.0"
-    "@webpack-cli/configtest" "^1.1.0"
-    "@webpack-cli/info" "^1.4.0"
-    "@webpack-cli/serve" "^1.6.0"
+    "@webpack-cli/configtest" "^1.1.1"
+    "@webpack-cli/info" "^1.4.1"
+    "@webpack-cli/serve" "^1.6.1"
     colorette "^2.0.14"
     commander "^7.0.0"
     execa "^5.0.0"
