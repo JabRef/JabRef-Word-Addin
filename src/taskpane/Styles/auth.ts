@@ -32,7 +32,7 @@ export const heading: IStackItemStyles = {
     fontSize: 50,
     fontWeight: 600,
     margin: `1rem ${globalStyles.margin}`,
-    color: palette.themeLighter,
+    color: 'rgba(255, 255, 255, 0.9)',
   },
 };
 
