@@ -1,6 +1,5 @@
-/* eslint-disable no-void */
 import { Pivot, PivotItem, Stack, StackItem } from '@fluentui/react';
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import CitationStyle from '../pages/CitationStyle';
 import Dashboard from '../pages/Dashboard';
 import Footer from '../components/Footer';
@@ -17,7 +16,7 @@ const getTabId = (itemKey: string) => {
   return `appTabs${itemKey}`;
 };
 
-function Layout(): ReactElement {
+function Layout(): JSX.Element {
   const { theme, setTheme } = useTheme();
   const [selectedKey, setSelectedKey] = useState<pivotItem>('dashboard');
 
@@ -29,8 +28,8 @@ function Layout(): ReactElement {
   const [logoutMutation] = useLogoutMutation();
 
   const onLogout = async () => {
+    await client.resetStore();
     await logoutMutation();
-    void client.resetStore();
   };
 
   const onSyncBibliography = async () => {

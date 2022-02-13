@@ -1,4 +1,4 @@
-import { getTheme, IDropdownStyles, IStackStyles, IStackTokens } from '@fluentui/react';
+import { getTheme, IDropdownStyles, IIconProps, IStackStyles, IStackTokens } from '@fluentui/react';
 
 const theme = getTheme();
 const { palette } = theme;
@@ -17,6 +17,8 @@ export const iconButtonStyle = {
     transform: 'scale(1.1)',
   },
 };
+
+export const editIcon: IIconProps = { iconName: 'edit' };
 
 export const buttonContainerStack: IStackStyles = {
   root: {
