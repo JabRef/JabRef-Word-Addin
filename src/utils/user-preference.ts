@@ -1,10 +1,10 @@
 export default class Preference {
-  static getCitationStyle(): string | null {
-    return Office.context.document.settings.get("Style") as string | null;
+  static getItem(key: string): string | null {
+    return Office.context.document.settings.get(key) as string | null;
   }
 
-  static setCitationStyle(styleID: string): void {
-    Office.context.document.settings.set("Style", styleID);
+  static setItem(key: string, value: string): void {
+    Office.context.document.settings.set(key, value);
   }
 
   static syncPreference(): void {

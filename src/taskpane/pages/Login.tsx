@@ -8,72 +8,65 @@ import {
   FontSizes,
   PrimaryButton,
   Link,
-} from "@fluentui/react";
-import { Form, Formik } from "formik";
-import React from "react";
-import { useHistory, withRouter } from "react-router-dom";
-import { useLoginMutation } from "../../generated/graphql";
-import InputField from "../components/InputField";
-import Wrapper from "../components/Wrapper";
+} from '@fluentui/react';
+import { Form, Formik } from 'formik';
+import React from 'react';
+import { useHistory, withRouter } from 'react-router-dom';
+import { useLoginMutation } from '../../generated/graphql';
+import ContentWrapper from '../components/ContentWrapper';
+import InputField from '../components/InputField';
 
 // Styles definition
 const stackStylesHeader: IStackStyles = {
   root: {
-    background: DefaultPalette.white,
-    overflow: "hidden",
-  },
-};
-
-const stackStyles: IStackStyles = {
-  root: {
-    margin: 20,
-    marginTop: 30,
-    overflow: "hidden",
+    height: '100%',
+    width: '80%',
+    margin: 'auto',
+    overflow: 'auto',
   },
 };
 
 // Logo
 const imageProps: IImageProps = {
   imageFit: ImageFit.contain,
-  src: "../../assets/jabref.svg",
+  src: '../../assets/jabref.svg',
 };
 
 // Tokens definition
 const verticalGapStackTokens: IStackTokens = {
   childrenGap: 8,
-  padding: 30,
 };
 
 function Login() {
   const history = useHistory();
   const [loginMutation, { error }] = useLoginMutation();
   return (
-    <Wrapper>
-      <Stack verticalFill styles={stackStylesHeader} verticalAlign="center">
+    <ContentWrapper>
+      <Stack styles={stackStylesHeader} verticalAlign="center">
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ email: '', password: '' }}
           onSubmit={async (value) => {
             const response = await loginMutation({
               variables: value,
             });
             // eslint-disable-next-line no-underscore-dangle
-            if (response.data?.login.__typename === "User") {
-              history.push({ pathname: "/" });
+            if (response.data?.login.__typename === 'User') {
+              history.push({ pathname: '/' });
             }
           }}
         >
           {({ isSubmitting }) => (
             <Form>
-              <Stack styles={stackStyles} tokens={verticalGapStackTokens}>
+              <Stack
+                verticalAlign="center"
+                horizontalAlign="space-around"
+                tokens={verticalGapStackTokens}
+              >
                 <Stack.Item align="center">
                   <img {...imageProps} alt="jabref logo" width={80} />
                 </Stack.Item>
                 <Stack.Item align="center">
-                  <div
-                    style={{ fontSize: FontSizes.size32, fontWeight: "normal" }}
-                  >
-                    Log In
-                  </div>
+                  <div style={{ fontSize: FontSizes.size32, fontWeight: 'normal' }}>Log In</div>
                 </Stack.Item>
                 <Stack.Item align="center">
                   {error ? (
@@ -81,7 +74,7 @@ function Login() {
                       style={{
                         fontSize: FontSizes.size14,
                         padding: 6,
-                        fontWeight: "bold",
+                        fontWeight: 'bold',
                         color: DefaultPalette.red,
                       }}
                     >
@@ -129,7 +122,7 @@ function Login() {
           )}
         </Formik>
       </Stack>
-    </Wrapper>
+    </ContentWrapper>
   );
 }
 

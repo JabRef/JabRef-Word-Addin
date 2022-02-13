@@ -1,44 +1,28 @@
-import React, { ReactElement } from "react";
-import { Switch, Route } from "react-router-dom";
-import Progress from "./Progress";
-import Login from "../pages/login";
-import Layout from "../Layout/Layout";
-import ProtectedRoutes from "../../utils/ProtectedRoutes";
-import { CitationStoreProvider } from "../contexts/CitationStoreContext";
-import { CiteSupportProvider } from "../contexts/CiteSupportContext";
+import React, { ReactElement } from 'react';
+import Progress from './Progress';
+import Wrapper from './Wrapper';
+import { ThemeContextProvider } from '../contexts/ThemeContext';
+import { Theme } from '../../../types';
+import Index from '../routes/Index';
 
 export interface AppProps {
   title: string;
+  theme: Theme;
   isOfficeInitialized: boolean;
 }
 
-function App(props: AppProps): ReactElement {
-  const { isOfficeInitialized } = props;
-
+function App({ isOfficeInitialized, theme }: AppProps): ReactElement {
   if (!isOfficeInitialized) {
     return (
-      <Progress
-        title="JabRef"
-        message="Loading JabRef Addin"
-        logo="../../../assets/jabref.svg"
-      />
+      <Progress title="JabRef" message="Loading JabRef Addin" logo="../../../assets/jabref.svg" />
     );
   }
   return (
-    <div>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <ProtectedRoutes path="/">
-          <CiteSupportProvider>
-            <CitationStoreProvider>
-              <Layout />
-            </CitationStoreProvider>
-          </CiteSupportProvider>
-        </ProtectedRoutes>
-      </Switch>
-    </div>
+    <ThemeContextProvider initTheme={theme}>
+      <Wrapper>
+        <Index />
+      </Wrapper>
+    </ThemeContextProvider>
   );
 }
 export default App;
