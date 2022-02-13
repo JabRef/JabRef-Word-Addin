@@ -96,7 +96,8 @@ class WordApi {
       const currentSelection = context.document
         .getSelection()
         .contentControls.getFirstOrNullObject();
-      currentSelection.load("tag");
+      context.load(currentSelection, "tag");
+      currentSelection.load("isNullObject");
       await context.sync();
       return (
         !currentSelection.isNullObject &&
@@ -140,12 +141,12 @@ class WordApi {
 
   async getItemsInSelectedCitation(): Promise<Array<CitationItem>> {
     return Word.run(async (context: Word.RequestContext) => {
-      const getSelection = context.document.getSelection();
-      context.load(getSelection, "contentControls");
+      const { contentControls } = context.document.getSelection();
+      context.load(contentControls, "id");
       await context.sync();
-      if (getSelection.contentControls.items.length !== 0) {
-        const citation = getSelection.contentControls.getFirstOrNullObject();
-        citation.load("tag");
+      if (contentControls.items.length !== 0) {
+        const citation = contentControls.getFirstOrNullObject();
+        context.load(citation, "tag");
         await context.sync();
         if (citation.tag.includes(this.JABREF_CITATION_TAG_PREFIX)) {
           const tag = JSON.parse(
