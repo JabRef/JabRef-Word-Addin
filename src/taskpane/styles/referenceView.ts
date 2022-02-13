@@ -7,6 +7,7 @@ const { fonts } = theme;
 export const referenceViewContainer: IStackStyles = {
   root: {
     padding: `0.5rem ${globalStyles.margin}`,
+    cursor: 'pointer',
     minHeight: '6rem',
   },
 };

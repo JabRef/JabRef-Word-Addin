@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { mergeStyleSets, FocusZone, FocusZoneDirection } from '@fluentui/react';
+import { mergeStyleSets, FocusZone, FocusZoneDirection, List } from '@fluentui/react';
 import { CitationItem, MetaData } from 'citeproc';
 import React, { ReactElement } from 'react';
 import ReferenceView from './ReferenceView';
@@ -21,12 +21,12 @@ const classNames = mergeStyleSets({
 
 function ReferenceList({ referenceList }: ReferenceListProps): ReactElement {
   return (
-    <FocusZone direction={FocusZoneDirection.vertical} className={classNames.container}>
-      <ul>
-        {referenceList.map((document) => (
-          <ReferenceView key={document.id} document={document} />
-        ))}
-      </ul>
+    <FocusZone
+      data-is-scrollable
+      className={classNames.container}
+      direction={FocusZoneDirection.vertical}
+    >
+      <List items={referenceList} onRenderCell={(item) => <ReferenceView document={item} />} />
     </FocusZone>
   );
 }

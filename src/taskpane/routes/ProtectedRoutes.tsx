@@ -19,7 +19,7 @@ function ProtectedRoutes({ children, ...rest }: ProtectedRoutesProps): JSX.Eleme
     <Route
       {...rest}
       render={({ location }) =>
-        data?.me ? (
+        !data?.me ? (
           children
         ) : (
           <Redirect
