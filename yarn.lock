@@ -1483,10 +1483,10 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-15.6.1.tgz"
   integrity sha512-7EIraBEyRHEe7CH+Fm1XvgqU6uwZN8Q7jppJGcqjROMT29qhAuuOxYB1uEY5UMYQKEmA5D+5tBnhdaPXSsLONA==
 
-"@types/office-js@^1.0.237":
-  version "1.0.237"
-  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-1.0.237.tgz#c6e48e6314d16cfec744b972963cf30b22ba7949"
-  integrity sha512-+RWpag0Bg2/mCudtxs2uublfR0JomMSANw54GpcbijkbyagRF9qwPRwVBMKtoQe/s9eTFhAGPx6ofn2/D5zIdQ==
+"@types/office-js@^1.0.239":
+  version "1.0.239"
+  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-1.0.239.tgz#3966126002452728ce7bcdb69dd7f9edb5a6e09e"
+  integrity sha512-Acu2BD0sMncPRXWhLMwgvvat15aP5hVJLLW1eNf5XILPDr+5st1nW00josoZQxTrHtKJCr66Ng0JmaV2ykgzBA==
 
 "@types/office-runtime@^1.0.23":
   version "1.0.23"
