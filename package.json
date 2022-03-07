@@ -28,7 +28,7 @@
     "postinstall": "yarn generate && crlf --set=LF node_modules/.bin/office-addin-*"
   },
   "dependencies": {
-    "@fluentui/react": "^8.55.1",
+    "@fluentui/react": "^8.58.0",
     "@apollo/client": "^3.5.10",
     "citeproc": "^2.4.62",
     "core-js": "^3.21.0",
