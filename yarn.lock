@@ -8343,10 +8343,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^1.2.5, office-addin-cli@^1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.3.6.tgz#e5734e1b1160ed73f2ab8e8e726d2a3031cc3741"
-  integrity sha512-x15kPrRcju6ler8KhBasHt5mxgrKWEPiUfYbMHxyBv+OsM5gqNIqSOu0H9jxMgDeFZI4Kd+ZN+DdaBxu4H7Wzw==
+office-addin-cli@^1.3.6, office-addin-cli@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.5.0.tgz#0a68a111b14198e7cfd1aaefaac5c14c1c792a06"
+  integrity sha512-ckuKQxtQys1XD6qFEGDeAWS63FQEFFSLYVbpgaMRnE6ziLSK4OO1MzVx9o6XBB58cZxJzIXnJfWw/1C/V03mYg==
   dependencies:
     commander "^6.2.1"
     node-fetch "^2.6.1"
