@@ -23,6 +23,7 @@ export const referenceDetailsContainer: IStackItemStyles = {
   root: {
     marginRight: '0.5rem',
     paddingLeft: '0.5rem',
+    overflow: 'hidden',
   },
 };
 
@@ -30,9 +31,9 @@ export const heading: IStackItemStyles = {
   root: {
     fontSize: fonts.medium.fontSize,
     fontWeight: 700,
-    overflow: 'hidden',
     lineHeight: '1.2rem',
-    maxHeight: '2.4rem',
+    height: '2.4rem',
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
 };

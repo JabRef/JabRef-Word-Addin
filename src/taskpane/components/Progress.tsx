@@ -11,7 +11,6 @@ import React from 'react';
 import Wrapper from './Wrapper';
 
 export interface ProgressProps {
-  logo: string;
   title: string;
   message: string;
 }
@@ -35,12 +34,18 @@ const spinnerStyle: ISpinnerStyles = {
   },
 };
 
-function Progress({ logo, message, title }: ProgressProps): React.ReactElement {
+function Progress({ message, title }: ProgressProps): React.ReactElement {
   return (
     <Wrapper>
       <Stack verticalFill verticalAlign="center" styles={stackStyles} tokens={stackToken}>
         <Stack.Item align="center">
-          <img width="80" height="80" src={logo} alt={title} title={title} />
+          <img
+            width="80"
+            height="80"
+            src="../../../assets/svgs/jabref.svg"
+            alt={title}
+            title={title}
+          />
         </Stack.Item>
         <Stack.Item align="center">
           <Spinner size={SpinnerSize.large} label={message} styles={spinnerStyle} />

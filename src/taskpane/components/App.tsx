@@ -15,9 +15,7 @@ function App(props: AppProps): ReactElement {
   const { isOfficeInitialized, title, theme } = props;
 
   if (!isOfficeInitialized) {
-    return (
-      <Progress title={title} message="Loading JabRef Addin" logo="../../../assets/jabref.svg" />
-    );
+    return <Progress title={title} message="Loading JabRef Addin" />;
   }
   return (
     <ThemeContextProvider initTheme={theme}>
