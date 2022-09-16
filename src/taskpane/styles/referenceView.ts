@@ -15,7 +15,7 @@ export const referenceViewContainer: IStackStyles = {
 export const buttonContainer: IStackStyles = {
   root: {
     width: '1.5rem',
-    paddingTop: '0.38rem',
+    paddingTop: '0.20rem',
   },
 };
 
@@ -42,5 +42,6 @@ export const authorStyle: IStackItemStyles = {
     fontWeight: 500,
     fontSize: fonts.medium.fontSize,
     paddingTop: '0.5rem',
+    fontStyle: 'italic',
   },
 };
