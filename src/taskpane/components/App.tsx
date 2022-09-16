@@ -11,10 +11,12 @@ export interface AppProps {
   isOfficeInitialized: boolean;
 }
 
-function App({ isOfficeInitialized, theme }: AppProps): ReactElement {
+function App(props: AppProps): ReactElement {
+  const { isOfficeInitialized, title, theme } = props;
+
   if (!isOfficeInitialized) {
     return (
-      <Progress title="JabRef" message="Loading JabRef Addin" logo="../../../assets/jabref.svg" />
+      <Progress title={title} message="Loading JabRef Addin" logo="../../../assets/jabref.svg" />
     );
   }
   return (
