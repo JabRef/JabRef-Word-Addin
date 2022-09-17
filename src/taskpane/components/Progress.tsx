@@ -6,9 +6,9 @@ import {
   Spinner,
   SpinnerSize,
   Stack,
-} from "@fluentui/react";
-import React from "react";
-import Wrapper from "./Wrapper";
+} from '@fluentui/react';
+import React from 'react';
+import Wrapper from './Wrapper';
 
 export interface ProgressProps {
   logo: string;
@@ -31,7 +31,7 @@ const spinnerStyle: ISpinnerStyles = {
   },
   label: {
     color: DefaultPalette.blueMid,
-    fontSize: "1em",
+    fontSize: '1em',
   },
 };
 
@@ -41,21 +41,12 @@ export default class Progress extends React.PureComponent<ProgressProps> {
 
     return (
       <Wrapper>
-        <Stack
-          verticalFill
-          verticalAlign="center"
-          styles={stackStyles}
-          tokens={stackToken}
-        >
+        <Stack verticalFill verticalAlign="center" styles={stackStyles} tokens={stackToken}>
           <Stack.Item align="center">
             <img width="80" height="80" src={logo} alt={title} title={title} />
           </Stack.Item>
           <Stack.Item align="center">
-            <Spinner
-              size={SpinnerSize.large}
-              label={message}
-              styles={spinnerStyle}
-            />
+            <Spinner size={SpinnerSize.large} label={message} styles={spinnerStyle} />
           </Stack.Item>
         </Stack>
       </Wrapper>

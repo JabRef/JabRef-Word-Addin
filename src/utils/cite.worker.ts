@@ -8,7 +8,7 @@ import CSL, {
   MetaData,
   RebuildProcessorStateData,
   StatefulCitation,
-} from "citeproc";
+} from 'citeproc';
 
 // eslint-disable-next-line no-restricted-globals
 const worker: Worker = self as never;
@@ -37,7 +37,7 @@ let citationByIndex: Array<StatefulCitation>;
 let referenceData: Array<MetaData>;
 
 export type CiteWorkerInitProcessorCommand = {
-  command: "initProcessor";
+  command: 'initProcessor';
 
   styleName: string;
   localeName: string;
@@ -46,7 +46,7 @@ export type CiteWorkerInitProcessorCommand = {
 };
 
 export type CiteWorkerInitProcessorMessage = {
-  command: "initProcessor";
+  command: 'initProcessor';
 
   xclass: CitationKind;
   citationByIndex: StatefulCitation[];
@@ -56,7 +56,7 @@ export type CiteWorkerInitProcessorMessage = {
 };
 
 export type CiteWorkerRegisterCitationCommand = {
-  command: "registerCitation";
+  command: 'registerCitation';
 
   citation: Citation;
   preCitations: Locator;
@@ -64,7 +64,7 @@ export type CiteWorkerRegisterCitationCommand = {
 };
 
 export type CiteWorkerRegisterCitationMessage = {
-  command: "registerCitation";
+  command: 'registerCitation';
 
   citationData: CitationResult[];
   citationByIndex: StatefulCitation[];
@@ -73,18 +73,18 @@ export type CiteWorkerRegisterCitationMessage = {
 };
 
 export type CiteWorkerGetBibliographyCommand = {
-  command: "getBibliography";
+  command: 'getBibliography';
 };
 
 export type CiteWorkerSetBibliographyMessage = {
-  command: "setBibliography";
+  command: 'setBibliography';
 
   bibliographyData: GeneratedBibliography;
   result: string;
 };
 
 export type CiteWorkerError = {
-  command: "error";
+  command: 'error';
 
   error: string;
 };
@@ -124,7 +124,7 @@ const sys = {
 function getLocale(localeId: string): string {
   const xhr = new XMLHttpRequest();
   xhr.open(
-    "GET",
+    'GET',
     `https://raw.githubusercontent.com/Juris-M/citeproc-js-docs/master/locales-${localeId}.xml`,
     false
   );
@@ -135,7 +135,7 @@ function getLocale(localeId: string): string {
 function getStyle(styleID: string): string {
   const xhr = new XMLHttpRequest();
   xhr.open(
-    "GET",
+    'GET',
     `https://raw.githubusercontent.com/citation-style-language/styles/master/${styleID}.csl`,
     false
   );
@@ -148,7 +148,7 @@ function reportBack(message: CiteWorkerMessage): void {
 }
 
 function buildLocalesObj(locales: string): void {
-  const locale = locales != null ? locales : "en-US";
+  const locale = locales != null ? locales : 'en-US';
   localesObj[locale] = getLocale(locale);
 }
 
@@ -200,47 +200,39 @@ function buildProcessor(styleID: string): void {
     }
     citationByIndex = null;
     reportBack({
-      command: "initProcessor",
+      command: 'initProcessor',
       xclass: citeproc.opt.xclass,
       citationByIndex: citeproc.registry.citationreg.citationByIndex,
       rebuildData,
       bibliographyData: makeBibliography(),
-      result: "OK",
+      result: 'OK',
     });
   } catch (error) {
     reportBack({
-      command: "error",
-      error: JSON.stringify(error, ["name", "message", "stack"], 2),
+      command: 'error',
+      error: JSON.stringify(error, ['name', 'message', 'stack'], 2),
     });
   }
 }
 
-function registerCitation(
-  citation: Citation,
-  preCitations: Locator,
-  postCitations: Locator
-): void {
+function registerCitation(citation: Citation, preCitations: Locator, postCitations: Locator): void {
   try {
     const itemFetchLst = citation.citationItems
       .filter((citationItem) => !itemsObj[citationItem.id])
       .map((citationItem) => citationItem.id);
     buildItemsObj(itemFetchLst);
-    const citeRes = citeproc.processCitationCluster(
-      citation,
-      preCitations,
-      postCitations
-    );
+    const citeRes = citeproc.processCitationCluster(citation, preCitations, postCitations);
     reportBack({
-      command: "registerCitation",
+      command: 'registerCitation',
       citationData: citeRes[1],
       citationByIndex: citeproc.registry.citationreg.citationByIndex,
       bibliographyData: makeBibliography(),
-      result: "OK",
+      result: 'OK',
     });
   } catch (error) {
     reportBack({
-      command: "error",
-      error: JSON.stringify(error, ["name", "message", "stack"], 2),
+      command: 'error',
+      error: JSON.stringify(error, ['name', 'message', 'stack'], 2),
     });
   }
 }
@@ -248,21 +240,21 @@ function registerCitation(
 function getBibliography(): void {
   try {
     reportBack({
-      command: "setBibliography",
+      command: 'setBibliography',
       bibliographyData: makeBibliography(),
-      result: "OK",
+      result: 'OK',
     });
   } catch (error) {
     reportBack({
-      command: "error",
-      error: JSON.stringify(error, ["name", "message", "stack"], 2),
+      command: 'error',
+      error: JSON.stringify(error, ['name', 'message', 'stack'], 2),
     });
   }
 }
 
-worker.addEventListener("message", (ev: MessageEvent<CiteWorkerCommand>) => {
+worker.addEventListener('message', (ev: MessageEvent<CiteWorkerCommand>) => {
   switch (ev.data.command) {
-    case "initProcessor":
+    case 'initProcessor':
       setPreferenceAndReferenceData(
         ev.data.localeName,
         ev.data.citationByIndex,
@@ -270,14 +262,10 @@ worker.addEventListener("message", (ev: MessageEvent<CiteWorkerCommand>) => {
       );
       buildProcessor(ev.data.styleName);
       break;
-    case "registerCitation":
-      registerCitation(
-        ev.data.citation,
-        ev.data.preCitations,
-        ev.data.postCitations
-      );
+    case 'registerCitation':
+      registerCitation(ev.data.citation, ev.data.preCitations, ev.data.postCitations);
       break;
-    case "getBibliography":
+    case 'getBibliography':
       getBibliography();
       break;
     default:
