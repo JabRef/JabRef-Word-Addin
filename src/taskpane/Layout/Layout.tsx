@@ -11,19 +11,19 @@ import {
   ActionButton,
   IIconProps,
   IButtonStyles,
-} from "@fluentui/react";
-import React, { ReactElement } from "react";
-import { useLogoutMutation } from "../../generated/graphql";
-import client from "../../utils/apolloClient";
-import CitationStyle from "../pages/citationStyle";
-import Dashboard from "../pages/dashboard";
-import { useCiteSupport } from "../contexts/CiteSupportContext";
-import Wrapper from "../components/Wrapper";
+} from '@fluentui/react';
+import React, { ReactElement } from 'react';
+import { useLogoutMutation } from '../../generated/graphql';
+import client from '../../utils/apolloClient';
+import CitationStyle from '../pages/citationStyle';
+import Dashboard from '../pages/dashboard';
+import { useCiteSupport } from '../contexts/CiteSupportContext';
+import Wrapper from '../components/Wrapper';
 
 const wrapperStack: IStackStyles = {
   root: {
-    height: "calc(100vh - 5.3rem)",
-    overflow: "hidden",
+    height: 'calc(100vh - 5.3rem)',
+    overflow: 'hidden',
   },
 };
 
@@ -36,24 +36,24 @@ const SignOutButtonStyle: IButtonStyles = {
 const footerStackStyle: IStackStyles = {
   root: {
     background: DefaultPalette.neutralDark,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
     height: 40,
   },
 };
 
-const Signout: IIconProps = { iconName: "SignOut" };
-const SyncBib: IIconProps = { iconName: "InsertSignatureLine" };
+const Signout: IIconProps = { iconName: 'SignOut' };
+const SyncBib: IIconProps = { iconName: 'InsertSignatureLine' };
 
 const imageProps: IImageProps = {
   imageFit: ImageFit.contain,
-  src: "../../assets/jabref_white.svg",
+  src: '../../assets/jabref_white.svg',
 };
 
 const pivotStyle: Partial<IPivotStyles> = {
   root: {
     backgroundColor: DefaultPalette.white,
     marginBottom: 0,
-    borderBottom: "1px solid rgba(29, 4, 4, 0.11)",
+    borderBottom: '1px solid rgba(29, 4, 4, 0.11)',
   },
 };
 
@@ -67,8 +67,8 @@ function Layout(): ReactElement {
           <PivotItem
             headerText="Library"
             headerButtonProps={{
-              "data-order": 1,
-              "data-title": "Library title",
+              'data-order': 1,
+              'data-title': 'Library title',
             }}
           >
             <Stack styles={wrapperStack}>
@@ -83,21 +83,14 @@ function Layout(): ReactElement {
         </Pivot>
       </Stack>
       <Stack grow disableShrink styles={footerStackStyle} verticalAlign="end">
-        <Stack
-          horizontal
-          style={{ height: "100%" }}
-          horizontalAlign="space-between"
-        >
-          <Stack
-            horizontal
-            style={{ alignItems: "center", padding: 8, paddingLeft: 10 }}
-          >
+        <Stack horizontal style={{ height: '100%' }} horizontalAlign="space-between">
+          <Stack horizontal style={{ alignItems: 'center', padding: 8, paddingLeft: 10 }}>
             <img {...imageProps} alt="jabref logo" width={20} />
             <div
               style={{
                 color: DefaultPalette.neutralLight,
                 fontSize: FontSizes.size20,
-                fontWeight: "normal",
+                fontWeight: 'normal',
                 marginLeft: 8,
                 marginBottom: 3,
               }}

@@ -7,12 +7,9 @@ import {
   MetaData,
   RebuildProcessorStateData,
   StatefulCitation,
-} from "citeproc";
-import WordApi, { CitationDataFormatForWordAPI } from "./word-api";
-import CiteWorker, {
-  CiteWorkerCommand,
-  CiteWorkerMessage,
-} from "./cite.worker";
+} from 'citeproc';
+import WordApi, { CitationDataFormatForWordAPI } from './word-api';
+import CiteWorker, { CiteWorkerCommand, CiteWorkerMessage } from './cite.worker';
 
 class CiteSupport {
   config: {
@@ -33,9 +30,9 @@ class CiteSupport {
   constructor(referenceData: Array<MetaData>) {
     this.config = {
       debug: true,
-      mode: "in-text",
-      defaultLocale: "en-US",
-      defaultStyle: "american-political-science-association",
+      mode: 'in-text',
+      defaultLocale: 'en-US',
+      defaultStyle: 'american-political-science-association',
       citationIdToPos: {},
       citationByIndex: [],
       processorReady: false,
@@ -46,10 +43,10 @@ class CiteSupport {
     this.wordApi = new WordApi();
     this.worker.onmessage = async (event: MessageEvent<CiteWorkerMessage>) => {
       switch (event.data.command) {
-        case "error":
+        case 'error':
           this.debug(event.data.error);
           break;
-        case "initProcessor":
+        case 'initProcessor':
           await this.onInitProcessor(
             event.data.xclass,
             event.data.rebuildData,
@@ -57,14 +54,14 @@ class CiteSupport {
             event.data.citationByIndex
           );
           break;
-        case "registerCitation":
+        case 'registerCitation':
           await this.onRegisterCitation(
             event.data.citationByIndex,
             event.data.citationData,
             event.data.bibliographyData
           );
           break;
-        case "setBibliography":
+        case 'setBibliography':
           await this.onSetBibliography(event.data.bibliographyData);
           break;
         default:
@@ -83,7 +80,7 @@ class CiteSupport {
     bibliographyData: GeneratedBibliography,
     citationByIndex: Array<StatefulCitation>
   ): Promise<void> {
-    this.debug("initProcessor()");
+    this.debug('initProcessor()');
     this.config.mode = xclass;
     this.config.citationByIndex = citationByIndex;
     const citationData = this.convertRebuildDataToCitationData(rebuildData);
@@ -103,17 +100,15 @@ class CiteSupport {
     citationData: Array<CitationResult>,
     bibliographyData: GeneratedBibliography
   ): Promise<void> {
-    this.debug("registerCitation()");
+    this.debug('registerCitation()');
     this.config.citationByIndex = citationByIndex;
     await this.upsertCitation(citationData);
     await this.updateBibliography(bibliographyData);
     this.config.processorReady = true;
   }
 
-  async onSetBibliography(
-    bibliographyData: GeneratedBibliography
-  ): Promise<void> {
-    this.debug("setBibliograghy()");
+  async onSetBibliography(bibliographyData: GeneratedBibliography): Promise<void> {
+    this.debug('setBibliograghy()');
     await this.insertBibliography(bibliographyData);
     this.config.processorReady = true;
   }
@@ -145,10 +140,10 @@ class CiteSupport {
     citationByIndex: Array<StatefulCitation>,
     referenceData: Array<MetaData>
   ): void {
-    this.debug("callInitProcessor()");
+    this.debug('callInitProcessor()');
     this.config.processorReady = false;
     this.work({
-      command: "initProcessor",
+      command: 'initProcessor',
       styleName,
       localeName,
       citationByIndex,
@@ -164,16 +159,12 @@ class CiteSupport {
    *  in which each sub-array is composed of a citationID
    *  and a note number.
    */
-  registerCitation(
-    citation: Citation,
-    preCitations: Locator,
-    postCitations: Locator
-  ): void {
-    this.debug("callRegisterCitation()");
+  registerCitation(citation: Citation, preCitations: Locator, postCitations: Locator): void {
+    this.debug('callRegisterCitation()');
     if (!this.config.processorReady) return;
     this.config.processorReady = false;
     this.work({
-      command: "registerCitation",
+      command: 'registerCitation',
       citation,
       preCitations,
       postCitations,
@@ -182,12 +173,12 @@ class CiteSupport {
 
   async getBibliography(): Promise<void> {
     if (!this.config.processorReady) return;
-    this.debug("getBibliography()");
+    this.debug('getBibliography()');
     await this.updateCitationByIndex();
     if (this.config.citationByIndex.length) {
       this.config.processorReady = false;
       this.work({
-        command: "getBibliography",
+        command: 'getBibliography',
       });
     }
   }
@@ -199,7 +190,7 @@ class CiteSupport {
    *  initProcessor to rebuild the processor state.
    */
   async initDocument(): Promise<void> {
-    this.debug("initDocument()");
+    this.debug('initDocument()');
     await this.spoofDocument();
     this.initProcessor(
       this.config.defaultStyle,
@@ -227,7 +218,7 @@ class CiteSupport {
     rebuildData: Array<RebuildProcessorStateData>
   ): Array<CitationResult> {
     if (!rebuildData) return null;
-    this.debug("convertRebuildDataToCitationData()");
+    this.debug('convertRebuildDataToCitationData()');
     const citationData = rebuildData.map(
       (obj: RebuildProcessorStateData): CitationResult => [0, obj[2], obj[0]]
     );
@@ -244,7 +235,7 @@ class CiteSupport {
    *  citation texts are updated.
    */
   async updateCitations(data: Array<CitationResult>): Promise<void> {
-    this.debug("updateCitations()");
+    this.debug('updateCitations()');
     const citationData = this.convertCitationDataToCustomFormat(data);
     await this.wordApi.updateCitations(citationData);
   }
@@ -254,7 +245,7 @@ class CiteSupport {
    *  ones.
    */
   async upsertCitation(data: Array<CitationResult>): Promise<void> {
-    this.debug("upsertCitation()");
+    this.debug('upsertCitation()');
     const isCitationSelected = await this.wordApi.isCitationSelected();
     const citationData = this.convertCitationDataToCustomFormat(data);
     if (isCitationSelected) {
@@ -276,7 +267,7 @@ class CiteSupport {
     citationData: Array<CitationResult>
   ): Array<CitationDataFormatForWordAPI> {
     if (!citationData) return null;
-    this.debug("convertCitationDataToCustomFormat()");
+    this.debug('convertCitationDataToCustomFormat()');
     return citationData.map((citation) => {
       return {
         position: citation[0],
@@ -290,8 +281,8 @@ class CiteSupport {
    *  Insert bibliography with xHTML returned by the processor.
    */
   async insertBibliography(data: GeneratedBibliography): Promise<void> {
-    this.debug("insertBibliography()");
-    const bib = data[1].join("\n");
+    this.debug('insertBibliography()');
+    const bib = data[1].join('\n');
     await this.wordApi.insertBibliography(bib);
   }
 
@@ -300,8 +291,8 @@ class CiteSupport {
    *  changes
    */
   async updateBibliography(data: GeneratedBibliography): Promise<void> {
-    this.debug("updateBibliography()");
-    const bib = data[1].join("\n");
+    this.debug('updateBibliography()');
+    const bib = data[1].join('\n');
     await this.wordApi.updateBibliography(bib);
   }
 
@@ -311,10 +302,8 @@ class CiteSupport {
    *  saved.This function brings citation data into memory.
    */
   async spoofDocument(): Promise<void> {
-    this.debug("spoofDocument()");
-    const citationStyle = Office.context.document.settings.get("Style") as
-      | string
-      | null;
+    this.debug('spoofDocument()');
+    const citationStyle = Office.context.document.settings.get('Style') as string | null;
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }
@@ -331,10 +320,7 @@ class CiteSupport {
     }
   }
 
-  async insertCitation(
-    citationItems: Array<CitationItem>,
-    isCitation: boolean
-  ): Promise<void> {
+  async insertCitation(citationItems: Array<CitationItem>, isCitation: boolean): Promise<void> {
     await this.updateCitationByIndex();
     let citation = null;
     if (!isCitation) {

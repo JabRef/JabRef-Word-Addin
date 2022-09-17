@@ -1,25 +1,18 @@
-import React from "react";
-import { Redirect, Route } from "react-router-dom";
-import { useMeQuery } from "../generated/graphql";
-import Progress from "../taskpane/components/Progress";
+import React from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import { useMeQuery } from '../generated/graphql';
+import Progress from '../taskpane/components/Progress';
 
 interface ProtectedRoutesProps {
   children: JSX.Element;
   path: string;
 }
 
-function ProtectedRoutes({
-  children,
-  ...rest
-}: ProtectedRoutesProps): JSX.Element {
+function ProtectedRoutes({ children, ...rest }: ProtectedRoutesProps): JSX.Element {
   const { data, loading } = useMeQuery();
   if (loading) {
     return (
-      <Progress
-        title="JabRef"
-        message="Loading JabRef Addin"
-        logo="../../../assets/jabref.svg"
-      />
+      <Progress title="JabRef" message="Loading JabRef Addin" logo="../../../assets/jabref.svg" />
     );
   }
   return (
@@ -31,7 +24,7 @@ function ProtectedRoutes({
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: '/login',
               state: { from: location },
             }}
           />
