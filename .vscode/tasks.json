@@ -34,7 +34,7 @@
       "script": "start:desktop",
       "presentation": {
         "clear": true,
-        "panel": "dedicated",
+        "panel": "dedicated"
       },
       "problemMatcher": []
     },
@@ -80,17 +80,13 @@
       "label": "Lint: Check for problems",
       "type": "npm",
       "script": "lint",
-      "problemMatcher": [
-        "$eslint-stylish"
-      ]
+      "problemMatcher": ["$eslint-stylish"]
     },
     {
       "label": "Lint: Fix all auto-fixable problems",
       "type": "npm",
       "script": "lint:fix",
-      "problemMatcher": [
-        "$eslint-stylish"
-      ]
+      "problemMatcher": ["$eslint-stylish"]
     },
     {
       "label": "Stop Debug",
@@ -112,7 +108,7 @@
         "panel": "dedicated"
       },
       "problemMatcher": []
-    },
+    }
   ],
   "inputs": [
     {

@@ -4,7 +4,7 @@
 // Project: https://github.com/Juris-M/citeproc-js
 // Original definitions by: Bilal Alam https://github.com/BilalAlam173
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-declare module "citeproc" {
+declare module 'citeproc' {
   export interface CSL {
     Engine: Engine;
     PROCESSOR_VERSION: string;
@@ -15,30 +15,30 @@ declare module "citeproc" {
     STATUTE_SUBDIV_GROUPED_REGEX: RegExp;
     STATUTE_SUBDIV_PLAIN_REGEX: RegExp;
     STATUTE_SUBDIV_STRINGS: {
-      "art.": string;
-      "bk.": string;
-      "ch.": string;
-      "subch.": string;
-      "p.": string;
-      "pp.": string;
-      "para.": string;
-      "subpara.": string;
-      "pt.": string;
-      "r.": string;
-      "sec.": string;
-      "subsec.": string;
-      "sch.": string;
-      "tit.": string;
-      "col.": string;
-      "fig.": string;
-      "fol.": string;
-      "l.": string;
-      "n.": string;
-      "no.": string;
-      "op.": string;
-      "sv.": string;
-      "vrs.": string;
-      "vol.": string;
+      'art.': string;
+      'bk.': string;
+      'ch.': string;
+      'subch.': string;
+      'p.': string;
+      'pp.': string;
+      'para.': string;
+      'subpara.': string;
+      'pt.': string;
+      'r.': string;
+      'sec.': string;
+      'subsec.': string;
+      'sch.': string;
+      'tit.': string;
+      'col.': string;
+      'fig.': string;
+      'fol.': string;
+      'l.': string;
+      'n.': string;
+      'no.': string;
+      'op.': string;
+      'sv.': string;
+      'vrs.': string;
+      'vol.': string;
     };
     STATUTE_SUBDIV_STRINGS_REVERSE: {
       article: string;
@@ -61,8 +61,8 @@ declare module "citeproc" {
       note: string;
       issue: string;
       opus: string;
-      "sub-verbo": string;
-      "sub verbo": string;
+      'sub-verbo': string;
+      'sub verbo': string;
       verse: string;
       volume: string;
     };
@@ -93,15 +93,15 @@ declare module "citeproc" {
       vol: string;
     };
     MODULE_MACROS: {
-      "juris-pretitle": boolean;
-      "juris-title": boolean;
-      "juris-pretitle-short": boolean;
-      "juris-title-short": boolean;
-      "juris-main": boolean;
-      "juris-main-short": boolean;
-      "juris-tail": boolean;
-      "juris-tail-short": boolean;
-      "juris-locator": boolean;
+      'juris-pretitle': boolean;
+      'juris-title': boolean;
+      'juris-pretitle-short': boolean;
+      'juris-title-short': boolean;
+      'juris-main': boolean;
+      'juris-main-short': boolean;
+      'juris-tail': boolean;
+      'juris-tail-short': boolean;
+      'juris-locator': boolean;
     };
     MODULE_TYPES: {
       legal_case: boolean;
@@ -118,18 +118,18 @@ declare module "citeproc" {
     MULTI_FIELDS: string[];
     LangPrefsMap: {
       title: string;
-      "title-short": string;
+      'title-short': string;
       event: string;
       genre: string;
       medium: string;
-      "container-title": string;
-      "collection-title": string;
+      'container-title': string;
+      'collection-title': string;
       archive: string;
       publisher: string;
       authority: string;
-      "publisher-place": string;
-      "event-place": string;
-      "archive-place": string;
+      'publisher-place': string;
+      'event-place': string;
+      'archive-place': string;
       jurisdiction: string;
       number: string;
       edition: string;
@@ -139,41 +139,37 @@ declare module "citeproc" {
     AbbreviationSegments: () => void;
     FIELD_CATEGORY_REMAP: {
       title: string;
-      "container-title": string;
-      "collection-title": string;
+      'container-title': string;
+      'collection-title': string;
       number: string;
       place: string;
       archive: string;
-      "title-short": string;
+      'title-short': string;
       genre: string;
       event: string;
       medium: string;
-      "archive-place": string;
-      "publisher-place": string;
-      "event-place": string;
+      'archive-place': string;
+      'publisher-place': string;
+      'event-place': string;
       jurisdiction: string;
-      "language-name": string;
-      "language-name-original": string;
-      "call-number": string;
-      "chapter-number": string;
-      "collection-number": string;
+      'language-name': string;
+      'language-name-original': string;
+      'call-number': string;
+      'chapter-number': string;
+      'collection-number': string;
       edition: string;
       page: string;
       issue: string;
       locator: string;
-      "number-of-pages": string;
-      "number-of-volumes": string;
+      'number-of-pages': string;
+      'number-of-volumes': string;
       volume: string;
-      "citation-number": string;
+      'citation-number': string;
       publisher: string;
     };
     parseLocator: (item: any) => any;
     normalizeLocaleStr: (str: any) => any;
-    parseNoteFieldHacks: (
-      Item: any,
-      validFieldsForType: any,
-      allowDateOverride: any
-    ) => void;
+    parseNoteFieldHacks: (Item: any, validFieldsForType: any, allowDateOverride: any) => void;
     GENDERS: string[];
     ERROR_NO_RENDERED_FORM: number;
     PREVIEW: string;
@@ -263,54 +259,54 @@ declare module "citeproc" {
     ROMAN_NUMERALS: string[][];
     CREATORS: string[];
     LANGS: {
-      "af-ZA": string;
+      'af-ZA': string;
       ar: string;
-      "bg-BG": string;
-      "ca-AD": string;
-      "cs-CZ": string;
-      "da-DK": string;
-      "de-AT": string;
-      "de-CH": string;
-      "de-DE": string;
-      "el-GR": string;
-      "en-GB": string;
-      "en-US": string;
-      "es-ES": string;
-      "et-EE": string;
+      'bg-BG': string;
+      'ca-AD': string;
+      'cs-CZ': string;
+      'da-DK': string;
+      'de-AT': string;
+      'de-CH': string;
+      'de-DE': string;
+      'el-GR': string;
+      'en-GB': string;
+      'en-US': string;
+      'es-ES': string;
+      'et-EE': string;
       eu: string;
-      "fa-IR": string;
-      "fi-FI": string;
-      "fr-CA": string;
-      "fr-FR": string;
-      "he-IL": string;
-      "hr-HR": string;
-      "hu-HU": string;
-      "is-IS": string;
-      "it-IT": string;
-      "ja-JP": string;
-      "km-KH": string;
-      "ko-KR": string;
-      "lt-LT": string;
-      "lv-LV": string;
-      "mn-MN": string;
-      "nb-NO": string;
-      "nl-NL": string;
-      "nn-NO": string;
-      "pl-PL": string;
-      "pt-BR": string;
-      "pt-PT": string;
-      "ro-RO": string;
-      "ru-RU": string;
-      "sk-SK": string;
-      "sl-SI": string;
-      "sr-RS": string;
-      "sv-SE": string;
-      "th-TH": string;
-      "tr-TR": string;
-      "uk-UA": string;
-      "vi-VN": string;
-      "zh-CN": string;
-      "zh-TW": string;
+      'fa-IR': string;
+      'fi-FI': string;
+      'fr-CA': string;
+      'fr-FR': string;
+      'he-IL': string;
+      'hr-HR': string;
+      'hu-HU': string;
+      'is-IS': string;
+      'it-IT': string;
+      'ja-JP': string;
+      'km-KH': string;
+      'ko-KR': string;
+      'lt-LT': string;
+      'lv-LV': string;
+      'mn-MN': string;
+      'nb-NO': string;
+      'nl-NL': string;
+      'nn-NO': string;
+      'pl-PL': string;
+      'pt-BR': string;
+      'pt-PT': string;
+      'ro-RO': string;
+      'ru-RU': string;
+      'sk-SK': string;
+      'sl-SI': string;
+      'sr-RS': string;
+      'sv-SE': string;
+      'th-TH': string;
+      'tr-TR': string;
+      'uk-UA': string;
+      'vi-VN': string;
+      'zh-CN': string;
+      'zh-TW': string;
     };
     LANG_BASES: {
       af: string;
@@ -357,117 +353,113 @@ declare module "citeproc" {
       zh: string;
     };
     SUPERSCRIPTS: {
-      "\u00AA": string;
-      "\u00B2": string;
-      "\u00B3": string;
-      "\u00B9": string;
-      "\u00BA": string;
-      "\u02B0": string;
-      "\u02B1": string;
-      "\u02B2": string;
-      "\u02B3": string;
-      "\u02B4": string;
-      "\u02B5": string;
-      "\u02B6": string;
-      "\u02B7": string;
-      "\u02B8": string;
-      "\u02E0": string;
-      "\u02E1": string;
-      "\u02E2": string;
-      "\u02E3": string;
-      "\u02E4": string;
-      "\u1D2C": string;
-      "\u1D2D": string;
-      "\u1D2E": string;
-      "\u1D30": string;
-      "\u1D31": string;
-      "\u1D32": string;
-      "\u1D33": string;
-      "\u1D34": string;
-      "\u1D35": string;
-      "\u1D36": string;
-      "\u1D37": string;
-      "\u1D38": string;
-      "\u1D39": string;
-      "\u1D3A": string;
-      "\u1D3C": string;
-      "\u1D3D": string;
-      "\u1D3E": string;
-      "\u1D3F": string;
-      "\u1D40": string;
-      "\u1D41": string;
-      "\u1D42": string;
-      "\u1D43": string;
-      "\u1D44": string;
-      "\u1D45": string;
-      "\u1D46": string;
-      "\u1D47": string;
-      "\u1D48": string;
-      "\u1D49": string;
-      "\u1D4A": string;
-      "\u1D4B": string;
-      "\u1D4C": string;
-      "\u1D4D": string;
-      "\u1D4F": string;
-      "\u1D50": string;
-      "\u1D51": string;
-      "\u1D52": string;
-      "\u1D53": string;
-      "\u1D54": string;
-      "\u1D55": string;
-      "\u1D56": string;
-      "\u1D57": string;
-      "\u1D58": string;
-      "\u1D59": string;
-      "\u1D5A": string;
-      "\u1D5B": string;
-      "\u1D5C": string;
-      "\u1D5D": string;
-      "\u1D5E": string;
-      "\u1D5F": string;
-      "\u1D60": string;
-      "\u1D61": string;
-      "\u2070": string;
-      "\u2071": string;
-      "\u2074": string;
-      "\u2075": string;
-      "\u2076": string;
-      "\u2077": string;
-      "\u2078": string;
-      "\u2079": string;
-      "\u207A": string;
-      "\u207B": string;
-      "\u207C": string;
-      "\u207D": string;
-      "\u207E": string;
-      "\u207F": string;
-      "\u2120": string;
-      "\u2122": string;
-      "\u3192": string;
-      "\u3193": string;
-      "\u3194": string;
-      "\u3195": string;
-      "\u3196": string;
-      "\u3197": string;
-      "\u3198": string;
-      "\u3199": string;
-      "\u319A": string;
-      "\u319B": string;
-      "\u319C": string;
-      "\u319D": string;
-      "\u319E": string;
-      "\u319F": string;
-      "\u02C0": string;
-      "\u02C1": string;
-      "\u06E5": string;
-      "\u06E6": string;
+      '\u00AA': string;
+      '\u00B2': string;
+      '\u00B3': string;
+      '\u00B9': string;
+      '\u00BA': string;
+      '\u02B0': string;
+      '\u02B1': string;
+      '\u02B2': string;
+      '\u02B3': string;
+      '\u02B4': string;
+      '\u02B5': string;
+      '\u02B6': string;
+      '\u02B7': string;
+      '\u02B8': string;
+      '\u02E0': string;
+      '\u02E1': string;
+      '\u02E2': string;
+      '\u02E3': string;
+      '\u02E4': string;
+      '\u1D2C': string;
+      '\u1D2D': string;
+      '\u1D2E': string;
+      '\u1D30': string;
+      '\u1D31': string;
+      '\u1D32': string;
+      '\u1D33': string;
+      '\u1D34': string;
+      '\u1D35': string;
+      '\u1D36': string;
+      '\u1D37': string;
+      '\u1D38': string;
+      '\u1D39': string;
+      '\u1D3A': string;
+      '\u1D3C': string;
+      '\u1D3D': string;
+      '\u1D3E': string;
+      '\u1D3F': string;
+      '\u1D40': string;
+      '\u1D41': string;
+      '\u1D42': string;
+      '\u1D43': string;
+      '\u1D44': string;
+      '\u1D45': string;
+      '\u1D46': string;
+      '\u1D47': string;
+      '\u1D48': string;
+      '\u1D49': string;
+      '\u1D4A': string;
+      '\u1D4B': string;
+      '\u1D4C': string;
+      '\u1D4D': string;
+      '\u1D4F': string;
+      '\u1D50': string;
+      '\u1D51': string;
+      '\u1D52': string;
+      '\u1D53': string;
+      '\u1D54': string;
+      '\u1D55': string;
+      '\u1D56': string;
+      '\u1D57': string;
+      '\u1D58': string;
+      '\u1D59': string;
+      '\u1D5A': string;
+      '\u1D5B': string;
+      '\u1D5C': string;
+      '\u1D5D': string;
+      '\u1D5E': string;
+      '\u1D5F': string;
+      '\u1D60': string;
+      '\u1D61': string;
+      '\u2070': string;
+      '\u2071': string;
+      '\u2074': string;
+      '\u2075': string;
+      '\u2076': string;
+      '\u2077': string;
+      '\u2078': string;
+      '\u2079': string;
+      '\u207A': string;
+      '\u207B': string;
+      '\u207C': string;
+      '\u207D': string;
+      '\u207E': string;
+      '\u207F': string;
+      '\u2120': string;
+      '\u2122': string;
+      '\u3192': string;
+      '\u3193': string;
+      '\u3194': string;
+      '\u3195': string;
+      '\u3196': string;
+      '\u3197': string;
+      '\u3198': string;
+      '\u3199': string;
+      '\u319A': string;
+      '\u319B': string;
+      '\u319C': string;
+      '\u319D': string;
+      '\u319E': string;
+      '\u319F': string;
+      '\u02C0': string;
+      '\u02C1': string;
+      '\u06E5': string;
+      '\u06E6': string;
     };
     SUPERSCRIPTS_REGEXP: RegExp;
-    UPDATE_GROUP_CONTEXT_CONDITION: (
-      state: any,
-      termtxt: any,
-      valueTerm: any
-    ) => void;
+    UPDATE_GROUP_CONTEXT_CONDITION: (state: any, termtxt: any, valueTerm: any) => void;
     locale: {};
     locale_opts: {};
     locale_dates: {};
@@ -500,8 +492,8 @@ declare module "citeproc" {
   interface CitationItem {
     locator?: string;
     label?: string;
-    "suppress-author"?: boolean;
-    "author-only"?: boolean;
+    'suppress-author'?: boolean;
+    'author-only'?: boolean;
     prefix?: string;
     suffix?: string;
     id: string;
@@ -557,7 +549,7 @@ declare module "citeproc" {
    *
    * `note` = footnote type.
    */
-  export type CitationKind = "in-text" | "note";
+  export type CitationKind = 'in-text' | 'note';
 
   export interface Bibmeta {
     /**
@@ -602,14 +594,14 @@ declare module "citeproc" {
      * @see http://docs.citationstyles.org/en/stable/specification.html#bibliography-specific-options
      * @see https://github.com/citation-style-language/styles/issues/804#issuecomment-31467854
      */
-    "second-field-align": "flush" | "margin" | false;
+    'second-field-align': 'flush' | 'margin' | false;
   }
   export interface Author {
     family?: string;
     given?: string;
     literal?: string;
     fullName?: string;
-    "parse-names"?: boolean;
+    'parse-names'?: boolean;
   }
   export interface MetaData {
     id: string;
@@ -629,7 +621,7 @@ declare module "citeproc" {
     translator?: Author[];
     contributor?: Author[];
     interviewer?: Author[];
-    "reviewed-author"?: Author[];
+    'reviewed-author'?: Author[];
 
     volume?: string;
     genre?: string;
@@ -643,11 +635,11 @@ declare module "citeproc" {
     citekey?: string;
     URL?: string;
     publisher?: string;
-    "publisher-place"?: string;
-    "container-title"?: string;
-    "container-title-short"?: string;
-    "collection-title"?: string;
-    "container-author"?: Author[];
+    'publisher-place'?: string;
+    'container-title'?: string;
+    'container-title-short'?: string;
+    'collection-title'?: string;
+    'container-author'?: Author[];
     archive_location?: string;
     euId?: string;
     refId?: string;
@@ -663,7 +655,7 @@ declare module "citeproc" {
     bMetaSync?: boolean;
   }
   export interface Issued {
-    "date-parts"?: string[][];
+    'date-parts'?: string[][];
   }
   export interface ImportInfo {
     dataUrl?: string;
@@ -883,7 +875,7 @@ declare module "citeproc" {
      * Changesd the output format of the processor can be changed to any of the defined formats after instantiation
      * @param format string that defined output format
      */
-    setOutputFormat(format: "rtf" | "text" | "html"): void;
+    setOutputFormat(format: 'rtf' | 'text' | 'html'): void;
     /**
      * Prunes all citations from the processor not listed in `idList`.
      *
@@ -926,7 +918,7 @@ declare module "citeproc" {
      */
     rebuildProcessorState(
       citationByIndex: Citation[],
-      mode?: "html" | "text" | "rtf",
+      mode?: 'html' | 'text' | 'rtf',
       uncitedItemIds?: string[]
     ): RebuildProcessorStateData[];
   }

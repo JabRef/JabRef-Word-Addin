@@ -3,7 +3,7 @@
 - Install [Node.js](https://nodejs.org/)
 - Create .env file in the root directory containing the `HOST_API_URL` key
 
-  e.g `API_HOST = "https://jabref-online.herokuapp.com"`
+  e.g `API_HOST = "https://mango-pebble-0224c3803.1.azurestaticapps.net/"`
 - Run `yarn install`
 
 
