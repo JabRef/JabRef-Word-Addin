@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Progress from './Progress';
 import Login from '../pages/login';
-import Layout from '../Layout/Layout';
+import Layout from '../layout/Layout';
 import ProtectedRoutes from '../../utils/ProtectedRoutes';
 import { CitationStoreProvider } from '../contexts/CitationStoreContext';
 import { CiteSupportProvider } from '../contexts/CiteSupportContext';
@@ -20,8 +20,9 @@ function App(props: AppProps): ReactElement {
       <Progress title={title} message="Loading JabRef Addin" logo="../../../assets/jabref.svg" />
     );
   }
+
   return (
-    <div>
+    <>
       <Switch>
         <Route path="/login">
           <Login />
@@ -34,7 +35,7 @@ function App(props: AppProps): ReactElement {
           </CiteSupportProvider>
         </ProtectedRoutes>
       </Switch>
-    </div>
+    </>
   );
 }
 export default App;
