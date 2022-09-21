@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { ISearchBoxStyles, SearchBox } from '@fluentui/react';
 import React, { ReactElement } from 'react';
+import globalStyles from '../../theme';
 
 interface SearchFieldProps {
   onFilterChange: (event?: React.ChangeEvent<HTMLInputElement>, newValue?: string) => void;
@@ -8,11 +9,7 @@ interface SearchFieldProps {
 
 const searchBoxStyle: ISearchBoxStyles = {
   root: {
-    margin: 8,
-    marginTop: 10,
-    flexGrow: 0,
-    flexShrink: 0,
-    flexBasis: 'auto',
+    margin: `1rem ${globalStyles.margin}`,
   },
 };
 

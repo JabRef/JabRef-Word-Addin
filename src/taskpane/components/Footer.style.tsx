@@ -45,7 +45,7 @@ export const dark: IIconProps = { iconName: 'LowerBrightness' };
 
 export const imageProps: IImageProps = {
   imageFit: ImageFit.center,
-  src: '../../../assets/svgs/logo.svg',
+  src: '../../../assets/logo.svg',
   width: '110rem',
   height: '40rem',
 };

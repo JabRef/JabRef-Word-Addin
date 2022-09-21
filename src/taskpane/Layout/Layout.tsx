@@ -1,124 +1,59 @@
-import {
-  IPivotStyles,
-  DefaultPalette,
-  Pivot,
-  PivotItem,
-  Stack,
-  FontSizes,
-  IImageProps,
-  ImageFit,
-  IStackStyles,
-  ActionButton,
-  IIconProps,
-  IButtonStyles,
-} from '@fluentui/react';
-import React, { ReactElement } from 'react';
+import { Pivot, PivotItem, Stack, StackItem } from '@fluentui/react';
+import React, { useState } from 'react';
+import CitationStyle from '../pages/CitationStyle';
+import Dashboard from '../pages/Dashboard';
+import Footer from '../components/Footer';
+import { pivotStyle, scrollableStack } from './Layout.style';
+import { useCiteSupport } from '../contexts/CiteSupportContext';
 import { useLogoutMutation } from '../../generated/graphql';
 import client from '../../plugins/apollo/apolloClient';
-import CitationStyle from '../pages/citationStyle';
-import Dashboard from '../pages/dashboard';
-import { useCiteSupport } from '../contexts/CiteSupportContext';
-import Wrapper from '../components/Wrapper';
 
-const wrapperStack: IStackStyles = {
-  root: {
-    height: 'calc(100vh - 5.3rem)',
-    overflow: 'hidden',
-  },
+type pivotItem = 'citationStyle' | 'dashboard';
+
+const getTabId = (itemKey: string) => {
+  return `appTabs${itemKey}`;
 };
 
-const SignOutButtonStyle: IButtonStyles = {
-  root: {
-    color: DefaultPalette.white,
-  },
-};
+function Layout(): JSX.Element {
+  const [selectedKey, setSelectedKey] = useState<pivotItem>('dashboard');
 
-const footerStackStyle: IStackStyles = {
-  root: {
-    background: DefaultPalette.neutralDark,
-    boxSizing: 'border-box',
-    height: 40,
-  },
-};
+  const handleLinkClick = (item?: PivotItem) => {
+    if (item) setSelectedKey(item.props.itemKey as pivotItem);
+  };
 
-const Signout: IIconProps = { iconName: 'SignOut' };
-const SyncBib: IIconProps = { iconName: 'InsertSignatureLine' };
-
-const imageProps: IImageProps = {
-  imageFit: ImageFit.contain,
-  src: '../../assets/jabref_white.svg',
-};
-
-const pivotStyle: Partial<IPivotStyles> = {
-  root: {
-    backgroundColor: DefaultPalette.white,
-    marginBottom: 0,
-    borderBottom: '1px solid rgba(29, 4, 4, 0.11)',
-  },
-};
-
-function Layout(): ReactElement {
-  const [logoutMutation] = useLogoutMutation();
   const citeSupport = useCiteSupport();
+  const [logoutMutation] = useLogoutMutation();
+
+  const onLogout = async () => {
+    await client.resetStore();
+    await logoutMutation();
+  };
+
+  const onSyncBibliography = async () => {
+    await citeSupport.getBibliography();
+  };
+
   return (
-    <Wrapper>
-      <Stack grow verticalAlign="start">
-        <Pivot aria-label="NAV" styles={pivotStyle} linkSize="normal">
-          <PivotItem
-            headerText="Library"
-            headerButtonProps={{
-              'data-order': 1,
-              'data-title': 'Library title',
-            }}
-          >
-            <Stack styles={wrapperStack}>
-              <Dashboard />
-            </Stack>
-          </PivotItem>
-          <PivotItem headerText="Citation Style">
-            <Stack styles={wrapperStack}>
-              <CitationStyle />
-            </Stack>
-          </PivotItem>
+    <Stack verticalFill>
+      <Stack.Item>
+        <Pivot
+          aria-label="NAV"
+          linkSize="normal"
+          getTabId={getTabId}
+          styles={pivotStyle}
+          onLinkClick={handleLinkClick}
+        >
+          <PivotItem headerText="Library" itemKey="dashboard" />
+          <PivotItem headerText="Citation Style" itemKey="citationStyles" />
         </Pivot>
-      </Stack>
-      <Stack grow disableShrink styles={footerStackStyle} verticalAlign="end">
-        <Stack horizontal style={{ height: '100%' }} horizontalAlign="space-between">
-          <Stack horizontal style={{ alignItems: 'center', padding: 8, paddingLeft: 10 }}>
-            <img {...imageProps} alt="jabref logo" width={20} />
-            <div
-              style={{
-                color: DefaultPalette.neutralLight,
-                fontSize: FontSizes.size20,
-                fontWeight: 'normal',
-                marginLeft: 8,
-                marginBottom: 3,
-              }}
-            >
-              JabRef
-            </div>
-          </Stack>
-          <ActionButton
-            styles={SignOutButtonStyle}
-            iconProps={SyncBib}
-            allowDisabledFocus
-            onClick={async () => {
-              await citeSupport.getBibliography();
-            }}
-          >
-            Add bib...
-          </ActionButton>
-          <ActionButton
-            styles={SignOutButtonStyle}
-            iconProps={Signout}
-            allowDisabledFocus
-            onClick={() => logoutMutation().then(() => client.resetStore())}
-          >
-            Signout
-          </ActionButton>
-        </Stack>
-      </Stack>
-    </Wrapper>
+      </Stack.Item>
+      <StackItem styles={scrollableStack} grow>
+        {selectedKey === 'dashboard' ? <Dashboard /> : <CitationStyle />}
+      </StackItem>
+      <Stack.Item>
+        <Footer onLogout={onLogout} onSyncBibliography={onSyncBibliography} />
+      </Stack.Item>
+    </Stack>
   );
 }
 

@@ -13,7 +13,6 @@ import {
 interface FooterProps {
   onSyncBibliography: () => void;
   onLogout: () => void;
-  onThemeChange: () => void;
 }
 
 function Footer({ onSyncBibliography, onLogout }: FooterProps): ReactElement {

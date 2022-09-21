@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, Stack } from '@fluentui/react';
 import { Author, MetaData } from 'citeproc';
-import EditCitation from '../pages/editCitation';
+import EditCitation from '../pages/EditCitation';
 import { useCitationStore } from '../contexts/CitationStoreContext';
 import {
   authorStyle,
