@@ -13,7 +13,7 @@ import { AppContainer } from 'react-hot-loader';
 import { initializeIcons, ThemeProvider } from '@fluentui/react';
 import { HashRouter as Router } from 'react-router-dom';
 import App from './components/App';
-import client from '../utils/apolloClient';
+import client from '../plugins/apollo/apolloClient';
 
 initializeIcons();
 
@@ -37,10 +37,11 @@ const render = (Component) => {
 };
 
 /* Render application after Office initializes */
-Office.initialize = () => {
+// eslint-disable-next-line no-void
+void Office.onReady(() => {
   isOfficeInitialized = true;
   render(App);
-};
+});
 
 if ((module as any).hot) {
   (module as any).hot.accept('./components/App', () => {
