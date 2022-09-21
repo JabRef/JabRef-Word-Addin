@@ -69,6 +69,10 @@ module.exports = async (env, options) => {
               }
             },
           },
+          {
+            to: 'assets',
+            from: 'assets',
+          },
         ],
       }),
       new ExtractTextPlugin("[name].[hash].css"),
