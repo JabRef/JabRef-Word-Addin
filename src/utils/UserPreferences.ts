@@ -1,3 +1,4 @@
+import { Theme } from '../../types';
 import DocumentStorage from '../services/DocumentStorage';
 
 export default class UserPreferences {
@@ -11,5 +12,13 @@ export default class UserPreferences {
 
   static syncPreferences(): void {
     DocumentStorage.save();
+  }
+
+  static getTheme(): Theme {
+    return DocumentStorage.getItem('theme') === '1' ? Theme.DARK : Theme.LIGHT;
+  }
+
+  static setTheme(theme: Theme): void {
+    DocumentStorage.setItem('theme', theme.toString());
   }
 }
