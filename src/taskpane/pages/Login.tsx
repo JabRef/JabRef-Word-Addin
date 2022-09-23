@@ -1,55 +1,18 @@
-import {
-  IStackStyles,
-  DefaultPalette,
-  IImageProps,
-  ImageFit,
-  IStackTokens,
-  Stack,
-  FontSizes,
-  PrimaryButton,
-  Link,
-} from '@fluentui/react';
+import { DefaultPalette, Stack, FontSizes, PrimaryButton, Link } from '@fluentui/react';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import { useLoginMutation } from '../../generated/graphql';
+import ContentWrapper from '../components/ContentWrapper';
 import InputField from '../components/InputField';
-import Wrapper from '../components/Wrapper';
-
-// Styles definition
-const stackStylesHeader: IStackStyles = {
-  root: {
-    background: DefaultPalette.white,
-    overflow: 'hidden',
-  },
-};
-
-const stackStyles: IStackStyles = {
-  root: {
-    margin: 20,
-    marginTop: 30,
-    overflow: 'hidden',
-  },
-};
-
-// Logo
-const imageProps: IImageProps = {
-  imageFit: ImageFit.contain,
-  src: '../../assets/jabref.svg',
-};
-
-// Tokens definition
-const verticalGapStackTokens: IStackTokens = {
-  childrenGap: 8,
-  padding: 30,
-};
+import { imageProps, stackStylesHeader, verticalGapStackTokens } from './Login.style';
 
 function Login() {
   const history = useHistory();
   const [loginMutation, { error }] = useLoginMutation();
   return (
-    <Wrapper>
-      <Stack verticalFill styles={stackStylesHeader} verticalAlign="center">
+    <ContentWrapper>
+      <Stack styles={stackStylesHeader} verticalAlign="center">
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={async (value) => {
@@ -64,7 +27,11 @@ function Login() {
         >
           {({ isSubmitting }) => (
             <Form>
-              <Stack styles={stackStyles} tokens={verticalGapStackTokens}>
+              <Stack
+                verticalAlign="center"
+                horizontalAlign="space-around"
+                tokens={verticalGapStackTokens}
+              >
                 <Stack.Item align="center">
                   <img {...imageProps} alt="jabref logo" width={80} />
                 </Stack.Item>
@@ -125,7 +92,7 @@ function Login() {
           )}
         </Formik>
       </Stack>
-    </Wrapper>
+    </ContentWrapper>
   );
 }
 

@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { mergeStyleSets, FocusZone, FocusZoneDirection } from '@fluentui/react';
+import { FocusZone, FocusZoneDirection, List } from '@fluentui/react';
 import { CitationItem, MetaData } from 'citeproc';
 import React, { ReactElement } from 'react';
+import classNames from './ReferenceList.style';
 import ReferenceView from './ReferenceView';
 
 export interface bib extends MetaData, CitationItem {
@@ -11,22 +12,15 @@ export interface bib extends MetaData, CitationItem {
 interface ReferenceListProps {
   referenceList: Array<MetaData>;
 }
-const classNames = mergeStyleSets({
-  container: {
-    overflow: 'auto',
-    padding: '0.25rem 0.25rem 0px',
-    webkitBoxFlex: '1 1 auto',
-  },
-});
 
 function ReferenceList({ referenceList }: ReferenceListProps): ReactElement {
   return (
-    <FocusZone direction={FocusZoneDirection.vertical} className={classNames.container}>
-      <ul>
-        {referenceList.map((document) => (
-          <ReferenceView document={document} />
-        ))}
-      </ul>
+    <FocusZone
+      data-is-scrollable
+      className={classNames.container}
+      direction={FocusZoneDirection.vertical}
+    >
+      <List items={referenceList} onRenderCell={(item) => <ReferenceView document={item} />} />
     </FocusZone>
   );
 }

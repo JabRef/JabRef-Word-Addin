@@ -1,97 +1,64 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
-import { Checkbox, getFocusStyle, getTheme, ITheme, mergeStyleSets } from '@fluentui/react';
-import { MetaData } from 'citeproc';
-import EditCitation from '../pages/editCitation';
+import { Checkbox, Stack } from '@fluentui/react';
+import { Author, MetaData } from 'citeproc';
+import EditCitation from '../pages/EditCitation';
 import { useCitationStore } from '../contexts/CitationStoreContext';
+import {
+  authorStyle,
+  buttonContainer,
+  heading,
+  referenceDetailsContainer,
+  referenceViewContainer,
+} from './ReferenceView.style';
 
 interface ReferenceViewProps {
   document: MetaData;
 }
 
-const theme: ITheme = getTheme();
-const { palette, semanticColors, fonts } = theme;
-const classNames = mergeStyleSets({
-  itemCell: [
-    getFocusStyle(theme, { inset: -1 }),
-    {
-      backgroundColor: theme.palette.neutralLighterAlt,
-      minHeight: 54,
-      padding: '0.25rem',
-      margin: 2,
-      boxSizing: 'border-box',
-      borderBottom: `1px solid ${semanticColors.bodyDivider}`,
-      display: 'flex',
-      selectors: {
-        '&:hover': { background: palette.themeLighterAlt },
-      },
-    },
-  ],
-  itemContent: {
-    marginLeft: 10,
-    boxSizing: 'border-box',
-    overflow: 'auto',
-    flexGrow: 1,
-  },
-  itemTitle: [
-    fonts.mediumPlus,
-    {
-      whiteSpace: 'nowrap',
-      position: 'relative',
-      maxHeight: '5.4em',
-      lineHeight: '1.8em',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
-  ],
-  itemAuthor: {
-    fontSize: fonts.small.fontSize,
-    color: palette.neutralTertiary,
-    marginBottom: 10,
-  },
-  itemYear: {
-    fontSize: fonts.smallPlus,
-    color: palette.neutralTertiary,
-  },
-  itemType: {
-    fontSize: fonts.smallPlus,
-    color: palette.neutralTertiary,
-  },
-  checkbox: {
-    marginTop: 6,
-    marginLeft: 4,
-  },
-});
-
-const ReferenceView: React.FC<ReferenceViewProps> = ({ document }) => {
-  const { selectedCitations, dispatch } = useCitationStore();
-  return (
-    <li key={document.id} className={classNames.itemCell} data-is-focusable>
-      <div style={{ display: 'flex', flexDirection: 'column' as const }}>
-        <Checkbox
-          className={classNames.checkbox}
-          checked={!!selectedCitations.find((citation) => citation.id === document.id)}
-          onChange={(_e, checked) => {
-            dispatch({
-              type: checked ? 'add' : 'remove',
-              citation: document,
-            });
-          }}
-        />
-        {!!selectedCitations.find((citation) => citation.id === document.id) && (
-          <EditCitation document={document} />
-        )}
-      </div>
-      <div className={classNames.itemContent}>
-        <div className={classNames.itemType}>{document.type}</div>
-        <div className={classNames.itemTitle}>{document.title}</div>
-        {/* <div className={classNames.itemAuthor}>{item.author}</div>
-          <div className={classNames.itemYear}>
-            {item.journal} {item.year}
-          </div> */}
-      </div>
-    </li>
-  );
+const renderAuther = (author: Array<Author>): string => {
+  return author.map((_author) => `${_author.given} ${_author.family}`).join(', ');
 };
+
+function ReferenceView({ document }: ReferenceViewProps): React.ReactElement {
+  const { selectedCitations, dispatch } = useCitationStore();
+
+  const onCheckChange = (_e, checked: boolean) =>
+    dispatch({
+      type: checked ? 'add' : 'remove',
+      citation: document,
+    });
+
+  const onClickHandler = () =>
+    dispatch({
+      type: !selectedCitations.find((citation) => citation.id === document.id) ? 'add' : 'remove',
+      citation: document,
+    });
+
+  return (
+    <Stack horizontal styles={referenceViewContainer}>
+      <Stack.Item>
+        <Stack styles={buttonContainer} verticalFill horizontalAlign="center">
+          <Stack.Item grow>
+            <Checkbox
+              checked={!!selectedCitations.find((citation) => citation.id === document.id)}
+              onChange={onCheckChange}
+            />
+          </Stack.Item>
+          <Stack.Item>
+            {!!selectedCitations.find((citation) => citation.id === document.id) && (
+              <EditCitation document={document} />
+            )}
+          </Stack.Item>
+        </Stack>
+      </Stack.Item>
+      <Stack.Item grow styles={referenceDetailsContainer} onClick={onClickHandler}>
+        <Stack verticalFill>
+          <Stack.Item styles={heading}>{document.title}</Stack.Item>
+          <Stack.Item styles={authorStyle}>{renderAuther(document.author)}</Stack.Item>
+        </Stack>
+      </Stack.Item>
+    </Stack>
+  );
+}
 
 export default ReferenceView;
