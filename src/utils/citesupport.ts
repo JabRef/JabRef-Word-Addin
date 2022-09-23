@@ -10,7 +10,7 @@ import {
 } from 'citeproc';
 import WordApi, { CitationDataFormatForWordAPI } from './word-api';
 import CiteWorker, { CiteWorkerCommand, CiteWorkerMessage } from './cite.worker';
-import Preference from './user-preference';
+import CitationStyle from '../preferences/CitationStyle';
 
 class CiteSupport {
   config: {
@@ -304,7 +304,7 @@ class CiteSupport {
    */
   async spoofDocument(): Promise<void> {
     this.debug('spoofDocument()');
-    const citationStyle = Preference.getItem('style');
+    const citationStyle = CitationStyle.getCitationStyle();
     if (citationStyle) {
       this.config.defaultStyle = citationStyle;
     }

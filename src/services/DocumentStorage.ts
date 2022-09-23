@@ -1,4 +1,4 @@
-export default class Preference {
+export default class DocumentStorage {
   static getItem(key: string): string | null {
     return Office.context.document.settings.get(key) as string | null;
   }
@@ -7,7 +7,7 @@ export default class Preference {
     Office.context.document.settings.set(key, value);
   }
 
-  static syncPreference(): void {
+  static save(): void {
     Office.context.document.settings.saveAsync();
   }
 }
