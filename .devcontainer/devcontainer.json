@@ -1,0 +1,27 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+  "name": "Ubuntu",
+  // https://github.com/devcontainers/images/tree/main/src/base-ubuntu
+  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04",
+
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Extensions installed when the container is created
+      "extensions": [
+        "msoffice.microsoft-office-add-in-debugger",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+
+  "onCreateCommand": "yarn install",
+
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "vscode",
+  "features": {
+    "node": { "version": "16" }
+  }
+}
