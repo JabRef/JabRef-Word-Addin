@@ -1,28 +1,21 @@
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
-import { PrimaryButton, DefaultButton } from '@fluentui/react';
+import { Stack } from '@fluentui/react';
 import { CitationItem, MetaData } from 'citeproc';
 import data from '../../utils/data';
 import SearchField from '../components/SearchField';
 import { useCitationStore } from '../contexts/CitationStoreContext';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
 import ReferenceList from '../components/ReferenceList';
+import ButtonGroup from '../components/ButtonGroup';
+import { scrollableStack } from '../layout/Layout.style';
 
-const dashboadStyle = {
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  overflow: 'hidden',
-  flexDirection: 'column' as const,
-};
-const buttonContainer = {
-  padding: 16,
-  width: '100%',
-  display: 'flex',
-  flex: '0 0 auto',
-  marginTop: 'auto',
-  alignContent: 'flex-start',
-  flexDirection: 'row' as const,
-};
+const buttonLabel = (length: number) =>
+  length > 0
+    ? length > 1
+      ? `Insert ${length} citations `
+      : `Insert ${length} citation `
+    : 'Remove citation';
+
 function containsSearchTerm(keyword: string) {
   return (item?: MetaData) => {
     return [item.title, item.author, item.year].some((str: string | number) =>
@@ -82,34 +75,34 @@ function Dashboard(): ReactElement {
   }, [citeSupport.wordApi, getSelectedCitation]);
 
   return (
-    <div style={dashboadStyle}>
-      <SearchField onFilterChange={onFilterChange} />
-      <ReferenceList referenceList={referenceList} />
+    <Stack verticalFill>
+      <Stack.Item>
+        <SearchField onFilterChange={onFilterChange} />
+      </Stack.Item>
+      <Stack.Item grow styles={scrollableStack}>
+        <ReferenceList referenceList={referenceList} />
+      </Stack.Item>
       {selectedCitations.length && !itemsInSelectedCitation.current.length ? (
-        <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation}>
-            Insert {selectedCitations.length}{' '}
-            {selectedCitations.length > 1 ? 'citations' : 'citation'}
-          </PrimaryButton>
-          <DefaultButton
-            onClick={() => dispatch({ type: 'empty' })}
-            text="Cancel"
-            style={{ marginLeft: 8 }}
-          />
-        </div>
+        <ButtonGroup
+          label1={buttonLabel(selectedCitations.length)}
+          label2="Cancel"
+          onClick1={insertCitation}
+          onClick2={() => dispatch({ type: 'empty' })}
+          disabled1={false}
+          disabled2={false}
+        />
       ) : null}
       {itemsInSelectedCitation.current.length ? (
-        <div style={buttonContainer}>
-          <PrimaryButton onClick={insertCitation} disabled={editCheck()} text="Save changes" />
-          <DefaultButton
-            onClick={undoEdit}
-            style={{ marginLeft: 8 }}
-            disabled={editCheck()}
-            text="Cancel"
-          />
-        </div>
+        <ButtonGroup
+          label1={buttonLabel(selectedCitations.length)}
+          label2="Cancel"
+          onClick1={insertCitation}
+          onClick2={undoEdit}
+          disabled1={editCheck()}
+          disabled2={editCheck()}
+        />
       ) : null}
-    </div>
+    </Stack>
   );
 }
 
