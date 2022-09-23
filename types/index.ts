@@ -6,3 +6,9 @@ export enum Theme {
   LIGHT,
   DARK,
 }
+
+export enum Mode {
+  REST,
+  EDIT,
+  CITE,
+}
