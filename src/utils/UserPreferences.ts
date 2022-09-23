@@ -1,6 +1,6 @@
 import DocumentStorage from '../services/DocumentStorage';
 
-export default class CitationStyle {
+export default class UserPreferences {
   static getCitationStyle(): string | null {
     return DocumentStorage.getItem('citation-style');
   }
@@ -9,7 +9,7 @@ export default class CitationStyle {
     DocumentStorage.setItem('citation-style', styleID);
   }
 
-  static sync(): void {
+  static syncPreferences(): void {
     DocumentStorage.save();
   }
 }

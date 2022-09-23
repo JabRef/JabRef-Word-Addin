@@ -1,7 +1,7 @@
 import React from 'react';
 import { List } from '@fluentui/react/lib/List';
 import { Icon, Stack } from '@fluentui/react';
-import CitationStylePreference from '../../preferences/CitationStyle';
+
 import { useCiteSupport } from '../contexts/CiteSupportContext';
 import {
   classNames,
@@ -11,6 +11,7 @@ import {
   selectedStyle,
   selectedStyleIcon,
 } from './CitationStyle.style';
+import UserPreferences from '../../utils/UserPreferences';
 
 function CitationStyle(): JSX.Element {
   const citeSupport = useCiteSupport();
@@ -35,17 +36,17 @@ function CitationStyle(): JSX.Element {
     },
   ];
 
-  const preferenceStyle = CitationStylePreference.getCitationStyle();
+  const preferenceStyle = UserPreferences.getCitationStyle();
   const [currentStyle, setCurrentStyle] = React.useState(preferenceStyle);
   const onClick = async (ev: React.FormEvent<HTMLElement | HTMLInputElement>) => {
     setCurrentStyle(ev.currentTarget.id);
-    CitationStylePreference.setCitationStyle(ev.currentTarget.id);
+    UserPreferences.setCitationStyle(ev.currentTarget.id);
     await citeSupport.initDocument();
   };
 
   // Sync with doc settings
   React.useEffect(() => {
-    return CitationStylePreference.sync();
+    return UserPreferences.syncPreferences();
   });
 
   const onRenderCell = (item: { text: string; value: string }): JSX.Element => {
