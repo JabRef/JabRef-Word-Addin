@@ -1,14 +1,5 @@
 # JabRef-Word-Addin
 
-- [Getting started](#getting-started)
-- [Loading and Testing the Plugin](#loading-and-testing-the-plugin)
-  - [How to test the add-in in Word](#how-to-test-the-add-in-in-word)
-  - [How to test add-in in Word on a browser](#how-to-test-add-in-in-word-on-a-browser)
-  - [How to sideload Add-in in Office on the web manually](#how-to-sideload-add-in-in-office-on-the-web-manually)
-- [Yarn Commands](#yarn-commands)
-- [Recommended VS Code Extension](#recommended-vs-code-extension)
-- [Technologies used](#technologies-used)
-
 ## Getting started
 
 - Install [Node.js](https://nodejs.org/).
