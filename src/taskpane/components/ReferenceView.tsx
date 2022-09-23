@@ -15,7 +15,7 @@ interface ReferenceViewProps {
   document: MetaData;
 }
 
-const renderAuthers = (author: Array<Author>): string => {
+const renderAuther = (author: Array<Author>): string => {
   return author.map((_author) => `${_author.given} ${_author.family}`).join(', ');
 };
 
@@ -54,7 +54,7 @@ function ReferenceView({ document }: ReferenceViewProps): React.ReactElement {
       <Stack.Item grow styles={referenceDetailsContainer} onClick={onClickHandler}>
         <Stack verticalFill>
           <Stack.Item styles={heading}>{document.title}</Stack.Item>
-          <Stack.Item styles={authorStyle}>{renderAuthers(document.author)}</Stack.Item>
+          <Stack.Item styles={authorStyle}>{renderAuther(document.author)}</Stack.Item>
         </Stack>
       </Stack.Item>
     </Stack>
