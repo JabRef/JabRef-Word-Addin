@@ -7,6 +7,7 @@ import { pivotStyle, scrollableStack } from './Layout.style';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
 import { useLogoutMutation } from '../../generated/graphql';
 import client from '../../plugins/apollo/apolloClient';
+import { useTheme } from '../contexts/ThemeContext';
 
 type pivotItem = 'citationStyle' | 'dashboard';
 
@@ -15,6 +16,8 @@ const getTabId = (itemKey: string) => {
 };
 
 function Layout(): JSX.Element {
+  const { theme, changeTheme } = useTheme();
+
   const [selectedKey, setSelectedKey] = useState<pivotItem>('dashboard');
 
   const handleLinkClick = (item?: PivotItem) => {
@@ -51,7 +54,12 @@ function Layout(): JSX.Element {
         {selectedKey === 'dashboard' ? <Dashboard /> : <CitationStyle />}
       </StackItem>
       <Stack.Item>
-        <Footer onLogout={onLogout} onSyncBibliography={onSyncBibliography} />
+        <Footer
+          theme={theme}
+          onLogout={onLogout}
+          onThemeChange={changeTheme}
+          onSyncBibliography={onSyncBibliography}
+        />
       </Stack.Item>
     </Stack>
   );

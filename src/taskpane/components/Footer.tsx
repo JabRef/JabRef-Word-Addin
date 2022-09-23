@@ -1,7 +1,10 @@
 import { Stack, ActionButton } from '@fluentui/react';
 import React, { ReactElement } from 'react';
+import { Theme } from '../../../types';
 
 import {
+  light,
+  dark,
   Signout,
   SyncBib,
   imageProps,
@@ -13,9 +16,11 @@ import {
 interface FooterProps {
   onSyncBibliography: () => void;
   onLogout: () => void;
+  onThemeChange: () => void;
+  theme: Theme;
 }
 
-function Footer({ onSyncBibliography, onLogout }: FooterProps): ReactElement {
+function Footer({ onSyncBibliography, onLogout, onThemeChange, theme }: FooterProps): ReactElement {
   return (
     <Stack styles={footerStackStyle}>
       <Stack
@@ -26,6 +31,12 @@ function Footer({ onSyncBibliography, onLogout }: FooterProps): ReactElement {
       >
         <img {...imageProps} alt="jabref logo" />
         <Stack horizontal>
+          <ActionButton
+            iconProps={theme === Theme.LIGHT ? light : dark}
+            styles={footerIconOnlyButton}
+            ariaLabel="Change theme"
+            onClick={onThemeChange}
+          />
           <ActionButton
             iconProps={SyncBib}
             styles={footerIconOnlyButton}
