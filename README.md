@@ -23,7 +23,7 @@
 ### How to test the add-in in Word
 
 - Run `yarn start` in the root directory. This starts the local web server and opens Word with add-in loaded.
-  At the first run, you have to do that with Administrator rights.
+  On Windows, you have to do that with Administrator rights (at the very first run) in order to setup the correct certificates.
 - In Word, open a new document, choose the Home tab, and then choose the Show Task Pane button in the ribbon to open the add-in task pane.
 
 ### How to test add-in in Word on a browser
