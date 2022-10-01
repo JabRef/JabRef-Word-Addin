@@ -9773,17 +9773,17 @@ office-addin-debugging@^4.5.0:
     office-addin-node-debugger "^0.8.0"
     office-addin-usage-data "^1.6.0"
 
-office-addin-dev-certs@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.9.0.tgz#0382fd8f08b3c601e18b5693e00fbfaa5ee62763"
-  integrity sha512-Iz3sf/tMyEUiWXg+wsKhi6tQ6wmx9rMAXpATXU48N4wc7DzbwGdmR6IJMUq/mL/5oE+PDEyWj0MyOM5nkzW/KA==
+office-addin-dev-certs@^1.9.0, office-addin-dev-certs@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.9.2.tgz#855e3438a103b3f1ce5ac71b0eca7aa60c72abf5"
+  integrity sha512-143pWFD7EwWfD4wIgZwXxzHdBJppnclY9YQhVSIsjiJ6mWoqMx/FksApvpfd2nWniK3XVOep1TPEeB1Xhy9paw==
   dependencies:
     child_process "^1.0.2"
     commander "^6.2.0"
     fs-extra "^7.0.1"
     mkcert "^1.4.0"
-    office-addin-cli "^1.5.0"
-    office-addin-usage-data "^1.6.0"
+    office-addin-cli "^1.5.2"
+    office-addin-usage-data "^1.6.2"
 
 office-addin-dev-settings@^1.13.0:
   version "1.13.0"
@@ -9852,14 +9852,15 @@ office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.2.0.tgz#59f14a2a7a3f5d803f6ad82a764e84ab4d4b9628"
   integrity sha512-42/w9BUlUvgbLNn8vLaGULVTrcTFBnhn+xAe6IwSOhPrFQpi2GxZPl8ln/f5X4lterVrJz7U6Vi+VeN7WYAsGQ==
 
-office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.0.tgz#db95bc994d43b5e63d7459946e2e98a0ff82b83d"
-  integrity sha512-NrDSgKongnCWfhb7XVCtSo+oTgk7eZ3BswueTgJ794eH0E+tPrZ4Opvd8mnBXwLxzY+/xyZ60J3neICc0Rgnhg==
+office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.0, office-addin-usage-data@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.2.tgz#ce158bed7bdaacfa89d6ab30ba82c59934f4c971"
+  integrity sha512-OvXsvmZctDWvoWXnKG/vG711Ouzq0QYL3YUr3N1jIdkkjIRLzedoo+9P9LPEKPwfJz/VslnyKxL7eZpH2pSwCw==
   dependencies:
     applicationinsights "^1.7.3"
     commander "^6.2.0"
     readline-sync "^1.4.9"
+    uuid "8.3.2"
 
 on-finished@2.4.1:
   version "2.4.1"
@@ -12535,15 +12536,15 @@ utils-merge@1.0.1:
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
+uuid@8.3.2, uuid@^8.3.0, uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
 uuid@^3.1.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-uuid@^8.3.0, uuid@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
-  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
