@@ -9763,17 +9763,17 @@ office-addin-debugging@^4.5.0:
     office-addin-node-debugger "^0.8.0"
     office-addin-usage-data "^1.6.0"
 
-office-addin-dev-certs@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.9.0.tgz#0382fd8f08b3c601e18b5693e00fbfaa5ee62763"
-  integrity sha512-Iz3sf/tMyEUiWXg+wsKhi6tQ6wmx9rMAXpATXU48N4wc7DzbwGdmR6IJMUq/mL/5oE+PDEyWj0MyOM5nkzW/KA==
+office-addin-dev-certs@^1.9.0, office-addin-dev-certs@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.9.2.tgz#855e3438a103b3f1ce5ac71b0eca7aa60c72abf5"
+  integrity sha512-143pWFD7EwWfD4wIgZwXxzHdBJppnclY9YQhVSIsjiJ6mWoqMx/FksApvpfd2nWniK3XVOep1TPEeB1Xhy9paw==
   dependencies:
     child_process "^1.0.2"
     commander "^6.2.0"
     fs-extra "^7.0.1"
     mkcert "^1.4.0"
-    office-addin-cli "^1.5.0"
-    office-addin-usage-data "^1.6.0"
+    office-addin-cli "^1.5.2"
+    office-addin-usage-data "^1.6.2"
 
 office-addin-dev-settings@^1.13.0:
   version "1.13.0"
