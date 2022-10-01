@@ -1705,6 +1705,16 @@
   resolved "https://registry.npmjs.org/@microsoft/load-themed-styles/-/load-themed-styles-1.10.172.tgz"
   integrity sha512-BSTxPdqR7doaS+KRXdh+Jx8Ya5VFR/wMwsg4ocYaA6Qh2Ags17Qzi3dodwK4qnqgAhHtArxl84ycY4+VIRwFqw==
 
+"@microsoft/teams-manifest@0.0.8-alpha.df7cb43be.0":
+  version "0.0.8-alpha.df7cb43be.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/teams-manifest/-/teams-manifest-0.0.8-alpha.df7cb43be.0.tgz#ef2325c79a7ff31a4c822422502b747167f9b58b"
+  integrity sha512-lCxoAvqjVJgk21Zac22MKWEJdYZEo7g43aRZznE0dbNrDNPBdQFaePI8LUPKGVCqToiv+ktFdMdDMu7t8i7wyg==
+  dependencies:
+    ajv "^8.5.0"
+    ajv-draft-04 "^1.0.0"
+    axios "^0.21.2"
+    fs-extra "^9.1.0"
+
 "@microsoft/teams-manifest@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@microsoft/teams-manifest/-/teams-manifest-0.0.7.tgz#9c55c98b3017051c20e9ab2e3885c4578d8c0af9"
@@ -1715,24 +1725,24 @@
     axios "^0.21.2"
     fs-extra "^9.1.0"
 
-"@microsoft/teamsfx-api@^0.20.4", "@microsoft/teamsfx-api@^0.20.5":
-  version "0.20.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-api/-/teamsfx-api-0.20.5.tgz#ed1e95512ef728c5f571a4f4853e55f213edd079"
-  integrity sha512-dRvRFCN9Lng9a9vAS48CzZiV9Ju4GV5zXzmMt/WqxD84m6zUw6JSDKeozQLSYcFhPDylkOjzigMezd/oOWi4RA==
+"@microsoft/teamsfx-api@0.20.6-alpha.df7cb43be.0":
+  version "0.20.6-alpha.df7cb43be.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-api/-/teamsfx-api-0.20.6-alpha.df7cb43be.0.tgz#c4540af2e635328d9af995df13d6cf641524f599"
+  integrity sha512-SNaAJr4teV5El938Ga6sXSoXS27FKYJtn8FQfUgOWVF5ht2PdaIuQdXhZTJM/S/ajJkJUepidTwqk0kCTcEneg==
   dependencies:
     "@azure/core-http" "^1.2.2"
     "@azure/ms-rest-nodeauth" "^3.1.1"
-    "@microsoft/teams-manifest" "^0.0.7"
+    "@microsoft/teams-manifest" "0.0.8-alpha.df7cb43be.0"
     "@types/fs-extra" "^9.0.10"
     axios "^0.21.2"
     chai "^4.3.4"
     jsonschema "^1.4.0"
     neverthrow "^3.2.0"
 
-"@microsoft/teamsfx-cli@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-cli/-/teamsfx-cli-1.0.4.tgz#3b02ac76414f6a14ea4bfbb7950b3796c2e1364a"
-  integrity sha512-eV/vDjlBJa5LJg+crF3au6qjyXSGKOK0Jw6m2IDf+s4SQyFloLXK0CWESOP4efMT8q/bE8qfoQFgNshkq31JAA==
+"@microsoft/teamsfx-cli@1.0.6-alpha.df7cb43be.0":
+  version "1.0.6-alpha.df7cb43be.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-cli/-/teamsfx-cli-1.0.6-alpha.df7cb43be.0.tgz#a090ac413b25885435ffc242bcfca9aa882efb97"
+  integrity sha512-tB64DFYeBZCLfEEGqdnb/QhZB37h8dV/89aSViSkNMKGpOnaNeYGpt+0NSt3dAKtKxanoqOFFCrA0DMoe7Qo8w==
   dependencies:
     "@azure/arm-apimanagement" "^6.0.0"
     "@azure/arm-resources" "^4.0.0"
@@ -1741,8 +1751,8 @@
     "@azure/core-http" "^1.2.0"
     "@azure/identity" "^1.3.0"
     "@azure/ms-rest-nodeauth" "^3.1.1"
-    "@microsoft/teamsfx-api" "^0.20.4"
-    "@microsoft/teamsfx-core" "^1.14.0"
+    "@microsoft/teamsfx-api" "0.20.6-alpha.df7cb43be.0"
+    "@microsoft/teamsfx-core" "1.15.2-alpha.df7cb43be.0"
     adm-zip "^0.5.5"
     applicationinsights "^1.8.10"
     async "^2.6.4"
@@ -1764,10 +1774,10 @@
   optionalDependencies:
     keytar "^7.7.0"
 
-"@microsoft/teamsfx-core@^1.14.0":
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-core/-/teamsfx-core-1.15.1.tgz#1bda7a1302c6e17c8272bd21b9e487197ee8cad0"
-  integrity sha512-odXvtWRRSFy45fALOskoz7jJKHAh10k3VEY8P5wbAUxBWSJHFHrSVQx89zQUxeRobMrnx0e0F0qCcq6jHGPBKA==
+"@microsoft/teamsfx-core@1.15.2-alpha.df7cb43be.0":
+  version "1.15.2-alpha.df7cb43be.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-core/-/teamsfx-core-1.15.2-alpha.df7cb43be.0.tgz#3c09f9f3736fbb21eb99e38169ba864f20a23e97"
+  integrity sha512-ptCjK7Yzcf4PhXHcEbHQ9jbgYkuIf9lVtalvfh6yJDyJiS4HF4JiNOH7PfsglSmx589JWoqCF7SAQDI+9xK1VQ==
   dependencies:
     "@apidevtools/swagger-parser" "^10.0.2"
     "@azure/arm-apimanagement" "^6.0.0"
@@ -1782,7 +1792,7 @@
     "@azure/storage-blob" "^12.7.0"
     "@dbpiper/timer" "1.0.0-beta.2"
     "@feathersjs/hooks" "^0.6.5"
-    "@microsoft/teamsfx-api" "^0.20.5"
+    "@microsoft/teamsfx-api" "0.20.6-alpha.df7cb43be.0"
     "@npmcli/arborist" "^4.2.0"
     "@types/jwt-decode" "3.1.0"
     "@types/proper-lockfile" "^4.1.1"
@@ -9740,7 +9750,7 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^1.5.0, office-addin-cli@^1.5.2:
+office-addin-cli@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.5.2.tgz#9a4e841b41bd1fdb1b8185aa803acba193381245"
   integrity sha512-h03aW4zifp80YC3ld5XOcX3d93ucUhF6lCCbGBVWG1nv3pG6X3E9t8juDsXq0IYNFCFnQZxHYmLDE6r6GYd+NQ==
@@ -9749,22 +9759,22 @@ office-addin-cli@^1.5.0, office-addin-cli@^1.5.2:
     node-fetch "^2.6.1"
     read-package-json-fast "^2.0.2"
 
-office-addin-debugging@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/office-addin-debugging/-/office-addin-debugging-4.5.0.tgz#5002df39482e843fabbd3b2d076a4cb904727c9e"
-  integrity sha512-YGCP8rcT6axnq+K0VCyEhzrVfmpcEd3ERLyn/hTU04nhY4JYHNVByVCIkcoNkpirk5Y5gtNMtZNl46BAsD+EHA==
+office-addin-debugging@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/office-addin-debugging/-/office-addin-debugging-4.6.2.tgz#15ae6d7905a592a208845b2c794425bd0a1ad577"
+  integrity sha512-1zsp8Y69/GcBbMA4SGNxTq/yORYihN/chYqsWeF/kA/64r/BNwfFPUp9cxiFLA1SJKtbJdog5Jjg0VA3GhYH7w==
   dependencies:
     child_process "^1.0.2"
     commander "^6.2.0"
     node-fetch "^2.6.1"
-    office-addin-cli "^1.5.0"
-    office-addin-dev-certs "^1.9.0"
-    office-addin-dev-settings "^1.13.0"
-    office-addin-manifest "^1.10.0"
-    office-addin-node-debugger "^0.8.0"
-    office-addin-usage-data "^1.6.0"
+    office-addin-cli "^1.5.2"
+    office-addin-dev-certs "^1.9.2"
+    office-addin-dev-settings "^1.14.2"
+    office-addin-manifest "^1.10.3"
+    office-addin-node-debugger "^0.8.2"
+    office-addin-usage-data "^1.6.2"
 
-office-addin-dev-certs@^1.9.0, office-addin-dev-certs@^1.9.2:
+office-addin-dev-certs@^1.9.2:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.9.2.tgz#855e3438a103b3f1ce5ac71b0eca7aa60c72abf5"
   integrity sha512-143pWFD7EwWfD4wIgZwXxzHdBJppnclY9YQhVSIsjiJ6mWoqMx/FksApvpfd2nWniK3XVOep1TPEeB1Xhy9paw==
@@ -9776,20 +9786,20 @@ office-addin-dev-certs@^1.9.0, office-addin-dev-certs@^1.9.2:
     office-addin-cli "^1.5.2"
     office-addin-usage-data "^1.6.2"
 
-office-addin-dev-settings@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/office-addin-dev-settings/-/office-addin-dev-settings-1.13.0.tgz#2ed8069a8118dea32ef8768b4a7ec9bff42a3c5c"
-  integrity sha512-1wsdnvZFOx8mKhr7eyL8Tg+TzHQC3AHgJ/yyNwWG2Qd+vRxVN3YbgxnEfmlrYlqoHWCOJamHmxigHIgzaYzTRw==
+office-addin-dev-settings@^1.14.2:
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/office-addin-dev-settings/-/office-addin-dev-settings-1.14.2.tgz#d3a4a98c2383a8167566dd27260d8688746a8481"
+  integrity sha512-+r2V7kwoIRGrAn4CArGeK9MX1dpPtG4oz/yOgoFHigteYEhLS5x3kZ/hKs7yjwX3PUCb6ApvKyrDVcCb2H2VxQ==
   dependencies:
-    "@microsoft/teamsfx-cli" "1.0.4"
+    "@microsoft/teamsfx-cli" "1.0.6-alpha.df7cb43be.0"
     adm-zip "^0.5.9"
     child_process "^1.0.2"
     commander "^6.2.0"
     fs-extra "^9.0.1"
     inquirer "^7.3.3"
     junk "^3.1.0"
-    office-addin-manifest "^1.10.0"
-    office-addin-usage-data "^1.6.0"
+    office-addin-manifest "^1.10.3"
+    office-addin-usage-data "^1.6.2"
     open "^6.4.0"
     string_decoder "1.3.0"
     whatwg-url "^7.1.0"
@@ -9811,7 +9821,7 @@ office-addin-lint@^2.0.1:
     office-addin-usage-data "^1.4.7"
     prettier "^2.2.1"
 
-office-addin-manifest@^1.10.0, office-addin-manifest@^1.10.3:
+office-addin-manifest@^1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.10.3.tgz#62f4c0487121c3023b98ae1fc4af3362c77dae5c"
   integrity sha512-/IxkzMa2cXIiPaNtbKKPaSKJQdolNvf6389AOR/uDR9jykmLdNFqmPuO9H4F0uLFzEE2do+685ZIbSmvk6jZDg==
@@ -9827,15 +9837,15 @@ office-addin-manifest@^1.10.0, office-addin-manifest@^1.10.3:
     uuid "^8.3.2"
     xml2js "^0.4.23"
 
-office-addin-node-debugger@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/office-addin-node-debugger/-/office-addin-node-debugger-0.8.0.tgz#b99a2c96f189f51f6baee931b9549fbf8480c13a"
-  integrity sha512-3GFx8qoF7871LGWQom1qWvfrGBLaXvn5FeaAiFIUgmVb9GXCRbGmz1emJgv9nzcEX3mWLCRlrZCw0U5UWgARwQ==
+office-addin-node-debugger@^0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/office-addin-node-debugger/-/office-addin-node-debugger-0.8.2.tgz#f03947311cc10a7fd3768896f737fbca27d9118e"
+  integrity sha512-FgQcmzZUCIrbWwnU2/ywgDa+O7aKOsuwh+mUHhfX94qgUsn0lUf5reQpYTdozUQ1O1A0fNFBw9G3ks8QDC2urQ==
   dependencies:
     child_process "^1.0.2"
     commander "^6.2.0"
     node-fetch "^2.6.1"
-    office-addin-usage-data "^1.6.0"
+    office-addin-usage-data "^1.6.2"
     ws "^7.4.6"
 
 office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
@@ -9843,7 +9853,7 @@ office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.2.0.tgz#59f14a2a7a3f5d803f6ad82a764e84ab4d4b9628"
   integrity sha512-42/w9BUlUvgbLNn8vLaGULVTrcTFBnhn+xAe6IwSOhPrFQpi2GxZPl8ln/f5X4lterVrJz7U6Vi+VeN7WYAsGQ==
 
-office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.0, office-addin-usage-data@^1.6.2:
+office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.2.tgz#ce158bed7bdaacfa89d6ab30ba82c59934f4c971"
   integrity sha512-OvXsvmZctDWvoWXnKG/vG711Ouzq0QYL3YUr3N1jIdkkjIRLzedoo+9P9LPEKPwfJz/VslnyKxL7eZpH2pSwCw==
