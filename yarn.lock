@@ -9746,10 +9746,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^1.2.5, office-addin-cli@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.5.0.tgz#0a68a111b14198e7cfd1aaefaac5c14c1c792a06"
-  integrity sha512-ckuKQxtQys1XD6qFEGDeAWS63FQEFFSLYVbpgaMRnE6ziLSK4OO1MzVx9o6XBB58cZxJzIXnJfWw/1C/V03mYg==
+office-addin-cli@^1.5.0, office-addin-cli@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.5.2.tgz#9a4e841b41bd1fdb1b8185aa803acba193381245"
+  integrity sha512-h03aW4zifp80YC3ld5XOcX3d93ucUhF6lCCbGBVWG1nv3pG6X3E9t8juDsXq0IYNFCFnQZxHYmLDE6r6GYd+NQ==
   dependencies:
     commander "^6.2.1"
     node-fetch "^2.6.1"
@@ -10726,18 +10726,10 @@ read-cmd-shim@^3.0.0:
   resolved "https://registry.yarnpkg.com/read-cmd-shim/-/read-cmd-shim-3.0.1.tgz#868c235ec59d1de2db69e11aec885bc095aea087"
   integrity sha512-kEmDUoYf/CDy8yZbLTmhB1X9kkjf9Q80PCNsDMb7ufrGd6zZSQA1+UyjrO+pZm5K/S4OXCWJeiIt1JA8kAsa6g==
 
-read-package-json-fast@^2.0.1, read-package-json-fast@^2.0.3:
+read-package-json-fast@^2.0.1, read-package-json-fast@^2.0.2, read-package-json-fast@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/read-package-json-fast/-/read-package-json-fast-2.0.3.tgz#323ca529630da82cb34b36cc0b996693c98c2b83"
   integrity sha512-W/BKtbL+dUjTuRL2vziuYhp76s5HZ9qQhd/dKfWIZveD0O40453QNyZhC0e63lqZrAQ4jiOapVoeJ7JrszenQQ==
-  dependencies:
-    json-parse-even-better-errors "^2.3.0"
-    npm-normalize-package-bin "^1.0.1"
-
-read-package-json-fast@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/read-package-json-fast/-/read-package-json-fast-2.0.2.tgz"
-  integrity sha512-5fyFUyO9B799foVk4n6ylcoAktG/FbE3jwRKxvwaeSrIunaoMc0u81dzXxjeAFKOce7O5KncdfwpGvvs6r5PsQ==
   dependencies:
     json-parse-even-better-errors "^2.3.0"
     npm-normalize-package-bin "^1.0.1"
