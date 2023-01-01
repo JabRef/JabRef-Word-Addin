@@ -9790,17 +9790,16 @@ office-addin-debugging@^4.6.2:
     office-addin-node-debugger "^0.8.2"
     office-addin-usage-data "^1.6.2"
 
-office-addin-dev-certs@^1.9.2:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.9.2.tgz#855e3438a103b3f1ce5ac71b0eca7aa60c72abf5"
-  integrity sha512-143pWFD7EwWfD4wIgZwXxzHdBJppnclY9YQhVSIsjiJ6mWoqMx/FksApvpfd2nWniK3XVOep1TPEeB1Xhy9paw==
+office-addin-dev-certs@^1.11.0, office-addin-dev-certs@^1.9.2:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.11.0.tgz#2738b7fd90e9586cdde4ef8811882684d395d8e4"
+  integrity sha512-+A8fgx0bYLshcb6S3UMF6z2lv4YolvP6i1DdX9eEOsvuP27D3l8eLHTXK/O7FntahqFN4j8Y+IjK9Wg3Tr3RMA==
   dependencies:
-    child_process "^1.0.2"
     commander "^6.2.0"
     fs-extra "^7.0.1"
     mkcert "^1.4.0"
-    office-addin-cli "^1.5.2"
-    office-addin-usage-data "^1.6.2"
+    office-addin-cli "^1.5.3"
+    office-addin-usage-data "^1.6.3"
 
 office-addin-dev-settings@^1.14.2:
   version "1.14.2"
@@ -9869,10 +9868,10 @@ office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.2.0.tgz#59f14a2a7a3f5d803f6ad82a764e84ab4d4b9628"
   integrity sha512-42/w9BUlUvgbLNn8vLaGULVTrcTFBnhn+xAe6IwSOhPrFQpi2GxZPl8ln/f5X4lterVrJz7U6Vi+VeN7WYAsGQ==
 
-office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.2.tgz#ce158bed7bdaacfa89d6ab30ba82c59934f4c971"
-  integrity sha512-OvXsvmZctDWvoWXnKG/vG711Ouzq0QYL3YUr3N1jIdkkjIRLzedoo+9P9LPEKPwfJz/VslnyKxL7eZpH2pSwCw==
+office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2, office-addin-usage-data@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.3.tgz#1c96dcc0bb534c5ce6ab31bf00750d493600f7ed"
+  integrity sha512-KXg3Wa1lm4D1KmAjShXpAZReeF+Psu96JTAFv09KWa+gIRvQQcA6kuzP1ie7DPn+ILRPhRzRthpWw2h4L15xZA==
   dependencies:
     applicationinsights "^1.7.3"
     commander "^6.2.0"
