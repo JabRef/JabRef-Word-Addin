@@ -97,23 +97,31 @@
   dependencies:
     tslib "^2.2.0"
 
-"@azure/arm-apimanagement@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@azure/arm-apimanagement/-/arm-apimanagement-6.0.0.tgz#961c43284535de50c5d47384a16a5012b720bddc"
-  integrity sha512-yl4nWQ1Jy0byMl+IxGjwk+0PhypS3cYUUInABxeOcTGbI2x2e8wVDfsksHC3GCtd8i6PLsyUU3yVtNN0mQfQ9A==
+"@azure/arm-apimanagement@^8.0.0":
+  version "8.1.2"
+  resolved "https://registry.yarnpkg.com/@azure/arm-apimanagement/-/arm-apimanagement-8.1.2.tgz#fcdf6db3335603fa908706c38a0430053ab42311"
+  integrity sha512-yc9DvISYRT6iXchS7tf9JgJ+uoobI5cThAgi5Q6TFIQwYZJi+03lckvEybpgETvqlIg2T0LRmXY0879urGfiTQ==
   dependencies:
-    "@azure/ms-rest-azure-js" "^2.0.1"
-    "@azure/ms-rest-js" "^2.0.4"
-    tslib "^1.10.0"
+    "@azure/abort-controller" "^1.0.0"
+    "@azure/core-auth" "^1.3.0"
+    "@azure/core-client" "^1.5.0"
+    "@azure/core-lro" "^2.2.0"
+    "@azure/core-paging" "^1.2.0"
+    "@azure/core-rest-pipeline" "^1.8.0"
+    tslib "^2.2.0"
 
-"@azure/arm-appservice@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@azure/arm-appservice/-/arm-appservice-7.0.0.tgz#f1c57796dd0660b725a97928069f5bd1b47b0639"
-  integrity sha512-6nJUx1nDWCqllK79Pb0VIhtCXooQxWKcQDbZWS/MBRRjzqc6sRPEtvUaX0UgrO3RPhDn4+LlJbQu0q2mgVwDEA==
+"@azure/arm-appservice@^13.0.0":
+  version "13.0.3"
+  resolved "https://registry.yarnpkg.com/@azure/arm-appservice/-/arm-appservice-13.0.3.tgz#cd732861a069ddc87ff57da316b2aec6596c46bd"
+  integrity sha512-Vu011o3/bikQNwtjouwmUJud+Z6Brcjij2D0omPWClRGg8i5gBfOYSpDkFGkHbhGlaky4fgvfkxD0uHGq34uYA==
   dependencies:
-    "@azure/ms-rest-azure-js" "^2.0.1"
-    "@azure/ms-rest-js" "^2.0.4"
-    tslib "^1.10.0"
+    "@azure/abort-controller" "^1.0.0"
+    "@azure/core-auth" "^1.3.0"
+    "@azure/core-client" "^1.6.1"
+    "@azure/core-lro" "^2.2.0"
+    "@azure/core-paging" "^1.2.0"
+    "@azure/core-rest-pipeline" "^1.8.0"
+    tslib "^2.2.0"
 
 "@azure/arm-botservice@^2.0.0":
   version "2.1.0"
@@ -125,44 +133,57 @@
     "@azure/ms-rest-js" "^2.2.0"
     tslib "^1.10.0"
 
-"@azure/arm-resources@^4.0.0":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@azure/arm-resources/-/arm-resources-4.2.2.tgz#4074c83efe2b07b41307c7fbc64bd5d17eac14b2"
-  integrity sha512-Oic1OcEwgex3X1KkhP9UM/E/taIaS9oID7PL/CZ8knD7qtVNSRvTxP3uvD3ZpH9NYBYXngJsX5xyRu66iFN+rA==
+"@azure/arm-resources@5.0.1", "@azure/arm-resources@~5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@azure/arm-resources/-/arm-resources-5.0.1.tgz#be8031fae613207354e9842d68698f8a0dc7e250"
+  integrity sha512-JbZtIqfEulsIA0rC3zM7jfF4KkOnye9aKcaO/jJqxJRm/gM6lAjEv7sL4njW8D+35l50P1f+UuH5OqN+UKJqNA==
   dependencies:
-    "@azure/core-auth" "^1.1.4"
-    "@azure/ms-rest-azure-js" "^2.1.0"
-    "@azure/ms-rest-js" "^2.2.0"
-    tslib "^1.10.0"
+    "@azure/abort-controller" "^1.0.0"
+    "@azure/core-auth" "^1.3.0"
+    "@azure/core-client" "^1.5.0"
+    "@azure/core-lro" "^2.2.0"
+    "@azure/core-paging" "^1.2.0"
+    "@azure/core-rest-pipeline" "^1.8.0"
+    tslib "^2.2.0"
 
-"@azure/arm-sql@^7.0.2":
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/@azure/arm-sql/-/arm-sql-7.1.2.tgz#d5c961b8ed9bfcd21dbac30792b3b5b5199a1b93"
-  integrity sha512-WAQSjhUobCv0qUrSj/lcAhaVolW3l1EEaokm1f+mhkFew2bej1zNaKhz8HUe5Ag3y7UaRuPuxyQgxmJbto7xPw==
+"@azure/arm-sql@^9.0.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@azure/arm-sql/-/arm-sql-9.1.0.tgz#1f65c5cc9f4b03f511739f2c3e2370f6a58d80d1"
+  integrity sha512-kko0z5xyvjA/xskXFMb/pHiyoLrPM+kn96gpifoe79wM2vNjnUpvcxOerZCsBu8mYOxvJWn+ovRcjJhUAZWQ2w==
   dependencies:
-    "@azure/core-auth" "^1.1.4"
-    "@azure/ms-rest-azure-js" "^2.1.0"
-    "@azure/ms-rest-js" "^2.2.0"
-    tslib "^1.10.0"
+    "@azure/abort-controller" "^1.0.0"
+    "@azure/core-auth" "^1.3.0"
+    "@azure/core-client" "^1.6.1"
+    "@azure/core-lro" "^2.2.0"
+    "@azure/core-paging" "^1.2.0"
+    "@azure/core-rest-pipeline" "^1.8.0"
+    tslib "^2.2.0"
 
-"@azure/arm-storage@^15.2.0":
-  version "15.3.0"
-  resolved "https://registry.yarnpkg.com/@azure/arm-storage/-/arm-storage-15.3.0.tgz#417ebb7602aa5319023308f639ddb03cd790066c"
-  integrity sha512-djN2tmEzvC4lNEYrk3PAXkf5ZcebGDqPZSh/cYKOleumD4eop5EpMX8d5LcSO/9EcSfPpCzutRg0AleMaPQ9Mg==
+"@azure/arm-storage@^17.2.1":
+  version "17.2.1"
+  resolved "https://registry.yarnpkg.com/@azure/arm-storage/-/arm-storage-17.2.1.tgz#56e8f09e011abbfe5be5f7eae4710474fcdaa096"
+  integrity sha512-J2jmTPv8ZraSHDTz9l2Bx8gNL3ktfDDWo2mxWfzarn64O9Fjhb+l85YWyubGy2xUdeGuZPKzvQLltGv8bSu8eQ==
   dependencies:
-    "@azure/ms-rest-azure-js" "^2.0.1"
-    "@azure/ms-rest-js" "^2.0.4"
-    tslib "^1.10.0"
+    "@azure/abort-controller" "^1.0.0"
+    "@azure/core-auth" "^1.3.0"
+    "@azure/core-client" "^1.5.0"
+    "@azure/core-lro" "^2.2.0"
+    "@azure/core-paging" "^1.2.0"
+    "@azure/core-rest-pipeline" "^1.8.0"
+    tslib "^2.2.0"
 
-"@azure/arm-subscriptions@^3.0.0":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@azure/arm-subscriptions/-/arm-subscriptions-3.1.2.tgz#6afb0754789942f190c2d8e244a521c9e2cdb886"
-  integrity sha512-fO1Sxjn27At53Zkgs0tKW9l6iYavfbVgkK4rCFYa2d3M5yofGctHafYDTHQLnp7dYwUzGzTHrBMlyrKo92QpAQ==
+"@azure/arm-subscriptions@^5.0.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@azure/arm-subscriptions/-/arm-subscriptions-5.1.0.tgz#5598d6f40d1e47ccc5a4c9fff758c5fac02261fa"
+  integrity sha512-6BeOF2eQWNLq22ch7xP9RxYnPjtGev54OUCGggKOWoOvmesK7jUZbIyLk8JeXDT21PEl7iyYnxw78gxJ7zBxQw==
   dependencies:
-    "@azure/core-auth" "^1.1.4"
-    "@azure/ms-rest-azure-js" "^2.1.0"
-    "@azure/ms-rest-js" "^2.2.0"
-    tslib "^1.10.0"
+    "@azure/abort-controller" "^1.0.0"
+    "@azure/core-auth" "^1.3.0"
+    "@azure/core-client" "^1.6.1"
+    "@azure/core-lro" "^2.2.0"
+    "@azure/core-paging" "^1.2.0"
+    "@azure/core-rest-pipeline" "^1.8.0"
+    tslib "^2.2.0"
 
 "@azure/core-asynciterator-polyfill@^1.0.0":
   version "1.0.2"
@@ -177,7 +198,7 @@
     "@azure/abort-controller" "^1.0.0"
     tslib "^2.2.0"
 
-"@azure/core-client@^1.0.0", "@azure/core-client@^1.3.0", "@azure/core-client@^1.4.0", "@azure/core-client@^1.5.0":
+"@azure/core-client@^1.0.0", "@azure/core-client@^1.3.0", "@azure/core-client@^1.4.0", "@azure/core-client@^1.5.0", "@azure/core-client@^1.6.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@azure/core-client/-/core-client-1.6.1.tgz#a1aad3f7c69b6e5d9dddb39fabaeba013eac9313"
   integrity sha512-mZ1MSKhZBYoV8GAWceA+PEJFWV2VpdNSpxxcj1wjIAOi00ykRuIQChT99xlQGZWLY3/NApWhSImlFwsmCEs4vA==
@@ -257,6 +278,13 @@
   dependencies:
     tslib "^2.2.0"
 
+"@azure/core-paging@^1.2.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@azure/core-paging/-/core-paging-1.4.0.tgz#b04a73ad18149733a848c3089a5e5ed144592338"
+  integrity sha512-tabFtZTg8D9XqZKEfNUOGh63SuYeOxmvH4GDcOJN+R1bZWZ1FZskctgY9Pmuwzhn+0Xvq9rmimK9hsvtLkeBsw==
+  dependencies:
+    tslib "^2.2.0"
+
 "@azure/core-rest-pipeline@^1.1.0", "@azure/core-rest-pipeline@^1.3.0", "@azure/core-rest-pipeline@^1.8.0", "@azure/core-rest-pipeline@^1.9.1":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@azure/core-rest-pipeline/-/core-rest-pipeline-1.9.2.tgz#47ee72ca96e2b82e3d1362c29fd7688dc7464527"
@@ -312,7 +340,7 @@
   dependencies:
     tslib "^2.2.0"
 
-"@azure/identity@^1.3.0":
+"@azure/identity@^1.3.0", "@azure/identity@^1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@azure/identity/-/identity-1.5.2.tgz#09da6aa8e14f2dace3dd8f66de7d7d56bfee5db7"
   integrity sha512-vqyeRbd2i0h9F4mqW5JbkP1xfabqKQ21l/81osKhpOQ2LtwaJW6nw4+0PsVYnxcbPHFCIZt6EWAk74a3OGYZJA==
@@ -382,12 +410,7 @@
   dependencies:
     tslib "^2.2.0"
 
-"@azure/ms-rest-azure-env@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@azure/ms-rest-azure-env/-/ms-rest-azure-env-2.0.0.tgz#45809f89763a480924e21d3c620cd40866771625"
-  integrity sha512-dG76W7ElfLi+fbTjnZVGj+M9e0BIEJmRxU6fHaUQ12bZBe8EJKYb2GV50YWNaP2uJiVQ5+7nXEVj1VN1UQtaEw==
-
-"@azure/ms-rest-azure-js@^2.0.1", "@azure/ms-rest-azure-js@^2.1.0":
+"@azure/ms-rest-azure-js@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@azure/ms-rest-azure-js/-/ms-rest-azure-js-2.1.0.tgz#8c90b31468aeca3146b06c7144b386fd4827f64c"
   integrity sha512-CjZjB8apvXl5h97Ck6SbeeCmU0sk56YPozPtTyGudPp1RGoHXNjFNtoOvwOG76EdpmMpxbK10DqcygI16Lu60Q==
@@ -396,7 +419,7 @@
     "@azure/ms-rest-js" "^2.2.0"
     tslib "^1.10.0"
 
-"@azure/ms-rest-js@^2.0.4", "@azure/ms-rest-js@^2.2.0":
+"@azure/ms-rest-js@^2.2.0":
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/@azure/ms-rest-js/-/ms-rest-js-2.6.2.tgz#185a9d643ea55c696134af76a5c6026c94e26217"
   integrity sha512-0/8rOxAoR9M3qKUdbGOIYtHtQkm4m5jdoDNdxTU0DkOr84KwyAdJuW/RfjJinGyig4h73DNF0rdCl6XowgCYcg==
@@ -410,15 +433,6 @@
     tunnel "0.0.6"
     uuid "^8.3.2"
     xml2js "^0.4.19"
-
-"@azure/ms-rest-nodeauth@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@azure/ms-rest-nodeauth/-/ms-rest-nodeauth-3.1.1.tgz#2624222f0685ae580801d6f1abeab20923814693"
-  integrity sha512-UA/8dgLy3+ZiwJjAZHxL4MUB14fFQPkaAOZ94jsTW/Z6WmoOeny2+cLk0+dyIX/iH6qSrEWKwbStEeB970B9pA==
-  dependencies:
-    "@azure/ms-rest-azure-env" "^2.0.0"
-    "@azure/ms-rest-js" "^2.0.4"
-    adal-node "^0.2.2"
 
 "@azure/msal-browser@^2.26.0":
   version "2.28.3"
@@ -1037,6 +1051,13 @@
   integrity sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==
   dependencies:
     regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.15.4":
+  version "7.20.7"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.7.tgz#fcb41a5a70550e04a7b708037c7c32f7f356d8fd"
+  integrity sha512-UF0tvkUtxwAgZ5W/KrkHf0Rn0fdnLDU9ScxBrEVNUprE/MzirjK4MJUX1/BVDv00Sv8cljtukVK1aky++X1SjQ==
+  dependencies:
+    regenerator-runtime "^0.13.11"
 
 "@babel/template@^7.12.13", "@babel/template@^7.18.10":
   version "7.18.10"
@@ -1721,16 +1742,6 @@
   resolved "https://registry.npmjs.org/@microsoft/load-themed-styles/-/load-themed-styles-1.10.172.tgz"
   integrity sha512-BSTxPdqR7doaS+KRXdh+Jx8Ya5VFR/wMwsg4ocYaA6Qh2Ags17Qzi3dodwK4qnqgAhHtArxl84ycY4+VIRwFqw==
 
-"@microsoft/teams-manifest@0.0.8-alpha.df7cb43be.0":
-  version "0.0.8-alpha.df7cb43be.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/teams-manifest/-/teams-manifest-0.0.8-alpha.df7cb43be.0.tgz#ef2325c79a7ff31a4c822422502b747167f9b58b"
-  integrity sha512-lCxoAvqjVJgk21Zac22MKWEJdYZEo7g43aRZznE0dbNrDNPBdQFaePI8LUPKGVCqToiv+ktFdMdDMu7t8i7wyg==
-  dependencies:
-    ajv "^8.5.0"
-    ajv-draft-04 "^1.0.0"
-    axios "^0.21.2"
-    fs-extra "^9.1.0"
-
 "@microsoft/teams-manifest@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@microsoft/teams-manifest/-/teams-manifest-0.0.7.tgz#9c55c98b3017051c20e9ab2e3885c4578d8c0af9"
@@ -1741,34 +1752,53 @@
     axios "^0.21.2"
     fs-extra "^9.1.0"
 
-"@microsoft/teamsfx-api@0.20.6-alpha.df7cb43be.0":
-  version "0.20.6-alpha.df7cb43be.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-api/-/teamsfx-api-0.20.6-alpha.df7cb43be.0.tgz#c4540af2e635328d9af995df13d6cf641524f599"
-  integrity sha512-SNaAJr4teV5El938Ga6sXSoXS27FKYJtn8FQfUgOWVF5ht2PdaIuQdXhZTJM/S/ajJkJUepidTwqk0kCTcEneg==
+"@microsoft/teams-manifest@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@microsoft/teams-manifest/-/teams-manifest-0.0.8.tgz#806cf0998584dd0c36bd1f7b605d8c8f77981df3"
+  integrity sha512-1eCZYMWVKw0+k4rwM9tcTt+Nt+sqB00/yzog7jKg0VSW0UDEqd3x5C7KD4wA8YNQJd/eAoRxm6wkbQvKUHrnrQ==
+  dependencies:
+    ajv "^8.5.0"
+    ajv-draft-04 "^1.0.0"
+    axios "^0.21.2"
+    fs-extra "^9.1.0"
+
+"@microsoft/teamsfx-api@^0.21.0":
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-api/-/teamsfx-api-0.21.1.tgz#deca950fd4a84bf8ca17a65c66796b7a7f474b91"
+  integrity sha512-nstKlLrvG1PQ1T9jQZ4524jWqyePNf/WGGP7NmWe9oys9jgvj93XLB/zT2+qchxzHA5V7OBFz2ZaNBoePWS/Zw==
   dependencies:
     "@azure/core-http" "^1.2.2"
-    "@azure/ms-rest-nodeauth" "^3.1.1"
-    "@microsoft/teams-manifest" "0.0.8-alpha.df7cb43be.0"
-    "@types/fs-extra" "^9.0.10"
+    "@microsoft/teams-manifest" "^0.0.8"
     axios "^0.21.2"
     chai "^4.3.4"
     jsonschema "^1.4.0"
     neverthrow "^3.2.0"
 
-"@microsoft/teamsfx-cli@1.0.6-alpha.df7cb43be.0":
-  version "1.0.6-alpha.df7cb43be.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-cli/-/teamsfx-cli-1.0.6-alpha.df7cb43be.0.tgz#a090ac413b25885435ffc242bcfca9aa882efb97"
-  integrity sha512-tB64DFYeBZCLfEEGqdnb/QhZB37h8dV/89aSViSkNMKGpOnaNeYGpt+0NSt3dAKtKxanoqOFFCrA0DMoe7Qo8w==
+"@microsoft/teamsfx-api@^0.22.0":
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-api/-/teamsfx-api-0.22.0.tgz#71f7d520bd25658e9574fa290ffd31f7bf15539e"
+  integrity sha512-Te3bqKR1r/kc/9s23gahLBv8YE5V2H6xISDBLMQUDPoc36Y5PsnuejUUg1UoiwBj2GYB9LC3/HCLSuPgKPXvPg==
   dependencies:
-    "@azure/arm-apimanagement" "^6.0.0"
-    "@azure/arm-resources" "^4.0.0"
-    "@azure/arm-sql" "^7.0.2"
-    "@azure/arm-subscriptions" "^3.0.0"
+    "@azure/core-http" "^1.2.2"
+    "@microsoft/teams-manifest" "^0.0.8"
+    axios "^0.21.2"
+    chai "^4.3.4"
+    jsonschema "^1.4.0"
+    neverthrow "^3.2.0"
+
+"@microsoft/teamsfx-cli@1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-cli/-/teamsfx-cli-1.1.5.tgz#5ad9e68a1cb20775b871db44b00522c5bc887f0b"
+  integrity sha512-c3VkuAmboX3iQdRkqc/2/PKkXJ2lVwGHQErjqz3uCg6EA9b/XIVQ/z7CrbeCUdFhPFqUKoMpjxM9VbPKqcWouA==
+  dependencies:
+    "@azure/arm-apimanagement" "^8.0.0"
+    "@azure/arm-resources" "5.0.1"
+    "@azure/arm-sql" "^9.0.0"
+    "@azure/arm-subscriptions" "^5.0.0"
     "@azure/core-http" "^1.2.0"
     "@azure/identity" "^1.3.0"
-    "@azure/ms-rest-nodeauth" "^3.1.1"
-    "@microsoft/teamsfx-api" "0.20.6-alpha.df7cb43be.0"
-    "@microsoft/teamsfx-core" "1.15.2-alpha.df7cb43be.0"
+    "@microsoft/teamsfx-api" "^0.21.0"
+    "@microsoft/teamsfx-core" "^1.19.0"
     adm-zip "^0.5.5"
     applicationinsights "^1.8.10"
     async "^2.6.4"
@@ -1790,25 +1820,25 @@
   optionalDependencies:
     keytar "^7.7.0"
 
-"@microsoft/teamsfx-core@1.15.2-alpha.df7cb43be.0":
-  version "1.15.2-alpha.df7cb43be.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-core/-/teamsfx-core-1.15.2-alpha.df7cb43be.0.tgz#3c09f9f3736fbb21eb99e38169ba864f20a23e97"
-  integrity sha512-ptCjK7Yzcf4PhXHcEbHQ9jbgYkuIf9lVtalvfh6yJDyJiS4HF4JiNOH7PfsglSmx589JWoqCF7SAQDI+9xK1VQ==
+"@microsoft/teamsfx-core@^1.19.0":
+  version "1.21.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/teamsfx-core/-/teamsfx-core-1.21.1.tgz#9eebfbf7376dcaef75fc487c7859889da8688f73"
+  integrity sha512-huuSuVuRD/to+GiBg3d6BKLCFRGCmZ++jbrDzv6cWCqhz/DWmKB2GiFdMjtq6Vl97HO/x6mgAvczTtRRivZwgA==
   dependencies:
     "@apidevtools/swagger-parser" "^10.0.2"
-    "@azure/arm-apimanagement" "^6.0.0"
-    "@azure/arm-appservice" "^7.0.0"
+    "@azure/arm-apimanagement" "^8.0.0"
+    "@azure/arm-appservice" "^13.0.0"
     "@azure/arm-botservice" "^2.0.0"
-    "@azure/arm-resources" "^4.0.0"
-    "@azure/arm-sql" "^7.0.2"
-    "@azure/arm-storage" "^15.2.0"
-    "@azure/arm-subscriptions" "^3.0.0"
-    "@azure/ms-rest-nodeauth" "^3.1.1"
+    "@azure/arm-resources" "~5.0.1"
+    "@azure/arm-sql" "^9.0.0"
+    "@azure/arm-storage" "^17.2.1"
+    "@azure/arm-subscriptions" "^5.0.0"
+    "@azure/identity" "^1.5.2"
     "@azure/msal-node" "^1.0.0"
     "@azure/storage-blob" "^12.7.0"
     "@dbpiper/timer" "1.0.0-beta.2"
     "@feathersjs/hooks" "^0.6.5"
-    "@microsoft/teamsfx-api" "0.20.6-alpha.df7cb43be.0"
+    "@microsoft/teamsfx-api" "^0.22.0"
     "@npmcli/arborist" "^4.2.0"
     "@types/jwt-decode" "3.1.0"
     "@types/proper-lockfile" "^4.1.1"
@@ -1816,11 +1846,13 @@
     ajv "^8.5.0"
     ajv-draft-04 "^1.0.0"
     axios "^0.21.2"
+    axios-retry "^3.3.1"
+    comment-json "^4.2.3"
     cryptr "^6.0.2"
     dateformat "^4.5.1"
     detect-port "^1.3.0"
     dotenv "^8.2.0"
-    express "^4.17.1"
+    express "^4.18.2"
     fs-extra "^9.1.0"
     glob "^7.1.6"
     got "^11.8.2"
@@ -1839,18 +1871,21 @@
     nanoid "^3.1.31"
     node-forge "^1.0.0"
     node-ts-uuid "^1.0.8"
+    office-addin-manifest "^1.10.4"
     openapi-types "^7.2.3"
     proper-lockfile "^4.1.2"
     read-package-json-fast "^2.0.3"
     reflect-metadata "^0.1.13"
     semver "^7.3.4"
-    tedious "^14.3.0"
+    tedious "^15.1.2"
     toposort "^2.0.2"
     tslib "^2.1.0"
     typedi "^0.10.0"
+    unzipper "^0.10.11"
     url-parse "^1.5.9"
     uuid "^8.3.2"
     validator "^13.7.0"
+    xml2js "^0.4.23"
     zip-a-folder "0.0.12"
 
 "@nodelib/fs.scandir@2.1.4":
@@ -2202,13 +2237,6 @@
   integrity sha512-EoTtyVb4Za92vl993dzDg4vGkwMlOijEC2jXNzmmaNhnm7BxS/qvKDiWnNEEzK+P9yM1YFKOHjL0+UfK2YLaow==
   dependencies:
     find-process "*"
-
-"@types/fs-extra@^9.0.10":
-  version "9.0.13"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.13.tgz#7594fbae04fe7f1918ce8b3d213f74ff44ac1f45"
-  integrity sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==
-  dependencies:
-    "@types/node" "*"
 
 "@types/glob@^7.1.1":
   version "7.1.3"
@@ -2928,11 +2956,6 @@
   dependencies:
     tslib "^2.1.0"
 
-"@xmldom/xmldom@^0.7.0":
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
-  integrity sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==
-
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@xtuc/ieee754/-/ieee754-1.2.0.tgz"
@@ -3005,20 +3028,6 @@ acorn@^8.4.1:
   version "8.4.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.1.tgz#56c36251fc7cabc7096adc18f05afe814321a28c"
   integrity sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==
-
-adal-node@^0.2.2:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/adal-node/-/adal-node-0.2.3.tgz#87ed3dbed344f6e114e36bf18fe1c4e7d3cc6069"
-  integrity sha512-gMKr8RuYEYvsj7jyfCv/4BfKToQThz20SP71N3AtFn3ia3yAR8Qt2T3aVQhuJzunWs2b38ZsQV0qsZPdwZr7VQ==
-  dependencies:
-    "@xmldom/xmldom" "^0.7.0"
-    async "^2.6.3"
-    axios "^0.21.1"
-    date-utils "*"
-    jws "3.x.x"
-    underscore ">= 1.3.1"
-    uuid "^3.1.0"
-    xpath.js "~1.1.0"
 
 address@^1.0.1:
   version "1.2.1"
@@ -3308,6 +3317,11 @@ array-includes@^3.1.4, array-includes@^3.1.5:
     get-intrinsic "^1.1.1"
     is-string "^1.0.7"
 
+array-timsort@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/array-timsort/-/array-timsort-1.0.3.tgz#3c9e4199e54fb2b9c3fe5976396a21614ef0d926"
+  integrity sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==
+
 array-union@^1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/array-union/-/array-union-1.0.2.tgz"
@@ -3466,6 +3480,14 @@ axe-core@^4.4.3:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.4.3.tgz#11c74d23d5013c0fa5d183796729bc3482bd2f6f"
   integrity sha512-32+ub6kkdhhWick/UjvEwRchgoetXqTK14INLqbGm5U2TzBkBNF3nQtLYm8ovxSkQWArjEQvftCKryjZaATu3w==
+
+axios-retry@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/axios-retry/-/axios-retry-3.3.1.tgz#47624646138aedefbad2ac32f226f4ee94b6dcab"
+  integrity sha512-RohAUQTDxBSWLFEnoIG/6bvmy8l3TfpkclgStjl5MDCMBDgapAWCmr1r/9harQfWC8bzLC8job6UcL1A1Yc+/Q==
+  dependencies:
+    "@babel/runtime" "^7.15.4"
+    is-retry-allowed "^2.2.0"
 
 axios@^0.21.1, axios@^0.21.2:
   version "0.21.4"
@@ -4241,6 +4263,11 @@ batch@0.6.1:
   resolved "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz"
   integrity sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
 
+big-integer@^1.6.17:
+  version "1.6.51"
+  resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.51.tgz#0df92a5d9880560d3ff2d5fd20245c889d130686"
+  integrity sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==
+
 big.js@^5.2.2:
   version "5.2.2"
   resolved "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz"
@@ -4267,6 +4294,14 @@ binary-extensions@^2.0.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
+
+binary@~0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/binary/-/binary-0.3.0.tgz#9f60553bc5ce8c3386f3b553cff47462adecaa79"
+  integrity sha512-D4H1y5KYwpJgK8wk1Cue5LLPgmwHKYSChkbspQg5JtVuR5ulGckxfR62H3AE9UDkdMC8yyXlqYihuz3Aqg2XZg==
+  dependencies:
+    buffers "~0.1.1"
+    chainsaw "~0.1.0"
 
 bindings@^1.5.0:
   version "1.5.0"
@@ -4298,6 +4333,11 @@ bluebird@^3.5.5:
   resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
+bluebird@~3.4.1:
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
+  integrity sha512-iD3898SR7sWVRHbiQv+sHUtHnMvC1o3nW5rAcqnq3uOn07DSAppZYUkIGslDz6gXC7HfunPe7YVBgoEJASPcHA==
+
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.9:
   version "4.12.0"
   resolved "https://registry.npmjs.org/bn.js/-/bn.js-4.12.0.tgz"
@@ -4322,6 +4362,24 @@ body-parser@1.20.0:
     iconv-lite "0.4.24"
     on-finished "2.4.1"
     qs "6.10.3"
+    raw-body "2.5.1"
+    type-is "~1.6.18"
+    unpipe "1.0.0"
+
+body-parser@1.20.1:
+  version "1.20.1"
+  resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.20.1.tgz#b1812a8912c195cd371a3ee5e66faa2338a5c668"
+  integrity sha512-jWi7abTbYwajOytWCQc37VulmWiRae5RyTpaCyDcS5/lMdtwSz5lOpDE67srw/HYe35f1z3fDQw+3txg7gNtWw==
+  dependencies:
+    bytes "3.1.2"
+    content-type "~1.0.4"
+    debug "2.6.9"
+    depd "2.0.0"
+    destroy "1.2.0"
+    http-errors "2.0.0"
+    iconv-lite "0.4.24"
+    on-finished "2.4.1"
+    qs "6.11.0"
     raw-body "2.5.1"
     type-is "~1.6.18"
     unpipe "1.0.0"
@@ -4488,6 +4546,11 @@ buffer-from@^1.0.0:
   resolved "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.1.tgz"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
 
+buffer-indexof-polyfill@~1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/buffer-indexof-polyfill/-/buffer-indexof-polyfill-1.0.2.tgz#d2732135c5999c64b277fcf9b1abe3498254729c"
+  integrity sha512-I7wzHwA3t1/lwXQh+A5PbNvJxgfo5r3xulgpYDB5zckTu/Z9oUK9biouBKQUjEqzaz3HnAT6TYoovmE+GqSf7A==
+
 buffer-xor@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/buffer-xor/-/buffer-xor-1.0.3.tgz"
@@ -4517,6 +4580,11 @@ buffer@^6.0.3:
   dependencies:
     base64-js "^1.3.1"
     ieee754 "^1.2.1"
+
+buffers@~0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/buffers/-/buffers-0.1.1.tgz#b24579c3bed4d6d396aeee6d9a8ae7f5482ab7bb"
+  integrity sha512-9q/rDEGSb/Qsvv2qvzIzdluL5k7AaJOTrw23z9reQthrbF7is4CtlT0DXyO1oei2DCp4uojjzQ7igaSHp1kAEQ==
 
 builtin-status-codes@^3.0.0:
   version "3.0.0"
@@ -4733,6 +4801,13 @@ chai@^4.3.4:
     pathval "^1.1.1"
     type-detect "^4.0.5"
 
+chainsaw@~0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/chainsaw/-/chainsaw-0.1.0.tgz#5eab50b28afe58074d0d58291388828b5e5fbc98"
+  integrity sha512-75kWfWt6MEKNC8xYXIdRpDehRYY/tNSgwKaJq+dbbDcxORuVrrQ+SEHoWsniVn9XPYfP4gmdWIeDk/4YNp1rNQ==
+  dependencies:
+    traverse ">=0.3.0 <0.4"
+
 chalk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
@@ -4809,11 +4884,6 @@ check-error@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.2.tgz#574d312edd88bb5dd8912e9286dd6c0aed4aac82"
   integrity sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==
-
-child_process@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/child_process/-/child_process-1.0.2.tgz"
-  integrity sha1-sffn/HPSXn/R1FWtyU4UODAYK1o=
 
 chokidar@^2.1.8:
   version "2.1.8"
@@ -5065,6 +5135,17 @@ commander@^7.0.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
 
+comment-json@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/comment-json/-/comment-json-4.2.3.tgz#50b487ebbf43abe44431f575ebda07d30d015365"
+  integrity sha512-SsxdiOf064DWoZLH799Ata6u7iV658A11PlWtZATDlXPpKGJnbJZ5Z24ybixAi+LUUqJ/GKowAejtC5GFUG7Tw==
+  dependencies:
+    array-timsort "^1.0.3"
+    core-util-is "^1.0.3"
+    esprima "^4.0.1"
+    has-own-prop "^2.0.0"
+    repeat-string "^1.6.1"
+
 common-ancestor-path@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/common-ancestor-path/-/common-ancestor-path-1.0.1.tgz#4f7d2d1394d91b7abdf51871c62f71eadb0182a7"
@@ -5256,6 +5337,11 @@ core-js@^3.25.3:
   version "3.25.3"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.3.tgz#cbc2be50b5ddfa7981837bd8c41639f27b166593"
   integrity sha512-y1hvKXmPHvm5B7w4ln1S4uc9eV/O5+iFExSRUimnvIph11uaizFR8LFMdONN8hG3P2pipUfX4Y/fR8rAEtcHcQ==
+
+core-util-is@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
+  integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -5469,11 +5555,6 @@ dataloader@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.1.0.tgz#c69c538235e85e7ac6c6c444bae8ecabf5de9df7"
   integrity sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==
-
-date-utils@*:
-  version "1.2.21"
-  resolved "https://registry.yarnpkg.com/date-utils/-/date-utils-1.2.21.tgz#61fb16cdc1274b3c9acaaffe9fc69df8720a2b64"
-  integrity sha512-wJMBjqlwXR0Iv0wUo/lFbhSQ7MmG1hl36iuxuE91kW+5b5sWbase73manEqNH9sOLFAMG83B4ffNKq9/Iq0FVA==
 
 dateformat@^4.5.1:
   version "4.6.3"
@@ -5883,6 +5964,13 @@ dset@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/dset/-/dset-3.1.2.tgz#89c436ca6450398396dc6538ea00abc0c54cd45a"
   integrity sha512-g/M9sqy3oHe477Ar4voQxWtaPIFw1jTdKZuomOjhCcBx9nHUNn0pu6NopuFFrTh/TRZIKEj+76vLWFu9BNKk+Q==
+
+duplexer2@~0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.1.4.tgz#8b12dab878c0d69e3e7891051662a32fc6bddcc1"
+  integrity sha512-asLFVfWWtJ90ZyOUHMqk7/S2w2guQKxUI2itj3d92ADHhxUSbCMGi1f1cBcJ7xM1To+pE/Khbwo1yuNbMEPKeA==
+  dependencies:
+    readable-stream "^2.0.2"
 
 duplexify@^3.4.2, duplexify@^3.6.0:
   version "3.7.1"
@@ -6422,7 +6510,7 @@ espree@^7.3.0, espree@^7.3.1:
     acorn-jsx "^5.3.1"
     eslint-visitor-keys "^1.3.0"
 
-esprima@^4.0.0:
+esprima@^4.0.0, esprima@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
@@ -6554,6 +6642,43 @@ express@^4.17.1, express@^4.17.3:
     path-to-regexp "0.1.7"
     proxy-addr "~2.0.7"
     qs "6.10.3"
+    range-parser "~1.2.1"
+    safe-buffer "5.2.1"
+    send "0.18.0"
+    serve-static "1.15.0"
+    setprototypeof "1.2.0"
+    statuses "2.0.1"
+    type-is "~1.6.18"
+    utils-merge "1.0.1"
+    vary "~1.1.2"
+
+express@^4.18.2:
+  version "4.18.2"
+  resolved "https://registry.yarnpkg.com/express/-/express-4.18.2.tgz#3fabe08296e930c796c19e3c516979386ba9fd59"
+  integrity sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==
+  dependencies:
+    accepts "~1.3.8"
+    array-flatten "1.1.1"
+    body-parser "1.20.1"
+    content-disposition "0.5.4"
+    content-type "~1.0.4"
+    cookie "0.5.0"
+    cookie-signature "1.0.6"
+    debug "2.6.9"
+    depd "2.0.0"
+    encodeurl "~1.0.2"
+    escape-html "~1.0.3"
+    etag "~1.8.1"
+    finalhandler "1.2.0"
+    fresh "0.5.2"
+    http-errors "2.0.0"
+    merge-descriptors "1.0.1"
+    methods "~1.1.2"
+    on-finished "2.4.1"
+    parseurl "~1.3.3"
+    path-to-regexp "0.1.7"
+    proxy-addr "~2.0.7"
+    qs "6.11.0"
     range-parser "~1.2.1"
     safe-buffer "5.2.1"
     send "0.18.0"
@@ -6980,6 +7105,16 @@ fsevents@~2.3.2:
   resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
+fstream@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/fstream/-/fstream-1.0.12.tgz#4e8ba8ee2d48be4f7d0de505455548eae5932045"
+  integrity sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==
+  dependencies:
+    graceful-fs "^4.1.2"
+    inherits "~2.0.0"
+    mkdirp ">=0.5 0"
+    rimraf "2"
+
 function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz"
@@ -7228,7 +7363,7 @@ got@^11.8.2:
     p-cancelable "^2.0.0"
     responselike "^2.0.0"
 
-graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.4, graceful-fs@^4.2.6:
+graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.2, graceful-fs@^4.2.4, graceful-fs@^4.2.6:
   version "4.2.10"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
@@ -7322,6 +7457,11 @@ has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
+
+has-own-prop@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/has-own-prop/-/has-own-prop-2.0.0.tgz#f0f95d58f65804f5d218db32563bb85b8e0417af"
+  integrity sha512-Pq0h+hvsVm6dDEa8x82GnLSYHOzNDt7f0ddFa3FqcQlgzEiptPqL+XrOJNavjOzSYiYWIrgeVYYgGlLmnxwilQ==
 
 has-property-descriptors@^1.0.0:
   version "1.0.0"
@@ -7752,7 +7892,7 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@2, inherits@2.0.4, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.1, inherits@~2.0.3:
+inherits@2, inherits@2.0.4, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.0, inherits@~2.0.1, inherits@~2.0.3:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
@@ -8125,6 +8265,11 @@ is-relative@^1.0.0:
   dependencies:
     is-unc-path "^1.0.0"
 
+is-retry-allowed@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/is-retry-allowed/-/is-retry-allowed-2.2.0.tgz#88f34cbd236e043e71b6932d09b0c65fb7b4d71d"
+  integrity sha512-XVm7LOeLpTW4jV19QSH38vkswxoLud8sQ57YwJVTPWdiaI9I8keEhGFpBlslyVsgdQy4Opg8QOLb8YRgsyZiQg==
+
 is-shared-array-buffer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-shared-array-buffer/-/is-shared-array-buffer-1.0.1.tgz#97b0c85fbdacb59c9c446fe653b82cf2b5b7cfe6"
@@ -8475,7 +8620,7 @@ jwa@^2.0.0:
     ecdsa-sig-formatter "1.0.11"
     safe-buffer "^5.0.1"
 
-jws@3.x.x, jws@^3.2.2:
+jws@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/jws/-/jws-3.2.2.tgz#001099f3639468c9414000e99995fa52fb478304"
   integrity sha512-YHlZCB6lMTllWDtSPHz/ZXTsi8S00usEV6v1tjq8tOUZzw7DpSDWVXjXDre6ed1w/pd495ODpHZYSdkRTsa0HA==
@@ -8604,6 +8749,11 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.1.6.tgz"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
+
+listenercount@~1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/listenercount/-/listenercount-1.0.1.tgz#84c8a72ab59c4725321480c975e6508342e70937"
+  integrity sha512-3mk/Zag0+IJxeDrxSgaDPy4zZ3w05PRZeJNnlWhzFz5OkX49J4krc+A8X2d2M69vGMBEX0uyl8M+W+8gH+kBqQ==
 
 listr2@^4.0.5:
   version "4.0.5"
@@ -9264,6 +9414,13 @@ mkdirp-infer-owner@^2.0.0:
     infer-owner "^1.0.4"
     mkdirp "^1.0.3"
 
+"mkdirp@>=0.5 0":
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.6.tgz#7def03d2432dcae4ba1d611445c48396062255f6"
+  integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
+  dependencies:
+    minimist "^1.2.6"
+
 mkdirp@^0.5.1, mkdirp@^0.5.3:
   version "0.5.5"
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.5.tgz"
@@ -9766,7 +9923,7 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^1.5.2, office-addin-cli@^1.5.3:
+office-addin-cli@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-1.5.3.tgz#0ba4a893fe0bdabce419ab398ade7199739d8cd8"
   integrity sha512-GSTxPe8PP/8Q1HqQGT1D2cCb+MA95QPPoVVUluExVuO8kxVaRc0ZFvl7j3ehKJlKKUDJElsZ9OjiEQ0xCK7OBA==
@@ -9775,47 +9932,44 @@ office-addin-cli@^1.5.2, office-addin-cli@^1.5.3:
     node-fetch "^2.6.1"
     read-package-json-fast "^2.0.2"
 
-office-addin-debugging@^4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/office-addin-debugging/-/office-addin-debugging-4.6.2.tgz#15ae6d7905a592a208845b2c794425bd0a1ad577"
-  integrity sha512-1zsp8Y69/GcBbMA4SGNxTq/yORYihN/chYqsWeF/kA/64r/BNwfFPUp9cxiFLA1SJKtbJdog5Jjg0VA3GhYH7w==
+office-addin-debugging@^4.6.6:
+  version "4.6.6"
+  resolved "https://registry.yarnpkg.com/office-addin-debugging/-/office-addin-debugging-4.6.6.tgz#ef291d8731ce35af5437a0cb58905cbb8049088a"
+  integrity sha512-ObjgtGpqDkNK5GlfgVXy9T8a0TUYUBYYttqbNIeXmEaqCpzHYCNeQvpZk569dXTChJvQqEjppHMCkrAV6uNOmA==
   dependencies:
-    child_process "^1.0.2"
     commander "^6.2.0"
     node-fetch "^2.6.1"
-    office-addin-cli "^1.5.2"
-    office-addin-dev-certs "^1.9.2"
-    office-addin-dev-settings "^1.14.2"
-    office-addin-manifest "^1.10.3"
-    office-addin-node-debugger "^0.8.2"
-    office-addin-usage-data "^1.6.2"
+    office-addin-cli "^1.5.3"
+    office-addin-dev-certs "^1.11.0"
+    office-addin-dev-settings "^1.15.0"
+    office-addin-manifest "^1.11.0"
+    office-addin-node-debugger "^0.8.3"
+    office-addin-usage-data "^1.6.3"
 
-office-addin-dev-certs@^1.9.2:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.9.2.tgz#855e3438a103b3f1ce5ac71b0eca7aa60c72abf5"
-  integrity sha512-143pWFD7EwWfD4wIgZwXxzHdBJppnclY9YQhVSIsjiJ6mWoqMx/FksApvpfd2nWniK3XVOep1TPEeB1Xhy9paw==
+office-addin-dev-certs@^1.11.0, office-addin-dev-certs@^1.9.2:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/office-addin-dev-certs/-/office-addin-dev-certs-1.11.0.tgz#2738b7fd90e9586cdde4ef8811882684d395d8e4"
+  integrity sha512-+A8fgx0bYLshcb6S3UMF6z2lv4YolvP6i1DdX9eEOsvuP27D3l8eLHTXK/O7FntahqFN4j8Y+IjK9Wg3Tr3RMA==
   dependencies:
-    child_process "^1.0.2"
     commander "^6.2.0"
     fs-extra "^7.0.1"
     mkcert "^1.4.0"
-    office-addin-cli "^1.5.2"
-    office-addin-usage-data "^1.6.2"
+    office-addin-cli "^1.5.3"
+    office-addin-usage-data "^1.6.3"
 
-office-addin-dev-settings@^1.14.2:
-  version "1.14.2"
-  resolved "https://registry.yarnpkg.com/office-addin-dev-settings/-/office-addin-dev-settings-1.14.2.tgz#d3a4a98c2383a8167566dd27260d8688746a8481"
-  integrity sha512-+r2V7kwoIRGrAn4CArGeK9MX1dpPtG4oz/yOgoFHigteYEhLS5x3kZ/hKs7yjwX3PUCb6ApvKyrDVcCb2H2VxQ==
+office-addin-dev-settings@^1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/office-addin-dev-settings/-/office-addin-dev-settings-1.15.0.tgz#a8dc2d44f7120c04f04e354fd5c456eb85d9b0de"
+  integrity sha512-Q9aJKC0FzBi6AAxvBlO5tVXr2jxrK2KldiulyOyoSRxrsZjMVWvelZyXSF201nljC8dZiRdh4Lt/cDy6omqfiA==
   dependencies:
-    "@microsoft/teamsfx-cli" "1.0.6-alpha.df7cb43be.0"
+    "@microsoft/teamsfx-cli" "1.1.5"
     adm-zip "^0.5.9"
-    child_process "^1.0.2"
     commander "^6.2.0"
     fs-extra "^9.0.1"
     inquirer "^7.3.3"
     junk "^3.1.0"
-    office-addin-manifest "^1.10.3"
-    office-addin-usage-data "^1.6.2"
+    office-addin-manifest "^1.11.0"
+    office-addin-usage-data "^1.6.3"
     open "^6.4.0"
     string_decoder "1.3.0"
     whatwg-url "^7.1.0"
@@ -9837,10 +9991,10 @@ office-addin-lint@^2.0.1:
     office-addin-usage-data "^1.4.7"
     prettier "^2.2.1"
 
-office-addin-manifest@^1.10.3:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.10.3.tgz#62f4c0487121c3023b98ae1fc4af3362c77dae5c"
-  integrity sha512-/IxkzMa2cXIiPaNtbKKPaSKJQdolNvf6389AOR/uDR9jykmLdNFqmPuO9H4F0uLFzEE2do+685ZIbSmvk6jZDg==
+office-addin-manifest@^1.10.3, office-addin-manifest@^1.10.4, office-addin-manifest@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.11.0.tgz#b933e6f2e760d7ab77a114b1962b01e0d28f11eb"
+  integrity sha512-XYRENsYqLJkgvVzvVfwDpPcNgZtN7jL+oezQb+ASb/npVO0UEefz9PzCxPM6l+qwErmVw5Uh+yGh+WaWA/ftXw==
   dependencies:
     "@microsoft/teams-manifest" "^0.0.7"
     adm-zip "^0.5.9"
@@ -9848,20 +10002,19 @@ office-addin-manifest@^1.10.3:
     commander "^6.2.0"
     fs-extra "^7.0.1"
     node-fetch "^2.6.1"
-    office-addin-usage-data "^1.6.2"
+    office-addin-usage-data "^1.6.3"
     path "^0.12.7"
     uuid "^8.3.2"
     xml2js "^0.4.23"
 
-office-addin-node-debugger@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/office-addin-node-debugger/-/office-addin-node-debugger-0.8.2.tgz#f03947311cc10a7fd3768896f737fbca27d9118e"
-  integrity sha512-FgQcmzZUCIrbWwnU2/ywgDa+O7aKOsuwh+mUHhfX94qgUsn0lUf5reQpYTdozUQ1O1A0fNFBw9G3ks8QDC2urQ==
+office-addin-node-debugger@^0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/office-addin-node-debugger/-/office-addin-node-debugger-0.8.3.tgz#1411cec0beb52646a437f61cfb6cc9f16d675e23"
+  integrity sha512-RSv4VX7Lfl9es9K/ypbDvLBIMxb75Riyx44VDb4Hs0JdRADI0oqzFWuBhh5mPcPhFHasgGMwra7eO5xYeHNrMQ==
   dependencies:
-    child_process "^1.0.2"
     commander "^6.2.0"
     node-fetch "^2.6.1"
-    office-addin-usage-data "^1.6.2"
+    office-addin-usage-data "^1.6.3"
     ws "^7.4.6"
 
 office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
@@ -9869,10 +10022,10 @@ office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.2.0.tgz#59f14a2a7a3f5d803f6ad82a764e84ab4d4b9628"
   integrity sha512-42/w9BUlUvgbLNn8vLaGULVTrcTFBnhn+xAe6IwSOhPrFQpi2GxZPl8ln/f5X4lterVrJz7U6Vi+VeN7WYAsGQ==
 
-office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.2.tgz#ce158bed7bdaacfa89d6ab30ba82c59934f4c971"
-  integrity sha512-OvXsvmZctDWvoWXnKG/vG711Ouzq0QYL3YUr3N1jIdkkjIRLzedoo+9P9LPEKPwfJz/VslnyKxL7eZpH2pSwCw==
+office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.3.tgz#1c96dcc0bb534c5ce6ab31bf00750d493600f7ed"
+  integrity sha512-KXg3Wa1lm4D1KmAjShXpAZReeF+Psu96JTAFv09KWa+gIRvQQcA6kuzP1ie7DPn+ILRPhRzRthpWw2h4L15xZA==
   dependencies:
     applicationinsights "^1.7.3"
     commander "^6.2.0"
@@ -10581,7 +10734,7 @@ qs@6.10.3:
   dependencies:
     side-channel "^1.0.4"
 
-qs@^6.7.0:
+qs@6.11.0, qs@^6.7.0:
   version "6.11.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.11.0.tgz#fd0d963446f7a65e1367e01abd85429453f0c37a"
   integrity sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==
@@ -10821,6 +10974,11 @@ regenerator-runtime@^0.11.0:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
+regenerator-runtime@^0.13.11:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
+
 regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.9:
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
@@ -11054,7 +11212,7 @@ rfdc@^1.3.0:
   resolved "https://registry.yarnpkg.com/rfdc/-/rfdc-1.3.0.tgz#d0b7c441ab2720d05dc4cf26e01c89631d9da08b"
   integrity sha512-V2hovdzFbOi77/WajaSMXk2OLm+xNIeQdMMuB7icj7bk6zi2F8GGAxigcnDFpJHbNyNcgyJDiP+8nOrY5cZGrA==
 
-rimraf@^2.5.4, rimraf@^2.6.3:
+rimraf@2, rimraf@^2.5.4, rimraf@^2.6.3:
   version "2.7.1"
   resolved "https://registry.npmjs.org/rimraf/-/rimraf-2.7.1.tgz"
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
@@ -11317,7 +11475,7 @@ set-value@^2.0.0, set-value@^2.0.1:
     is-plain-object "^2.0.3"
     split-string "^3.0.1"
 
-setimmediate@^1.0.4, setimmediate@^1.0.5:
+setimmediate@^1.0.4, setimmediate@^1.0.5, setimmediate@~1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/setimmediate/-/setimmediate-1.0.5.tgz"
   integrity sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
@@ -11989,6 +12147,24 @@ tedious@^14.3.0:
     punycode "^2.1.0"
     sprintf-js "^1.1.2"
 
+tedious@^15.1.2:
+  version "15.1.2"
+  resolved "https://registry.yarnpkg.com/tedious/-/tedious-15.1.2.tgz#4dd3c33134be01d64520475e911ca83e276fcfeb"
+  integrity sha512-94slmnggCX8zG6iLNnM3k6PplTguP0p7R2RWOKTXdPmK1VmTpWk4+e0J4koIMXm1jjG7sGlZ1/JlaGVAdF1OOg==
+  dependencies:
+    "@azure/identity" "^2.0.4"
+    "@azure/keyvault-keys" "^4.4.0"
+    "@js-joda/core" "^5.2.0"
+    bl "^5.0.0"
+    es-aggregate-error "^1.0.8"
+    iconv-lite "^0.6.3"
+    js-md4 "^0.3.2"
+    jsbi "^4.3.0"
+    native-duplexpair "^1.0.0"
+    node-abort-controller "^3.0.1"
+    punycode "^2.1.0"
+    sprintf-js "^1.1.2"
+
 terser-webpack-plugin@^1.4.3:
   version "1.4.5"
   resolved "https://registry.npmjs.org/terser-webpack-plugin/-/terser-webpack-plugin-1.4.5.tgz"
@@ -12183,6 +12359,11 @@ transform-file@^1.0.1:
   dependencies:
     os-tmpdir "^1.0.0"
 
+"traverse@>=0.3.0 <0.4":
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
+  integrity sha512-iawgk0hLP3SxGKDfnDJf8wTz4p2qImnyihM5Hh/sGvQ3K37dPi/w8sRhdNIxYA1TwFwc5mDhIJq+O0RsvXBKdQ==
+
 tree-kill@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
@@ -12364,7 +12545,7 @@ unc-path-regex@^0.1.2:
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
   integrity sha1-5z3T17DXxe2G+6xrCufYxqadUPo=
 
-"underscore@>= 1.3.1", underscore@^1.12.1:
+underscore@^1.12.1:
   version "1.13.4"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.4.tgz#7886b46bbdf07f768e0052f1828e1dcab40c0dee"
   integrity sha512-BQFnUDuAQ4Yf/cYY5LNrK9NCJFKriaRbD9uR1fTeXnBeoa97W0i41qkZfGO9pSo8I5KzjAcSY2XYtdf0oKd7KQ==
@@ -12446,6 +12627,22 @@ unset-value@^1.0.0:
   dependencies:
     has-value "^0.3.1"
     isobject "^3.0.0"
+
+unzipper@^0.10.11:
+  version "0.10.11"
+  resolved "https://registry.yarnpkg.com/unzipper/-/unzipper-0.10.11.tgz#0b4991446472cbdb92ee7403909f26c2419c782e"
+  integrity sha512-+BrAq2oFqWod5IESRjL3S8baohbevGcVA+teAIOYWM3pDVdseogqbzhhvvmiyQrUNKFUnDMtELW3X8ykbyDCJw==
+  dependencies:
+    big-integer "^1.6.17"
+    binary "~0.3.0"
+    bluebird "~3.4.1"
+    buffer-indexof-polyfill "~1.0.0"
+    duplexer2 "~0.1.4"
+    fstream "^1.0.12"
+    graceful-fs "^4.2.2"
+    listenercount "~1.0.1"
+    readable-stream "~2.3.6"
+    setimmediate "~1.0.4"
 
 upath@^1.1.1:
   version "1.2.0"
@@ -12555,11 +12752,6 @@ uuid@8.3.2, uuid@^8.3.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
-
-uuid@^3.1.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
-  integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
@@ -12989,11 +13181,6 @@ xmlbuilder@~11.0.0:
   version "11.0.1"
   resolved "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-11.0.1.tgz"
   integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
-
-xpath.js@~1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/xpath.js/-/xpath.js-1.1.0.tgz#3816a44ed4bb352091083d002a383dd5104a5ff1"
-  integrity sha512-jg+qkfS4K8E7965sqaUl8mRngXiKb3WZGfONgE18pr03FUQiuSV6G+Ej4tS55B+rIQSFEIw3phdVAQ4pPqNWfQ==
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"
