@@ -9837,10 +9837,10 @@ office-addin-lint@^2.0.1:
     office-addin-usage-data "^1.4.7"
     prettier "^2.2.1"
 
-office-addin-manifest@^1.10.3:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.10.3.tgz#62f4c0487121c3023b98ae1fc4af3362c77dae5c"
-  integrity sha512-/IxkzMa2cXIiPaNtbKKPaSKJQdolNvf6389AOR/uDR9jykmLdNFqmPuO9H4F0uLFzEE2do+685ZIbSmvk6jZDg==
+office-addin-manifest@^1.10.3, office-addin-manifest@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.12.0.tgz#cfb0b3b015e92d2b07773882e90198299b999e97"
+  integrity sha512-9FwCqGX1tj/6kH6qhtMQC+emTiETkN/pbIqBaSnQyszbN834uERbFnJHfvd8jvvNpGnDqgNnRTnV93LifGeDLg==
   dependencies:
     "@microsoft/teams-manifest" "^0.0.7"
     adm-zip "^0.5.9"
@@ -9848,7 +9848,7 @@ office-addin-manifest@^1.10.3:
     commander "^6.2.0"
     fs-extra "^7.0.1"
     node-fetch "^2.6.1"
-    office-addin-usage-data "^1.6.2"
+    office-addin-usage-data "^1.6.4"
     path "^0.12.7"
     uuid "^8.3.2"
     xml2js "^0.4.23"
@@ -9869,10 +9869,10 @@ office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.2.0.tgz#59f14a2a7a3f5d803f6ad82a764e84ab4d4b9628"
   integrity sha512-42/w9BUlUvgbLNn8vLaGULVTrcTFBnhn+xAe6IwSOhPrFQpi2GxZPl8ln/f5X4lterVrJz7U6Vi+VeN7WYAsGQ==
 
-office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.2.tgz#ce158bed7bdaacfa89d6ab30ba82c59934f4c971"
-  integrity sha512-OvXsvmZctDWvoWXnKG/vG711Ouzq0QYL3YUr3N1jIdkkjIRLzedoo+9P9LPEKPwfJz/VslnyKxL7eZpH2pSwCw==
+office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2, office-addin-usage-data@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.4.tgz#7780393ebf7ddb66ac9eaacbb89acc18b2b1611b"
+  integrity sha512-h6L2lMuQHoc9dACWlB/j55YmXix/k0UmQiXtzoORAirSVX8Y2WM2eLhHuOiYJ/Zk1l7kntj4dJnJx3+cNEfmWg==
   dependencies:
     applicationinsights "^1.7.3"
     commander "^6.2.0"
