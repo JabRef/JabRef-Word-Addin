@@ -1,7 +1,6 @@
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { Stack } from '@fluentui/react';
 import { CitationItem, MetaData } from 'citeproc';
-import data from '../../utils/data';
 import SearchField from '../components/SearchField';
 import { useCitationStore } from '../contexts/CitationStoreContext';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
@@ -24,21 +23,29 @@ function containsSearchTerm(keyword: string) {
   };
 }
 
-function Dashboard(): ReactElement {
-  const originalItems = data; // TODO: Replace with getData hooK
+interface DashboardProps {
+  jabRefItems: Array<MetaData>;
+}
+
+function Dashboard({ jabRefItems }: DashboardProps): ReactElement {
   const citeSupport = useCiteSupport();
   const { selectedCitations, dispatch } = useCitationStore();
-  const [referenceList, setReferenceList] = useState<Array<MetaData>>(originalItems);
+  const [referenceList, setReferenceList] = useState<Array<MetaData>>(jabRefItems);
   const [citationItems, _setCitationItems] = useState<Array<CitationItem | null>>([]);
   const itemsInSelectedCitation = useRef(citationItems);
   const setItemsInSelectedCitation = (itemsMetadata: Array<CitationItem>) => {
     itemsInSelectedCitation.current = itemsMetadata;
     _setCitationItems(itemsMetadata);
   };
+  let filteringKeyword = '';
 
   const onFilterChange = (_: React.ChangeEvent<HTMLInputElement>, keyword: string): void => {
-    setReferenceList(originalItems.filter(containsSearchTerm(keyword)));
+    filteringKeyword = keyword;
   };
+
+  useEffect(() => {
+    setReferenceList(jabRefItems.filter(containsSearchTerm(filteringKeyword)));
+  }, [jabRefItems, filteringKeyword]);
 
   const insertCitation = async () => {
     const citationSelected = itemsInSelectedCitation.current.length > 0;

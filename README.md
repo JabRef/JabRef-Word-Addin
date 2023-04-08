@@ -3,7 +3,8 @@
 ## Getting started
 
 - Install [Node.js](https://nodejs.org/).
-- Create .env file in the root directory containing the `HOST_API_URL` key
+- Get the JabRef Desktop http server running
+- If you want to connect to another service, adapt the `.env` file in the root directory containing the desired `HOST_API_URL` key
 
   e.g., `API_HOST = "https://mango-pebble-0224c3803.1.azurestaticapps.net/"`
 
@@ -52,3 +53,15 @@ Note: If you're testing add-in on Mac, run `yarn dev-server` to start the local 
 
 - [React.js](https://reactjs.org): UI framework [Documentation](https://reactjs.org/docs/getting-started.html)
 - [Microsoft Office Add-in](https://docs.microsoft.com/en-us/office/dev/add-ins/)
+
+## Get SSL Working
+
+(Based on <https://stackoverflow.com/a/57511038/873282>)
+
+Howto vor Windows - other operating systems work similar:
+
+1. As admin `choco install mkcert`
+2. As admin: `mkcert -install`
+3. `cd %APPDATA%\..\local\org.jabref\jabref\ssl`
+4. `mkcert -pkcs12 jabref.desktop jabref localhost 127.0.0.1 ::1`
+5. Rename the file to `server.p12`

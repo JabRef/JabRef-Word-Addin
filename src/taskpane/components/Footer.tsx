@@ -1,45 +1,43 @@
-import { Stack, ActionButton } from '@fluentui/react';
+import { ActionButton, Image, Stack } from '@fluentui/react';
 import React, { ReactElement } from 'react';
 
 import {
-  Signout,
-  SyncBib,
-  imageProps,
-  footerStackStyle,
   contentWrapper,
   footerIconOnlyButton,
+  footerStackStyle,
+  imageProps,
+  light,
+  SyncBib,
 } from './Footer.style';
 
 interface FooterProps {
   onSyncBibliography: () => void;
-  onLogout: () => void;
+  onFetchJabRefData: () => void;
 }
 
-function Footer({ onSyncBibliography, onLogout }: FooterProps): ReactElement {
+function Footer({ onSyncBibliography, onFetchJabRefData }: FooterProps): ReactElement {
   return (
-    <Stack styles={footerStackStyle}>
-      <Stack
-        horizontal
-        verticalAlign="center"
-        styles={contentWrapper}
-        horizontalAlign="space-between"
-      >
-        <img {...imageProps} alt="jabref logo" />
-        <Stack horizontal>
-          <ActionButton
-            iconProps={SyncBib}
-            styles={footerIconOnlyButton}
-            ariaLabel="Add Bibliography"
-            onClick={onSyncBibliography}
-          />
-          <ActionButton
-            onClick={onLogout}
-            iconProps={Signout}
-            ariaLabel="Sign Out"
-            styles={footerIconOnlyButton}
-          />
-        </Stack>
-      </Stack>
+    <Stack
+      horizontal
+      horizontalAlign="space-between"
+      verticalAlign="center"
+      styles={{ ...contentWrapper, ...footerStackStyle }}
+    >
+      <Image {...imageProps} />
+      <Stack.Item>
+        <ActionButton
+          iconProps={light}
+          styles={footerIconOnlyButton}
+          ariaLabel="Fetch JabRef Data"
+          onClick={onFetchJabRefData}
+        />
+        <ActionButton
+          iconProps={SyncBib}
+          styles={footerIconOnlyButton}
+          ariaLabel="Add Reference List"
+          onClick={onSyncBibliography}
+        />
+      </Stack.Item>
     </Stack>
   );
 }

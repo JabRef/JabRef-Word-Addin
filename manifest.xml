@@ -72,13 +72,13 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="Get started with your sample add-in!"/>
-        <bt:String id="CommandsGroup.Label" DefaultValue="Commands Group"/>
+        <bt:String id="GetStarted.Title" DefaultValue="Get started with JabRef!"/>
+        <bt:String id="CommandsGroup.Label" DefaultValue="JabRef"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="JabRef"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded succesfully. Go to the HOME tab and click the 'Show Taskpane' button to get started."/>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane"/>
+        <bt:String id="GetStarted.Description" DefaultValue="JabRef add-in loaded successfully. Go to the References tab and click the 'JabRef' button to get started."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to show JabRef panel"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

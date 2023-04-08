@@ -46,6 +46,7 @@ function CitationStyle(): JSX.Element {
 
   // Sync with doc settings
   React.useEffect(() => {
+    console.debug('useEffect called');
     return UserPreferences.syncPreferences();
   });
 

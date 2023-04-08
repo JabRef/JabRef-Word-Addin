@@ -1,5 +1,0 @@
-query ME{
-  me{
-  email
-  }
-}

@@ -1,12 +1,12 @@
-import { Pivot, PivotItem, Stack, StackItem } from '@fluentui/react';
+import { Pivot, PivotItem, Stack } from '@fluentui/react';
 import React, { useState } from 'react';
+import { MetaData } from 'citeproc';
 import CitationStyle from '../pages/CitationStyle';
 import Dashboard from '../pages/Dashboard';
 import Footer from '../components/Footer';
 import { pivotStyle, scrollableStack } from './Layout.style';
 import { useCiteSupport } from '../contexts/CiteSupportContext';
-import { useLogoutMutation } from '../../generated/graphql';
-import client from '../../plugins/apollo/apolloClient';
+import data from '../../utils/data';
 
 type pivotItem = 'citationStyle' | 'dashboard';
 
@@ -22,15 +22,29 @@ function Layout(): JSX.Element {
   };
 
   const citeSupport = useCiteSupport();
-  const [logoutMutation] = useLogoutMutation();
-
-  const onLogout = async () => {
-    await client.resetStore();
-    await logoutMutation();
-  };
 
   const onSyncBibliography = async () => {
     await citeSupport.getBibliography();
+  };
+
+  const [jabRefItems, setJabRefItems] = useState<Array<MetaData>>(data);
+
+  const fetchJabRefData = async () => {
+    try {
+      const librariesListResponse = await fetch('https://localhost:6051/libraries');
+      const librariesList = (await librariesListResponse.json()) as string[];
+      const libraryId = librariesList[0];
+      const libraryContentResponse = await fetch(`https://localhost:6051/libraries/${libraryId}`, {
+        headers: {
+          Accept: 'application/x-bibtex-library-csl+json',
+        },
+      });
+      const libraryContent = (await libraryContentResponse.json()) as Array<MetaData>;
+      console.debug('Fetched content', libraryContent);
+      setJabRefItems(libraryContent);
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
   };
 
   return (
@@ -47,11 +61,11 @@ function Layout(): JSX.Element {
           <PivotItem headerText="Citation Style" itemKey="citationStyles" />
         </Pivot>
       </Stack.Item>
-      <StackItem styles={scrollableStack} grow>
-        {selectedKey === 'dashboard' ? <Dashboard /> : <CitationStyle />}
-      </StackItem>
+      <Stack.Item styles={scrollableStack} grow>
+        {selectedKey === 'dashboard' ? <Dashboard jabRefItems={jabRefItems} /> : <CitationStyle />}
+      </Stack.Item>
       <Stack.Item>
-        <Footer onLogout={onLogout} onSyncBibliography={onSyncBibliography} />
+        <Footer onSyncBibliography={onSyncBibliography} onFetchJabRefData={fetchJabRefData} />
       </Stack.Item>
     </Stack>
   );

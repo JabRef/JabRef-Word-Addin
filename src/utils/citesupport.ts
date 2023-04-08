@@ -295,6 +295,7 @@ class CiteSupport {
     this.debug('updateBibliography()');
     const bib = data[1].join('\n');
     await this.wordApi.updateBibliography(bib);
+    this.debug('updateBibliography() finished');
   }
 
   /**
