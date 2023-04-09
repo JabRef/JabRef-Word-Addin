@@ -16,7 +16,7 @@ interface ReferenceViewProps {
 }
 
 const renderAuther = (author: Array<Author>): string => {
-  return author.map((_author) => `${_author.given} ${_author.family}`).join(', ');
+  return author?.map((_author) => `${_author.given} ${_author.family}`).join(', ') ?? '(no author)';
 };
 
 function ReferenceView({ document }: ReferenceViewProps): React.ReactElement {

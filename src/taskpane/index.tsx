@@ -7,13 +7,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { ApolloProvider } from '@apollo/client';
-import { AppContainer } from 'react-hot-loader';
+import { createRoot } from 'react-dom/client';
 import { initializeIcons, ThemeProvider } from '@fluentui/react';
-import { HashRouter as Router } from 'react-router-dom';
 import App from './components/App';
-import client from '../plugins/apollo/apolloClient';
 
 initializeIcons();
 
@@ -22,17 +18,11 @@ let isOfficeInitialized = false;
 const title = 'JabRef Task Pane Add-in';
 
 const render = (Component) => {
-  ReactDOM.render(
-    <ApolloProvider client={client}>
-      <AppContainer>
-        <ThemeProvider>
-          <Router>
-            <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-          </Router>
-        </ThemeProvider>
-      </AppContainer>
-    </ApolloProvider>,
-    document.getElementById('container')
+  const root = createRoot(document.getElementById('container'));
+  root.render(
+    <ThemeProvider as={React.Fragment}>
+      <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+    </ThemeProvider>
   );
 };
 

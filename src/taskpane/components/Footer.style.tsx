@@ -38,14 +38,14 @@ export const contentWrapper: IStackStyles = {
   },
 };
 
-export const Signout: IIconProps = { iconName: 'SignOut' };
 export const SyncBib: IIconProps = { iconName: 'InsertSignatureLine' };
 export const light: IIconProps = { iconName: 'Brightness' };
 export const dark: IIconProps = { iconName: 'LowerBrightness' };
 
 export const imageProps: IImageProps = {
   imageFit: ImageFit.center,
+  alt: 'JabRef logo',
   src: '../../../assets/logo.svg',
-  width: '110rem',
-  height: '40rem',
+  width: '35%',
+  height: '35%',
 };
