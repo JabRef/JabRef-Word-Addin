@@ -1,5 +1,5 @@
 overwrite: true
-schema: "https://jabref-online.herokuapp.com/api"
+schema: "https://mango-pebble-0224c3803-dev.westeurope.1.azurestaticapps.net/api"
 documents: "src/graphql/**/*.graphql"
 generates:
   src/generated/graphql.ts:
