@@ -14,11 +14,13 @@ import { initializeIcons, ThemeProvider } from '@fluentui/react';
 import { HashRouter as Router } from 'react-router-dom';
 import App from './components/App';
 import client from '../plugins/apollo/apolloClient';
+import { Theme } from '../../types';
+import UserPreferences from '../utils/UserPreferences';
 
 initializeIcons();
 
+let theme: Theme;
 let isOfficeInitialized = false;
-
 const title = 'JabRef Task Pane Add-in';
 
 const render = (Component) => {
@@ -27,7 +29,7 @@ const render = (Component) => {
       <AppContainer>
         <ThemeProvider>
           <Router>
-            <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+            <Component title={title} theme={theme} isOfficeInitialized={isOfficeInitialized} />
           </Router>
         </ThemeProvider>
       </AppContainer>
@@ -40,6 +42,7 @@ const render = (Component) => {
 // eslint-disable-next-line no-void
 void Office.onReady(() => {
   isOfficeInitialized = true;
+  theme = UserPreferences.getTheme();
   render(App);
 });
 

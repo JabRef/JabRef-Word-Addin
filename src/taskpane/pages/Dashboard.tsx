@@ -8,6 +8,7 @@ import { useCiteSupport } from '../contexts/CiteSupportContext';
 import ReferenceList from '../components/ReferenceList';
 import ButtonGroup from '../components/ButtonGroup';
 import { scrollableStack } from '../layout/Layout.style';
+import { Mode } from '../../../types';
 
 const buttonLabel = (length: number) =>
   length > 0
@@ -27,6 +28,7 @@ function containsSearchTerm(keyword: string) {
 function Dashboard(): ReactElement {
   const originalItems = data; // TODO: Replace with getData hooK
   const citeSupport = useCiteSupport();
+  const [mode, setMode] = useState<Mode>(Mode.REST);
   const { selectedCitations, dispatch } = useCitationStore();
   const [referenceList, setReferenceList] = useState<Array<MetaData>>(originalItems);
   const [citationItems, _setCitationItems] = useState<Array<CitationItem | null>>([]);
@@ -74,6 +76,16 @@ function Dashboard(): ReactElement {
     return () => citeSupport.wordApi.removeEventListener();
   }, [citeSupport.wordApi, getSelectedCitation]);
 
+  useEffect(() => {
+    if (selectedCitations.length && !itemsInSelectedCitation.current.length) {
+      setMode(Mode.CITE);
+    } else if (itemsInSelectedCitation.current.length) {
+      setMode(Mode.EDIT);
+    } else {
+      setMode(Mode.REST);
+    }
+  }, [selectedCitations, itemsInSelectedCitation.current.length, setMode]);
+
   return (
     <Stack verticalFill>
       <Stack.Item>
@@ -82,7 +94,7 @@ function Dashboard(): ReactElement {
       <Stack.Item grow styles={scrollableStack}>
         <ReferenceList referenceList={referenceList} />
       </Stack.Item>
-      {selectedCitations.length && !itemsInSelectedCitation.current.length ? (
+      {mode === Mode.CITE ? (
         <ButtonGroup
           label1={buttonLabel(selectedCitations.length)}
           label2="Cancel"
@@ -92,7 +104,7 @@ function Dashboard(): ReactElement {
           disabled2={false}
         />
       ) : null}
-      {itemsInSelectedCitation.current.length ? (
+      {mode === Mode.EDIT ? (
         <ButtonGroup
           label1={buttonLabel(selectedCitations.length)}
           label2="Cancel"

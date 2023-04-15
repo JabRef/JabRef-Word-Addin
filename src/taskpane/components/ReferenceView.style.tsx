@@ -2,13 +2,13 @@ import { getTheme, IStackItemStyles, IStackStyles, ITheme } from '@fluentui/reac
 import globalStyles from '../../theme/index';
 
 const theme: ITheme = getTheme();
-const { fonts } = theme;
+const { fonts, semanticColors } = theme;
 
 export const referenceViewContainer: IStackStyles = {
   root: {
     padding: `0.5rem ${globalStyles.margin}`,
     cursor: 'pointer',
-    minHeight: '6rem',
+    minHeight: '4rem',
   },
 };
 
@@ -30,9 +30,7 @@ export const referenceDetailsContainer: IStackItemStyles = {
 export const heading: IStackItemStyles = {
   root: {
     fontSize: fonts.medium.fontSize,
-    fontWeight: 700,
-    lineHeight: '1.2rem',
-    height: '2.4rem',
+    fontWeight: 900,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
@@ -40,9 +38,9 @@ export const heading: IStackItemStyles = {
 
 export const authorStyle: IStackItemStyles = {
   root: {
-    fontWeight: 500,
+    fontWeight: 700,
     fontSize: fonts.medium.fontSize,
     paddingTop: '0.5rem',
-    fontStyle: 'italic',
+    color: semanticColors.disabledBodyText,
   },
 };

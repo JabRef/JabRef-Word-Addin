@@ -7,14 +7,17 @@ import ProtectedRoutes from '../../utils/ProtectedRoutes';
 import { CitationStoreProvider } from '../contexts/CitationStoreContext';
 import { CiteSupportProvider } from '../contexts/CiteSupportContext';
 import Wrapper from './Wrapper';
+import { ThemeContextProvider } from '../contexts/ThemeContext';
+import { Theme } from '../../../types';
 
 export interface AppProps {
   title: string;
+  theme: Theme;
   isOfficeInitialized: boolean;
 }
 
 function App(props: AppProps): ReactElement {
-  const { isOfficeInitialized, title } = props;
+  const { isOfficeInitialized, title, theme } = props;
 
   if (!isOfficeInitialized) {
     return (
@@ -23,20 +26,22 @@ function App(props: AppProps): ReactElement {
   }
 
   return (
-    <Wrapper>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <ProtectedRoutes path="/">
-          <CiteSupportProvider>
-            <CitationStoreProvider>
-              <Layout />
-            </CitationStoreProvider>
-          </CiteSupportProvider>
-        </ProtectedRoutes>
-      </Switch>
-    </Wrapper>
+    <ThemeContextProvider initTheme={theme}>
+      <Wrapper>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <ProtectedRoutes path="/">
+            <CiteSupportProvider>
+              <CitationStoreProvider>
+                <Layout />
+              </CitationStoreProvider>
+            </CiteSupportProvider>
+          </ProtectedRoutes>
+        </Switch>
+      </Wrapper>
+    </ThemeContextProvider>
   );
 }
 export default App;
