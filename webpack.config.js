@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const path = require('path');
 var dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 
 const urlDev = 'https://localhost:3000/';
@@ -19,6 +20,9 @@ module.exports = async (env, options) => {
       vendor: ['react', 'react-dom', 'core-js', '@fluentui/react'],
       taskpane: ['react-hot-loader/patch', './src/taskpane/index.tsx'],
       commands: './src/commands/commands.ts',
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.html', '.js'],
@@ -102,11 +106,13 @@ module.exports = async (env, options) => {
 
   if (env.WEBPACK_SERVE) {
     config.devServer = {
-      hot: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
+      server: {
+        type: 'https',
+        options: {
+          https:
+            options.https !== undefined ? options.https : await devCerts.getHttpsServerOptions(),
+        },
       },
-      https: options.https !== undefined ? options.https : await devCerts.getHttpsServerOptions(),
       port: process.env.npm_package_config_dev_server_port || 3000,
     };
   }
