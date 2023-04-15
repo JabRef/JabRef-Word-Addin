@@ -2,7 +2,7 @@ import { DefaultPalette, Stack, FontSizes, PrimaryButton, Link } from '@fluentui
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
-import { LoginInput, useLoginMutation } from '../../generated/graphql';
+import { useLoginMutation } from '../../generated/graphql';
 import ContentWrapper from '../components/ContentWrapper';
 import InputField from '../components/InputField';
 import { imageProps, stackStylesHeader, verticalGapStackTokens } from './Login.style';
@@ -19,7 +19,7 @@ function Login() {
           onSubmit={async (value) => {
             const response = await loginMutation({
               variables: {
-                input: value as LoginInput,
+                input: value,
               },
             });
             // eslint-disable-next-line no-underscore-dangle
