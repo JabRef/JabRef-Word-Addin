@@ -2,7 +2,7 @@ import { DefaultPalette, Stack, FontSizes, PrimaryButton, Link } from '@fluentui
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
-import { useLoginMutation } from '../../generated/graphql';
+import { LoginInput, useLoginMutation } from '../../generated/graphql';
 import ContentWrapper from '../components/ContentWrapper';
 import InputField from '../components/InputField';
 import { imageProps, stackStylesHeader, verticalGapStackTokens } from './Login.style';
@@ -10,6 +10,7 @@ import { imageProps, stackStylesHeader, verticalGapStackTokens } from './Login.s
 function Login() {
   const history = useHistory();
   const [loginMutation, { error }] = useLoginMutation();
+
   return (
     <ContentWrapper>
       <Stack styles={stackStylesHeader} verticalAlign="center">
@@ -17,10 +18,12 @@ function Login() {
           initialValues={{ email: '', password: '' }}
           onSubmit={async (value) => {
             const response = await loginMutation({
-              variables: value,
+              variables: {
+                input: value as LoginInput,
+              },
             });
             // eslint-disable-next-line no-underscore-dangle
-            if (response.data?.login.__typename === 'User') {
+            if (response.data?.login.__typename === 'UserReturned') {
               history.push({ pathname: '/' });
             }
           }}
