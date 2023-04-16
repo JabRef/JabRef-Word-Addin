@@ -25,7 +25,8 @@
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
     "generate": "graphql-codegen --config codegen.yml",
-    "postinstall": "yarn generate && crlf --set=LF node_modules/.bin/office-addin-*"
+    "postinstall": "yarn generate && crlf --set=LF node_modules/.bin/office-addin-*",
+    "clear:certs": "security find-certificate -c \"Developer CA for Microsoft Office Add-ins\" -a -Z | sudo awk '/SHA-1/{system(\"security delete-certificate -Z \"$NF)}'"
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",
@@ -63,7 +64,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^6.4.1",
+    "copy-webpack-plugin": "^11.0.0",
     "crlf": "^1.1.1",
     "css-loader": "^5.2.7",
     "eslint": "^7.32.0",
@@ -85,7 +86,7 @@
     "mini-css-extract-plugin": "^2.7.5",
     "office-addin-cli": "^1.5.3",
     "office-addin-debugging": "^4.6.2",
-    "office-addin-dev-certs": "^1.9.2",
+    "office-addin-dev-certs": "^1.11.3",
     "office-addin-lint": "^2.0.1",
     "office-addin-manifest": "^1.10.3",
     "office-addin-prettier-config": "^1.2.0",

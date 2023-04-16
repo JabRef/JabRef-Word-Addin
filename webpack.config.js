@@ -10,6 +10,11 @@ var dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 const urlDev = 'https://localhost:3000/';
 const urlProd = 'https://www.contoso.com/'; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
+async function getHttpsOptions() {
+  const httpsOptions = await devCerts.getHttpsServerOptions();
+  return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
+}
+
 module.exports = async (env, options) => {
   const dev = options.mode === 'development';
   const buildType = dev ? 'dev' : 'prod';
@@ -66,7 +71,7 @@ module.exports = async (env, options) => {
             from: './src/taskpane/taskpane.css',
           },
           {
-            to: '[name].' + buildType + '.[ext]',
+            to: '[name]' + '[ext]',
             from: 'manifest*.xml',
             transform(content) {
               if (dev) {
@@ -106,12 +111,12 @@ module.exports = async (env, options) => {
 
   if (env.WEBPACK_SERVE) {
     config.devServer = {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
       server: {
         type: 'https',
-        options: {
-          https:
-            options.https !== undefined ? options.https : await devCerts.getHttpsServerOptions(),
-        },
+        options: options.https !== undefined ? options.https : await getHttpsOptions(),
       },
       port: process.env.npm_package_config_dev_server_port || 3000,
     };
