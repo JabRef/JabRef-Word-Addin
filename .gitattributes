@@ -3,4 +3,5 @@
 *.ts text=auto eol=lf
 *.json text=auto eol=lf
 *.yml text=auto eol=lf
+*.md text=auto eol=lf
 *.graphql text=auto eol=lf
