@@ -4,4 +4,6 @@
 *.json text=auto eol=lf
 *.yml text=auto eol=lf
 *.md text=auto eol=lf
+*.css text=auto eol=lf
+*.html text=auto eol=lf
 *.graphql text=auto eol=lf
