@@ -1,0 +1,14 @@
+{
+  "schema": "https://mango-pebble-0224c3803-dev.westeurope.1.azurestaticapps.net/api",
+  "documents": "src/graphql/**/*.graphql",
+  "extensions": {
+    "codegen": {
+      "overwrite": true,
+      "generates": {
+        "src/generated/graphql.ts": {
+          "plugins": ["typescript", "typescript-operations", "typescript-react-apollo"]
+        }
+      }
+    }
+  }
+}

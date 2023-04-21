@@ -1,5 +1,6 @@
-query ME{
-  me{
-  email
+query ME {
+  me {
+    id
+    email
   }
 }

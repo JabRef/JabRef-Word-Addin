@@ -153,8 +153,8 @@ class WordApi {
     });
   }
 
-  removeSelectedCitation = async (): Promise<unknown> => {
-    return Word.run(async (context) => {
+  removeSelectedCitation = async (): Promise<unknown> =>
+    Word.run(async (context) => {
       context.document.getSelection().contentControls.getFirstOrNullObject().delete(false);
       return context.sync();
     }).catch((error) => {
@@ -163,11 +163,9 @@ class WordApi {
         console.log(`Debug info: ${JSON.stringify(error.debugInfo)}`);
       }
     });
-  };
 
-  generateCitationTag = (citation: StatefulCitation): string => {
-    return this.JABREF_CITATION_TAG_PREFIX + JSON.stringify(citation);
-  };
+  generateCitationTag = (citation: StatefulCitation): string =>
+    this.JABREF_CITATION_TAG_PREFIX + JSON.stringify(citation);
 
   async getTotalNumberOfCitations(): Promise<number | void> {
     return Word.run(async (context) => {
@@ -254,24 +252,22 @@ class WordApi {
     });
   }
 
-  addEventListener = (eventHandler: () => Promise<void>): void => {
-    return Office.context.document.addHandlerAsync(
+  addEventListener = (eventHandler: () => Promise<void>): void =>
+    Office.context.document.addHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
       eventHandler,
       (result) => {
         console.log(`result: ${JSON.stringify(result)}`);
       }
     );
-  };
 
-  removeEventListener = (): void => {
-    return Office.context.document.removeHandlerAsync(
+  removeEventListener = (): void =>
+    Office.context.document.removeHandlerAsync(
       Office.EventType.DocumentSelectionChanged,
       (result) => {
         console.log(`result: ${JSON.stringify(result)}`);
       }
     );
-  };
 }
 
 export default WordApi;

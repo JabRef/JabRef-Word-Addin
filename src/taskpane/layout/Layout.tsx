@@ -8,17 +8,15 @@ import { useCiteSupport } from '../contexts/CiteSupportContext';
 import { useLogoutMutation } from '../../generated/graphql';
 import client from '../../plugins/apollo/apolloClient';
 
-type pivotItem = 'citationStyle' | 'dashboard';
+type PivotKind = 'citationStyle' | 'dashboard';
 
-const getTabId = (itemKey: string) => {
-  return `appTabs${itemKey}`;
-};
+const getTabId = (itemKey: string) => `appTabs${itemKey}`;
 
 function Layout(): JSX.Element {
-  const [selectedKey, setSelectedKey] = useState<pivotItem>('dashboard');
+  const [selectedKey, setSelectedKey] = useState<PivotKind>('dashboard');
 
   const handleLinkClick = (item?: PivotItem) => {
-    if (item) setSelectedKey(item.props.itemKey as pivotItem);
+    if (item) setSelectedKey(item.props.itemKey as PivotKind);
   };
 
   const citeSupport = useCiteSupport();

@@ -7,10 +7,10 @@ interface CitationStoreProviderProps {
 
 interface CitationStoreContextInterface {
   selectedCitations: Array<CitationItem | null>;
-  dispatch: React.Dispatch<citationStoreAction>;
+  dispatch: React.Dispatch<CitationStoreAction>;
 }
 
-export type citationStoreAction =
+export type CitationStoreAction =
   | { type: 'empty' }
   | { type: 'add'; citation: CitationItem }
   | { type: 'remove'; citation: CitationItem }
@@ -23,7 +23,7 @@ const initialState: Array<CitationItem> = [];
 
 export function citationStoreReducer(
   selectedCitations: Array<CitationItem>,
-  action: citationStoreAction
+  action: CitationStoreAction
 ): Array<CitationItem | null> {
   switch (action.type) {
     case 'empty':
@@ -36,9 +36,9 @@ export function citationStoreReducer(
       return selectedCitations.filter((citation) => citation.id !== action.citation.id);
     case 'update': {
       const { id, label, prefix, suffix, locator } = action.citation;
-      return selectedCitations.map((item) => {
-        return item.id === id ? { ...item, label, prefix, suffix, locator } : item;
-      });
+      return selectedCitations.map((item) =>
+        item.id === id ? { ...item, label, prefix, suffix, locator } : item
+      );
     }
     default:
       throw new Error(`Unhandled action`);

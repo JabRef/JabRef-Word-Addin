@@ -36,8 +36,8 @@
 
 ## Yarn Commands
 
-| Command        | Description                                                                                                                                  |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Command          | Description                                                                                                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `yarn start`     | To test add-in in Word, run this command in the root directory. This starts the local web server and opens Word with add-in loaded.          |
 | `yarn start:web` | To test your add-in in Word on a browser, run this command in the root directory. When you run this command, the local web server will start |
 | `yarn build`     | To start server in production.                                                                                                               |

@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react';
 import classNames from './ReferenceList.style';
 import ReferenceView from './ReferenceView';
 
-export interface bib extends MetaData, CitationItem {
+export interface BibItem extends MetaData, CitationItem {
   isSelected: boolean;
 }
 

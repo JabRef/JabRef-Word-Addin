@@ -10,56 +10,61 @@
     "commonjs": true,
     "es2021": true
   },
-  "extends": [
-    "plugin:react/recommended",
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:office-addins/react",
-    "airbnb",
-    "airbnb/hooks",
-    "prettier",
-    "plugin:prettier/recommended"
-  ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
   },
-  "plugins": ["office-addins", "react", "@typescript-eslint", "unused-imports"],
-  "rules": {
-    "react/jsx-filename-extension": "off",
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ],
-    "react/jsx-props-no-spreading": "off",
-    "no-nested-ternary": "off"
-  },
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:react/recommended",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:office-addins/react",
+        "airbnb",
+        // Provide typescript support for airbnb
+        "airbnb-typescript",
+        "airbnb/hooks",
+        // Turns off all rules that are unnecessary or might conflict with Prettier (needs to be last)
+        "prettier"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "plugins": ["office-addins", "react", "@typescript-eslint", "unused-imports"],
       "rules": {
-        "no-undef": "off"
+        "no-undef": "off",
+        "react/jsx-filename-extension": "off",
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "js": "never",
+            "jsx": "never",
+            "ts": "never",
+            "tsx": "never"
+          }
+        ],
+        "react/jsx-props-no-spreading": "off",
+        "no-nested-ternary": "off"
+      }
+    },
+    {
+      "files": ["*.graphql"],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "extends": "plugin:@graphql-eslint/operations-recommended",
+      "rules": {
+        "@typescript-eslint/**": "off"
       }
     }
   ]

@@ -15,9 +15,9 @@ interface ReferenceViewProps {
   document: MetaData;
 }
 
-const renderAuther = (author: Array<Author>): string => {
+function renderAuthor(author: Array<Author>): string {
   return author.map((_author) => `${_author.given} ${_author.family}`).join(', ');
-};
+}
 
 function ReferenceView({ document }: ReferenceViewProps): React.ReactElement {
   const { selectedCitations, dispatch } = useCitationStore();
@@ -54,7 +54,7 @@ function ReferenceView({ document }: ReferenceViewProps): React.ReactElement {
       <Stack.Item grow styles={referenceDetailsContainer} onClick={onClickHandler}>
         <Stack verticalFill>
           <Stack.Item styles={heading}>{document.title}</Stack.Item>
-          <Stack.Item styles={authorStyle}>{renderAuther(document.author)}</Stack.Item>
+          <Stack.Item styles={authorStyle}>{renderAuthor(document.author)}</Stack.Item>
         </Stack>
       </Stack.Item>
     </Stack>
