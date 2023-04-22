@@ -2446,10 +2446,10 @@
   resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-1.0.287.tgz#2bb2474a53d8c279e33552d8460a50f58767fdf8"
   integrity sha512-g/TT9qmETkG73dj1QRukBDKNko5+QgpxfWiyNN5RVh9opy8hGA4YwGwjYkHtJ0311ZC6EQMgzb/GrA70wT0kGA==
 
-"@types/office-runtime@^1.0.29":
-  version "1.0.29"
-  resolved "https://registry.yarnpkg.com/@types/office-runtime/-/office-runtime-1.0.29.tgz#62fa147f1ac7072fb95b00ce4d674b0ed7ae6189"
-  integrity sha512-Ax/vf0NrKmEM0MDJiOivaAdVLEppXihQ6wdItZ75927FLpu6mtcaNeuatBuDPMajnS7nbzPJiZdk3iZaTrVQFQ==
+"@types/office-runtime@^1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@types/office-runtime/-/office-runtime-1.0.30.tgz#4ca9477cf88c0aa7bac8b39b7fd3010254a500bd"
+  integrity sha512-pQVbM2BGz9XQa2sPX3IqKu7nApKOSimZv5C+vy3kHBcUdahfG/GFN/I7UZ9zo9ELW6EsazEK1AlSf6ObMfT71g==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
