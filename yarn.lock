@@ -1850,10 +1850,10 @@
     axios "^0.21.2"
     fs-extra "^9.1.0"
 
-"@microsoft/teams-manifest@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@microsoft/teams-manifest/-/teams-manifest-0.0.7.tgz#9c55c98b3017051c20e9ab2e3885c4578d8c0af9"
-  integrity sha512-H+gIhiRnQNDmQTUGr7mQFn53iu+K/F/6e+BlmzrEddhVJ03BM8o/BkJWMvNBsZREhDtX3re4vS4pCw4L1TI2Eg==
+"@microsoft/teams-manifest@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@microsoft/teams-manifest/-/teams-manifest-0.0.9.tgz#8446d5400cbf91a064f93241e844763b0d644d41"
+  integrity sha512-cf7UYn8JxdhL83qshEAnc8vdk+KY4uKJqtlAvPSONVdzJZwO1iPxoyzdo0lTSCB+givg2Ipt4aLob2pCkg0r7w==
   dependencies:
     ajv "^8.5.0"
     ajv-draft-04 "^1.0.0"
@@ -9108,18 +9108,18 @@ office-addin-lint@^2.0.1:
     office-addin-usage-data "^1.4.7"
     prettier "^2.2.1"
 
-office-addin-manifest@^1.10.3:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.10.3.tgz#62f4c0487121c3023b98ae1fc4af3362c77dae5c"
-  integrity sha512-/IxkzMa2cXIiPaNtbKKPaSKJQdolNvf6389AOR/uDR9jykmLdNFqmPuO9H4F0uLFzEE2do+685ZIbSmvk6jZDg==
+office-addin-manifest@^1.10.3, office-addin-manifest@^1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.12.3.tgz#b3910c053f61464d7c5e101d03f2ae67bf7fc73a"
+  integrity sha512-VcoQof+BcENamnyBHE/M4C5qxsji0WiR/k92oXWj8GdxX/a/Ug7apZ9PpUKh8+qyhAiqEWFeD+EpmF7s1bb2TQ==
   dependencies:
-    "@microsoft/teams-manifest" "^0.0.7"
+    "@microsoft/teams-manifest" "^0.0.9"
     adm-zip "^0.5.9"
     chalk "^2.4.2"
     commander "^6.2.0"
     fs-extra "^7.0.1"
     node-fetch "^2.6.1"
-    office-addin-usage-data "^1.6.2"
+    office-addin-usage-data "^1.6.5"
     path "^0.12.7"
     uuid "^8.3.2"
     xml2js "^0.4.23"
@@ -9140,17 +9140,7 @@ office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.2.0.tgz#59f14a2a7a3f5d803f6ad82a764e84ab4d4b9628"
   integrity sha512-42/w9BUlUvgbLNn8vLaGULVTrcTFBnhn+xAe6IwSOhPrFQpi2GxZPl8ln/f5X4lterVrJz7U6Vi+VeN7WYAsGQ==
 
-office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.2.tgz#ce158bed7bdaacfa89d6ab30ba82c59934f4c971"
-  integrity sha512-OvXsvmZctDWvoWXnKG/vG711Ouzq0QYL3YUr3N1jIdkkjIRLzedoo+9P9LPEKPwfJz/VslnyKxL7eZpH2pSwCw==
-  dependencies:
-    applicationinsights "^1.7.3"
-    commander "^6.2.0"
-    readline-sync "^1.4.9"
-    uuid "8.3.2"
-
-office-addin-usage-data@^1.6.5:
+office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.2, office-addin-usage-data@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.5.tgz#03f9fb0e4e2f0fe5d9a926fb2380b9408d2cb712"
   integrity sha512-F4nSVOy3uHTl/YLzxQojIQSzBNDFw4KayN2RqzbCQZ0QcOb/jRhwvNy01Kf2V+IKvgdWuEd11qukfVQ20OKfRA==
