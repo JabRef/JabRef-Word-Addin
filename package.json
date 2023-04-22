@@ -31,7 +31,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.0",
     "@fluentui/react": "^8.97.0",
-    "citeproc": "^2.4.62",
+    "citeproc": "^2.4.63",
     "core-js": "^3.25.3",
     "cross-var": "^1.1.0",
     "dotenv": "^16.0.3",
