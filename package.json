@@ -45,7 +45,7 @@
     "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6",
+    "@babel/core": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
     "@graphql-codegen/cli": "3.3.0",
     "@graphql-codegen/typescript": "3.0.3",
