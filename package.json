@@ -84,7 +84,7 @@
     "less": "^4.1.3",
     "less-loader": "^11.1.0",
     "mini-css-extract-plugin": "^2.7.5",
-    "office-addin-cli": "^1.5.3",
+    "office-addin-cli": "^1.5.5",
     "office-addin-debugging": "^4.6.2",
     "office-addin-dev-certs": "^1.11.3",
     "office-addin-lint": "^2.0.1",
