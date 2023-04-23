@@ -52,3 +52,4 @@ Note: If you're testing add-in on Mac, run `yarn dev-server` to start the local 
 
 - [React.js](https://reactjs.org): UI framework [Documentation](https://reactjs.org/docs/getting-started.html)
 - [Microsoft Office Add-in](https://docs.microsoft.com/en-us/office/dev/add-ins/)
+- [Citation Style Language (CSL) project](https://citationstyles.org/) is used to format citations according to various styles.
