@@ -17,11 +17,10 @@ const buttonLabel = (length: number) =>
     : 'Remove citation';
 
 function containsSearchTerm(keyword: string) {
-  return (item?: MetaData) => {
-    return [item.title, item.author, item.year].some((str: string | number) =>
+  return (item?: MetaData) =>
+    [item.title, item.author, item.year].some((str: string | number) =>
       str ? str.toString().toLowerCase().includes(keyword.toLowerCase().trim()) : false
     );
-  };
 }
 
 function Dashboard(): ReactElement {
@@ -29,11 +28,11 @@ function Dashboard(): ReactElement {
   const citeSupport = useCiteSupport();
   const { selectedCitations, dispatch } = useCitationStore();
   const [referenceList, setReferenceList] = useState<Array<MetaData>>(originalItems);
-  const [citationItems, _setCitationItems] = useState<Array<CitationItem | null>>([]);
+  const [citationItems, setCitationItems] = useState<Array<CitationItem | null>>([]);
   const itemsInSelectedCitation = useRef(citationItems);
   const setItemsInSelectedCitation = (itemsMetadata: Array<CitationItem>) => {
     itemsInSelectedCitation.current = itemsMetadata;
-    _setCitationItems(itemsMetadata);
+    setCitationItems(itemsMetadata);
   };
 
   const onFilterChange = (_: React.ChangeEvent<HTMLInputElement>, keyword: string): void => {

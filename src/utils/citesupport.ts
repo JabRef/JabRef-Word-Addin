@@ -119,6 +119,7 @@ class CiteSupport {
    */
   debug(txt: string): void {
     if (this.config.debug) {
+      // eslint-disable-next-line no-console
       console.log(`*** ${txt}`);
     }
   }
@@ -269,13 +270,11 @@ class CiteSupport {
   ): Array<CitationDataFormatForWordAPI> {
     if (!citationData) return null;
     this.debug('convertCitationDataToCustomFormat()');
-    return citationData.map((citation) => {
-      return {
-        position: citation[0],
-        citationText: citation[1],
-        citationTag: this.config.citationByIndex[citation[0]],
-      };
-    });
+    return citationData.map((citation) => ({
+      position: citation[0],
+      citationText: citation[1],
+      citationTag: this.config.citationByIndex[citation[0]],
+    }));
   }
 
   /**
@@ -351,16 +350,12 @@ class CiteSupport {
     if (this.config.citationByIndex.slice(0, i).length) {
       citationsPre = this.config.citationByIndex
         .slice(0, i)
-        .map((obj: StatefulCitation): [string, number] => {
-          return [obj.citationID, 0];
-        });
+        .map((obj: StatefulCitation): [string, number] => [obj.citationID, 0]);
     }
     if (this.config.citationByIndex.slice(i + offset).length) {
       citationsPost = this.config.citationByIndex
         .slice(i + offset)
-        .map((obj: StatefulCitation): [string, number] => {
-          return [obj.citationID, 0];
-        });
+        .map((obj: StatefulCitation): [string, number] => [obj.citationID, 0]);
     }
     this.registerCitation(citation, citationsPre, citationsPost);
   }

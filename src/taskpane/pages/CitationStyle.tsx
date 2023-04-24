@@ -45,19 +45,15 @@ function CitationStyle(): JSX.Element {
   };
 
   // Sync with doc settings
-  React.useEffect(() => {
-    return UserPreferences.syncPreferences();
-  });
+  React.useEffect(() => UserPreferences.syncPreferences());
 
-  const onRenderCell = (item: { text: string; value: string }): JSX.Element => {
-    return (
-      <Stack className={classNames.itemCell} data-is-focusable>
-        <Stack key={item.value} id={item.value} className={classNames.itemName} onClick={onClick}>
-          {item.text}
-        </Stack>
+  const onRenderCell = (item: { text: string; value: string }): JSX.Element => (
+    <Stack className={classNames.itemCell} data-is-focusable>
+      <Stack key={item.value} id={item.value} className={classNames.itemName} onClick={onClick}>
+        {item.text}
       </Stack>
-    );
-  };
+    </Stack>
+  );
 
   return (
     <Stack verticalFill styles={container}>

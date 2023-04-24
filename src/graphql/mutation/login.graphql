@@ -1,5 +1,5 @@
-mutation Login($input: LoginInput!){
-  login(input: $input){
+mutation Login($input: LoginInput!) {
+  login(input: $input) {
     ... on UserReturned {
       user {
         email
