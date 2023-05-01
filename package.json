@@ -31,7 +31,7 @@
     "clear:certs": "security find-certificate -c \"Developer CA for Microsoft Office Add-ins\" -a -Z | sudo awk '/SHA-1/{system(\"security delete-certificate -Z \"$NF)}'"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.12",
+    "@apollo/client": "^3.7.13",
     "@fluentui/react": "^8.108.1",
     "citeproc": "^2.4.63",
     "core-js": "^3.30.1",
