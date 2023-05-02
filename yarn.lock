@@ -2703,7 +2703,7 @@
   dependencies:
     "@types/node" "*"
 
-"@typescript-eslint/eslint-plugin@^4.20.0", "@typescript-eslint/eslint-plugin@^4.33.0":
+"@typescript-eslint/eslint-plugin@^4.33.0":
   version "4.33.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.33.0.tgz#c24dc7c8069c7706bc40d99f6fa87edcb2005276"
   integrity sha512-aINiAxGVdOl1eJyVjaWn/YcVAq4Gi/Yo35qHGCnqbWVz61g39D0h23veY/MA0rFFGfxK7TySg2uwDeNv+JgVpg==
@@ -2745,7 +2745,7 @@
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
-"@typescript-eslint/parser@^4.15.1", "@typescript-eslint/parser@^4.33.0":
+"@typescript-eslint/parser@^4.33.0":
   version "4.33.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-4.33.0.tgz#dfe797570d9694e560528d18eecad86c8c744899"
   integrity sha512-ZohdsbXadjGBSK0/r+d87X0SBmKzOq4/S5nzK6SBgJspFo9/CUDJ7hjayuze+JK7CZQLDMroqytp7pOcFKTxZA==
@@ -5987,7 +5987,7 @@ eslint-plugin-jsx-a11y@^6.7.1:
     object.fromentries "^2.0.6"
     semver "^6.3.0"
 
-eslint-plugin-office-addins@^2.0.1, eslint-plugin-office-addins@^2.1.5:
+eslint-plugin-office-addins@^2.1.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/eslint-plugin-office-addins/-/eslint-plugin-office-addins-2.1.5.tgz#0e5f8f060a1e82d8b2e0ed62e5e1da1d478daa91"
   integrity sha512-n0w2LKWwDxxmB71jle261tENwuajO0lJPsle5gBVBGa6QqndW34KFq5CF8CoC0fuH6z3/yIMRjGDvfvbuDEOXw==
@@ -9167,20 +9167,20 @@ office-addin-dev-settings@^2.0.3:
     whatwg-url "^7.1.0"
     winreg "^1.2.4"
 
-office-addin-lint@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/office-addin-lint/-/office-addin-lint-2.0.1.tgz#65b499e951b14bc04b9902193570807566d9d3f9"
-  integrity sha512-aQe0DiLsb7pjIn3mLte+XdYPxi+mJ1Jd+zJPIfdioVDuaqvlOx+JqIsy1qbdfDgOEyfUoyVkqCN2aPzz4idKPQ==
+office-addin-lint@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/office-addin-lint/-/office-addin-lint-2.2.5.tgz#2eeb415577eddb0ddc5aa73a47f474d3db0bee33"
+  integrity sha512-d5ASs9ClomKex0+e5Jv9bNC6xet1VyQrqb6ShChx22j6kWwX5mEaN/RAx7HCGRbhSQ9Dxmky+UUojdbZaR+DTw==
   dependencies:
-    "@typescript-eslint/eslint-plugin" "^4.20.0"
-    "@typescript-eslint/parser" "^4.15.1"
+    "@typescript-eslint/eslint-plugin" "^5.33.1"
+    "@typescript-eslint/parser" "^5.33.1"
     commander "^6.2.0"
     eslint "^7.32.0"
     eslint-config-prettier "^8.1.0"
-    eslint-plugin-office-addins "^2.0.1"
+    eslint-plugin-office-addins "^2.1.5"
     eslint-plugin-prettier "^3.3.1"
-    office-addin-prettier-config "^1.1.5"
-    office-addin-usage-data "^1.4.7"
+    office-addin-prettier-config "^1.2.0"
+    office-addin-usage-data "^1.6.5"
     prettier "^2.2.1"
 
 office-addin-manifest@^1.10.3, office-addin-manifest@^1.10.4, office-addin-manifest@^1.12.3:
@@ -9209,12 +9209,12 @@ office-addin-node-debugger@^0.8.5:
     office-addin-usage-data "^1.6.5"
     ws "^7.4.6"
 
-office-addin-prettier-config@^1.1.5, office-addin-prettier-config@^1.2.0:
+office-addin-prettier-config@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/office-addin-prettier-config/-/office-addin-prettier-config-1.2.0.tgz#59f14a2a7a3f5d803f6ad82a764e84ab4d4b9628"
   integrity sha512-42/w9BUlUvgbLNn8vLaGULVTrcTFBnhn+xAe6IwSOhPrFQpi2GxZPl8ln/f5X4lterVrJz7U6Vi+VeN7WYAsGQ==
 
-office-addin-usage-data@^1.4.7, office-addin-usage-data@^1.6.5:
+office-addin-usage-data@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/office-addin-usage-data/-/office-addin-usage-data-1.6.5.tgz#03f9fb0e4e2f0fe5d9a926fb2380b9408d2cb712"
   integrity sha512-F4nSVOy3uHTl/YLzxQojIQSzBNDFw4KayN2RqzbCQZ0QcOb/jRhwvNy01Kf2V+IKvgdWuEd11qukfVQ20OKfRA==
