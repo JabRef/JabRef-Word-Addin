@@ -53,7 +53,7 @@
     "@graphql-codegen/typescript": "3.0.4",
     "@graphql-codegen/typescript-operations": "3.0.4",
     "@graphql-codegen/typescript-react-apollo": "3.3.3",
-    "@graphql-eslint/eslint-plugin": "^3.18.0",
+    "@graphql-eslint/eslint-plugin": "^3.19.1",
     "@types/find-process": "1.2.0",
     "@types/office-js": "^1.0.322",
     "@types/office-runtime": "^1.0.30",
