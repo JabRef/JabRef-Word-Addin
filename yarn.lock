@@ -8843,14 +8843,14 @@ node-fetch@2.6.1:
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.1.tgz"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
-node-fetch@2.6.7, node-fetch@^2.6.0:
+node-fetch@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^2.6.1, node-fetch@^2.6.7:
+node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.9.tgz#7c7f744b5cc6eb5fd404e0c7a9fec630a55657e6"
   integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
@@ -9183,10 +9183,10 @@ office-addin-lint@^2.0.1:
     office-addin-usage-data "^1.4.7"
     prettier "^2.2.1"
 
-office-addin-manifest@^1.10.3, office-addin-manifest@^1.10.4, office-addin-manifest@^1.12.3:
-  version "1.12.3"
-  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.12.3.tgz#b3910c053f61464d7c5e101d03f2ae67bf7fc73a"
-  integrity sha512-VcoQof+BcENamnyBHE/M4C5qxsji0WiR/k92oXWj8GdxX/a/Ug7apZ9PpUKh8+qyhAiqEWFeD+EpmF7s1bb2TQ==
+office-addin-manifest@^1.10.4, office-addin-manifest@^1.12.3, office-addin-manifest@^1.12.4:
+  version "1.12.4"
+  resolved "https://registry.yarnpkg.com/office-addin-manifest/-/office-addin-manifest-1.12.4.tgz#4d2ecb58b5717448cb9a8d3c6fa1dfef56b2112c"
+  integrity sha512-Y0ms4fjgN6kxpt7TqMxhcw54wePcNhOgUNZHGTWkO6bYL+YHE9RzR8URFmeiq+9P+s/+1SaRtcx6DOjJnVRt8Q==
   dependencies:
     "@microsoft/teams-manifest" "^0.0.9"
     adm-zip "^0.5.9"
@@ -9197,7 +9197,7 @@ office-addin-manifest@^1.10.3, office-addin-manifest@^1.10.4, office-addin-manif
     office-addin-usage-data "^1.6.5"
     path "^0.12.7"
     uuid "^8.3.2"
-    xml2js "^0.4.23"
+    xml2js "^0.5.0"
 
 office-addin-node-debugger@^0.8.5:
   version "0.8.5"
@@ -11869,6 +11869,14 @@ xml2js@^0.4.19, xml2js@^0.4.23:
   version "0.4.23"
   resolved "https://registry.npmjs.org/xml2js/-/xml2js-0.4.23.tgz"
   integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "~11.0.0"
+
+xml2js@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.5.0.tgz#d9440631fbb2ed800203fad106f2724f62c493b7"
+  integrity sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~11.0.0"
